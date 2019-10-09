@@ -43,7 +43,7 @@ public interface ScenicSpotService {
      * @param currentUser
      * @return
      */
-    ResponseMessage update(Long id, ScenicSpotEntity scenicSpotEntity, User currentUser);
+    ResponseMessage update(Long id, ScenicSpotEntity scenicSpotEntity, User user);
 
     /**
      * 删除景点信息
@@ -58,5 +58,5 @@ public interface ScenicSpotService {
      * @param weight
      * @return
      */
-    ResponseMessage goWeight(Long id, Float weight);
+    ResponseMessage goWeight(Long id, Float weight, User user);
 }

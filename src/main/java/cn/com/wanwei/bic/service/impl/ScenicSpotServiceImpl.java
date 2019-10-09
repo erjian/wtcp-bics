@@ -69,6 +69,7 @@ public class ScenicSpotServiceImpl implements ScenicSpotService {
 //         scenicSpotEntity.setStatus(true);/*************待定****************/
             scenicSpotEntity.setCreatedUser(user.getUsername());
             scenicSpotEntity.setCreatedDate(new Date());
+            scenicSpotEntity.setDeptCode(user.getOrg().getCode());
             scenicSpotMapper.insert(scenicSpotEntity);
             return ResponseMessage.defaultResponse().setMsg("保存成功!");
         } catch (Exception e) {
@@ -78,18 +79,54 @@ public class ScenicSpotServiceImpl implements ScenicSpotService {
     }
 
     @Override
-    public ResponseMessage update(Long id, ScenicSpotEntity scenicSpotEntity, User currentUser) {
-        ScenicSpotEntity sntity=scenicSpotMapper.find(id);
-        return null;
+    public ResponseMessage update(Long id, ScenicSpotEntity scenicSpotEntity, User user) {
+        try {
+            ScenicSpotEntity sntity=scenicSpotMapper.find(id);
+            if(sntity!=null){
+                scenicSpotEntity.setCreatedUser(sntity.getCreatedUser());
+                scenicSpotEntity.setCreatedDate(sntity.getCreatedDate());
+    //            scenicSpotEntity.setStatus();/***********待定**************/
+                scenicSpotEntity.setCode(sntity.getCode());
+                scenicSpotEntity.setDeptCode(user.getOrg().getCode());
+                scenicSpotEntity.setUpdatedUser(user.getUsername());
+                scenicSpotEntity.setUpdatedDate(new Date());
+                scenicSpotMapper.updateByPrimaryKey(scenicSpotEntity);
+                return ResponseMessage.defaultResponse().setMsg("更新成功！");
+            }
+            return ResponseMessage.validFailResponse().setMsg("暂无该景点信息！");
+        } catch (Exception e) {
+            log.info(e.getMessage());
+            return ResponseMessage.validFailResponse().setMsg("更新失败！");
+        }
     }
 
     @Override
     public ResponseMessage delete(Long id) {
-        return null;
+        try {
+            scenicSpotMapper.deleteByPrimaryKey(id);
+            return ResponseMessage.defaultResponse().setMsg("删除成功！");
+        } catch (Exception e) {
+           log.info(e.getMessage());
+            return ResponseMessage.validFailResponse().setMsg("删除失败！");
+        }
     }
 
     @Override
-    public ResponseMessage goWeight(Long id, Float weight) {
-        return null;
+    public ResponseMessage goWeight(Long id, Float weight, User user) {
+        try {
+            ScenicSpotEntity sntity=scenicSpotMapper.find(id);
+            if(sntity!=null){
+                sntity.setWeight(weight);
+                sntity.setDeptCode(user.getOrg().getCode());
+                sntity.setUpdatedUser(user.getUsername());
+                sntity.setUpdatedDate(new Date());
+                scenicSpotMapper.updateByPrimaryKey(sntity);
+                return ResponseMessage.defaultResponse().setMsg("权重修改成功！");
+            }
+            return ResponseMessage.validFailResponse().setMsg("暂无该景点信息！");
+        } catch (Exception e) {
+            log.info(e.getMessage());
+            return ResponseMessage.validFailResponse().setMsg("权重修改失败！");
+        }
     }
 }

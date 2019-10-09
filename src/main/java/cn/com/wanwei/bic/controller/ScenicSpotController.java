@@ -93,7 +93,7 @@ public class ScenicSpotController extends  BaseController{
     @PutMapping(value = "/{id}")
     @PreAuthorize("hasAuthority('spot:q')")
     @OperationLog(value = "wtcp-bics/权重更改", operate = "u", module = "景点管理")
-    public ResponseMessage goWeight(@PathVariable(value = "id") Long id,@RequestParam Float weight){
-        return scenicSpotService.goWeight(id,weight);
+    public ResponseMessage goWeight(@PathVariable(value = "id") Long id,@RequestParam Float weight) throws Exception {
+        return scenicSpotService.goWeight(id,weight,getCurrentUser());
     }
 }
