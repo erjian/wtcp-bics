@@ -27,6 +27,7 @@ public class DictionaryServiceImpl implements DictionaryService {
         return ResponseMessage.defaultResponse().setMsg("删除成功");
     }
 
+
     @Override
     public ResponseMessage edit(Long id,DictionaryEntity entity,String userName){
         DictionaryEntity dictionaryEntity = dictionaryMapper.selectByPrimaryKey(id);
