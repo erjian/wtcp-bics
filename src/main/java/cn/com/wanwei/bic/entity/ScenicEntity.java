@@ -7,15 +7,14 @@
  */
 package cn.com.wanwei.bic.entity;
 
-import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.*;
-import java.util.Date;
+import javax.persistence.Entity;
+import javax.persistence.Table;
 
 @Data
 @EqualsAndHashCode(callSuper=false)
@@ -23,11 +22,7 @@ import java.util.Date;
 @Entity
 @Table(name="bic_scenic")
 @ApiModel(description="景区基础信息管理")
-public class BicScenicEntity extends BaseEntity{
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @ApiModelProperty(value="主键")
-    private Long id;
+public class ScenicEntity extends BaseEntity{
 
     @ApiModelProperty(value = "编码")
     private String code;
@@ -71,28 +66,27 @@ public class BicScenicEntity extends BaseEntity{
     @ApiModelProperty(value = "级别（0：非A级，1：1A级，2：2A级，3：3A级，4：4A级，5：5A级）")
     private Integer level;
 
-
+    @ApiModelProperty(value = "面积")
     private Double area;
 
+    @ApiModelProperty(value = "类别（1：普通景区，2：乡村游）")
     private Integer category;
 
+    @ApiModelProperty(value = "全景地址")
     private String panoramicUrl;
 
+    @ApiModelProperty(value = "审核状态（0：待审，1：通过，9：上线）")
     private Boolean status;
 
+    @ApiModelProperty(value = "游玩时间")
     private Float playtime;
 
+    @ApiModelProperty(value = "评分")
     private Float score;
 
+    @ApiModelProperty(value = "组织机构编码")
     private String deptCode;
 
-    private String createdUser;
-
-    private Date createdDate;
-
-    private String updatedUser;
-
-    private Date updatedDate;
-
+    @ApiModelProperty(value = "内容")
     private String content;
 }
