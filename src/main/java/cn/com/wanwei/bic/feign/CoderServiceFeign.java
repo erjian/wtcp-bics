@@ -18,7 +18,7 @@ public interface CoderServiceFeign {
     ResponseMessage buildSerialNum(@PathVariable("appCode") Integer appCode);
 
     @GetMapping(value = "/coders/generate/rule/{id}")
-    ResponseMessage buildSerial(@PathVariable("id") Long id,
+    ResponseMessage buildSerialByCode(@PathVariable("id") Long id,
                                 @RequestParam(value = "appCode") Integer appCode,
                                 @RequestParam(value = "areaCode") String areaCode);
 
@@ -31,7 +31,7 @@ public interface CoderServiceFeign {
         }
 
         @Override
-        public ResponseMessage buildSerial(Long id, Integer appCode, String areaCode) {
+        public ResponseMessage buildSerialByCode(Long id, Integer appCode, String areaCode) {
             return ResponseMessage.defaultFallBack();
         }
     }
