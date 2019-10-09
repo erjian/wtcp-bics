@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.com.wanwei.bic.mapper.EnterpriseMapper">
+  <resultMap id="BaseResultMap" type="cn.com.wanwei.bic.entity.EnterpriseEntity">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="principal_id" jdbcType="BIGINT" property="principalId" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="type" jdbcType="INTEGER" property="type" />
+    <result column="legal_person" jdbcType="VARCHAR" property="legalPerson" />
+    <result column="general_manager" jdbcType="VARCHAR" property="generalManager" />
+    <result column="business_license" jdbcType="VARCHAR" property="businessLicense" />
+    <result column="organizational_code" jdbcType="VARCHAR" property="organizationalCode" />
+    <result column="info_filler" jdbcType="VARCHAR" property="infoFiller" />
+    <result column="filler_phone" jdbcType="VARCHAR" property="fillerPhone" />
+    <result column="created_user" jdbcType="VARCHAR" property="createdUser" />
+    <result column="created_date" jdbcType="TIMESTAMP" property="createdDate" />
+    <result column="updated_user" jdbcType="VARCHAR" property="updatedUser" />
+    <result column="updated_date" jdbcType="TIMESTAMP" property="updatedDate" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, principal_id, name, type, legal_person, general_manager, business_license, organizational_code, 
+    info_filler, filler_phone, created_user, created_date, updated_user, updated_date
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from bic_enterprise
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from bic_enterprise
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="cn.com.wanwei.bic.entity.EnterpriseEntity">
+    insert into bic_enterprise (principal_id, name, type, 
+      legal_person, general_manager, business_license, 
+      organizational_code, info_filler, filler_phone, 
+      created_user, created_date, updated_user, 
+      updated_date)
+    values (#{principalId,jdbcType=BIGINT}, #{name,jdbcType=VARCHAR}, #{type,jdbcType=INTEGER}, 
+      #{legalPerson,jdbcType=VARCHAR}, #{generalManager,jdbcType=VARCHAR}, #{businessLicense,jdbcType=VARCHAR}, 
+      #{organizationalCode,jdbcType=VARCHAR}, #{infoFiller,jdbcType=VARCHAR}, #{fillerPhone,jdbcType=VARCHAR}, 
+      #{createdUser,jdbcType=VARCHAR}, #{createdDate,jdbcType=TIMESTAMP}, #{updatedUser,jdbcType=VARCHAR}, 
+      #{updatedDate,jdbcType=TIMESTAMP})
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="cn.com.wanwei.bic.entity.EnterpriseEntity">
+    update bic_enterprise
+    set principal_id = #{principalId,jdbcType=BIGINT},
+      name = #{name,jdbcType=VARCHAR},
+      type = #{type,jdbcType=INTEGER},
+      legal_person = #{legalPerson,jdbcType=VARCHAR},
+      general_manager = #{generalManager,jdbcType=VARCHAR},
+      business_license = #{businessLicense,jdbcType=VARCHAR},
+      organizational_code = #{organizationalCode,jdbcType=VARCHAR},
+      info_filler = #{infoFiller,jdbcType=VARCHAR},
+      filler_phone = #{fillerPhone,jdbcType=VARCHAR},
+      created_user = #{createdUser,jdbcType=VARCHAR},
+      created_date = #{createdDate,jdbcType=TIMESTAMP},
+      updated_user = #{updatedUser,jdbcType=VARCHAR},
+      updated_date = #{updatedDate,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>
