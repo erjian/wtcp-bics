@@ -29,7 +29,7 @@
     <result column="updated_user" jdbcType="VARCHAR" property="updatedUser" />
     <result column="updated_date" jdbcType="TIMESTAMP" property="updatedDate" />
   </resultMap>
-  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="cn.com.wanwei.bic.entity.BicScenicEntity">
+  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="cn.com.wanwei.bic.entity.ScenicEntity">
     <result column="content" jdbcType="LONGVARCHAR" property="content" />
   </resultMap>
   <sql id="Base_Column_List">
@@ -52,7 +52,7 @@
     delete from bic_scenic
     where id = #{id,jdbcType=BIGINT}
   </delete>
-  <insert id="insert" parameterType="cn.com.wanwei.bic.entity.BicScenicEntity">
+  <insert id="insert" parameterType="cn.com.wanwei.bic.entity.ScenicEntity">
     insert into bic_scenic (code, title, sub_title, 
       slogan, summary, description, 
       weight, longitude, latitude, 
@@ -72,7 +72,7 @@
       #{createdUser,jdbcType=VARCHAR}, #{createdDate,jdbcType=TIMESTAMP}, #{updatedUser,jdbcType=VARCHAR}, 
       #{updatedDate,jdbcType=TIMESTAMP}, #{content,jdbcType=LONGVARCHAR})
   </insert>
-  <update id="updateByPrimaryKeyWithBLOBs" parameterType="cn.com.wanwei.bic.entity.BicScenicEntity">
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="cn.com.wanwei.bic.entity.ScenicEntity">
     update bic_scenic
     set code = #{code,jdbcType=VARCHAR},
       title = #{title,jdbcType=VARCHAR},
@@ -102,7 +102,7 @@
       content = #{content,jdbcType=LONGVARCHAR}
     where id = #{id,jdbcType=BIGINT}
   </update>
-  <update id="updateByPrimaryKey" parameterType="cn.com.wanwei.bic.entity.BicScenicEntity">
+  <update id="updateByPrimaryKey" parameterType="cn.com.wanwei.bic.entity.ScenicEntity">
     update bic_scenic
     set code = #{code,jdbcType=VARCHAR},
       title = #{title,jdbcType=VARCHAR},
