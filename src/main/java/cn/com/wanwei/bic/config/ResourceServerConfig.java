@@ -17,18 +17,18 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
     public void configure(HttpSecurity http) throws Exception {
             log.info("------------------------ResourceServerConfig  default");
 //            // 开发环境不需要授权
-//            http.csrf().disable().exceptionHandling()
-//                    .authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED)).and()
-//                    .authorizeRequests().anyRequest().permitAll();
+            http.csrf().disable().exceptionHandling()
+                    .authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED)).and()
+                    .authorizeRequests().anyRequest().permitAll();
 
 
             // 生产环境需要授权
-            http.csrf().disable().exceptionHandling()
-                    .authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED)).and()
-                    .authorizeRequests()
-                    .mvcMatchers("/v2/api-docs", "/hystrix.stream", "/turbine.stream",
-                            "/token" , "/public/**", "/actuator/prometheus")
-                    .permitAll().anyRequest().authenticated().and().httpBasic();
+//            http.csrf().disable().exceptionHandling()
+//                    .authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED)).and()
+//                    .authorizeRequests()
+//                    .mvcMatchers("/v2/api-docs", "/hystrix.stream", "/turbine.stream",
+//                            "/token" , "/public/**", "/actuator/prometheus")
+//                    .permitAll().anyRequest().authenticated().and().httpBasic();
 
     }
 

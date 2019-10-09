@@ -13,7 +13,7 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 @EnableDiscoveryClient
 @EnableCircuitBreaker
 @ComponentScan("cn.com.wanwei")
-@EnableGlobalMethodSecurity(prePostEnabled = true)
+//@EnableGlobalMethodSecurity(prePostEnabled = true)
 public class BicApplication {
 
     public static void main(String[] args) {
