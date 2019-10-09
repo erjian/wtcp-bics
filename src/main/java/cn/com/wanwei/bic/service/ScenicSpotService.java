@@ -40,7 +40,7 @@ public interface ScenicSpotService {
      * 编辑景点信息
      * @param id
      * @param scenicSpotEntity
-     * @param currentUser
+     * @param user
      * @return
      */
     ResponseMessage update(Long id, ScenicSpotEntity scenicSpotEntity, User user);
