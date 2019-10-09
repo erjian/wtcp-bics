@@ -78,7 +78,7 @@ public class ScenicEntity extends BaseEntity{
     private String panoramicUrl;
 
     @ApiModelProperty(value = "审核状态（0：待审，1：通过，9：上线）")
-    private Boolean status;
+    private Integer status;
 
     @ApiModelProperty(value = "游玩时间")
     private Float playtime;
