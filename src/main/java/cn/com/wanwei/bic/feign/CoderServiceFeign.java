@@ -2,15 +2,12 @@ package cn.com.wanwei.bic.feign;
 
 import cn.com.wanwei.common.config.rest.OAuth2FeignConfiguration;
 import cn.com.wanwei.common.model.ResponseMessage;
-import io.swagger.annotations.ApiImplicitParam;
-import io.swagger.annotations.ApiOperation;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.stereotype.Component;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
 
-/**
- * wtcp-cms - CoderServiceFeign 编码服务Feign
- */
 @FeignClient(name = "${wtcp.coder.service-name}", configuration = OAuth2FeignConfiguration.class, fallback = CoderServiceFeign.CoderServiceFeignHystrix.class)
 public interface CoderServiceFeign {
 
