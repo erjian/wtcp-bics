@@ -34,9 +34,8 @@ public class ScenicController extends BaseController {
     public ResponseMessage findByPage(@RequestParam(value = "page", defaultValue = "1") Integer page,
                                       @RequestParam(value = "size", defaultValue = "10") Integer size,
                                       HttpServletRequest request) throws Exception {
-        User user = getCurrentUser();
         Map<String, Object> filter = RequestUtil.getParameters(request);
-        return scenicService.findByPage(page,size,user,filter);
+        return scenicService.findByPage(page,size,getCurrentUser(),filter);
     }
 
     @ApiOperation(value = "查询景区基础信息详情", notes = "根据ID查询景区基础信息详情")
