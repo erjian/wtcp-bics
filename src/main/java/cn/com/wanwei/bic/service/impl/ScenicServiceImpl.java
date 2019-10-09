@@ -8,6 +8,7 @@ package cn.com.wanwei.bic.service.impl;
 
 import cn.com.wanwei.bic.entity.ScenicEntity;
 import cn.com.wanwei.bic.mapper.ScenicMapper;
+import cn.com.wanwei.bic.model.DataBindModel;
 import cn.com.wanwei.bic.service.ScenicService;
 import cn.com.wanwei.common.model.ResponseMessage;
 import cn.com.wanwei.common.model.User;
@@ -22,6 +23,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -82,5 +84,13 @@ public class ScenicServiceImpl implements ScenicService {
 		Page<ScenicEntity> userEntities = scenicMapper.findByPage(filter);
 		PageInfo<ScenicEntity> pageInfo = new PageInfo<>(userEntities, pageRequest);
 		return ResponseMessage.defaultResponse().setData(pageInfo);
+	}
+
+	@Override
+	public ResponseMessage dataBind(String updatedUser, DataBindModel model) {
+		String deptCode = model.getDeptCode();
+		List<Long> ids = model.getIds();
+		scenicMapper.dataBind(updatedUser, new Date(), deptCode, ids);
+		return ResponseMessage.defaultResponse().setMsg("关联机构成功");
 	}
 }

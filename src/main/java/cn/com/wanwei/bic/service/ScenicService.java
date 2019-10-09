@@ -7,6 +7,7 @@
 package cn.com.wanwei.bic.service;
 
 import cn.com.wanwei.bic.entity.ScenicEntity;
+import cn.com.wanwei.bic.model.DataBindModel;
 import cn.com.wanwei.common.model.ResponseMessage;
 import cn.com.wanwei.common.model.User;
 
@@ -61,4 +62,13 @@ public interface ScenicService {
 	 * @return
 	 */
 	ResponseMessage findByPage(Integer page, Integer size, User user, Map<String, Object> filter) throws Exception;
+
+	/**
+	 * 关联机构
+	 * @author linjw 2019年10月9日17:28:51
+	 * @param updatedUser
+	 * @param model
+	 * @return
+	 */
+    ResponseMessage dataBind(String updatedUser, DataBindModel model) throws Exception;
 }

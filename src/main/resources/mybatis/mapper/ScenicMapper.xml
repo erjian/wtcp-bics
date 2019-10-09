@@ -138,4 +138,15 @@
     <include refid="Blob_Column_List" />
     from bic_scenic
   </select>
+
+  <update id="dataBind">
+    update bic_scenic
+    set updated_date = #{updatedDate,jdbcType=TIMESTAMP},
+    updated_user = #{updatedUser,jdbcType=VARCHAR},
+    dept_code = #{deptCode,jdbcType=VARCHAR}
+    where id in
+    <foreach collection="ids" item="item" index="index" open="(" separator="," close=")">
+      #{item}
+    </foreach>
+  </update>
 </mapper>
