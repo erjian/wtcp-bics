@@ -17,20 +17,20 @@ public class BaseEntity implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @ApiModelProperty(value="主键")
+    @ApiModelProperty(value="主键" ,readOnly = true)
     private Long id;
 
-    @ApiModelProperty(value = "创建人")
+    @ApiModelProperty(value = "创建人",readOnly = true)
     private String createdUser;
 
-    @ApiModelProperty(value = "创建时间")
+    @ApiModelProperty(value = "创建时间",readOnly = true)
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone="GMT+8")
     private Date createdDate;
 
-    @ApiModelProperty(value = "更新人")
+    @ApiModelProperty(value = "更新人",readOnly = true)
     private String updatedUser;
 
-    @ApiModelProperty(value = "更新时间")
+    @ApiModelProperty(value = "更新时间",readOnly = true)
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone="GMT+8")
     private Date updatedDate;
 }

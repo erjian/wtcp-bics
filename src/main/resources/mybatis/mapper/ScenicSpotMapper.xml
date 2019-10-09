@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.com.wanwei.bic.mapper.ScenicSpotMapper">
+  <resultMap id="BaseResultMap" type="cn.com.wanwei.bic.entity.ScenicSpotEntity">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="parent_id" jdbcType="BIGINT" property="parentId" />
+    <result column="scenic_id" jdbcType="BIGINT" property="scenicId" />
+    <result column="code" jdbcType="VARCHAR" property="code" />
+    <result column="title" jdbcType="VARCHAR" property="title" />
+    <result column="sub_title" jdbcType="VARCHAR" property="subTitle" />
+    <result column="slogan" jdbcType="VARCHAR" property="slogan" />
+    <result column="summary" jdbcType="VARCHAR" property="summary" />
+    <result column="description" jdbcType="VARCHAR" property="description" />
+    <result column="weight" jdbcType="REAL" property="weight" />
+    <result column="longitude" jdbcType="DOUBLE" property="longitude" />
+    <result column="latitude" jdbcType="DOUBLE" property="latitude" />
+    <result column="region_full_name" jdbcType="VARCHAR" property="regionFullName" />
+    <result column="region_full_code" jdbcType="VARCHAR" property="regionFullCode" />
+    <result column="region" jdbcType="VARCHAR" property="region" />
+    <result column="address" jdbcType="VARCHAR" property="address" />
+    <result column="status" jdbcType="BIT" property="status" />
+    <result column="dept_code" jdbcType="VARCHAR" property="deptCode" />
+    <result column="created_user" jdbcType="VARCHAR" property="createdUser" />
+    <result column="created_date" jdbcType="TIMESTAMP" property="createdDate" />
+    <result column="updated_user" jdbcType="VARCHAR" property="updatedUser" />
+    <result column="updated_date" jdbcType="TIMESTAMP" property="updatedDate" />
+    <result column="content" jdbcType="LONGVARCHAR" property="content" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, parent_id, scenic_id, code, title, sub_title, slogan, summary, description, weight, 
+    longitude, latitude, region_full_name, region_full_code, region, address, status, 
+    dept_code, created_user, created_date, updated_user, updated_date,content
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from bic_scenic_spot
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from bic_scenic_spot
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="cn.com.wanwei.bic.entity.ScenicSpotEntity">
+    insert into bic_scenic_spot (parent_id, scenic_id, code, 
+      title, sub_title, slogan, 
+      summary, description, weight, 
+      longitude, latitude, region_full_name, 
+      region_full_code, region, address, 
+      status, dept_code, created_user, 
+      created_date, updated_user, updated_date, 
+      content)
+    values (#{parentId,jdbcType=BIGINT}, #{scenicId,jdbcType=BIGINT}, #{code,jdbcType=VARCHAR}, 
+      #{title,jdbcType=VARCHAR}, #{subTitle,jdbcType=VARCHAR}, #{slogan,jdbcType=VARCHAR}, 
+      #{summary,jdbcType=VARCHAR}, #{description,jdbcType=VARCHAR}, #{weight,jdbcType=REAL}, 
+      #{longitude,jdbcType=DOUBLE}, #{latitude,jdbcType=DOUBLE}, #{regionFullName,jdbcType=VARCHAR}, 
+      #{regionFullCode,jdbcType=VARCHAR}, #{region,jdbcType=VARCHAR}, #{address,jdbcType=VARCHAR}, 
+      #{status,jdbcType=BIT}, #{deptCode,jdbcType=VARCHAR}, #{createdUser,jdbcType=VARCHAR}, 
+      #{createdDate,jdbcType=TIMESTAMP}, #{updatedUser,jdbcType=VARCHAR}, #{updatedDate,jdbcType=TIMESTAMP}, 
+      #{content,jdbcType=LONGVARCHAR})
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="cn.com.wanwei.bic.entity.ScenicSpotEntity">
+    update bic_scenic_spot
+    set parent_id = #{parentId,jdbcType=BIGINT},
+      scenic_id = #{scenicId,jdbcType=BIGINT},
+      code = #{code,jdbcType=VARCHAR},
+      title = #{title,jdbcType=VARCHAR},
+      sub_title = #{subTitle,jdbcType=VARCHAR},
+      slogan = #{slogan,jdbcType=VARCHAR},
+      summary = #{summary,jdbcType=VARCHAR},
+      description = #{description,jdbcType=VARCHAR},
+      weight = #{weight,jdbcType=REAL},
+      longitude = #{longitude,jdbcType=DOUBLE},
+      latitude = #{latitude,jdbcType=DOUBLE},
+      region_full_name = #{regionFullName,jdbcType=VARCHAR},
+      region_full_code = #{regionFullCode,jdbcType=VARCHAR},
+      region = #{region,jdbcType=VARCHAR},
+      address = #{address,jdbcType=VARCHAR},
+      status = #{status,jdbcType=BIT},
+      dept_code = #{deptCode,jdbcType=VARCHAR},
+      created_user = #{createdUser,jdbcType=VARCHAR},
+      created_date = #{createdDate,jdbcType=TIMESTAMP},
+      updated_user = #{updatedUser,jdbcType=VARCHAR},
+      updated_date = #{updatedDate,jdbcType=TIMESTAMP},
+      content = #{content,jdbcType=LONGVARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>
