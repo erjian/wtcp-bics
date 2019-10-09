@@ -23,10 +23,4 @@ public interface ScenicSpotMapper {
      */
     Page<ScenicSpotEntity> findByPage(Map<String, Object> filter);
 
-    /**
-     * 查询景点信息
-     * @param id
-     * @return
-     */
-    ScenicSpotEntity find(Long id);
 }

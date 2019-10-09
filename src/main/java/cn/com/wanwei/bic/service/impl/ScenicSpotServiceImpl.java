@@ -51,7 +51,7 @@ public class ScenicSpotServiceImpl implements ScenicSpotService {
     @Override
     public ResponseMessage find(Long id) {
         try {
-            ScenicSpotEntity scenicSpotEntity =scenicSpotMapper.find(id);
+            ScenicSpotEntity scenicSpotEntity =scenicSpotMapper.selectByPrimaryKey(id);
             if(scenicSpotEntity==null){
                 return ResponseMessage.validFailResponse().setMsg("暂无该景点信息！");
             }
@@ -81,7 +81,7 @@ public class ScenicSpotServiceImpl implements ScenicSpotService {
     @Override
     public ResponseMessage update(Long id, ScenicSpotEntity scenicSpotEntity, User user) {
         try {
-            ScenicSpotEntity sntity=scenicSpotMapper.find(id);
+            ScenicSpotEntity sntity=scenicSpotMapper.selectByPrimaryKey(id);
             if(sntity!=null){
                 scenicSpotEntity.setCreatedUser(sntity.getCreatedUser());
                 scenicSpotEntity.setCreatedDate(sntity.getCreatedDate());
@@ -114,7 +114,7 @@ public class ScenicSpotServiceImpl implements ScenicSpotService {
     @Override
     public ResponseMessage goWeight(Long id, Float weight, User user) {
         try {
-            ScenicSpotEntity sntity=scenicSpotMapper.find(id);
+            ScenicSpotEntity sntity=scenicSpotMapper.selectByPrimaryKey(id);
             if(sntity!=null){
                 sntity.setWeight(weight);
                 sntity.setDeptCode(user.getOrg().getCode());
