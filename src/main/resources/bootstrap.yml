@@ -1,0 +1,33 @@
+server:
+  port: 9039
+spring:
+  profiles:
+      active: dev
+  application:
+    name: wtcp-bics
+  cloud:
+    nacos:
+      discovery:
+        server-addr: wtcp-server1:8848,wtcp-server2:8847,wtcp-server3:8850
+      config:
+        server-addr: wtcp-server1:8848,wtcp-server2:8847,wtcp-server3:8850
+        file-extension: yaml
+        ext-config[0]:
+          data-id: common.yaml
+          refresh: true
+        ext-config[1]:
+          data-id: datasource-druid.yaml
+          refresh: true
+        ext-config[2]:
+          data-id: redis.yaml
+          refresh: true
+        ext-config[3]:
+          data-id: pagehelper.yaml
+          refresh: true
+
+
+
+#jasypt加密的密匙
+jasypt:
+  encryptor:
+    password: NcQkWcPTf4APOwVLfsbJ9yHpNPPkEcYJ
