@@ -59,4 +59,12 @@ public interface ScenicSpotService {
      * @return
      */
     ResponseMessage goWeight(Long id, Float weight, User user);
+
+    /**
+     * 标题重名校验
+     * @param id
+     * @param title
+     * @return
+     */
+    ResponseMessage checkTitle(Long id, String title);
 }

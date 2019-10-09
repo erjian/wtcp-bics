@@ -90,4 +90,17 @@
     <include refid="Base_Column_List" />
     from bic_scenic_spot
   </select>
+  <select id="checkTitle">
+    select
+    <include refid="Base_Column_List" />
+    from bic_scenic_spot
+    <where>
+      <if test=" id != -1">
+        and id = #{id,jdbcType=BIGINT}
+      </if>
+      <if test="title != null and title!='' ">
+        and title = #{title,jdbcType=VARCHAR}
+      </if>
+    </where>
+  </select>
 </mapper>

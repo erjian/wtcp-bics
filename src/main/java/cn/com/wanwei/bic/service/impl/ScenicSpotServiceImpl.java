@@ -11,12 +11,14 @@ import cn.com.wanwei.persistence.mybatis.PageInfo;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -128,5 +130,22 @@ public class ScenicSpotServiceImpl implements ScenicSpotService {
             log.info(e.getMessage());
             return ResponseMessage.validFailResponse().setMsg("权重修改失败！");
         }
+    }
+
+    @Override
+    public ResponseMessage checkTitle(Long id, String title) {
+        ResponseMessage responseMessage=ResponseMessage.defaultResponse();
+        if(StringUtils.isNotBlank(title)){
+            return responseMessage;
+        }
+        if(id==null||id.equals("")){
+            List<ScenicSpotEntity> list= scenicSpotMapper.checkTitle(-1L,title);
+        }else{
+            ScenicSpotEntity sntity=scenicSpotMapper.selectByPrimaryKey(id);
+            if(sntity.getTitle().equals(title)&&sntity.getId().equals(id)){
+                return responseMessage;
+            }
+        }
+        return responseMessage.setStatus(ResponseMessage.FAILED).setMsg("标题名称重复！");
     }
 }

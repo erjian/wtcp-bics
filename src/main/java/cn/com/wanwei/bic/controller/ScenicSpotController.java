@@ -69,7 +69,7 @@ public class ScenicSpotController extends  BaseController{
     @PutMapping(value = "/{id}")
     @PreAuthorize("hasAuthority('spot:u')")
     @OperationLog(value = "wtcp-bics/编辑景点信息", operate = "u", module = "景点管理")
-    public ResponseMessage create(@PathVariable(value = "id") Long id, @RequestBody ScenicSpotEntity scenicSpotEntity, BindingResult bindingResult) throws Exception {
+    public ResponseMessage edit(@PathVariable(value = "id") Long id, @RequestBody ScenicSpotEntity scenicSpotEntity, BindingResult bindingResult) throws Exception {
         if(bindingResult.hasErrors()){
             return ResponseMessage.validFailResponse().setMsg(bindingResult.getAllErrors());
         }
@@ -90,10 +90,21 @@ public class ScenicSpotController extends  BaseController{
             @ApiImplicitParam(name = "id", value = "景点信息ID", required = true),
             @ApiImplicitParam(name = "weight", value = "权重", required = true)
     })
-    @PutMapping(value = "/{id}")
+    @GetMapping(value = "weight/{id}")
     @PreAuthorize("hasAuthority('spot:q')")
     @OperationLog(value = "wtcp-bics/权重更改", operate = "u", module = "景点管理")
     public ResponseMessage goWeight(@PathVariable(value = "id") Long id,@RequestParam Float weight) throws Exception {
         return scenicSpotService.goWeight(id,weight,getCurrentUser());
+    }
+
+    @ApiOperation(value = "标题重名校验", notes = "标题重名校验")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "id", value = "景点信息ID"),
+            @ApiImplicitParam(name = "title", value = "标题")
+    })
+    @GetMapping(value = "checkTitle/{id}")
+    public ResponseMessage checkTitle(@PathVariable(value = "id",required = false) Long id,
+                                      @RequestParam(value = "title",required = false) String title){
+        return scenicSpotService.checkTitle(id,title);
     }
 }
