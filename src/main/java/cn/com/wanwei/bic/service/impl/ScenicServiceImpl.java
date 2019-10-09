@@ -20,6 +20,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.Map;
 
 /**
@@ -34,6 +35,9 @@ public class ScenicServiceImpl implements ScenicService {
 
 	@Override
 	public ResponseMessage save(ScenicEntity record, String userName) {
+		record.setCreatedUser(userName);
+		record.setCreatedDate(new Date());
+		record.setStatus(0);
 		scenicMapper.insert(record);
 		return ResponseMessage.defaultResponse().setMsg("保存成功");
 	}
@@ -51,6 +55,16 @@ public class ScenicServiceImpl implements ScenicService {
 
 	@Override
 	public ResponseMessage edit(Long id, ScenicEntity record, String userName) {
+		ScenicEntity entity = scenicMapper.selectByPrimaryKey(id);
+		if(null == entity){
+			return ResponseMessage.validFailResponse().setMsg("不存在该景区");
+		}
+		record.setId(id);
+		record.setCreatedDate(entity.getCreatedDate());
+		record.setCreatedUser(entity.getCreatedUser());
+		record.setStatus(entity.getStatus());
+		record.setUpdatedDate(new Date());
+		record.setUpdatedUser(userName);
 		scenicMapper.updateByPrimaryKeyWithBLOBs(record);
 		return ResponseMessage.defaultResponse().setMsg("更新成功");
 	}
