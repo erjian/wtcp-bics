@@ -12,6 +12,7 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import javax.persistence.Entity;
 import javax.persistence.Table;
@@ -22,6 +23,7 @@ import javax.persistence.Table;
 @Entity
 @Table(name="bic_scenic")
 @ApiModel(description="景区基础信息管理")
+@ToString(callSuper = true)
 public class ScenicEntity extends BaseEntity{
 
     @ApiModelProperty(value = "编码")
