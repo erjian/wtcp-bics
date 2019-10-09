@@ -91,6 +91,17 @@ public class ScenicController extends BaseController {
         return scenicService.edit(id,scenicEntity,getCurrentUser().getUsername());
     }
 
+    @PreAuthorize("hasAuthority('scenic:w')")
+    @ApiOperation(value = "景区基础信息权重修改", notes = "景区基础信息权重修改")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "id", value = "景区基础信息ID", required = true, dataType = "String"),
+            @ApiImplicitParam(name = "weightNum", value = "权重", required = true, dataType = "String")
+    })
+    @RequestMapping(value = "/changeWeight/{id}/{sortNum}", method = RequestMethod.GET)
+    public ResponseMessage changeWeight(@PathVariable("id") Long id, @PathVariable("sortNum") Float weightNum) throws Exception {
+        return scenicService.changeWeight(id,weightNum,getCurrentUser().getUsername());
+    }
+
     @PreAuthorize("hasAuthority('scenic:b')")
     @ApiOperation(value = "数据绑定", notes = "数据绑定")
     @ApiImplicitParams({@ApiImplicitParam(name = "model", value = "数据绑定model", required = true, dataType = "DataBindModel")})

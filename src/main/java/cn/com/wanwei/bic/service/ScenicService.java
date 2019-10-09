@@ -71,4 +71,14 @@ public interface ScenicService {
 	 * @return
 	 */
     ResponseMessage dataBind(String updatedUser, DataBindModel model) throws Exception;
+
+	/**
+	 * 修改权重
+	 * @author linjw 2019年10月9日17:45:27
+	 * @param id
+	 * @param weightNum
+	 * @param username
+	 * @return
+	 */
+	ResponseMessage changeWeight(Long id, Float weightNum, String username) throws Exception;
 }

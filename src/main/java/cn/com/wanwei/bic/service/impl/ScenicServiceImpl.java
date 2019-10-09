@@ -93,4 +93,17 @@ public class ScenicServiceImpl implements ScenicService {
 		scenicMapper.dataBind(updatedUser, new Date(), deptCode, ids);
 		return ResponseMessage.defaultResponse().setMsg("关联机构成功");
 	}
+
+	@Override
+	public ResponseMessage changeWeight(Long id, Float weightNum, String username) {
+		ScenicEntity entity = scenicMapper.selectByPrimaryKey(id);
+		if(null == entity){
+			return ResponseMessage.validFailResponse().setMsg("无景区信息");
+		}
+		entity.setUpdatedUser(username);
+		entity.setUpdatedDate(new Date());
+		entity.setWeight(weightNum);
+		scenicMapper.updateByPrimaryKeyWithBLOBs(entity);
+		return ResponseMessage.defaultResponse().setMsg("权重修改成功");
+	}
 }
