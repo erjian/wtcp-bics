@@ -12,6 +12,7 @@ import cn.com.wanwei.bic.service.ContactService;
 import cn.com.wanwei.common.model.ResponseMessage;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -21,6 +22,7 @@ import java.util.Date;
  */
 @Service
 @Slf4j
+@RefreshScope
 public class ContactServiceImpl implements ContactService {
 
 	@Autowired
