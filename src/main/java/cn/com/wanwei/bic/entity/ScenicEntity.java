@@ -1,5 +1,5 @@
 /**
- * 该源代码文件 BicScenicEntity 是工程“wtcp-bics”的一部分
+ * 该源代码文件 ScenicEntity 是工程“wtcp-bics”的一部分
  *
  * @project wtcp-bics
  * @author 蔺健武
