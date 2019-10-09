@@ -10,6 +10,7 @@ import org.apache.commons.lang3.time.DateFormatUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -71,17 +72,32 @@ public class MaterialServiceImpl implements MaterialService {
 
     @Override
     public ResponseMessage findByPrincipalId(Long principalId) {
-        return ResponseMessage.defaultResponse().setData(materialMapper.findByPrincipalId(principalId));
+        ResponseMessage responseMessage = ResponseMessage.defaultResponse();
+        List<MaterialEntity> backlist = materialMapper.findByPrincipalId(principalId);
+        if(backlist.size() > 0){
+            responseMessage.setData(backlist);
+        }
+        return responseMessage;
     }
 
     @Override
     public ResponseMessage findByPidAndType(Long principalId, String type) {
-        return ResponseMessage.defaultResponse().setData(materialMapper.findByPidAndType(principalId, type));
+        ResponseMessage responseMessage = ResponseMessage.defaultResponse();
+        List<MaterialEntity> backlist = materialMapper.findByPidAndType(principalId, type);
+        if(backlist.size() > 0){
+            responseMessage.setData(backlist);
+        }
+        return responseMessage;
     }
 
     @Override
     public ResponseMessage findByPidAndIdentify(Long principalId, Integer fileIdentify) {
-        return ResponseMessage.defaultResponse().setData(materialMapper.findByPidAndIdentify(principalId, fileIdentify));
+        ResponseMessage responseMessage = ResponseMessage.defaultResponse();
+        List<MaterialEntity> backlist = materialMapper.findByPidAndIdentify(principalId, fileIdentify);
+        if(backlist.size() > 0){
+            responseMessage.setData(backlist);
+        }
+        return responseMessage;
     }
 
     @Override
