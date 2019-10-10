@@ -10,21 +10,21 @@ import java.util.List;
 @Mapper
 public interface MaterialMapper {
 
-    int deleteByPrimaryKey(Long id);
+    int deleteByPrimaryKey(String id);
 
-    int deleteByPrincipalIds(@Param(value = "ids") List<Long> ids);
+    int deleteByPrincipalIds(@Param(value = "ids") List<String> ids);
 
     int insert(MaterialEntity materialEntity);
 
     int batchInsert(@Param(value = "list") List<MaterialEntity> list);
 
-    MaterialEntity selectByPrimaryKey(Long id);
+    MaterialEntity selectByPrimaryKey(String id);
 
-    List<MaterialEntity> findByPrincipalId(Long principalId);
+    List<MaterialEntity> findByPrincipalId(String principalId);
 
-    List<MaterialEntity> findByPidAndType(@Param(value = "principalId") Long principalId, @Param(value = "type")String type);
+    List<MaterialEntity> findByPidAndType(@Param(value = "principalId") String principalId, @Param(value = "type")String type);
 
-    List<MaterialEntity> findByPidAndIdentify(@Param(value = "principalId")Long principalId, @Param(value = "fileIdentify")Integer fileIdentify);
+    List<MaterialEntity> findByPidAndIdentify(@Param(value = "principalId")String principalId, @Param(value = "fileIdentify")Integer fileIdentify);
 
     int updateByPrimaryKey(MaterialEntity materialEntity);
 
