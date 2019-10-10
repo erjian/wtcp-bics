@@ -24,13 +24,13 @@
     traffic_notice, hint_notice, extend_notice, service_facility, created_user, created_date, 
     updated_user, updated_date
   </sql>
-  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
     from bic_business
     where id = #{id,jdbcType=VARCHAR}
   </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
     delete from bic_business
     where id = #{id,jdbcType=VARCHAR}
   </delete>

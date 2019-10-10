@@ -21,13 +21,13 @@
     id, principal_id, name, type, legal_person, general_manager, business_license, organizational_code, 
     info_filler, filler_phone, created_user, created_date, updated_user, updated_date
   </sql>
-  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
     from bic_enterprise
     where id = #{id,jdbcType=VARCHAR}
   </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
     delete from bic_enterprise
     where id = #{id,jdbcType=VARCHAR}
   </delete>
