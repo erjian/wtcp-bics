@@ -1,5 +1,6 @@
 package cn.com.wanwei.bic.controller;
 
+import cn.com.wanwei.bic.entity.DestinationEntity;
 import cn.com.wanwei.bic.service.DestinationService;
 import cn.com.wanwei.common.log.annotation.OperationLog;
 import cn.com.wanwei.common.model.ResponseMessage;
@@ -62,7 +63,7 @@ public class DestinationController extends BaseController {
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
     @PreAuthorize("hasAuthority('destination:u')")
     @OperationLog(value = "wtcp-bics/目的地基础信息编辑", operate = "u", module = "目的地基础信息管理")
-    public ResponseMessage edit(@PathVariable("id") Long id, @RequestBody DestinationEntity destinationEntity, BindingResult bindingResult) throws Exception {
+    public ResponseMessage edit(@PathVariable("id") String id, @RequestBody DestinationEntity destinationEntity, BindingResult bindingResult) throws Exception {
         if (bindingResult.hasErrors()) {
             return ResponseMessage.validFailResponse().setMsg(bindingResult.getAllErrors());
         }
@@ -74,7 +75,7 @@ public class DestinationController extends BaseController {
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     @PreAuthorize("hasAuthority('destination:v')")
     @OperationLog(value = "wtcp-bics/根据id查询目的地基础信息详情", operate = "v", module = "目的地基础信息管理")
-    public ResponseMessage detail(@PathVariable("id") Long id) throws Exception {
+    public ResponseMessage detail(@PathVariable("id") String id) throws Exception {
         DestinationEntity destinationEntity = destinationService.selectByPrimaryKey(id);
         if (destinationEntity == null) {
             return ResponseMessage.validFailResponse().setMsg("数据不存在");
@@ -87,7 +88,7 @@ public class DestinationController extends BaseController {
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
     @PreAuthorize("hasAuthority('destination:d')")
     @OperationLog(value = "wtcp-bics/根据id删除目的地基础信息", operate = "d", module = "目的地基础信息管理")
-    public ResponseMessage delete(@PathVariable("id") Long id) throws Exception {
+    public ResponseMessage delete(@PathVariable("id") String id) throws Exception {
         return destinationService.deleteByPrimaryKey(id);
     }
 
@@ -98,7 +99,7 @@ public class DestinationController extends BaseController {
     })
     @RequestMapping(value = "/changeWeight/{id}/{sortNum}", method = RequestMethod.GET)
     @PreAuthorize("hasAuthority('destination:w')")
-    public ResponseMessage changeWeight(@PathVariable("id") Long id, @PathVariable("sortNum") Float weightNum) throws Exception {
+    public ResponseMessage changeWeight(@PathVariable("id") String id, @PathVariable("sortNum") Float weightNum) throws Exception {
         return destinationService.changeWeight(id,weightNum,getCurrentUser().getUsername());
     }
 
