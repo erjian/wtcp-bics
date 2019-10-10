@@ -12,6 +12,7 @@ import cn.com.wanwei.bic.mapper.BusinessMapper;
 import cn.com.wanwei.bic.mapper.EnterpriseMapper;
 import cn.com.wanwei.bic.service.BusinessService;
 import cn.com.wanwei.bic.service.EnterpriseService;
+import cn.com.wanwei.bic.utils.UUIDUtils;
 import cn.com.wanwei.common.model.ResponseMessage;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,6 +34,7 @@ public class EnterpriseServiceImpl implements EnterpriseService {
 
 	@Override
 	public ResponseMessage save(EnterpriseEntity record, String userName) {
+		record.setId(UUIDUtils.getInstance().getId());
 		record.setCreatedUser(userName);
 		record.setCreatedDate(new Date());
 		enterpriseMapper.insert(record);
@@ -40,12 +42,12 @@ public class EnterpriseServiceImpl implements EnterpriseService {
 	}
 
 	@Override
-	public EnterpriseEntity selectByPrimaryKey(Long id) {
+	public EnterpriseEntity selectByPrimaryKey(String id) {
 		return enterpriseMapper.selectByPrimaryKey(id);
 	}
 
 	@Override
-	public ResponseMessage edit(Long id, EnterpriseEntity record, String userName) {
+	public ResponseMessage edit(String id, EnterpriseEntity record, String userName) {
 		EnterpriseEntity entity = enterpriseMapper.selectByPrimaryKey(id);
 		if(null == entity){
 			return ResponseMessage.validFailResponse().setMsg("不存在该企业信息");

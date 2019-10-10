@@ -28,7 +28,7 @@ public interface ContactService {
 	 * @param id
 	 * @return
 	 */
-	ContactEntity selectByPrimaryKey(Long id) throws Exception;
+	ContactEntity selectByPrimaryKey(String id) throws Exception;
 
 	/**
 	 * 编辑一条记录
@@ -37,5 +37,5 @@ public interface ContactService {
 	 * @param record
 	 * @return
 	 */
-	ResponseMessage edit(Long id, ContactEntity record, String userName) throws Exception;
+	ResponseMessage edit(String id, ContactEntity record, String userName) throws Exception;
 }

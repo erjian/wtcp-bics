@@ -5,11 +5,11 @@ import org.apache.ibatis.annotations.Mapper;
 
 @Mapper
 public interface EnterpriseMapper {
-    int deleteByPrimaryKey(Long id);
+    int deleteByPrimaryKey(String id);
 
     int insert(EnterpriseEntity record);
 
-    EnterpriseEntity selectByPrimaryKey(Long id);
+    EnterpriseEntity selectByPrimaryKey(String id);
 
     int updateByPrimaryKey(EnterpriseEntity record);
 }

@@ -27,7 +27,7 @@ import javax.persistence.Table;
 public class EnterpriseEntity extends BaseEntity {
 
     @ApiModelProperty(value = "关联主键ID")
-    private Long principalId;
+    private String principalId;
 
     @ApiModelProperty(value = "企业名称")
     private String name;

@@ -29,7 +29,7 @@ public class EnterpriseController extends BaseController {
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     @PreAuthorize("hasAuthority('enterprise:v')")
     @OperationLog(value = "wtcp-bics/根据id查询企业信息详情", operate = "v", module = "企业信息管理")
-    public ResponseMessage detail(@PathVariable("id") Long id) throws Exception {
+    public ResponseMessage detail(@PathVariable("id") String id) throws Exception {
         EnterpriseEntity entity = enterpriseService.selectByPrimaryKey(id);
         if (entity == null) {
             return ResponseMessage.validFailResponse().setMsg("数据不存在");
@@ -54,7 +54,7 @@ public class EnterpriseController extends BaseController {
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
     @PreAuthorize("hasAuthority('enterprise:u')")
     @OperationLog(value = "wtcp-bics/企业信息编辑", operate = "u", module = "企业信息管理")
-    public ResponseMessage edit(@PathVariable("id") Long id, @RequestBody EnterpriseEntity enterpriseEntity, BindingResult bindingResult) throws Exception {
+    public ResponseMessage edit(@PathVariable("id") String id, @RequestBody EnterpriseEntity enterpriseEntity, BindingResult bindingResult) throws Exception {
         if (bindingResult.hasErrors()) {
             return ResponseMessage.validFailResponse().setMsg(bindingResult.getAllErrors());
         }

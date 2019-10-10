@@ -21,5 +21,5 @@ public class DataBindModel {
 
 	private String deptCode;
 
-	private List<Long> ids;
+	private List<String> ids;
 }
