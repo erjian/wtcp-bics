@@ -25,25 +25,25 @@
     <result column="updated_user" jdbcType="VARCHAR" property="updatedUser" />
     <result column="updated_date" jdbcType="TIMESTAMP" property="updatedDate" />
     <result column="content" jdbcType="LONGVARCHAR" property="content" />
-    <result column="type" jdbcType="INTEGER" property="status" />
+    <result column="type" jdbcType="INTEGER" property="type" />
   </resultMap>
   <sql id="Base_Column_List">
     id, parent_id, principal_id, code, title, sub_title, slogan, summary, description, weight,
     longitude, latitude, region_full_name, region_full_code, region, address, status, 
     dept_code, created_user, created_date, updated_user, updated_date,content,`type`
   </sql>
-  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
     from bic_poi
     where id = #{id,jdbcType=VARCHAR}
   </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
     delete from bic_poi
     where id = #{id,jdbcType=VARCHAR}
   </delete>
   <insert id="insert" parameterType="cn.com.wanwei.bic.entity.PoiEntity">
-    insert into bic_poi (parent_id, principal_id, code,
+    insert into bic_poi (id,parent_id, principal_id, code,
       title, sub_title, slogan, 
       summary, description, weight, 
       longitude, latitude, region_full_name, 
@@ -51,7 +51,7 @@
       status, dept_code, created_user, 
       created_date, updated_user, updated_date, 
       content,`type`)
-    values (#{parentId,jdbcType=BIGINT}, #{principalId,jdbcType=BIGINT}, #{code,jdbcType=VARCHAR},
+    values (#{id,jdbcType=VARCHAR},#{parentId,jdbcType=BIGINT}, #{principalId,jdbcType=BIGINT}, #{code,jdbcType=VARCHAR},
       #{title,jdbcType=VARCHAR}, #{subTitle,jdbcType=VARCHAR}, #{slogan,jdbcType=VARCHAR}, 
       #{summary,jdbcType=VARCHAR}, #{description,jdbcType=VARCHAR}, #{weight,jdbcType=REAL}, 
       #{longitude,jdbcType=DOUBLE}, #{latitude,jdbcType=DOUBLE}, #{regionFullName,jdbcType=VARCHAR}, 
@@ -92,17 +92,10 @@
     <include refid="Base_Column_List" />
     from bic_poi
   </select>
-  <select id="checkTitle">
+  <select id="checkTitle"  parameterType="java.lang.String" resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List" />
     from bic_poi
-    <where>
-      <if test=" id != ''">
-        and id = #{id,jdbcType=VARCHAR}
-      </if>
-      <if test="title != null and title!='' ">
-        and title = #{title,jdbcType=VARCHAR}
-      </if>
-    </where>
+    where title = #{title,jdbcType=VARCHAR}
   </select>
 </mapper>

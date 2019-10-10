@@ -43,7 +43,7 @@ public class PoiServiceImpl implements PoiService {
     @Override
     public ResponseMessage findByPage(Integer page, Integer size, Map<String, Object> filter) {
         try {
-            Sort sort = Sort.by(new Sort.Order[]{new Sort.Order(Sort.Direction.DESC, "weight"),new Sort.Order(Sort.Direction.DESC, "createdDate")});
+            Sort sort = Sort.by(new Sort.Order[]{new Sort.Order(Sort.Direction.DESC, "weight"),new Sort.Order(Sort.Direction.DESC, "created_date")});
             MybatisPageRequest pageRequest = MybatisPageRequest.of(page, size, sort);
             PageHelper.startPage(pageRequest.getPage(),pageRequest.getSize(),pageRequest.getOrders());
             Page<PoiEntity> poiEntities = poiMapper.findByPage(filter);
@@ -86,8 +86,8 @@ public class PoiServiceImpl implements PoiService {
             }
             return responseMessageGetCode;
         } catch (Exception e) {
-            e.printStackTrace();
-            return ResponseMessage.validFailResponse().setMsg("获取失败！");
+            log.info(e.getMessage());
+            return ResponseMessage.validFailResponse().setMsg("保存失败！");
         }
     }
 
@@ -96,6 +96,7 @@ public class PoiServiceImpl implements PoiService {
         try {
             PoiEntity pEntity=poiMapper.selectByPrimaryKey(id);
             if(pEntity!=null){
+                poiEntity.setId(pEntity.getId());
                 poiEntity.setCreatedUser(pEntity.getCreatedUser());
                 poiEntity.setCreatedDate(pEntity.getCreatedDate());
                 poiEntity.setStatus(0);
@@ -147,19 +148,13 @@ public class PoiServiceImpl implements PoiService {
     public ResponseMessage checkTitle(String id, String title) {
         ResponseMessage responseMessage=ResponseMessage.defaultResponse();
         if(StringUtils.isNotBlank(title)){
-            return responseMessage;
-        }
-        if(id==null||id.equals("")){
-            List<PoiEntity> list= poiMapper.checkTitle("",title);
-            if(list==null||list.size()<=0){
-                return responseMessage;
-            }
-        }else{
-            PoiEntity pEntity=poiMapper.selectByPrimaryKey(id);
-            if(pEntity.getTitle().equals(title)&&pEntity.getId().equals(id)){
-                return responseMessage;
+            PoiEntity pEntity= poiMapper.checkTitle(title);
+            if(pEntity!=null){
+               if(!pEntity.getId().equals(id)){
+                   return responseMessage.setStatus(ResponseMessage.FAILED).setMsg("标题名称重复！");
+               }
             }
         }
-        return responseMessage.setStatus(ResponseMessage.FAILED).setMsg("标题名称重复！");
+        return responseMessage;
     }
 }

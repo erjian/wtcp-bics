@@ -27,9 +27,8 @@ public interface PoiMapper {
 
     /**
      *标题重复校验
-     * @param id
      * @param title
      * @return
      */
-    List<PoiEntity> checkTitle(@Param(value = "id") String id, @Param(value = "title") String title);
+    PoiEntity checkTitle( String title);
 }

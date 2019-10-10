@@ -74,6 +74,6 @@ public class PoiEntity extends BaseEntity {
     private String deptCode;
 
     @ApiModelProperty(value = "类型（1：厕所，2：停车场，3：出入口，4：游客中心，5：景点）" ,required = true)
-    private String type;
+    private Integer type;
 
 }
