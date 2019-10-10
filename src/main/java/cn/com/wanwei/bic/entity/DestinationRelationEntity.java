@@ -26,10 +26,10 @@ import javax.persistence.Table;
 @ToString(callSuper = true)
 public class DestinationRelationEntity extends BaseEntity{
     @ApiModelProperty(value = "目的地主键")
-    private Long destinationId;
+    private String destinationId;
 
     @ApiModelProperty(value = "关联信息ID")
-    private Long principalId;
+    private String principalId;
 
     @ApiModelProperty(value = "关联类型")
     private Integer type;

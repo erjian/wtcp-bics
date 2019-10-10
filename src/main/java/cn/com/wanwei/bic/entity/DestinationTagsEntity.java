@@ -27,7 +27,7 @@ import javax.persistence.Table;
 public class DestinationTagsEntity extends BaseEntity{
 
     @ApiModelProperty(value = "目的地id")
-    private Long principalId;
+    private String principalId;
 
     @ApiModelProperty(value = "标签分类")
     private String tagCatagory;
