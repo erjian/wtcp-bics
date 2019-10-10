@@ -21,7 +21,7 @@ public class MaterialServiceImpl implements MaterialService {
     private MaterialMapper materialMapper;
 
     @Override
-    public ResponseMessage deleteByPrimaryKey(Long id) {
+    public ResponseMessage deleteByPrimaryKey(String id) {
         ResponseMessage responseMessage = ResponseMessage.defaultResponse();
         MaterialEntity materialEntity = materialMapper.selectByPrimaryKey(id);
         if (null != materialEntity) {
@@ -34,7 +34,7 @@ public class MaterialServiceImpl implements MaterialService {
     }
 
     @Override
-    public ResponseMessage deleteByPrincipalIds(List<Long> ids) {
+    public ResponseMessage deleteByPrincipalIds(List<String> ids) {
         materialMapper.deleteByPrincipalIds(ids);
         return ResponseMessage.defaultResponse().setMsg("删除成功");
     }
@@ -48,7 +48,7 @@ public class MaterialServiceImpl implements MaterialService {
     }
 
     @Override
-    public ResponseMessage batchInsert(Long principalId, List<MaterialEntity> materialList, User user) {
+    public ResponseMessage batchInsert(String principalId, List<MaterialEntity> materialList, User user) {
         for(MaterialEntity item : materialList){
             item.setCreatedUser(user.getUsername());
             item.setCreatedDate(new Date());
@@ -59,7 +59,7 @@ public class MaterialServiceImpl implements MaterialService {
     }
 
     @Override
-    public ResponseMessage selectByPrimaryKey(Long id) {
+    public ResponseMessage selectByPrimaryKey(String id) {
         ResponseMessage responseMessage = ResponseMessage.defaultResponse();
         MaterialEntity materialEntity = materialMapper.selectByPrimaryKey(id);
         if (null != materialEntity) {
@@ -71,7 +71,7 @@ public class MaterialServiceImpl implements MaterialService {
     }
 
     @Override
-    public ResponseMessage findByPrincipalId(Long principalId) {
+    public ResponseMessage findByPrincipalId(String principalId) {
         ResponseMessage responseMessage = ResponseMessage.defaultResponse();
         List<MaterialEntity> backlist = materialMapper.findByPrincipalId(principalId);
         if(backlist.size() > 0){
@@ -81,7 +81,7 @@ public class MaterialServiceImpl implements MaterialService {
     }
 
     @Override
-    public ResponseMessage findByPidAndType(Long principalId, String type) {
+    public ResponseMessage findByPidAndType(String principalId, String type) {
         ResponseMessage responseMessage = ResponseMessage.defaultResponse();
         List<MaterialEntity> backlist = materialMapper.findByPidAndType(principalId, type);
         if(backlist.size() > 0){
@@ -91,7 +91,7 @@ public class MaterialServiceImpl implements MaterialService {
     }
 
     @Override
-    public ResponseMessage findByPidAndIdentify(Long principalId, Integer fileIdentify) {
+    public ResponseMessage findByPidAndIdentify(String principalId, Integer fileIdentify) {
         ResponseMessage responseMessage = ResponseMessage.defaultResponse();
         List<MaterialEntity> backlist = materialMapper.findByPidAndIdentify(principalId, fileIdentify);
         if(backlist.size() > 0){
@@ -101,7 +101,7 @@ public class MaterialServiceImpl implements MaterialService {
     }
 
     @Override
-    public ResponseMessage updateByPrimaryKey(Long id, MaterialEntity materialEntity, User user) {
+    public ResponseMessage updateByPrimaryKey(String id, MaterialEntity materialEntity, User user) {
         materialEntity.setUpdatedUser(user.getUsername());
         materialEntity.setUpdatedDate(new Date());
         materialMapper.updateByPrimaryKey(materialEntity);

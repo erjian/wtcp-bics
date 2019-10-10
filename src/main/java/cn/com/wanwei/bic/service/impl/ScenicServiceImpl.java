@@ -10,6 +10,7 @@ import cn.com.wanwei.bic.entity.ScenicEntity;
 import cn.com.wanwei.bic.mapper.ScenicMapper;
 import cn.com.wanwei.bic.model.DataBindModel;
 import cn.com.wanwei.bic.service.ScenicService;
+import cn.com.wanwei.bic.utils.UUIDUtils;
 import cn.com.wanwei.common.model.ResponseMessage;
 import cn.com.wanwei.common.model.User;
 import cn.com.wanwei.persistence.mybatis.MybatisPageRequest;
@@ -39,6 +40,7 @@ public class ScenicServiceImpl implements ScenicService {
 
 	@Override
 	public ResponseMessage save(ScenicEntity record, String userName) {
+		record.setId(UUIDUtils.getInstance().getId());
 		record.setCreatedUser(userName);
 		record.setCreatedDate(new Date());
 		record.setStatus(0);
@@ -47,18 +49,18 @@ public class ScenicServiceImpl implements ScenicService {
 	}
 
 	@Override
-	public ResponseMessage deleteByPrimaryKey(Long id) {
+	public ResponseMessage deleteByPrimaryKey(String id) {
 		scenicMapper.deleteByPrimaryKey(id);
 		return ResponseMessage.defaultResponse().setMsg("删除成功");
 	}
 
 	@Override
-	public ScenicEntity selectByPrimaryKey(Long id) {
+	public ScenicEntity selectByPrimaryKey(String id) {
 		return scenicMapper.selectByPrimaryKey(id);
 	}
 
 	@Override
-	public ResponseMessage edit(Long id, ScenicEntity record, String userName) {
+	public ResponseMessage edit(String id, ScenicEntity record, String userName) {
 		ScenicEntity entity = scenicMapper.selectByPrimaryKey(id);
 		if(null == entity){
 			return ResponseMessage.validFailResponse().setMsg("不存在该景区");
@@ -89,13 +91,13 @@ public class ScenicServiceImpl implements ScenicService {
 	@Override
 	public ResponseMessage dataBind(String updatedUser, DataBindModel model) {
 		String deptCode = model.getDeptCode();
-		List<Long> ids = model.getIds();
+		List<String> ids = model.getIds();
 		scenicMapper.dataBind(updatedUser, new Date(), deptCode, ids);
 		return ResponseMessage.defaultResponse().setMsg("关联机构成功");
 	}
 
 	@Override
-	public ResponseMessage changeWeight(Long id, Float weightNum, String username) {
+	public ResponseMessage changeWeight(String id, Float weightNum, String username) {
 		ScenicEntity entity = scenicMapper.selectByPrimaryKey(id);
 		if(null == entity){
 			return ResponseMessage.validFailResponse().setMsg("无景区信息");

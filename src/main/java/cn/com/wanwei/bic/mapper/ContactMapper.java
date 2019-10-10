@@ -5,11 +5,11 @@ import org.apache.ibatis.annotations.Mapper;
 
 @Mapper
 public interface ContactMapper {
-    int deleteByPrimaryKey(Long id);
+    int deleteByPrimaryKey(String id);
 
     int insert(ContactEntity record);
 
-    ContactEntity selectByPrimaryKey(Long id);
+    ContactEntity selectByPrimaryKey(String id);
 
     int updateByPrimaryKey(ContactEntity record);
 }

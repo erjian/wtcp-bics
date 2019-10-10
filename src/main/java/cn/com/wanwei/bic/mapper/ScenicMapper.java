@@ -12,11 +12,11 @@ import java.util.Map;
 
 @Mapper
 public interface ScenicMapper {
-    int deleteByPrimaryKey(Long id);
+    int deleteByPrimaryKey(String id);
 
     int insert(ScenicEntity record);
 
-    ScenicEntity selectByPrimaryKey(Long id);
+    ScenicEntity selectByPrimaryKey(String id);
 
     int updateByPrimaryKeyWithBLOBs(ScenicEntity record);
 
@@ -38,5 +38,5 @@ public interface ScenicMapper {
      * @return
      */
     int dataBind(@Param(value="updatedUser") String updatedUser, @Param(value="updatedDate") Date updatedDate,
-                             @Param(value="deptCode") String deptCode, @Param(value="ids") List<Long> ids);
+                             @Param(value="deptCode") String deptCode, @Param(value="ids") List<String> ids);
 }

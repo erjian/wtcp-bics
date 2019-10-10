@@ -20,7 +20,7 @@ import javax.persistence.Table;
 public class MaterialEntity extends BaseEntity{
 
     @ApiModelProperty(value = "关联信息ID")
-    private Long principalId;
+    private String principalId;
 
     @ApiModelProperty(value = "素材ID")
     private String materialId;

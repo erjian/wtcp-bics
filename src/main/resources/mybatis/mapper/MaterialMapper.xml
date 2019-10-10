@@ -2,8 +2,8 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="cn.com.wanwei.bic.mapper.MaterialMapper">
     <resultMap id="BaseResultMap" type="cn.com.wanwei.bic.entity.MaterialEntity">
-        <id column="id" jdbcType="BIGINT" property="id"/>
-        <result column="principal_id" jdbcType="BIGINT" property="principalId"/>
+        <id column="id" jdbcType="VARCHAR" property="id"/>
+        <result column="principal_id" jdbcType="VARCHAR" property="principalId"/>
         <result column="material_id" jdbcType="VARCHAR" property="materialId"/>
         <result column="file_type" jdbcType="VARCHAR" property="fileType"/>
         <result column="file_url" jdbcType="VARCHAR" property="fileUrl"/>
@@ -23,21 +23,21 @@
         select
         <include refid="Base_Column_List"/>
         from bic_material
-        where id = #{id,jdbcType=BIGINT}
+        where id = #{id,jdbcType=VARCHAR}
     </select>
 
-    <select id="findByPrincipalId" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    <select id="findByPrincipalId" parameterType="java.lang.String" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
         from bic_material
-        where principal_id = #{principalId,jdbcType=BIGINT}
+        where principal_id = #{principalId,jdbcType=VARCHAR}
     </select>
 
     <select id="findByPidAndType" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
         from bic_material
-        where principal_id = #{principalId,jdbcType=BIGINT}
+        where principal_id = #{principalId,jdbcType=VARCHAR}
         AND file_type = #{type,jdbcType=VARCHAR}
     </select>
 
@@ -45,20 +45,20 @@
         select
         <include refid="Base_Column_List"/>
         from bic_material
-        where principal_id = #{principalId,jdbcType=BIGINT}
+        where principal_id = #{principalId,jdbcType=VARCHAR}
         AND file_identify = #{fileIdentify,jdbcType=INTEGER}
     </select>
 
-    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
         delete from bic_material
-        where id = #{id,jdbcType=BIGINT}
+        where id = #{id,jdbcType=VARCHAR}
     </delete>
 
     <delete id="deleteByPrincipalIds" parameterType="java.util.List">
         delete from bic_material
         where id in
         <foreach collection="ids" item="item" open="(" separator="," close=")">
-            #{item, jdbcType=BIGINT}
+            #{item, jdbcType=VARCHAR}
         </foreach>
     </delete>
 
@@ -68,7 +68,7 @@
         created_date, updated_user, updated_date )
         values
         (
-            #{principalId,jdbcType=BIGINT}, #{materialId,jdbcType=VARCHAR}, #{fileType,jdbcType=VARCHAR},
+            #{principalId,jdbcType=VARCHAR}, #{materialId,jdbcType=VARCHAR}, #{fileType,jdbcType=VARCHAR},
             #{fileUrl,jdbcType=VARCHAR}, #{fileIdentify,jdbcType=BIT}, #{createdUser,jdbcType=VARCHAR},
             #{createdDate,jdbcType=TIMESTAMP}, #{updatedUser,jdbcType=VARCHAR}, #{updatedDate,jdbcType=TIMESTAMP}
         )
@@ -81,9 +81,9 @@
         values
         <foreach collection="list" item="item" index="index" separator=",">
             (
-                #{item.principalId,jdbcType=BIGINT}, #{item.materialId,jdbcType=VARCHAR},
+                #{item.principalId,jdbcType=VARCHAR}, #{item.materialId,jdbcType=VARCHAR},
                 #{item.fileType,jdbcType=VARCHAR},#{item.fileUrl,jdbcType=VARCHAR},
-                #{item.fileIdentify,jdbcType=BIT}, #{item.createdUser,jdbcType=VARCHAR},
+                #{item.fileIdentify,jdbcType=INTEGER}, #{item.createdUser,jdbcType=VARCHAR},
                 #{item.createdDate,jdbcType=TIMESTAMP}, #{item.updatedUser,jdbcType=VARCHAR},
                 #{item.updatedDate,jdbcType=TIMESTAMP}
             )
@@ -92,15 +92,15 @@
 
     <update id="updateByPrimaryKey" parameterType="cn.com.wanwei.bic.entity.MaterialEntity">
         update bic_material
-        set principal_id = #{principalId,jdbcType=BIGINT},
+        set principal_id = #{principalId,jdbcType=VARCHAR},
             material_id = #{materialId,jdbcType=VARCHAR},
             file_type = #{fileType,jdbcType=VARCHAR},
             file_url = #{fileUrl,jdbcType=VARCHAR},
-            file_identify = #{fileIdentify,jdbcType=BIT},
+            file_identify = #{fileIdentify,jdbcType=INTEGER},
             created_user = #{createdUser,jdbcType=VARCHAR},
             created_date = #{createdDate,jdbcType=TIMESTAMP},
             updated_user = #{updatedUser,jdbcType=VARCHAR},
             updated_date = #{updatedDate,jdbcType=TIMESTAMP}
-        where id = #{id,jdbcType=BIGINT}
+        where id = #{id,jdbcType=VARCHAR}
     </update>
 </mapper>

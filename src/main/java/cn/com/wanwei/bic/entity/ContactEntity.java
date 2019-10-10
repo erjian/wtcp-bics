@@ -27,7 +27,7 @@ import javax.persistence.Table;
 public class ContactEntity extends BaseEntity {
 
     @ApiModelProperty(value = "关联主键ID")
-    private Long principalId;
+    private String principalId;
 
     @ApiModelProperty(value = "办公室电话")
     private String phone;

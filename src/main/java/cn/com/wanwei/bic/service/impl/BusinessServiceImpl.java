@@ -9,6 +9,7 @@ package cn.com.wanwei.bic.service.impl;
 import cn.com.wanwei.bic.entity.BusinessEntity;
 import cn.com.wanwei.bic.mapper.BusinessMapper;
 import cn.com.wanwei.bic.service.BusinessService;
+import cn.com.wanwei.bic.utils.UUIDUtils;
 import cn.com.wanwei.common.model.ResponseMessage;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +31,7 @@ public class BusinessServiceImpl implements BusinessService {
 
 	@Override
 	public ResponseMessage save(BusinessEntity record, String userName) {
+		record.setId(UUIDUtils.getInstance().getId());
 		record.setCreatedUser(userName);
 		record.setCreatedDate(new Date());
 		businessMapper.insert(record);
@@ -37,12 +39,12 @@ public class BusinessServiceImpl implements BusinessService {
 	}
 
 	@Override
-	public BusinessEntity selectByPrimaryKey(Long id) {
+	public BusinessEntity selectByPrimaryKey(String id) {
 		return businessMapper.selectByPrimaryKey(id);
 	}
 
 	@Override
-	public ResponseMessage edit(Long id, BusinessEntity record, String userName) {
+	public ResponseMessage edit(String id, BusinessEntity record, String userName) {
 		BusinessEntity entity = businessMapper.selectByPrimaryKey(id);
 		if(null == entity){
 			return ResponseMessage.validFailResponse().setMsg("不存在该营业信息");

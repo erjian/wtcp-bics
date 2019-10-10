@@ -27,7 +27,7 @@ import javax.persistence.Table;
 public class BusinessEntity extends BaseEntity {
 
     @ApiModelProperty(value = "关联主键ID")
-    private Long principalId;
+    private String principalId;
 
     @ApiModelProperty(value = "门票")
     private String ticket;

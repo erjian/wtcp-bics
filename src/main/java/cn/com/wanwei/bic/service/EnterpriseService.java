@@ -32,7 +32,7 @@ public interface EnterpriseService {
 	 * @param id
 	 * @return
 	 */
-	EnterpriseEntity selectByPrimaryKey(Long id) throws Exception;
+	EnterpriseEntity selectByPrimaryKey(String id) throws Exception;
 
 	/**
 	 * 编辑一条记录
@@ -41,5 +41,5 @@ public interface EnterpriseService {
 	 * @param record
 	 * @return
 	 */
-	ResponseMessage edit(Long id, EnterpriseEntity record, String userName) throws Exception;
+	ResponseMessage edit(String id, EnterpriseEntity record, String userName) throws Exception;
 }
