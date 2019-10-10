@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.com.wanwei.bic.mapper.DestinationTagsMapper">
+  <resultMap id="BaseResultMap" type="cn.com.wanwei.bic.entity.DestinationTagsEntity">
+    <id column="id" jdbcType="VARCHAR" property="id" />
+    <result column="principal_id" jdbcType="VARCHAR" property="principalId" />
+    <result column="tag_catagory" jdbcType="VARCHAR" property="tagCatagory" />
+    <result column="tag_name" jdbcType="VARCHAR" property="tagName" />
+    <result column="created_user" jdbcType="VARCHAR" property="createdUser" />
+    <result column="created_date" jdbcType="TIMESTAMP" property="createdDate" />
+    <result column="updated_user" jdbcType="VARCHAR" property="updatedUser" />
+    <result column="updated_date" jdbcType="TIMESTAMP" property="updatedDate" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, principal_id, tag_catagory, tag_name, created_user, created_date, updated_user, 
+    updated_date
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from bic_destination_tags
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from bic_destination_tags
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="cn.com.wanwei.bic.entity.DestinationTagsEntity">
+    insert into bic_destination_tags (id,principal_id, tag_catagory, tag_name,
+      created_user, created_date, updated_user, 
+      updated_date)
+    values (#{id,jdbcType=VARCHAR},#{principalId,jdbcType=VARCHAR}, #{tagCatagory,jdbcType=VARCHAR}, #{tagName,jdbcType=VARCHAR},
+      #{createdUser,jdbcType=VARCHAR}, #{createdDate,jdbcType=TIMESTAMP}, #{updatedUser,jdbcType=VARCHAR}, 
+      #{updatedDate,jdbcType=TIMESTAMP})
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="cn.com.wanwei.bic.entity.DestinationTagsEntity">
+    update bic_destination_tags
+    set principal_id = #{principalId,jdbcType=VARCHAR},
+      tag_catagory = #{tagCatagory,jdbcType=VARCHAR},
+      tag_name = #{tagName,jdbcType=VARCHAR},
+      created_user = #{createdUser,jdbcType=VARCHAR},
+      created_date = #{createdDate,jdbcType=TIMESTAMP},
+      updated_user = #{updatedUser,jdbcType=VARCHAR},
+      updated_date = #{updatedDate,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>
