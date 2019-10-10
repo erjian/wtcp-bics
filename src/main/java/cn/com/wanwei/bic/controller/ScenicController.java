@@ -50,7 +50,7 @@ public class ScenicController extends BaseController {
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     @PreAuthorize("hasAuthority('scenic:v')")
     @OperationLog(value = "wtcp-bics/根据id查询景区详情", operate = "v", module = "景区管理")
-    public ResponseMessage detail(@PathVariable("id") Long id) throws Exception {
+    public ResponseMessage detail(@PathVariable("id") String id) throws Exception {
         ScenicEntity scenicEntity = scenicService.selectByPrimaryKey(id);
         if (scenicEntity == null) {
             return ResponseMessage.validFailResponse().setMsg("数据不存在");
@@ -63,7 +63,7 @@ public class ScenicController extends BaseController {
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
     @PreAuthorize("hasAuthority('scenic:d')")
     @OperationLog(value = "wtcp-bics/根据id删除景区", operate = "d", module = "景区管理")
-    public ResponseMessage delete(@PathVariable("id") Long id) throws Exception {
+    public ResponseMessage delete(@PathVariable("id") String id) throws Exception {
         return scenicService.deleteByPrimaryKey(id);
     }
 
@@ -84,7 +84,7 @@ public class ScenicController extends BaseController {
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
     @PreAuthorize("hasAuthority('scenic:u')")
     @OperationLog(value = "wtcp-bics/景区编辑", operate = "u", module = "景区管理")
-    public ResponseMessage edit(@PathVariable("id") Long id, @RequestBody ScenicEntity scenicEntity, BindingResult bindingResult) throws Exception {
+    public ResponseMessage edit(@PathVariable("id") String id, @RequestBody ScenicEntity scenicEntity, BindingResult bindingResult) throws Exception {
         if (bindingResult.hasErrors()) {
             return ResponseMessage.validFailResponse().setMsg(bindingResult.getAllErrors());
         }
@@ -98,7 +98,7 @@ public class ScenicController extends BaseController {
             @ApiImplicitParam(name = "weightNum", value = "权重", required = true, dataType = "String")
     })
     @RequestMapping(value = "/changeWeight/{id}/{sortNum}", method = RequestMethod.GET)
-    public ResponseMessage changeWeight(@PathVariable("id") Long id, @PathVariable("sortNum") Float weightNum) throws Exception {
+    public ResponseMessage changeWeight(@PathVariable("id") String id, @PathVariable("sortNum") Float weightNum) throws Exception {
         return scenicService.changeWeight(id,weightNum,getCurrentUser().getUsername());
     }
 

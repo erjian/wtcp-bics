@@ -9,6 +9,7 @@ package cn.com.wanwei.bic.service.impl;
 import cn.com.wanwei.bic.entity.ContactEntity;
 import cn.com.wanwei.bic.mapper.ContactMapper;
 import cn.com.wanwei.bic.service.ContactService;
+import cn.com.wanwei.bic.utils.UUIDUtils;
 import cn.com.wanwei.common.model.ResponseMessage;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +31,7 @@ public class ContactServiceImpl implements ContactService {
 
 	@Override
 	public ResponseMessage save(ContactEntity record, String userName) {
+		record.setId(UUIDUtils.getInstance().getId());
 		record.setCreatedUser(userName);
 		record.setCreatedDate(new Date());
 		contactMapper.insert(record);
@@ -37,12 +39,12 @@ public class ContactServiceImpl implements ContactService {
 	}
 
 	@Override
-	public ContactEntity selectByPrimaryKey(Long id) {
+	public ContactEntity selectByPrimaryKey(String id) {
 		return contactMapper.selectByPrimaryKey(id);
 	}
 
 	@Override
-	public ResponseMessage edit(Long id, ContactEntity record, String userName) {
+	public ResponseMessage edit(String id, ContactEntity record, String userName) {
 		ContactEntity entity = contactMapper.selectByPrimaryKey(id);
 		if(null == entity){
 			return ResponseMessage.validFailResponse().setMsg("不存在该通讯信息");

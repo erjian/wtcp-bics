@@ -2,8 +2,8 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="cn.com.wanwei.bic.mapper.ContactMapper">
   <resultMap id="BaseResultMap" type="cn.com.wanwei.bic.entity.ContactEntity">
-    <id column="id" jdbcType="BIGINT" property="id" />
-    <result column="principal_id" jdbcType="BIGINT" property="principalId" />
+    <id column="id" jdbcType="VARCHAR" property="id" />
+    <result column="principal_id" jdbcType="VARCHAR" property="principalId" />
     <result column="phone" jdbcType="VARCHAR" property="phone" />
     <result column="fax" jdbcType="VARCHAR" property="fax" />
     <result column="website" jdbcType="VARCHAR" property="website" />
@@ -25,19 +25,19 @@
     select 
     <include refid="Base_Column_List" />
     from bic_contact
-    where id = #{id,jdbcType=BIGINT}
+    where id = #{id,jdbcType=VARCHAR}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
     delete from bic_contact
-    where id = #{id,jdbcType=BIGINT}
+    where id = #{id,jdbcType=VARCHAR}
   </delete>
   <insert id="insert" parameterType="cn.com.wanwei.bic.entity.ContactEntity">
-    insert into bic_contact (principal_id, phone, fax, 
+    insert into bic_contact (id, principal_id, phone, fax,
       website, mail, wechat, 
       micro_blog, complaint_call, rescue_call, 
       created_user, created_date, updated_user, 
       updated_date)
-    values (#{principalId,jdbcType=BIGINT}, #{phone,jdbcType=VARCHAR}, #{fax,jdbcType=VARCHAR}, 
+    values (#{id,jdbcType=VARCHAR}, #{principalId,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR}, #{fax,jdbcType=VARCHAR},
       #{website,jdbcType=VARCHAR}, #{mail,jdbcType=VARCHAR}, #{wechat,jdbcType=VARCHAR}, 
       #{microBlog,jdbcType=VARCHAR}, #{complaintCall,jdbcType=VARCHAR}, #{rescueCall,jdbcType=VARCHAR}, 
       #{createdUser,jdbcType=VARCHAR}, #{createdDate,jdbcType=TIMESTAMP}, #{updatedUser,jdbcType=VARCHAR}, 
@@ -45,7 +45,7 @@
   </insert>
   <update id="updateByPrimaryKey" parameterType="cn.com.wanwei.bic.entity.ContactEntity">
     update bic_contact
-    set principal_id = #{principalId,jdbcType=BIGINT},
+    set principal_id = #{principalId,jdbcType=VARCHAR},
       phone = #{phone,jdbcType=VARCHAR},
       fax = #{fax,jdbcType=VARCHAR},
       website = #{website,jdbcType=VARCHAR},
@@ -58,6 +58,6 @@
       created_date = #{createdDate,jdbcType=TIMESTAMP},
       updated_user = #{updatedUser,jdbcType=VARCHAR},
       updated_date = #{updatedDate,jdbcType=TIMESTAMP}
-    where id = #{id,jdbcType=BIGINT}
+    where id = #{id,jdbcType=VARCHAR}
   </update>
 </mapper>

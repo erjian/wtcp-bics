@@ -2,8 +2,8 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="cn.com.wanwei.bic.mapper.BusinessMapper">
   <resultMap id="BaseResultMap" type="cn.com.wanwei.bic.entity.BusinessEntity">
-    <id column="id" jdbcType="BIGINT" property="id" />
-    <result column="principal_id" jdbcType="BIGINT" property="principalId" />
+    <id column="id" jdbcType="VARCHAR" property="id" />
+    <result column="principal_id" jdbcType="VARCHAR" property="principalId" />
     <result column="ticket" jdbcType="VARCHAR" property="ticket" />
     <result column="coupon" jdbcType="VARCHAR" property="coupon" />
     <result column="phone" jdbcType="VARCHAR" property="phone" />
@@ -28,20 +28,20 @@
     select 
     <include refid="Base_Column_List" />
     from bic_business
-    where id = #{id,jdbcType=BIGINT}
+    where id = #{id,jdbcType=VARCHAR}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
     delete from bic_business
-    where id = #{id,jdbcType=BIGINT}
+    where id = #{id,jdbcType=VARCHAR}
   </delete>
   <insert id="insert" parameterType="cn.com.wanwei.bic.entity.BusinessEntity">
-    insert into bic_business (principal_id, ticket, coupon, 
+    insert into bic_business (id, principal_id, ticket, coupon,
       phone, reserve, ticket_notice, 
       business_notice, traffic_notice, hint_notice, 
       extend_notice, service_facility, created_user, 
       created_date, updated_user, updated_date
       )
-    values (#{principalId,jdbcType=BIGINT}, #{ticket,jdbcType=VARCHAR}, #{coupon,jdbcType=VARCHAR}, 
+    values (#{id,jdbcType=VARCHAR}, #{principalId,jdbcType=VARCHAR}, #{ticket,jdbcType=VARCHAR}, #{coupon,jdbcType=VARCHAR},
       #{phone,jdbcType=VARCHAR}, #{reserve,jdbcType=VARCHAR}, #{ticketNotice,jdbcType=VARCHAR}, 
       #{businessNotice,jdbcType=VARCHAR}, #{trafficNotice,jdbcType=VARCHAR}, #{hintNotice,jdbcType=VARCHAR}, 
       #{extendNotice,jdbcType=VARCHAR}, #{serviceFacility,jdbcType=VARCHAR}, #{createdUser,jdbcType=VARCHAR}, 
@@ -50,7 +50,7 @@
   </insert>
   <update id="updateByPrimaryKey" parameterType="cn.com.wanwei.bic.entity.BusinessEntity">
     update bic_business
-    set principal_id = #{principalId,jdbcType=BIGINT},
+    set principal_id = #{principalId,jdbcType=VARCHAR},
       ticket = #{ticket,jdbcType=VARCHAR},
       coupon = #{coupon,jdbcType=VARCHAR},
       phone = #{phone,jdbcType=VARCHAR},
@@ -65,6 +65,6 @@
       created_date = #{createdDate,jdbcType=TIMESTAMP},
       updated_user = #{updatedUser,jdbcType=VARCHAR},
       updated_date = #{updatedDate,jdbcType=TIMESTAMP}
-    where id = #{id,jdbcType=BIGINT}
+    where id = #{id,jdbcType=VARCHAR}
   </update>
 </mapper>

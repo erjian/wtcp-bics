@@ -32,7 +32,7 @@ public interface ScenicService {
 	 * @param id
 	 * @return
 	 */
-	ResponseMessage deleteByPrimaryKey(Long id) throws Exception;
+	ResponseMessage deleteByPrimaryKey(String id) throws Exception;
 
 	/**
 	 * 查询一条记录
@@ -40,7 +40,7 @@ public interface ScenicService {
 	 * @param id
 	 * @return
 	 */
-	ScenicEntity selectByPrimaryKey(Long id) throws Exception;
+	ScenicEntity selectByPrimaryKey(String id) throws Exception;
 
 	/**
 	 * 编辑一条记录
@@ -49,7 +49,7 @@ public interface ScenicService {
 	 * @param record
 	 * @return
 	 */
-	ResponseMessage edit(Long id, ScenicEntity record, String userName) throws Exception;
+	ResponseMessage edit(String id, ScenicEntity record, String userName) throws Exception;
 
 	/**
 	 * 获取分页列表
@@ -80,5 +80,5 @@ public interface ScenicService {
 	 * @param username
 	 * @return
 	 */
-	ResponseMessage changeWeight(Long id, Float weightNum, String username) throws Exception;
+	ResponseMessage changeWeight(String id, Float weightNum, String username) throws Exception;
 }

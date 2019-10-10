@@ -28,7 +28,7 @@ public interface BusinessService {
 	 * @param id
 	 * @return
 	 */
-	BusinessEntity selectByPrimaryKey(Long id) throws Exception;
+	BusinessEntity selectByPrimaryKey(String id) throws Exception;
 
 	/**
 	 * 编辑一条记录
@@ -37,5 +37,5 @@ public interface BusinessService {
 	 * @param record
 	 * @return
 	 */
-	ResponseMessage edit(Long id, BusinessEntity record, String userName) throws Exception;
+	ResponseMessage edit(String id, BusinessEntity record, String userName) throws Exception;
 }
