@@ -28,16 +28,16 @@ import java.util.Map;
 @RestController
 @RefreshScope
 @RequestMapping("/scenic")
-@Api(value = "景区基础信息管理", tags = "景区基础信息管理相关接口")
+@Api(value = "景区管理", tags = "景区管理相关接口")
 public class ScenicController extends BaseController {
 
     @Autowired
     private ScenicService scenicService;
 
-    @ApiOperation(value = "景区基础信息管理分页列表", notes = "景区基础信息管理分页列表")
+    @ApiOperation(value = "景区管理分页列表", notes = "景区管理分页列表")
     @GetMapping(value = "/page")
     @PreAuthorize("hasAuthority('scenic:r')")
-    @OperationLog(value = "wtcp-bics/景区基础信息管理分页列表", operate = "r", module = "景区基础信息管理")
+    @OperationLog(value = "wtcp-bics/景区管理分页列表", operate = "r", module = "景区管理")
     public ResponseMessage findByPage(@RequestParam(value = "page", defaultValue = "1") Integer page,
                                       @RequestParam(value = "size", defaultValue = "10") Integer size,
                                       HttpServletRequest request) throws Exception {
@@ -45,11 +45,11 @@ public class ScenicController extends BaseController {
         return scenicService.findByPage(page,size,getCurrentUser(),filter);
     }
 
-    @ApiOperation(value = "查询景区基础信息详情", notes = "根据ID查询景区基础信息详情")
-    @ApiImplicitParam(name = "id", value = "景区基础信息ID", required = true)
+    @ApiOperation(value = "查询景区详情", notes = "根据ID查询景区详情")
+    @ApiImplicitParam(name = "id", value = "景区ID", required = true)
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     @PreAuthorize("hasAuthority('scenic:v')")
-    @OperationLog(value = "wtcp-bics/根据id查询景区基础信息详情", operate = "v", module = "景区基础信息管理")
+    @OperationLog(value = "wtcp-bics/根据id查询景区详情", operate = "v", module = "景区管理")
     public ResponseMessage detail(@PathVariable("id") Long id) throws Exception {
         ScenicEntity scenicEntity = scenicService.selectByPrimaryKey(id);
         if (scenicEntity == null) {
@@ -58,20 +58,20 @@ public class ScenicController extends BaseController {
         return ResponseMessage.defaultResponse().setData(scenicEntity);
     }
 
-    @ApiOperation(value = "删除景区基础信息", notes = "根据ID删除景区基础信息")
-    @ApiImplicitParam(name = "id", value = "景区基础信息ID", required = true)
+    @ApiOperation(value = "删除景区", notes = "根据ID删除景区")
+    @ApiImplicitParam(name = "id", value = "景区ID", required = true)
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
     @PreAuthorize("hasAuthority('scenic:d')")
-    @OperationLog(value = "wtcp-bics/根据id删除景区基础信息", operate = "d", module = "景区基础信息管理")
+    @OperationLog(value = "wtcp-bics/根据id删除景区", operate = "d", module = "景区管理")
     public ResponseMessage delete(@PathVariable("id") Long id) throws Exception {
         return scenicService.deleteByPrimaryKey(id);
     }
 
-    @ApiOperation(value = "景区基础信息新增", notes = "景区基础信息新增")
-    @ApiImplicitParam(name = "scenicEntity", value = "景区基础信息", required = true, dataType = "ScenicEntity")
+    @ApiOperation(value = "景区新增", notes = "景区新增")
+    @ApiImplicitParam(name = "scenicEntity", value = "景区", required = true, dataType = "ScenicEntity")
     @PostMapping(value = "/save")
     @PreAuthorize("hasAuthority('scenic:c')")
-    @OperationLog(value = "wtcp-bics/景区基础信息新增", operate = "c", module = "景区基础信息管理")
+    @OperationLog(value = "wtcp-bics/景区新增", operate = "c", module = "景区管理")
     public ResponseMessage save(@RequestBody ScenicEntity scenicEntity, BindingResult bindingResult) throws Exception {
         if (bindingResult.hasErrors()) {
             return ResponseMessage.validFailResponse().setMsg(bindingResult.getAllErrors());
@@ -79,11 +79,11 @@ public class ScenicController extends BaseController {
         return scenicService.save(scenicEntity,getCurrentUser().getUsername());
     }
 
-    @ApiOperation(value = "景区基础信息编辑", notes = "景区基础信息编辑")
-    @ApiImplicitParam(name = "scenicEntity", value = "景区基础信息", required = true, dataType = "ScenicEntity")
+    @ApiOperation(value = "景区编辑", notes = "景区编辑")
+    @ApiImplicitParam(name = "scenicEntity", value = "景区", required = true, dataType = "ScenicEntity")
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
     @PreAuthorize("hasAuthority('scenic:u')")
-    @OperationLog(value = "wtcp-bics/景区基础信息编辑", operate = "u", module = "景区基础信息管理")
+    @OperationLog(value = "wtcp-bics/景区编辑", operate = "u", module = "景区管理")
     public ResponseMessage edit(@PathVariable("id") Long id, @RequestBody ScenicEntity scenicEntity, BindingResult bindingResult) throws Exception {
         if (bindingResult.hasErrors()) {
             return ResponseMessage.validFailResponse().setMsg(bindingResult.getAllErrors());
@@ -92,9 +92,9 @@ public class ScenicController extends BaseController {
     }
 
     @PreAuthorize("hasAuthority('scenic:w')")
-    @ApiOperation(value = "景区基础信息权重修改", notes = "景区基础信息权重修改")
+    @ApiOperation(value = "景区权重修改", notes = "景区权重修改")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "id", value = "景区基础信息ID", required = true, dataType = "String"),
+            @ApiImplicitParam(name = "id", value = "景区ID", required = true, dataType = "String"),
             @ApiImplicitParam(name = "weightNum", value = "权重", required = true, dataType = "String")
     })
     @RequestMapping(value = "/changeWeight/{id}/{sortNum}", method = RequestMethod.GET)
