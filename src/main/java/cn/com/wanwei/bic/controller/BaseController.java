@@ -17,6 +17,12 @@ public class BaseController {
     @Value("${spring.profiles.active}")
     private String active;
 
+    @Value("${wtcp.bic.appCode}")
+    protected Integer appCode;
+
+    @Value("${wtcp.bic.ruleId}")
+    protected Long ruleId;
+
     /**
      * 获取当前用户
      */
