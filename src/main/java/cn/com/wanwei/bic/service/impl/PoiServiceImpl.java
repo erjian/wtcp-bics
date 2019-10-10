@@ -4,6 +4,7 @@ import cn.com.wanwei.bic.entity.PoiEntity;
 import cn.com.wanwei.bic.feign.CoderServiceFeign;
 import cn.com.wanwei.bic.mapper.PoiMapper;
 import cn.com.wanwei.bic.service.PoiService;
+import cn.com.wanwei.bic.utils.UUIDUtils;
 import cn.com.wanwei.common.model.ResponseMessage;
 import cn.com.wanwei.common.model.User;
 import cn.com.wanwei.persistence.mybatis.MybatisPageRequest;
@@ -74,6 +75,7 @@ public class PoiServiceImpl implements PoiService {
             //获取统一认证生成的code
             ResponseMessage responseMessageGetCode = coderServiceFeign.buildSerialNum(appId);
             if(responseMessageGetCode.getStatus() == 1 && responseMessageGetCode.getData() != null) {
+                poiEntity.setId(UUIDUtils.getInstance().getId());
                 poiEntity.setCode(responseMessageGetCode.getData().toString());
                 poiEntity.setStatus(0);
                 poiEntity.setCreatedUser(user.getUsername());
