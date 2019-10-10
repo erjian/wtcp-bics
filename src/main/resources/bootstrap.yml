@@ -26,7 +26,6 @@ spring:
           refresh: true
 
 
-
 #jasypt加密的密匙
 jasypt:
   encryptor:

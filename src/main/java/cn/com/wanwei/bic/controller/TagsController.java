@@ -12,10 +12,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @Slf4j
 @RefreshScope
@@ -26,6 +23,12 @@ public class TagsController extends BaseController {
 
     @Autowired
     private TagsService tagsService;
+
+    @GetMapping("/test")
+    public ResponseMessage test() {
+
+        return ResponseMessage.defaultResponse();
+    }
 
     @ApiOperation(value = "根据关联ID获取景区标签信息", notes = "根据关联ID获取景区标签信息")
     @ApiImplicitParam(name = "principalId", value = "关联的景区ID", required = true)

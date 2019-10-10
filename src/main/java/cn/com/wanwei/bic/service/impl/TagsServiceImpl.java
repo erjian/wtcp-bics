@@ -60,8 +60,9 @@ public class TagsServiceImpl<T> implements TagsService<T> {
     }
 
     private String getTableName(Class<T> clazz) {
-        clazz.isAnnotationPresent(Table.class);
-        Table table = clazz.getAnnotation(Table.class);
-        return table.name();
+        if(clazz.isAnnotationPresent(Table.class)){
+            return clazz.getAnnotation(Table.class).name();
+        }
+        return null;
     }
 }
