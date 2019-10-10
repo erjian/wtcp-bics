@@ -76,9 +76,9 @@ public class MaterialServiceImpl implements MaterialService {
     @Override
     public ResponseMessage findByPrincipalId(String principalId) {
         ResponseMessage responseMessage = ResponseMessage.defaultResponse();
-        List<MaterialEntity> backlist = materialMapper.findByPrincipalId(principalId);
-        if(backlist.size() > 0){
-            responseMessage.setData(backlist);
+        List<MaterialEntity> backList = materialMapper.findByPrincipalId(principalId);
+        if(backList.size() > 0){
+            responseMessage.setData(backList);
         }
         return responseMessage;
     }
@@ -86,9 +86,9 @@ public class MaterialServiceImpl implements MaterialService {
     @Override
     public ResponseMessage findByPidAndType(String principalId, String type) {
         ResponseMessage responseMessage = ResponseMessage.defaultResponse();
-        List<MaterialEntity> backlist = materialMapper.findByPidAndType(principalId, type);
-        if(backlist.size() > 0){
-            responseMessage.setData(backlist);
+        List<MaterialEntity> backList = materialMapper.findByPidAndType(principalId, type);
+        if(backList.size() > 0){
+            responseMessage.setData(backList);
         }
         return responseMessage;
     }
@@ -96,9 +96,9 @@ public class MaterialServiceImpl implements MaterialService {
     @Override
     public ResponseMessage findByPidAndIdentify(String principalId, Integer fileIdentify) {
         ResponseMessage responseMessage = ResponseMessage.defaultResponse();
-        List<MaterialEntity> backlist = materialMapper.findByPidAndIdentify(principalId, fileIdentify);
-        if(backlist.size() > 0){
-            responseMessage.setData(backlist);
+        List<MaterialEntity> backList = materialMapper.findByPidAndIdentify(principalId, fileIdentify);
+        if(backList.size() > 0){
+            responseMessage.setData(backList);
         }
         return responseMessage;
     }

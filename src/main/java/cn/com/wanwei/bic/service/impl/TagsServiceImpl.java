@@ -29,9 +29,9 @@ public class TagsServiceImpl<T> implements TagsService<T> {
     @Override
     public ResponseMessage findByPrincipalId(String principalId, Class<T> clazz) {
         ResponseMessage responseMessage = ResponseMessage.defaultResponse();
-        List<BaseTagsEntity> backlist = tagsMapper.findByPrincipalId(principalId, getTableName(clazz));
-        if (backlist.size() > 0) {
-            responseMessage.setData(backlist);
+        List<BaseTagsEntity> backList = tagsMapper.findByPrincipalId(principalId, getTableName(clazz));
+        if (backList.size() > 0) {
+            responseMessage.setData(backList);
         }
         return responseMessage;
     }
