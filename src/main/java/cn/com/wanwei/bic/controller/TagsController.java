@@ -1,6 +1,5 @@
 package cn.com.wanwei.bic.controller;
 
-import cn.com.wanwei.bic.entity.BaseTagsEntity;
 import cn.com.wanwei.bic.entity.ScenicTagsEntity;
 import cn.com.wanwei.bic.service.TagsService;
 import cn.com.wanwei.common.log.annotation.OperationLog;
@@ -27,11 +26,13 @@ public class TagsController extends BaseController {
     @Autowired
     private TagsService tagsService;
 
-    @RequestMapping(value = "/test", method = RequestMethod.GET)
-    public ResponseMessage test() {
-        ResponseMessage responseMessage = ResponseMessage.defaultResponse();
-        BaseTagsEntity entity = tagsService.selectByPrimaryKey("1", ScenicTagsEntity.class);
-        return responseMessage.setData(entity);
+    @ApiOperation(value = "根据关联ID获取景区标签信息", notes = "根据关联ID获取景区标签信息")
+    @ApiImplicitParam(name = "principalId", value = "关联的景区ID", required = true)
+    @PreAuthorize("hasAuthority('bictags:r')")
+    @OperationLog(value = "wtcp-bic/根据关联ID获取景区标签信息", operate = "r", module = "标签管理")
+    @RequestMapping(value = "/findByPrincipalId", method = RequestMethod.GET)
+    public ResponseMessage findByPrincipalId(@RequestParam String principalId) {
+        return tagsService.findByPrincipalId(principalId, ScenicTagsEntity.class);
     }
 
 }

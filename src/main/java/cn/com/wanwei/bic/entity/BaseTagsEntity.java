@@ -10,7 +10,7 @@ import javax.persistence.MappedSuperclass;
 public class BaseTagsEntity extends BaseEntity{
 
     @ApiModelProperty(value = "关联ID")
-    private Long principalId;
+    private String principalId;
 
     @ApiModelProperty(value = "标签分类")
     private String tagCatagory;

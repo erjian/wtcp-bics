@@ -3,6 +3,7 @@ package cn.com.wanwei.bic.service.impl;
 import cn.com.wanwei.bic.entity.MaterialEntity;
 import cn.com.wanwei.bic.mapper.MaterialMapper;
 import cn.com.wanwei.bic.service.MaterialService;
+import cn.com.wanwei.bic.utils.UUIDUtils;
 import cn.com.wanwei.common.model.ResponseMessage;
 import cn.com.wanwei.common.model.User;
 import cn.com.wanwei.common.utils.DateFormatUtil;
@@ -41,6 +42,7 @@ public class MaterialServiceImpl implements MaterialService {
 
     @Override
     public ResponseMessage insert(MaterialEntity materialEntity, User user) {
+        materialEntity.setId(UUIDUtils.getInstance().getId());
         materialEntity.setCreatedUser(user.getUsername());
         materialEntity.setCreatedDate(new Date());
         materialMapper.insert(materialEntity);
@@ -50,6 +52,7 @@ public class MaterialServiceImpl implements MaterialService {
     @Override
     public ResponseMessage batchInsert(String principalId, List<MaterialEntity> materialList, User user) {
         for(MaterialEntity item : materialList){
+            item.setId(UUIDUtils.getInstance().getId());
             item.setCreatedUser(user.getUsername());
             item.setCreatedDate(new Date());
             item.setPrincipalId(principalId);
