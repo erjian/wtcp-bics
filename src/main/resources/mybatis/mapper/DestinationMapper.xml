@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.com.wanwei.bic.mapper.DestinationMapper">
+  <resultMap id="BaseResultMap" type="cn.com.wanwei.bic.entity.DestinationEntity">
+    <id column="id" jdbcType="VARCHAR" property="id" />
+    <result column="status" jdbcType="BIT" property="status" />
+    <result column="region_full_name" jdbcType="VARCHAR" property="regionFullName" />
+    <result column="region_full_code" jdbcType="VARCHAR" property="regionFullCode" />
+    <result column="region" jdbcType="VARCHAR" property="region" />
+    <result column="introduce" jdbcType="VARCHAR" property="introduce" />
+    <result column="eat_introduce" jdbcType="VARCHAR" property="eatIntroduce" />
+    <result column="drink_introduce" jdbcType="VARCHAR" property="drinkIntroduce" />
+    <result column="play_introduce" jdbcType="VARCHAR" property="playIntroduce" />
+    <result column="tourism_introduce" jdbcType="VARCHAR" property="tourismIntroduce" />
+    <result column="shop_introduce" jdbcType="VARCHAR" property="shopIntroduce" />
+    <result column="entertainment_introduce" jdbcType="VARCHAR" property="entertainmentIntroduce" />
+    <result column="weight" jdbcType="REAL" property="weight" />
+    <result column="created_user" jdbcType="VARCHAR" property="createdUser" />
+    <result column="created_date" jdbcType="TIMESTAMP" property="createdDate" />
+    <result column="updated_user" jdbcType="VARCHAR" property="updatedUser" />
+    <result column="updated_date" jdbcType="TIMESTAMP" property="updatedDate" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, status, region_full_name, region_full_code, region, introduce, eat_introduce, 
+    drink_introduce, play_introduce, tourism_introduce, shop_introduce, entertainment_introduce, 
+    weight, created_user, created_date, updated_user, updated_date
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from bic_destination
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from bic_destination
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="cn.com.wanwei.bic.entity.DestinationEntity">
+    insert into bic_destination (id,status, region_full_name, region_full_code,
+      region, introduce, eat_introduce, 
+      drink_introduce, play_introduce, tourism_introduce, 
+      shop_introduce, entertainment_introduce, 
+      weight, created_user, created_date, 
+      updated_user, updated_date)
+    values (#{id,jdbcType=VARCHAR},#{status,jdbcType=BIT}, #{regionFullName,jdbcType=VARCHAR}, #{regionFullCode,jdbcType=VARCHAR},
+      #{region,jdbcType=VARCHAR}, #{introduce,jdbcType=VARCHAR}, #{eatIntroduce,jdbcType=VARCHAR}, 
+      #{drinkIntroduce,jdbcType=VARCHAR}, #{playIntroduce,jdbcType=VARCHAR}, #{tourismIntroduce,jdbcType=VARCHAR}, 
+      #{shopIntroduce,jdbcType=VARCHAR}, #{entertainmentIntroduce,jdbcType=VARCHAR}, 
+      #{weight,jdbcType=REAL}, #{createdUser,jdbcType=VARCHAR}, #{createdDate,jdbcType=TIMESTAMP}, 
+      #{updatedUser,jdbcType=VARCHAR}, #{updatedDate,jdbcType=TIMESTAMP})
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="cn.com.wanwei.bic.entity.DestinationEntity">
+    update bic_destination
+    set status = #{status,jdbcType=BIT},
+      region_full_name = #{regionFullName,jdbcType=VARCHAR},
+      region_full_code = #{regionFullCode,jdbcType=VARCHAR},
+      region = #{region,jdbcType=VARCHAR},
+      introduce = #{introduce,jdbcType=VARCHAR},
+      eat_introduce = #{eatIntroduce,jdbcType=VARCHAR},
+      drink_introduce = #{drinkIntroduce,jdbcType=VARCHAR},
+      play_introduce = #{playIntroduce,jdbcType=VARCHAR},
+      tourism_introduce = #{tourismIntroduce,jdbcType=VARCHAR},
+      shop_introduce = #{shopIntroduce,jdbcType=VARCHAR},
+      entertainment_introduce = #{entertainmentIntroduce,jdbcType=VARCHAR},
+      weight = #{weight,jdbcType=REAL},
+      created_user = #{createdUser,jdbcType=VARCHAR},
+      created_date = #{createdDate,jdbcType=TIMESTAMP},
+      updated_user = #{updatedUser,jdbcType=VARCHAR},
+      updated_date = #{updatedDate,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

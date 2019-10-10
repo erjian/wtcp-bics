@@ -9,22 +9,22 @@ import java.util.List;
 
 public interface MaterialService {
 
-    ResponseMessage deleteByPrimaryKey(Long id);
+    ResponseMessage deleteByPrimaryKey(String id);
 
-    ResponseMessage deleteByPrincipalIds(List<Long> ids);
+    ResponseMessage deleteByPrincipalIds(List<String> ids);
 
     ResponseMessage insert(MaterialEntity materialEntity, User user);
 
-    ResponseMessage batchInsert(Long principalId, List<MaterialEntity> materialList, User user);
+    ResponseMessage batchInsert(String principalId, List<MaterialEntity> materialList, User user);
 
-    ResponseMessage selectByPrimaryKey(Long id);
+    ResponseMessage selectByPrimaryKey(String id);
 
-    ResponseMessage findByPrincipalId(Long principalId);
+    ResponseMessage findByPrincipalId(String principalId);
 
-    ResponseMessage findByPidAndType(Long principalId, String type);
+    ResponseMessage findByPidAndType(String principalId, String type);
 
-    ResponseMessage findByPidAndIdentify(Long principalId, Integer fileIdentify);
+    ResponseMessage findByPidAndIdentify(String principalId, Integer fileIdentify);
 
-    ResponseMessage updateByPrimaryKey(Long id, MaterialEntity materialEntity, User user);
+    ResponseMessage updateByPrimaryKey(String id, MaterialEntity materialEntity, User user);
 
 }

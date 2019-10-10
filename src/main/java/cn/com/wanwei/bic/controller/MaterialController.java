@@ -28,7 +28,7 @@ public class MaterialController extends BaseController {
     @RequestMapping(value = "/findByPrincipalId", method = RequestMethod.GET)
     @PreAuthorize("hasAuthority('material:r')")
     @OperationLog(value = "wtcp-bic/根据关联ID获取素材信息", operate = "r", module = "素材管理")
-    public ResponseMessage findByPrincipalId(@RequestParam Long principalId) {
+    public ResponseMessage findByPrincipalId(@RequestParam String principalId) {
         return ResponseMessage.defaultResponse().setData(materialService.findByPrincipalId(principalId));
     }
 
@@ -40,7 +40,7 @@ public class MaterialController extends BaseController {
     @RequestMapping(value = "/findByPidAndType", method = RequestMethod.GET)
     @PreAuthorize("hasAuthority('material:r')")
     @OperationLog(value = "wtcp-bic/根据关联ID及素材类型获取素材信息", operate = "r", module = "素材管理")
-    public ResponseMessage findByPidAndType(@RequestParam Long principalId, @RequestParam String fileType) {
+    public ResponseMessage findByPidAndType(@RequestParam String principalId, @RequestParam String fileType) {
         return ResponseMessage.defaultResponse().setData(materialService.findByPidAndType(principalId, fileType));
     }
 
@@ -52,7 +52,7 @@ public class MaterialController extends BaseController {
     @RequestMapping(value = "/findByPidAndIdentify", method = RequestMethod.GET)
     @PreAuthorize("hasAuthority('material:r')")
     @OperationLog(value = "wtcp-bic/根据关联ID及素材标识获取素材信息", operate = "r", module = "素材管理")
-    public ResponseMessage findByPidAndIdentify(@RequestParam Long principalId, @RequestParam Integer identify) {
+    public ResponseMessage findByPidAndIdentify(@RequestParam String principalId, @RequestParam Integer identify) {
         return ResponseMessage.defaultResponse().setData(materialService.findByPidAndIdentify(principalId, identify));
     }
 

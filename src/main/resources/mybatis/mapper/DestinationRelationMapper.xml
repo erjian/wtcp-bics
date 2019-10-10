@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.com.wanwei.bic.mapper.DestinationRelationMapper">
+  <resultMap id="BaseResultMap" type="cn.com.wanwei.bic.entity.DestinationRelationEntity">
+    <id column="id" jdbcType="VARCHAR" property="id" />
+    <result column="destination_id" jdbcType="VARCHAR" property="destinationId" />
+    <result column="principal_id" jdbcType="VARCHAR" property="principalId" />
+    <result column="created_user" jdbcType="VARCHAR" property="createdUser" />
+    <result column="created_date" jdbcType="TIMESTAMP" property="createdDate" />
+    <result column="type" jdbcType="INTEGER" property="type" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, destination_id, principal_id, created_user, created_date, type
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from bic_destination_relation
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from bic_destination_relation
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="cn.com.wanwei.bic.entity.DestinationRelationEntity">
+    insert into bic_destination_relation (id,destination_id, principal_id, created_user,
+      created_date, type)
+    values (#{id,jdbcType=VARCHAR},#{destinationId,jdbcType=VARCHAR}, #{principalId,jdbcType=VARCHAR}, #{createdUser,jdbcType=VARCHAR},
+      #{createdDate,jdbcType=TIMESTAMP}, #{type,jdbcType=INTEGER})
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="cn.com.wanwei.bic.entity.DestinationRelationEntity">
+    update bic_destination_relation
+    set destination_id = #{destinationId,jdbcType=VARCHAR},
+      principal_id = #{principalId,jdbcType=VARCHAR},
+      created_user = #{createdUser,jdbcType=VARCHAR},
+      created_date = #{createdDate,jdbcType=TIMESTAMP},
+      type = #{type,jdbcType=INTEGER}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

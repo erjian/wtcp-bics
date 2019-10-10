@@ -14,16 +14,16 @@ import javax.persistence.Table;
 @EqualsAndHashCode(callSuper=false)
 @NoArgsConstructor
 @Entity
-@Table(name="bic_scenic_spot")
-@ApiModel(description="景点管理")
+@Table(name="bic_poi")
+@ApiModel(description="poi管理")
 @ToString(callSuper = true)
-public class ScenicSpotEntity extends BaseEntity {
+public class PoiEntity extends BaseEntity {
 
-    @ApiModelProperty(value = "父ID（第一级景点时值为0）" ,required = true)
+    @ApiModelProperty(value = "父ID（第一级poi时值为0）" ,required = true)
     private Long parentId;
 
-    @ApiModelProperty(value = "景区ID" ,required = true)
-    private Long scenicId;
+    @ApiModelProperty(value = "关联信息ID(景区id)" ,required = true)
+    private Long principalId;
 
     @ApiModelProperty(value = "编码" ,required = true)
     private String code;
@@ -49,28 +49,31 @@ public class ScenicSpotEntity extends BaseEntity {
     @ApiModelProperty(value = "权重" )
     private Float weight;
 
-    @ApiModelProperty(value = "经度" )
+    @ApiModelProperty(value = "经度" ,required = true)
     private Double longitude;
 
-    @ApiModelProperty(value = "纬度" )
+    @ApiModelProperty(value = "纬度" ,required = true)
     private Double latitude;
 
-    @ApiModelProperty(value = "地区名称（格式示例：甘肃省,兰州市,城关区）" )
+    @ApiModelProperty(value = "地区名称（格式示例：甘肃省,兰州市,城关区）" ,required = true)
     private String regionFullName;
 
-    @ApiModelProperty(value = "地区编码（格式示例：62,6201,620102）" )
+    @ApiModelProperty(value = "地区编码（格式示例：62,6201,620102）" ,required = true)
     private String regionFullCode;
 
-    @ApiModelProperty(value = "所属区域" )
+    @ApiModelProperty(value = "所属区域" ,required = true)
     private String region;
 
-    @ApiModelProperty(value = "详细地址" )
+    @ApiModelProperty(value = "详细地址" ,required = true)
     private String address;
 
     @ApiModelProperty(value = "审核状态（0：待审，1：通过，9：上线）" )
-    private Boolean status;
+    private Integer status;
 
-    @ApiModelProperty(value = "组织机构编码" )
+    @ApiModelProperty(value = "组织机构编码" ,required = true)
     private String deptCode;
+
+    @ApiModelProperty(value = "类型（1：厕所，2：停车场，3：出入口，4：游客中心，5：景点）" ,required = true)
+    private String type;
 
 }

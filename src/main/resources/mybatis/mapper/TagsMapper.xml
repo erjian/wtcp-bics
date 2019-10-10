@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.com.wanwei.bic.mapper.TagsMapper">
+    <resultMap id="BaseResultMap" type="cn.com.wanwei.bic.entity.BaseTagsEntity">
+        <id column="id" jdbcType="VARCHAR" property="id"/>
+        <result column="principal_id" jdbcType="VARCHAR" property="principalId"/>
+        <result column="tag_catagory" jdbcType="VARCHAR" property="tagCatagory"/>
+        <result column="tag_name" jdbcType="VARCHAR" property="tagName"/>
+        <result column="created_user" jdbcType="VARCHAR" property="createdUser"/>
+        <result column="created_date" jdbcType="TIMESTAMP" property="createdDate"/>
+        <result column="updated_user" jdbcType="VARCHAR" property="updatedUser"/>
+        <result column="updated_date" jdbcType="TIMESTAMP" property="updatedDate"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id, principal_id, tag_catagory, tag_name, created_user, created_date, updated_user, updated_date
+    </sql>
+
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from ${tableName}
+        where id = #{id,jdbcType=VARCHAR}
+    </select>
+
+    <select id="findByPrincipalId" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from ${tableName}
+        where principal_id = #{principalId,jdbcType=VARCHAR}
+    </select>
+
+    <delete id="deleteByPrincipalId">
+        delete from ${tableName}
+        where principal_id = #{principalId,jdbcType=VARCHAR}
+    </delete>
+
+    <insert id="batchInsert" parameterType="java.util.Map">
+        insert into ${tableName} (principal_id, tag_catagory, tag_name,
+        created_user, created_date, updated_user, updated_date)
+        values
+        <foreach collection="entityList" item="item" index="index" separator=",">
+            ( #{item.principalId,jdbcType=VARCHAR}, #{item.tagCatagory,jdbcType=VARCHAR},
+            #{item.tagName,jdbcType=VARCHAR},#{item.createdUser,jdbcType=VARCHAR},
+            #{item.createdDate,jdbcType=TIMESTAMP}, #{item.updatedUser,jdbcType=VARCHAR},
+            #{item.updatedDate,jdbcType=TIMESTAMP} )
+        </foreach>
+    </insert>
+
+</mapper>
