@@ -25,6 +25,7 @@ import javax.persistence.Table;
 @ApiModel(description="目的地关联信息实体类")
 @ToString(callSuper = true)
 public class DestinationRelationEntity extends BaseEntity{
+
     @ApiModelProperty(value = "目的地主键")
     private String destinationId;
 
@@ -33,4 +34,8 @@ public class DestinationRelationEntity extends BaseEntity{
 
     @ApiModelProperty(value = "关联类型")
     private Integer type;
+
+    @ApiModelProperty(value = "组织机构编码")
+    private String deptCode;
+
 }
