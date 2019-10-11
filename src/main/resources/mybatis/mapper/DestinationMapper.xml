@@ -15,6 +15,7 @@
     <result column="shop_introduce" jdbcType="VARCHAR" property="shopIntroduce" />
     <result column="entertainment_introduce" jdbcType="VARCHAR" property="entertainmentIntroduce" />
     <result column="weight" jdbcType="REAL" property="weight" />
+    <result column="dept_code" jdbcType="VARCHAR" property="deptCode" />
     <result column="created_user" jdbcType="VARCHAR" property="createdUser" />
     <result column="created_date" jdbcType="TIMESTAMP" property="createdDate" />
     <result column="updated_user" jdbcType="VARCHAR" property="updatedUser" />
@@ -23,7 +24,7 @@
   <sql id="Base_Column_List">
     id, status, region_full_name, region_full_code, region, introduce, eat_introduce, 
     drink_introduce, play_introduce, tourism_introduce, shop_introduce, entertainment_introduce, 
-    weight, created_user, created_date, updated_user, updated_date
+    weight, dept_code, created_user, created_date, updated_user, updated_date
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
     select 
@@ -36,18 +37,20 @@
     where id = #{id,jdbcType=VARCHAR}
   </delete>
   <insert id="insert" parameterType="cn.com.wanwei.bic.entity.DestinationEntity">
-    insert into bic_destination (id,status, region_full_name, region_full_code,
+    insert into bic_destination (status, region_full_name, region_full_code,
       region, introduce, eat_introduce, 
       drink_introduce, play_introduce, tourism_introduce, 
       shop_introduce, entertainment_introduce, 
-      weight, created_user, created_date, 
-      updated_user, updated_date)
-    values (#{id,jdbcType=VARCHAR},#{status,jdbcType=BIT}, #{regionFullName,jdbcType=VARCHAR}, #{regionFullCode,jdbcType=VARCHAR},
+      weight, dept_code, created_user, 
+      created_date, updated_user, updated_date
+      )
+    values (#{status,jdbcType=BIT}, #{regionFullName,jdbcType=VARCHAR}, #{regionFullCode,jdbcType=VARCHAR}, 
       #{region,jdbcType=VARCHAR}, #{introduce,jdbcType=VARCHAR}, #{eatIntroduce,jdbcType=VARCHAR}, 
       #{drinkIntroduce,jdbcType=VARCHAR}, #{playIntroduce,jdbcType=VARCHAR}, #{tourismIntroduce,jdbcType=VARCHAR}, 
       #{shopIntroduce,jdbcType=VARCHAR}, #{entertainmentIntroduce,jdbcType=VARCHAR}, 
-      #{weight,jdbcType=REAL}, #{createdUser,jdbcType=VARCHAR}, #{createdDate,jdbcType=TIMESTAMP}, 
-      #{updatedUser,jdbcType=VARCHAR}, #{updatedDate,jdbcType=TIMESTAMP})
+      #{weight,jdbcType=REAL}, #{deptCode,jdbcType=VARCHAR}, #{createdUser,jdbcType=VARCHAR}, 
+      #{createdDate,jdbcType=TIMESTAMP}, #{updatedUser,jdbcType=VARCHAR}, #{updatedDate,jdbcType=TIMESTAMP}
+      )
   </insert>
   <update id="updateByPrimaryKey" parameterType="cn.com.wanwei.bic.entity.DestinationEntity">
     update bic_destination
@@ -63,6 +66,7 @@
       shop_introduce = #{shopIntroduce,jdbcType=VARCHAR},
       entertainment_introduce = #{entertainmentIntroduce,jdbcType=VARCHAR},
       weight = #{weight,jdbcType=REAL},
+      dept_code = #{deptCode,jdbcType=VARCHAR},
       created_user = #{createdUser,jdbcType=VARCHAR},
       created_date = #{createdDate,jdbcType=TIMESTAMP},
       updated_user = #{updatedUser,jdbcType=VARCHAR},

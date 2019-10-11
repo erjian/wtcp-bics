@@ -24,8 +24,7 @@ import javax.persistence.Table;
 @Table(name="bic_destination")
 @ApiModel(description="目的地基础信息管理")
 @ToString(callSuper = true)
-public class DestinationEntity extends BaseEntity{
-
+public class DestinationEntity {
     @ApiModelProperty(value = "审核状态")
     private Integer status;
 
@@ -62,4 +61,6 @@ public class DestinationEntity extends BaseEntity{
     @ApiModelProperty(value = "权重")
     private Float weight;
 
+    @ApiModelProperty(value = "组织机构编码")
+    private String deptCode;
 }

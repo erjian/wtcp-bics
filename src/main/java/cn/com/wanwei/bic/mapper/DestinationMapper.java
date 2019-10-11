@@ -22,4 +22,5 @@ public interface DestinationMapper {
      * @return
      */
     Page<DestinationEntity> findByPage(Map<String, Object> filter);
+
 }
