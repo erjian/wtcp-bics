@@ -22,21 +22,21 @@
     <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
-        from bic_material
+        from t_bic_material
         where id = #{id,jdbcType=VARCHAR}
     </select>
 
     <select id="findByPrincipalId" parameterType="java.lang.String" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
-        from bic_material
+        from t_bic_material
         where principal_id = #{principalId,jdbcType=VARCHAR}
     </select>
 
     <select id="findByPidAndType" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
-        from bic_material
+        from t_bic_material
         where principal_id = #{principalId,jdbcType=VARCHAR}
         AND file_type = #{type,jdbcType=VARCHAR}
     </select>
@@ -44,18 +44,18 @@
     <select id="findByPidAndIdentify" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
-        from bic_material
+        from t_bic_material
         where principal_id = #{principalId,jdbcType=VARCHAR}
         AND file_identify = #{fileIdentify,jdbcType=INTEGER}
     </select>
 
     <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
-        delete from bic_material
+        delete from t_bic_material
         where id = #{id,jdbcType=VARCHAR}
     </delete>
 
     <delete id="deleteByPrincipalIds" parameterType="java.util.List">
-        delete from bic_material
+        delete from t_bic_material
         where id in
         <foreach collection="ids" item="item" open="(" separator="," close=")">
             #{item, jdbcType=VARCHAR}
@@ -63,7 +63,7 @@
     </delete>
 
     <insert id="insert" parameterType="cn.com.wanwei.bic.entity.MaterialEntity" useGeneratedKeys="true" keyProperty="id" keyColumn="id">
-        insert into bic_material (principal_id, material_id, file_type,
+        insert into t_bic_material (principal_id, material_id, file_type,
         file_url, file_identify, created_user,
         created_date, updated_user, updated_date )
         values
@@ -75,7 +75,7 @@
     </insert>
 
     <insert id="batchInsert" parameterType="java.util.List">
-        insert into bic_material (principal_id, material_id, file_type,
+        insert into t_bic_material (principal_id, material_id, file_type,
         file_url, file_identify, created_user,
         created_date, updated_user, updated_date )
         values
@@ -91,7 +91,7 @@
     </insert>
 
     <update id="updateByPrimaryKey" parameterType="cn.com.wanwei.bic.entity.MaterialEntity">
-        update bic_material
+        update t_bic_material
         set principal_id = #{principalId,jdbcType=VARCHAR},
             material_id = #{materialId,jdbcType=VARCHAR},
             file_type = #{fileType,jdbcType=VARCHAR},
