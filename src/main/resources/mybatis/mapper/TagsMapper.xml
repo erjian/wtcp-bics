@@ -36,11 +36,11 @@
     </delete>
 
     <insert id="batchInsert" parameterType="java.util.Map">
-        insert into ${tableName} (principal_id, tag_catagory, tag_name,
+        insert into ${tableName} (id,principal_id, tag_catagory, tag_name,
         created_user, created_date, updated_user, updated_date)
         values
         <foreach collection="entityList" item="item" index="index" separator=",">
-            ( #{item.principalId,jdbcType=VARCHAR}, #{item.tagCatagory,jdbcType=VARCHAR},
+            ( #{item.id,jdbcType=VARCHAR},#{item.principalId,jdbcType=VARCHAR}, #{item.tagCatagory,jdbcType=VARCHAR},
             #{item.tagName,jdbcType=VARCHAR},#{item.createdUser,jdbcType=VARCHAR},
             #{item.createdDate,jdbcType=TIMESTAMP}, #{item.updatedUser,jdbcType=VARCHAR},
             #{item.updatedDate,jdbcType=TIMESTAMP} )

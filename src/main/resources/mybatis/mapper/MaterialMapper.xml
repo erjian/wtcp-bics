@@ -19,7 +19,7 @@
         created_date, updated_user, updated_date
     </sql>
 
-    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
         from t_bic_material
@@ -63,11 +63,11 @@
     </delete>
 
     <insert id="insert" parameterType="cn.com.wanwei.bic.entity.MaterialEntity" useGeneratedKeys="true" keyProperty="id" keyColumn="id">
-        insert into t_bic_material (principal_id, material_id, file_type,
+        insert into t_bic_material (id, principal_id, material_id, file_type,
         file_url, file_identify, created_user,
         created_date, updated_user, updated_date )
         values
-        (
+        (   #{id,jdbcType=VARCHAR},
             #{principalId,jdbcType=VARCHAR}, #{materialId,jdbcType=VARCHAR}, #{fileType,jdbcType=VARCHAR},
             #{fileUrl,jdbcType=VARCHAR}, #{fileIdentify,jdbcType=BIT}, #{createdUser,jdbcType=VARCHAR},
             #{createdDate,jdbcType=TIMESTAMP}, #{updatedUser,jdbcType=VARCHAR}, #{updatedDate,jdbcType=TIMESTAMP}
@@ -75,12 +75,12 @@
     </insert>
 
     <insert id="batchInsert" parameterType="java.util.List">
-        insert into t_bic_material (principal_id, material_id, file_type,
+        insert into t_bic_material (id, principal_id, material_id, file_type,
         file_url, file_identify, created_user,
         created_date, updated_user, updated_date )
         values
         <foreach collection="list" item="item" index="index" separator=",">
-            (
+            (   #{item.id,jdbcType=VARCHAR},
                 #{item.principalId,jdbcType=VARCHAR}, #{item.materialId,jdbcType=VARCHAR},
                 #{item.fileType,jdbcType=VARCHAR},#{item.fileUrl,jdbcType=VARCHAR},
                 #{item.fileIdentify,jdbcType=INTEGER}, #{item.createdUser,jdbcType=VARCHAR},
