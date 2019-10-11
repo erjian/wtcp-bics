@@ -21,7 +21,7 @@ import javax.persistence.Table;
 @EqualsAndHashCode(callSuper=false)
 @NoArgsConstructor
 @Entity
-@Table(name="bic_destination")
+@Table(name="t_bic_destination")
 @ApiModel(description="目的地关联信息实体类")
 @ToString(callSuper = true)
 public class DestinationRelationEntity extends BaseEntity{

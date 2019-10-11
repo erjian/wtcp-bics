@@ -16,15 +16,15 @@
   <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
-    from bic_destination_relation
+    from t_bic_destination_relation
     where id = #{id,jdbcType=VARCHAR}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
-    delete from bic_destination_relation
+    delete from t_bic_destination_relation
     where id = #{id,jdbcType=VARCHAR}
   </delete>
   <insert id="insert" parameterType="cn.com.wanwei.bic.entity.DestinationRelationEntity">
-    insert into bic_destination_relation (destination_id, principal_id, created_user,
+    insert into t_bic_destination_relation (destination_id, principal_id, created_user,
       created_date, type, dept_code
       )
     values (#{destinationId,jdbcType=VARCHAR}, #{principalId,jdbcType=VARCHAR}, #{createdUser,jdbcType=VARCHAR}, 
@@ -32,7 +32,7 @@
       )
   </insert>
   <update id="updateByPrimaryKey" parameterType="cn.com.wanwei.bic.entity.DestinationRelationEntity">
-    update bic_destination_relation
+    update t_bic_destination_relation
     set destination_id = #{destinationId,jdbcType=VARCHAR},
       principal_id = #{principalId,jdbcType=VARCHAR},
       created_user = #{createdUser,jdbcType=VARCHAR},
