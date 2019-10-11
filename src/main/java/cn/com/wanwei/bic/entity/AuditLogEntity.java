@@ -28,10 +28,10 @@ public class AuditLogEntity implements Serializable {
     private String principalId;
 
     @ApiModelProperty(value="审核前状态（0：待审，1：通过，2：退回，9：上线）" )
-    private Boolean preStatus;
+    private Integer preStatus;
 
     @ApiModelProperty(value="审核状态（0：待审，1：通过，2：退回，9：上线）" )
-    private Boolean status;
+    private Integer status;
 
     @ApiModelProperty(value="审核意见" )
     private String opinion;
