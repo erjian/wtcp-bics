@@ -68,7 +68,7 @@ public class ScenicServiceImpl implements ScenicService {
 		record.setId(id);
 		record.setCreatedDate(entity.getCreatedDate());
 		record.setCreatedUser(entity.getCreatedUser());
-		record.setStatus(entity.getStatus());
+		record.setStatus(0);
 		record.setUpdatedDate(new Date());
 		record.setUpdatedUser(userName);
 		scenicMapper.updateByPrimaryKeyWithBLOBs(record);
