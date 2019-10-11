@@ -13,7 +13,7 @@ import javax.persistence.Table;
 @EqualsAndHashCode(callSuper = false)
 @NoArgsConstructor
 @Entity
-@Table(name = "bic_poi_tags")
+@Table(name = "t_bic_poi_tags")
 @ApiModel(description = "POI标签表")
 @ToString(callSuper = true)
 public class PoiTagsEntity extends BaseTagsEntity {

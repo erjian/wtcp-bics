@@ -14,7 +14,7 @@ import javax.persistence.Table;
 @EqualsAndHashCode(callSuper=false)
 @NoArgsConstructor
 @Entity
-@Table(name="bic_poi")
+@Table(name="t_bic_poi")
 @ApiModel(description="poi管理")
 @ToString(callSuper = true)
 public class PoiEntity extends BaseEntity {

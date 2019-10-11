@@ -15,7 +15,7 @@ import java.util.Date;
 @EqualsAndHashCode(callSuper=false)
 @NoArgsConstructor
 @Entity
-@Table(name="bic_audit_log")
+@Table(name="t_bic_audit_log")
 @ApiModel(description="审核记录管理")
 @ToString(callSuper = true)
 public class AuditLogEntity implements Serializable {
@@ -24,13 +24,13 @@ public class AuditLogEntity implements Serializable {
     @ApiModelProperty(value="主键" ,readOnly = true)
     private String id;
 
-    @ApiModelProperty(value="关联信息ID" )
+    @ApiModelProperty(value="关联信息ID" ,required = true)
     private String principalId;
 
-    @ApiModelProperty(value="审核前状态（0：待审，1：通过，2：退回，9：上线）" )
+    @ApiModelProperty(value="审核前状态（0：待审，1：通过，2：退回，9：上线）" ,required = true)
     private Integer preStatus;
 
-    @ApiModelProperty(value="审核状态（0：待审，1：通过，2：退回，9：上线）" )
+    @ApiModelProperty(value="审核状态（0：待审，1：通过，2：退回，9：上线）" ,required = true)
     private Integer status;
 
     @ApiModelProperty(value="审核意见" )
@@ -41,4 +41,7 @@ public class AuditLogEntity implements Serializable {
 
     @ApiModelProperty(value="创建时间" ,readOnly = true)
     private Date createdDate;
+
+    @ApiModelProperty(value="操作记录类型（0：审核记录，1：上线/下线记录）" ,required = true)
+    private Integer type;
 }

@@ -35,15 +35,15 @@
   <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
-    from bic_poi
+    from t_bic_poi
     where id = #{id,jdbcType=VARCHAR}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
-    delete from bic_poi
+    delete from t_bic_poi
     where id = #{id,jdbcType=VARCHAR}
   </delete>
   <insert id="insert" parameterType="cn.com.wanwei.bic.entity.PoiEntity">
-    insert into bic_poi (id,parent_id, principal_id, code,
+    insert into t_bic_poi (id,parent_id, principal_id, code,
       title, sub_title, slogan, 
       summary, description, weight, 
       longitude, latitude, region_full_name, 
@@ -61,7 +61,7 @@
       #{content,jdbcType=LONGVARCHAR},#{type,jdbcType=INTEGER})
   </insert>
   <update id="updateByPrimaryKey" parameterType="cn.com.wanwei.bic.entity.PoiEntity">
-    update bic_poi
+    update t_bic_poi
     set parent_id = #{parentId,jdbcType=BIGINT},
       principal_id = #{principalId,jdbcType=BIGINT},
       code = #{code,jdbcType=VARCHAR},
@@ -90,12 +90,12 @@
   <select id="findByPage" parameterType="java.util.Map" resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List" />
-    from bic_poi
+    from t_bic_poi
   </select>
   <select id="checkTitle"  parameterType="java.lang.String" resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List" />
-    from bic_poi
+    from t_bic_poi
     where title = #{title,jdbcType=VARCHAR}
   </select>
 </mapper>

@@ -22,8 +22,8 @@ public interface AuditLogService {
     /**
      * 审核记录新增
      * @param auditLogEntity
-     * @param user
+     * @param userName
      * @return
      */
-    ResponseMessage create(AuditLogEntity auditLogEntity ,User user);
+    ResponseMessage create(AuditLogEntity auditLogEntity ,String userName);
 }

@@ -66,7 +66,7 @@ public class AuditLogServiceTest {
     @Rollback
     public void createTest() {
         System.out.println("---------------新增审核记录信息---------------");
-        ResponseMessage back = auditLogService.create(auditLogEntity, user);
+        ResponseMessage back = auditLogService.create(auditLogEntity, user.getUsername());
         int status=  back.getStatus();
         System.out.println("返回值：" + status);
         Assert.assertSame("返回值是1", 1, status);

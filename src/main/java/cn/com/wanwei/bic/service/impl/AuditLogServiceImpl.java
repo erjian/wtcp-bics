@@ -47,10 +47,10 @@ public class AuditLogServiceImpl implements AuditLogService {
     }
 
     @Override
-    public ResponseMessage create(AuditLogEntity auditLogEntity, User user) {
+    public ResponseMessage create(AuditLogEntity auditLogEntity,String userName) {
         try {
             auditLogEntity.setId(UUIDUtils.getInstance().getId());
-            auditLogEntity.setCreatedUser(user.getUsername());
+            auditLogEntity.setCreatedUser(userName);
             auditLogEntity.setCreatedDate(new Date());
             auditLogMapper.insert(auditLogEntity);
             return ResponseMessage.defaultResponse().setMsg("保存成功！");

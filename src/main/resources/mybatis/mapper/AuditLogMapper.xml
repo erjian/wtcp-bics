@@ -9,43 +9,35 @@
     <result column="opinion" jdbcType="VARCHAR" property="opinion" />
     <result column="created_user" jdbcType="VARCHAR" property="createdUser" />
     <result column="created_date" jdbcType="TIMESTAMP" property="createdDate" />
+    <result column="type" jdbcType="INTEGER" property="type" />
   </resultMap>
   <sql id="Base_Column_List">
-    id, principal_id, pre_status, status, opinion, created_user, created_date
+    id, principal_id, pre_status, status, opinion, created_user, created_date,`type`
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
-    from bic_audit_log
+    from t_bic_audit_log
     where id = #{id,jdbcType=VARCHAR}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
-    delete from bic_audit_log
+    delete from t_bic_audit_log
     where id = #{id,jdbcType=VARCHAR}
   </delete>
   <insert id="insert" parameterType="cn.com.wanwei.bic.entity.AuditLogEntity">
-    insert into bic_audit_log (id,principal_id, pre_status, status,
-      opinion, created_user, created_date
+    insert into t_bic_audit_log (id,principal_id, pre_status, status,
+      opinion, created_user, created_date,`type`
       )
     values (#{id,jdbcType=VARCHAR},#{principalId,jdbcType=VARCHAR}, #{preStatus,jdbcType=INTEGER}, #{status,jdbcType=INTEGER},
-      #{opinion,jdbcType=VARCHAR}, #{createdUser,jdbcType=VARCHAR}, #{createdDate,jdbcType=TIMESTAMP}
+      #{opinion,jdbcType=VARCHAR}, #{createdUser,jdbcType=VARCHAR}, #{createdDate,jdbcType=TIMESTAMP}, #{type,jdbcType=INTEGER}
       )
   </insert>
-  <update id="updateByPrimaryKey" parameterType="cn.com.wanwei.bic.entity.AuditLogEntity">
-    update bic_audit_log
-    set principal_id = #{principalId,jdbcType=VARCHAR},
-      pre_status = #{preStatus,jdbcType=INTEGER},
-      status = #{status,jdbcType=INTEGER},
-      opinion = #{opinion,jdbcType=VARCHAR},
-      created_user = #{createdUser,jdbcType=VARCHAR},
-      created_date = #{createdDate,jdbcType=TIMESTAMP}
-    where id = #{id,jdbcType=VARCHAR}
-  </update>
   <select id="findByPage" parameterType="java.util.Map" resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List" />
-    from bic_audit_log
+    from t_bic_audit_log
     where
       principal_id = #{principalId,jdbcType=VARCHAR}
+      and `type` = #{type,jdbcType=VARCHAR}
   </select>
 </mapper>

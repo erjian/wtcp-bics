@@ -107,4 +107,16 @@ public class PoiController extends  BaseController{
                                       @RequestParam(value = "title",required = false) String title){
         return poiService.checkTitle(id,title);
     }
+
+//    @ApiOperation(value = "poi信息审核", notes = "poi信息审核")
+//    @ApiImplicitParams({
+//            @ApiImplicitParam(name = "id", value = "poi信息ID"),
+//            @ApiImplicitParam(name = "title", value = "标题")
+//    })
+//    @GetMapping(value = "checkTitle")
+//    public ResponseMessage checkTitle(@RequestParam(value = "id",required = false) String id,
+//                                      @RequestParam(value = "title",required = false) String title){
+//        return poiService.checkTitle(id,title);
+//    }
+
 }

@@ -8,6 +8,7 @@ import cn.com.wanwei.common.model.ResponseMessage;
 import cn.com.wanwei.common.utils.RequestUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,16 +31,21 @@ public class AuditLogController extends BaseController {
     private AuditLogService auditLogService;
 
     @ApiOperation(value = "审核记录管理分页列表",notes = "审核记录管理分页列表（根据关联信息principalId获取）")
-    @ApiImplicitParam(name = "principalId", value = "关联信息ID", required = true)
+   @ApiImplicitParams({
+           @ApiImplicitParam(name = "principalId", value = "关联信息ID", required = true),
+           @ApiImplicitParam(name = "type", value = "操作记录类型（0：审核记录，1：上线/下线记录）", defaultValue = "0")
+   })
     @GetMapping(value = "/page")
     @PreAuthorize("hasAuthority('audit:r')")
     @OperationLog(value = "wtcp-bics/审核记录管理分页列表", operate = "r", module = "审核记录管理")
     public ResponseMessage findByPage(@RequestParam(value = "principalId") String principalId,
+                                      @RequestParam(value = "type") Integer type,
                                       @RequestParam(value = "page", defaultValue = "1") Integer page,
                                       @RequestParam(value = "size", defaultValue = "10") Integer size,
                                       HttpServletRequest request){
         Map<String, Object> filter = RequestUtil.getParameters(request);
         filter.put("principalId",principalId);
+        filter.put("type",type);
         return auditLogService.findByPage(page,size,filter);
     }
 
@@ -52,6 +58,6 @@ public class AuditLogController extends BaseController {
        if(bindingResult.hasErrors()){
            return ResponseMessage.validFailResponse().setMsg(bindingResult.getAllErrors());
        }
-        return auditLogService.create(auditLogEntity,getCurrentUser());
+        return auditLogService.create(auditLogEntity,getCurrentUser().getUsername());
     }
 }
