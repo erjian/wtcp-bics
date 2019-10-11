@@ -104,8 +104,6 @@ public class MaterialServiceTest {
     @Test
     public void selectByPrimaryKeyTest() {
         log.info("--------------- 获取素材信息---------------");
-        List<MaterialEntity> list = Lists.newArrayList();
-        list.add(materialEntity);
         ResponseMessage back = materialService.selectByPrimaryKey(materialEntity.getId());
         System.out.println("返回值：" + back.getData());
         Assert.assertSame("返回值是true", true, back.getData() == null ? true : false);
