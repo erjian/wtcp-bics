@@ -40,6 +40,7 @@ public class AuditLogServiceTest {
         auditLogEntity.setPreStatus(0);
         auditLogEntity.setPrincipalId("-1111111");
         auditLogEntity.setStatus(0);
+        auditLogEntity.setType(1);
         //user填充数据
         user=new User();
         user.setUsername("ceshi");

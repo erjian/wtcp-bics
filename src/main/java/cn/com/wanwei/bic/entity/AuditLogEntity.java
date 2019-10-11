@@ -42,6 +42,6 @@ public class AuditLogEntity implements Serializable {
     @ApiModelProperty(value="创建时间" ,readOnly = true)
     private Date createdDate;
 
-    @ApiModelProperty(value="操作记录类型（0：审核记录，1：上线/下线记录）" ,required = true)
+    @ApiModelProperty(value="操作记录类型（0：审核记录，1：上线/下线记录）" ,readOnly = true)
     private Integer type;
 }
