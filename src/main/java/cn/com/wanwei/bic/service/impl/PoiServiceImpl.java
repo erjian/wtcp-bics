@@ -43,14 +43,14 @@ public class PoiServiceImpl implements PoiService {
     @Override
     public ResponseMessage findByPage(Integer page, Integer size, Map<String, Object> filter) {
         try {
-            Sort sort = Sort.by(new Sort.Order[]{new Sort.Order(Sort.Direction.DESC, "weight"),new Sort.Order(Sort.Direction.DESC, "created_date")});
+            Sort sort = Sort.by(new Sort.Order[]{new Sort.Order(Sort.Direction.DESC, "weight"), new Sort.Order(Sort.Direction.DESC, "created_date")});
             MybatisPageRequest pageRequest = MybatisPageRequest.of(page, size, sort);
-            PageHelper.startPage(pageRequest.getPage(),pageRequest.getSize(),pageRequest.getOrders());
+            PageHelper.startPage(pageRequest.getPage(), pageRequest.getSize(), pageRequest.getOrders());
             Page<PoiEntity> poiEntities = poiMapper.findByPage(filter);
             PageInfo<PoiEntity> pageInfo = new PageInfo<>(poiEntities, pageRequest);
             return ResponseMessage.defaultResponse().setData(pageInfo);
         } catch (Exception e) {
-            log.info(e.getMessage());
+            log.error(e.getMessage());
             return ResponseMessage.validFailResponse().setMsg("获取失败！");
         }
     }
@@ -58,13 +58,13 @@ public class PoiServiceImpl implements PoiService {
     @Override
     public ResponseMessage find(String id) {
         try {
-            PoiEntity poiEntity =poiMapper.selectByPrimaryKey(id);
-            if(poiEntity==null){
+            PoiEntity poiEntity = poiMapper.selectByPrimaryKey(id);
+            if (poiEntity == null) {
                 return ResponseMessage.validFailResponse().setMsg("暂无该poi信息！");
             }
             return ResponseMessage.defaultResponse().setData(poiEntity);
         } catch (Exception e) {
-           log.info(e.getMessage());
+            log.error(e.getMessage());
             return ResponseMessage.validFailResponse().setMsg("获取失败！");
         }
     }
@@ -74,7 +74,7 @@ public class PoiServiceImpl implements PoiService {
         try {
             //获取统一认证生成的code
             ResponseMessage responseMessageGetCode = coderServiceFeign.buildSerialNum(appId);
-            if(responseMessageGetCode.getStatus() == 1 && responseMessageGetCode.getData() != null) {
+            if (responseMessageGetCode.getStatus() == 1 && responseMessageGetCode.getData() != null) {
                 poiEntity.setId(UUIDUtils.getInstance().getId());
                 poiEntity.setCode(responseMessageGetCode.getData().toString());
                 poiEntity.setStatus(0);
@@ -86,7 +86,7 @@ public class PoiServiceImpl implements PoiService {
             }
             return responseMessageGetCode;
         } catch (Exception e) {
-            log.info(e.getMessage());
+            log.error(e.getMessage());
             return ResponseMessage.validFailResponse().setMsg("保存失败！");
         }
     }
@@ -94,8 +94,8 @@ public class PoiServiceImpl implements PoiService {
     @Override
     public ResponseMessage update(String id, PoiEntity poiEntity, User user) {
         try {
-            PoiEntity pEntity=poiMapper.selectByPrimaryKey(id);
-            if(pEntity!=null){
+            PoiEntity pEntity = poiMapper.selectByPrimaryKey(id);
+            if (pEntity != null) {
                 poiEntity.setId(pEntity.getId());
                 poiEntity.setCreatedUser(pEntity.getCreatedUser());
                 poiEntity.setCreatedDate(pEntity.getCreatedDate());
@@ -109,7 +109,7 @@ public class PoiServiceImpl implements PoiService {
             }
             return ResponseMessage.validFailResponse().setMsg("暂无该poi信息！");
         } catch (Exception e) {
-            log.info(e.getMessage());
+            log.error(e.getMessage());
             return ResponseMessage.validFailResponse().setMsg("更新失败！");
         }
     }
@@ -120,7 +120,7 @@ public class PoiServiceImpl implements PoiService {
             poiMapper.deleteByPrimaryKey(id);
             return ResponseMessage.defaultResponse().setMsg("删除成功！");
         } catch (Exception e) {
-           log.info(e.getMessage());
+            log.error(e.getMessage());
             return ResponseMessage.validFailResponse().setMsg("删除失败！");
         }
     }
@@ -128,8 +128,8 @@ public class PoiServiceImpl implements PoiService {
     @Override
     public ResponseMessage goWeight(String id, Float weight, User user) {
         try {
-            PoiEntity pntity=poiMapper.selectByPrimaryKey(id);
-            if(pntity!=null){
+            PoiEntity pntity = poiMapper.selectByPrimaryKey(id);
+            if (pntity != null) {
                 pntity.setWeight(weight);
                 pntity.setDeptCode(user.getOrg().getCode());
                 pntity.setUpdatedUser(user.getUsername());
@@ -139,20 +139,20 @@ public class PoiServiceImpl implements PoiService {
             }
             return ResponseMessage.validFailResponse().setMsg("暂无该poi信息！");
         } catch (Exception e) {
-            log.info(e.getMessage());
+            log.error(e.getMessage());
             return ResponseMessage.validFailResponse().setMsg("权重修改失败！");
         }
     }
 
     @Override
     public ResponseMessage checkTitle(String id, String title) {
-        ResponseMessage responseMessage=ResponseMessage.defaultResponse();
-        if(StringUtils.isNotBlank(title)){
-            PoiEntity pEntity= poiMapper.checkTitle(title);
-            if(pEntity!=null){
-               if(!pEntity.getId().equals(id)){
-                   return responseMessage.setStatus(ResponseMessage.FAILED).setMsg("标题名称重复！");
-               }
+        ResponseMessage responseMessage = ResponseMessage.defaultResponse();
+        if (StringUtils.isNotBlank(title)) {
+            PoiEntity pEntity = poiMapper.checkTitle(title);
+            if (pEntity != null) {
+                if (!pEntity.getId().equals(id)) {
+                    return responseMessage.setStatus(ResponseMessage.FAILED).setMsg("标题名称重复！");
+                }
             }
         }
         return responseMessage;
