@@ -24,7 +24,7 @@ import javax.persistence.Table;
 @Table(name="bic_destination")
 @ApiModel(description="目的地基础信息管理")
 @ToString(callSuper = true)
-public class DestinationEntity {
+public class DestinationEntity extends BaseEntity{
     @ApiModelProperty(value = "审核状态")
     private Integer status;
 
