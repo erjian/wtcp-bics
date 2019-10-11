@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.com.wanwei.bic.mapper.AuditLogMapper">
+  <resultMap id="BaseResultMap" type="cn.com.wanwei.bic.entity.AuditLogEntity">
+    <id column="id" jdbcType="VARCHAR" property="id" />
+    <result column="principal_id" jdbcType="VARCHAR" property="principalId" />
+    <result column="pre_status" jdbcType="INTEGER" property="preStatus" />
+    <result column="status" jdbcType="INTEGER" property="status" />
+    <result column="opinion" jdbcType="VARCHAR" property="opinion" />
+    <result column="created_user" jdbcType="VARCHAR" property="createdUser" />
+    <result column="created_date" jdbcType="TIMESTAMP" property="createdDate" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, principal_id, pre_status, status, opinion, created_user, created_date
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from bic_audit_log
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from bic_audit_log
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="cn.com.wanwei.bic.entity.AuditLogEntity">
+    insert into bic_audit_log (id,principal_id, pre_status, status,
+      opinion, created_user, created_date
+      )
+    values (#{id,jdbcType=VARCHAR},#{principalId,jdbcType=VARCHAR}, #{preStatus,jdbcType=INTEGER}, #{status,jdbcType=INTEGER},
+      #{opinion,jdbcType=VARCHAR}, #{createdUser,jdbcType=VARCHAR}, #{createdDate,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="cn.com.wanwei.bic.entity.AuditLogEntity">
+    update bic_audit_log
+    set principal_id = #{principalId,jdbcType=VARCHAR},
+      pre_status = #{preStatus,jdbcType=INTEGER},
+      status = #{status,jdbcType=INTEGER},
+      opinion = #{opinion,jdbcType=VARCHAR},
+      created_user = #{createdUser,jdbcType=VARCHAR},
+      created_date = #{createdDate,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <select id="findByPage" parameterType="java.util.Map" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from bic_audit_log
+    where
+      principal_id = #{principalId,jdbcType=VARCHAR}
+  </select>
+</mapper>
