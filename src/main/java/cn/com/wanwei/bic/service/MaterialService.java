@@ -11,6 +11,8 @@ public interface MaterialService {
 
     ResponseMessage deleteByPrimaryKey(String id);
 
+    ResponseMessage deleteOneByPidAndId(String principalId, String id);
+
     ResponseMessage deleteByPrincipalIds(List<String> ids);
 
     ResponseMessage insert(MaterialEntity materialEntity, User user);
@@ -27,4 +29,5 @@ public interface MaterialService {
 
     ResponseMessage updateByPrimaryKey(String id, MaterialEntity materialEntity, User user);
 
+    ResponseMessage updateIdentify(String principalId, String id, Integer identify, User user);
 }

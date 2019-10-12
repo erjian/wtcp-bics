@@ -23,6 +23,27 @@ public class MaterialController extends BaseController {
     @Autowired
     private MaterialService materialService;
 
+    @ApiOperation(value = "根据主键获取素材信息", notes = "根据主键获取素材信息")
+    @ApiImplicitParam(name = "id", value = "素材主键", required = true)
+    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
+    @PreAuthorize("hasAuthority('material:r')")
+    @OperationLog(value = "wtcp-bic/根据主键获取素材信息", operate = "r", module = "素材管理")
+    public ResponseMessage detail(@PathVariable String id) {
+        return ResponseMessage.defaultResponse().setData(materialService.selectByPrimaryKey(id));
+    }
+
+    @ApiOperation(value = "根据主键和关联ID删除素材信息", notes = "根据主键和关联ID删除素材信息")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "principalId", value = "关联信息ID", required = true),
+            @ApiImplicitParam(name = "id", value = "素材主键", required = true)
+    })
+    @DeleteMapping("/{id}")
+    @PreAuthorize("hasAuthority('material:d')")
+    @OperationLog(value = "wtcp-bic/根据主键和关联ID删除素材信息", operate = "d", module = "素材管理")
+    public ResponseMessage deleteOneByPidAndId(@RequestParam String principalId, @PathVariable String id) {
+        return ResponseMessage.defaultResponse().setData(materialService.deleteOneByPidAndId(principalId, id));
+    }
+
     @ApiOperation(value = "根据关联ID获取素材信息", notes = "根据关联ID获取素材信息")
     @ApiImplicitParam(name = "principalId", value = "关联ID", required = true)
     @RequestMapping(value = "/findByPrincipalId", method = RequestMethod.GET)
@@ -54,6 +75,19 @@ public class MaterialController extends BaseController {
     @OperationLog(value = "wtcp-bic/根据关联ID及素材标识获取素材信息", operate = "r", module = "素材管理")
     public ResponseMessage findByPidAndIdentify(@RequestParam String principalId, @RequestParam Integer identify) {
         return ResponseMessage.defaultResponse().setData(materialService.findByPidAndIdentify(principalId, identify));
+    }
+
+    @ApiOperation(value = "根据关联ID和主键更新图片素材标识", notes = "根据关联ID和主键更新图片素材标识")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "principalId", value = "关联ID", required = true),
+            @ApiImplicitParam(name = "id", value = "素材主键", required = true),
+            @ApiImplicitParam(name = "identify", value = "素材标识（1：标题图片，2：亮点图片，3：标题且亮点图片）", required = true)
+    })
+    @RequestMapping(value = "/updateImgIdentify", method = RequestMethod.PUT)
+    @PreAuthorize("hasAuthority('material:r')")
+    @OperationLog(value = "wtcp-bic/根据关联ID和主键更新图片素材标识", operate = "r", module = "素材管理")
+    public ResponseMessage updateIdentify(@RequestParam String principalId, @RequestParam String id, @RequestParam Integer identify) throws Exception {
+        return ResponseMessage.defaultResponse().setData(materialService.updateIdentify(principalId, id, identify, getCurrentUser()));
     }
 
 }

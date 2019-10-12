@@ -35,6 +35,12 @@ public class MaterialServiceImpl implements MaterialService {
     }
 
     @Override
+    public ResponseMessage deleteOneByPidAndId(String principalId, String id) {
+        materialMapper.deleteOneByPidAndId(principalId, id);
+        return ResponseMessage.defaultResponse().setMsg("删除成功");
+    }
+
+    @Override
     public ResponseMessage deleteByPrincipalIds(List<String> ids) {
         materialMapper.deleteByPrincipalIds(ids);
         return ResponseMessage.defaultResponse().setMsg("删除成功");
@@ -109,5 +115,33 @@ public class MaterialServiceImpl implements MaterialService {
         materialEntity.setUpdatedDate(new Date());
         materialMapper.updateByPrimaryKey(materialEntity);
         return ResponseMessage.defaultResponse().setMsg("更新成功");
+    }
+
+    @Override
+    public ResponseMessage updateIdentify(String principalId, String id, Integer identify, User user) {
+        ResponseMessage responseMessage = ResponseMessage.defaultResponse();
+        // 查询数据是否存在
+        MaterialEntity entity = materialMapper.findByIdAndPid(id, principalId);
+        if(null == entity){
+            responseMessage.setStatus(ResponseMessage.FAILED).setMsg("资源不存在");
+        }else{
+            // 先获取当前资源在改标识下的数据
+            List<MaterialEntity> oldList = materialMapper.findByPidAndIdentify(principalId, identify);
+            if(null != oldList){
+                for(MaterialEntity item : oldList){
+                    item.setFileIdentify(0);
+                    item.setUpdatedUser(user.getUsername());
+                    item.setUpdatedDate(new Date());
+                    materialMapper.updateByPrimaryKey(item);
+                }
+            }
+            // 更新数据
+            entity.setFileIdentify(identify);
+            entity.setUpdatedUser(user.getUsername());
+            entity.setUpdatedDate(new Date());
+            materialMapper.updateByPrimaryKey(entity);
+            responseMessage.setMsg("设置成功");
+        }
+        return responseMessage;
     }
 }
