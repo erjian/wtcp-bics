@@ -84,8 +84,8 @@ public class MaterialController extends BaseController {
             @ApiImplicitParam(name = "identify", value = "素材标识（1：标题图片，2：亮点图片，3：标题且亮点图片）", required = true)
     })
     @RequestMapping(value = "/updateImgIdentify", method = RequestMethod.PUT)
-    @PreAuthorize("hasAuthority('material:r')")
-    @OperationLog(value = "wtcp-bic/根据关联ID和主键更新图片素材标识", operate = "r", module = "素材管理")
+    @PreAuthorize("hasAuthority('material:u')")
+    @OperationLog(value = "wtcp-bic/根据关联ID和主键更新图片素材标识", operate = "u", module = "素材管理")
     public ResponseMessage updateIdentify(@RequestParam String principalId, @RequestParam String id, @RequestParam Integer identify) throws Exception {
         return ResponseMessage.defaultResponse().setData(materialService.updateIdentify(principalId, id, identify, getCurrentUser()));
     }
