@@ -1,5 +1,6 @@
 package cn.com.wanwei.bic.service;
 
+import cn.com.wanwei.bic.entity.AuditLogEntity;
 import cn.com.wanwei.bic.entity.DestinationEntity;
 import cn.com.wanwei.common.model.ResponseMessage;
 import cn.com.wanwei.common.model.User;
@@ -47,7 +48,7 @@ public interface DestinationService {
      * @param id
      * @return
      */
-    DestinationEntity selectByPrimaryKey(String id) throws Exception ;
+    ResponseMessage selectByPrimaryKey(String id);
 
     /**
      * 删除目的地信息
@@ -66,4 +67,11 @@ public interface DestinationService {
      */
     ResponseMessage changeWeight(String id, Float weightNum, String username);
 
+    /**
+     * 目的地信息记录审核
+     * @param auditLogEntity
+     * @param username
+     * @return
+     */
+    ResponseMessage changeStatus(AuditLogEntity auditLogEntity, String username, int type);
 }

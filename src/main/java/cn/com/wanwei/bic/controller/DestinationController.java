@@ -1,9 +1,11 @@
 package cn.com.wanwei.bic.controller;
 
+import cn.com.wanwei.bic.entity.AuditLogEntity;
 import cn.com.wanwei.bic.entity.DestinationEntity;
 import cn.com.wanwei.bic.service.DestinationService;
 import cn.com.wanwei.common.log.annotation.OperationLog;
 import cn.com.wanwei.common.model.ResponseMessage;
+import cn.com.wanwei.common.model.User;
 import cn.com.wanwei.common.utils.RequestUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
@@ -75,12 +77,8 @@ public class DestinationController extends BaseController {
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     @PreAuthorize("hasAuthority('destination:v')")
     @OperationLog(value = "wtcp-bics/根据id查询目的地基础信息详情", operate = "v", module = "目的地基础信息管理")
-    public ResponseMessage detail(@PathVariable("id") String id) throws Exception {
-        DestinationEntity destinationEntity = destinationService.selectByPrimaryKey(id);
-        if (destinationEntity == null) {
-            return ResponseMessage.validFailResponse().setMsg("数据不存在");
-        }
-        return ResponseMessage.defaultResponse().setData(destinationEntity);
+    public ResponseMessage detail(@PathVariable("id") String id){
+        return destinationService.selectByPrimaryKey(id);
     }
 
     @ApiOperation(value = "删除目的地基础信息", notes = "根据ID删除目的地基础信息")
@@ -101,6 +99,25 @@ public class DestinationController extends BaseController {
     @PreAuthorize("hasAuthority('destination:w')")
     public ResponseMessage changeWeight(@PathVariable("id") String id, @PathVariable("sortNum") Float weightNum) throws Exception {
         return destinationService.changeWeight(id,weightNum,getCurrentUser().getUsername());
+    }
+
+    @ApiOperation(value = "目的地基础信息审核", notes = "目的地基础信息审核")
+    @ApiImplicitParam(name = "auditLogEntity", value = "审核记录实体", required = true, dataType = "AuditLogEntity")
+    @PostMapping(value = "/changeStatus")
+    @PreAuthorize("hasAuthority('destination:a')")
+    @OperationLog(value = "wtcp-bics/目的地基础信息审核", operate = "a", module = "目的地基础信息审核")
+    public ResponseMessage changeStatus(@RequestBody AuditLogEntity auditLogEntity) throws Exception {
+        auditLogEntity.setType(0);
+        return destinationService.changeStatus(auditLogEntity,getCurrentUser().getUsername(),0);
+    }
+
+    @ApiOperation(value = "目的地基础信息上线", notes = "目的地基础信息上线")
+    @ApiImplicitParam(name = "auditLogEntity", value = "审核记录实体", required = true, dataType = "AuditLogEntity")
+    @PostMapping(value = "/changeIssue")
+    @PreAuthorize("hasAuthority('destination:u')")
+    @OperationLog(value = "wtcp-bics/目的地基础信息上线", operate = "u", module = "目的地基础信息上线")
+    public ResponseMessage changeIssue(@RequestBody AuditLogEntity auditLogEntity) throws Exception {
+        return destinationService.changeStatus(auditLogEntity,getCurrentUser().getUsername(),1);
     }
 
 }

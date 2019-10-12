@@ -24,10 +24,10 @@
     where id = #{id,jdbcType=VARCHAR}
   </delete>
   <insert id="insert" parameterType="cn.com.wanwei.bic.entity.DestinationRelationEntity">
-    insert into t_bic_destination_relation (destination_id, principal_id, created_user,
+    insert into t_bic_destination_relation (id,destination_id, principal_id, created_user,
       created_date, type, dept_code
       )
-    values (#{destinationId,jdbcType=VARCHAR}, #{principalId,jdbcType=VARCHAR}, #{createdUser,jdbcType=VARCHAR}, 
+    values (#{id,jdbcType=VARCHAR},#{destinationId,jdbcType=VARCHAR}, #{principalId,jdbcType=VARCHAR}, #{createdUser,jdbcType=VARCHAR},
       #{createdDate,jdbcType=TIMESTAMP}, #{type,jdbcType=INTEGER}, #{deptCode,jdbcType=VARCHAR}
       )
   </insert>

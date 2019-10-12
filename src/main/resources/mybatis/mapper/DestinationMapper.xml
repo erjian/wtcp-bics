@@ -37,14 +37,14 @@
     where id = #{id,jdbcType=VARCHAR}
   </delete>
   <insert id="insert" parameterType="cn.com.wanwei.bic.entity.DestinationEntity">
-    insert into t_bic_destination (status, region_full_name, region_full_code,
+    insert into t_bic_destination (id,status, region_full_name, region_full_code,
       region, introduce, eat_introduce, 
       drink_introduce, play_introduce, tourism_introduce, 
       shop_introduce, entertainment_introduce, 
       weight, dept_code, created_user, 
       created_date, updated_user, updated_date
       )
-    values (#{status,jdbcType=BIT}, #{regionFullName,jdbcType=VARCHAR}, #{regionFullCode,jdbcType=VARCHAR}, 
+    values (#{id,jdbcType=VARCHAR},#{status,jdbcType=BIT}, #{regionFullName,jdbcType=VARCHAR}, #{regionFullCode,jdbcType=VARCHAR},
       #{region,jdbcType=VARCHAR}, #{introduce,jdbcType=VARCHAR}, #{eatIntroduce,jdbcType=VARCHAR}, 
       #{drinkIntroduce,jdbcType=VARCHAR}, #{playIntroduce,jdbcType=VARCHAR}, #{tourismIntroduce,jdbcType=VARCHAR}, 
       #{shopIntroduce,jdbcType=VARCHAR}, #{entertainmentIntroduce,jdbcType=VARCHAR}, 
