@@ -1,6 +1,7 @@
 package cn.com.wanwei.bic.service;
 
 
+import cn.com.wanwei.bic.entity.AuditLogEntity;
 import cn.com.wanwei.bic.entity.PoiEntity;
 import cn.com.wanwei.common.model.ResponseMessage;
 import cn.com.wanwei.common.model.User;
@@ -67,4 +68,13 @@ public interface PoiService {
      * @return
      */
     ResponseMessage checkTitle(String id, String title);
+
+    /**
+     * poi信息审核操作和上下线
+     * @param auditLogEntity
+     * @param user
+     * @param type (0：审核操作，1：上下线操作)
+     * @return
+     */
+    ResponseMessage auditOrIssue(AuditLogEntity auditLogEntity, User user, int type);
 }

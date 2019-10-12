@@ -38,7 +38,7 @@ public class PoiServiceTest {
     public void before(){
         System.out.println("---------------- poi管理接口单元测试开始 ---------------------");
         poiEntity=new PoiEntity();
-        poiEntity.setId("11111");
+        poiEntity.setId("-11111");
         poiEntity.setDeptCode("111111");
         poiEntity.setCode("123");
         poiEntity.setStatus(0);
@@ -83,7 +83,7 @@ public class PoiServiceTest {
     public void findTest(){
         System.out.println("---------------查询poi信息---------------");
         Map<String,Object>filter= Maps.newHashMap();
-        ResponseMessage back = poiService.find("-111111111");
+        ResponseMessage back = poiService.find("-11111");
         System.out.println("返回值：" +back.getData() );
         Assert.assertSame("返回值是1", true, back.getData()==null?true:false);
     }
@@ -102,7 +102,7 @@ public class PoiServiceTest {
     @Rollback
     public void updateTest() {
         System.out.println("---------------编辑poi信息---------------");
-        ResponseMessage back = poiService.update("-111111111",poiEntity, user);
+        ResponseMessage back = poiService.update("-11111",poiEntity, user);
         int status=  back.getStatus();
         System.out.println("返回值：" + status);
         Assert.assertSame("返回值是0", 0, status);
@@ -112,17 +112,17 @@ public class PoiServiceTest {
     @Rollback
     public void deleteTest() {
         System.out.println("---------------删除poi信息---------------");
-        ResponseMessage back = poiService.delete("-111111111");
+        ResponseMessage back = poiService.delete("-11111");
         int status=  back.getStatus();
         System.out.println("返回值：" + status);
-        Assert.assertSame("返回值是0", 0, status);
+        Assert.assertSame("返回值是1", 1, status);
     }
 
     @Test
     @Rollback
     public void goWeightTest() {
         System.out.println("---------------权重更改---------------");
-        ResponseMessage back = poiService.goWeight("-111111111",Float.valueOf("1"), user);
+        ResponseMessage back = poiService.goWeight("-11111",Float.valueOf("1"), user);
         int status=  back.getStatus();
         System.out.println("返回值：" + status);
         Assert.assertSame("返回值是0", 0, status);
@@ -131,7 +131,7 @@ public class PoiServiceTest {
     @Test
     public void checkTitleTest(){
         System.out.println("---------------标题重名校验---------------");
-        ResponseMessage back = poiService.checkTitle("-111111111","cesh");
+        ResponseMessage back = poiService.checkTitle("-11111","cesh");
         int status=  back.getStatus();
         System.out.println("返回值：" + status);
         Assert.assertSame("返回值是1", 1, status);

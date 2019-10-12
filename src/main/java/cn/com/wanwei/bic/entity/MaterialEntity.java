@@ -14,7 +14,7 @@ import javax.persistence.Table;
 @EqualsAndHashCode(callSuper=false)
 @NoArgsConstructor
 @Entity
-@Table(name="bic_material")
+@Table(name="t_bic_material")
 @ApiModel(description="素材表")
 @ToString(callSuper = true)
 public class MaterialEntity extends BaseEntity{

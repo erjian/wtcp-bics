@@ -1,5 +1,6 @@
 package cn.com.wanwei.bic.controller;
 
+import cn.com.wanwei.bic.entity.AuditLogEntity;
 import cn.com.wanwei.bic.entity.PoiEntity;
 import cn.com.wanwei.bic.service.PoiService;
 import cn.com.wanwei.common.log.annotation.OperationLog;
@@ -90,7 +91,7 @@ public class PoiController extends  BaseController{
             @ApiImplicitParam(name = "id", value = "poi信息ID", required = true),
             @ApiImplicitParam(name = "weight", value = "权重", required = true)
     })
-    @GetMapping(value = "weight/{id}")
+    @GetMapping(value = "/weight/{id}")
     @PreAuthorize("hasAuthority('poi:q')")
     @OperationLog(value = "wtcp-bics/权重更改", operate = "u", module = "poi管理")
     public ResponseMessage goWeight(@PathVariable(value = "id") String id,@RequestParam Float weight) throws Exception {
@@ -102,21 +103,30 @@ public class PoiController extends  BaseController{
             @ApiImplicitParam(name = "id", value = "poi信息ID"),
             @ApiImplicitParam(name = "title", value = "标题")
     })
-    @GetMapping(value = "checkTitle")
+    @GetMapping(value = "/checkTitle")
     public ResponseMessage checkTitle(@RequestParam(value = "id",required = false) String id,
                                       @RequestParam(value = "title",required = false) String title){
         return poiService.checkTitle(id,title);
     }
 
-//    @ApiOperation(value = "poi信息审核", notes = "poi信息审核")
-//    @ApiImplicitParams({
-//            @ApiImplicitParam(name = "id", value = "poi信息ID"),
-//            @ApiImplicitParam(name = "title", value = "标题")
-//    })
-//    @GetMapping(value = "checkTitle")
-//    public ResponseMessage checkTitle(@RequestParam(value = "id",required = false) String id,
-//                                      @RequestParam(value = "title",required = false) String title){
-//        return poiService.checkTitle(id,title);
-//    }
+    @ApiOperation(value = "poi信息审核", notes = "poi信息审核")
+    @ApiImplicitParam(name = "auditLogEntity", value = "审核记录实体",required = true,dataType = "AuditLogEntity")
+    @PutMapping(value = "/audit")
+    public ResponseMessage audit(@RequestBody AuditLogEntity auditLogEntity ,BindingResult bindingResult) throws Exception {
+        if(bindingResult.hasErrors()){
+            return ResponseMessage.validFailResponse().setMsg(bindingResult.getAllErrors());
+        }
+        return poiService.auditOrIssue(auditLogEntity,getCurrentUser(),0);
+    }
+
+    @ApiOperation(value = "poi信息上下线", notes = "poi信息上下线")
+    @ApiImplicitParam(name = "auditLogEntity", value = "审核记录实体",required = true,dataType = "AuditLogEntity")
+    @PutMapping(value = "/issue")
+    public ResponseMessage issue(@RequestBody AuditLogEntity auditLogEntity ,BindingResult bindingResult) throws Exception {
+        if(bindingResult.hasErrors()){
+            return ResponseMessage.validFailResponse().setMsg(bindingResult.getAllErrors());
+        }
+        return poiService.auditOrIssue(auditLogEntity,getCurrentUser(),1);
+    }
 
 }

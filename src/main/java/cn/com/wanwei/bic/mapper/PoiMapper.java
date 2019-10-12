@@ -3,9 +3,6 @@ package cn.com.wanwei.bic.mapper;
 import cn.com.wanwei.bic.entity.PoiEntity;
 import com.github.pagehelper.Page;
 import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
-
-import java.util.List;
 import java.util.Map;
 
 @Mapper

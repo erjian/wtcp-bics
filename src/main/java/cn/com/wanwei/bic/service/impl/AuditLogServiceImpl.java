@@ -6,7 +6,6 @@ import cn.com.wanwei.bic.mapper.AuditLogMapper;
 import cn.com.wanwei.bic.service.AuditLogService;
 import cn.com.wanwei.bic.utils.UUIDUtils;
 import cn.com.wanwei.common.model.ResponseMessage;
-import cn.com.wanwei.common.model.User;
 import cn.com.wanwei.persistence.mybatis.MybatisPageRequest;
 import cn.com.wanwei.persistence.mybatis.PageInfo;
 import com.github.pagehelper.Page;

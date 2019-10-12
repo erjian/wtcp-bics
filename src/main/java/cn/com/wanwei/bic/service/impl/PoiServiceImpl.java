@@ -1,8 +1,10 @@
 package cn.com.wanwei.bic.service.impl;
 
+import cn.com.wanwei.bic.entity.AuditLogEntity;
 import cn.com.wanwei.bic.entity.PoiEntity;
 import cn.com.wanwei.bic.feign.CoderServiceFeign;
 import cn.com.wanwei.bic.mapper.PoiMapper;
+import cn.com.wanwei.bic.service.AuditLogService;
 import cn.com.wanwei.bic.service.PoiService;
 import cn.com.wanwei.bic.utils.UUIDUtils;
 import cn.com.wanwei.common.model.ResponseMessage;
@@ -20,7 +22,6 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -33,6 +34,9 @@ public class PoiServiceImpl implements PoiService {
 
     @Autowired
     private PoiMapper poiMapper;
+
+    @Autowired
+    private AuditLogService auditLogService;
 
     @Autowired
     private CoderServiceFeign coderServiceFeign;
@@ -156,5 +160,44 @@ public class PoiServiceImpl implements PoiService {
             }
         }
         return responseMessage;
+    }
+
+    @Override
+    public ResponseMessage auditOrIssue(AuditLogEntity auditLogEntity, User user, int type) {
+        try {
+            PoiEntity pntity = poiMapper.selectByPrimaryKey(auditLogEntity.getPrincipalId());
+            if (pntity == null) {
+                return ResponseMessage.validFailResponse().setMsg("暂无该poi信息！");
+            }
+            String msg="审核成功！";
+            if(type==1){
+                //上线
+                if(auditLogEntity.getPreStatus()==0||auditLogEntity.getPreStatus()==2){
+                    return ResponseMessage.validFailResponse().setMsg("当前信息未审核通过，不可上下线操作！");
+                }else {
+                    if(auditLogEntity.getStatus()==1||auditLogEntity.getStatus()==9){
+                        msg=auditLogEntity.getStatus()==1?"下线成功！":"上线成功！";
+                    }else{
+                        return ResponseMessage.validFailResponse().setMsg("上下线状态错误！");
+                    }
+                }
+            }else {
+                //审核
+                if(auditLogEntity.getStatus()==9){
+                    return ResponseMessage.validFailResponse().setMsg("审核状态错误！");
+                }
+            }
+            pntity.setStatus(auditLogEntity.getStatus());
+            pntity.setDeptCode(user.getOrg().getCode());
+            pntity.setUpdatedUser(user.getUsername());
+            pntity.setUpdatedDate(new Date());
+            poiMapper.updateByPrimaryKey(pntity);
+            auditLogEntity.setType(type);
+            auditLogService.create(auditLogEntity,user.getUsername());
+            return ResponseMessage.defaultResponse().setMsg(msg);
+        } catch (Exception e) {
+            log.error(e.getMessage());
+            return ResponseMessage.validFailResponse().setMsg("操作失败！");
+        }
     }
 }
