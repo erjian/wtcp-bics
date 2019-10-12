@@ -24,15 +24,15 @@
   <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
-    from bic_contact
+    from t_bic_contact
     where id = #{id,jdbcType=VARCHAR}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
-    delete from bic_contact
+    delete from t_bic_contact
     where id = #{id,jdbcType=VARCHAR}
   </delete>
   <insert id="insert" parameterType="cn.com.wanwei.bic.entity.ContactEntity">
-    insert into bic_contact (id, principal_id, phone, fax,
+    insert into t_bic_contact (id, principal_id, phone, fax,
       website, mail, wechat, 
       micro_blog, complaint_call, rescue_call, 
       created_user, created_date, updated_user, 
@@ -44,7 +44,7 @@
       #{updatedDate,jdbcType=TIMESTAMP})
   </insert>
   <update id="updateByPrimaryKey" parameterType="cn.com.wanwei.bic.entity.ContactEntity">
-    update bic_contact
+    update t_bic_contact
     set principal_id = #{principalId,jdbcType=VARCHAR},
       phone = #{phone,jdbcType=VARCHAR},
       fax = #{fax,jdbcType=VARCHAR},
