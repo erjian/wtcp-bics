@@ -35,7 +35,7 @@ public class DestinationRelationController extends BaseController{
     @PreAuthorize("hasAuthority('destRelation:r')")
     @OperationLog(value = "wtcp-bic/根据目的地ID获取关联信息", operate = "r", module = "目的地管理")
     @RequestMapping(value = "/findPrincipalByDestinationId", method = RequestMethod.GET)
-    public ResponseMessage findPrincipalByDestinationId(@RequestParam String id) {
+    public ResponseMessage findPrincipalByDestinationId(@RequestParam String id) throws Exception{
         return destinationRelationService.findPrincipalByDestinationId(id, DestinationRelationEntity.class);
     }
 

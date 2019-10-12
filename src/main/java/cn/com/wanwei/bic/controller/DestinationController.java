@@ -77,7 +77,7 @@ public class DestinationController extends BaseController {
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     @PreAuthorize("hasAuthority('destination:v')")
     @OperationLog(value = "wtcp-bics/根据id查询目的地基础信息详情", operate = "v", module = "目的地基础信息管理")
-    public ResponseMessage detail(@PathVariable("id") String id){
+    public ResponseMessage detail(@PathVariable("id") String id) throws Exception{
         return destinationService.selectByPrimaryKey(id);
     }
 
@@ -92,31 +92,33 @@ public class DestinationController extends BaseController {
 
     @ApiOperation(value = "目的地基础信息权重修改", notes = "目的地基础信息权重修改")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "id", value = "目的地基础信息ID", required = true, dataType = "String"),
-            @ApiImplicitParam(name = "weightNum", value = "权重", required = true, dataType = "String")
+            @ApiImplicitParam(name = "id", value = "目的地基础信息ID", required = true),
+            @ApiImplicitParam(name = "weight", value = "权重", required = true)
     })
-    @RequestMapping(value = "/changeWeight/{id}/{sortNum}", method = RequestMethod.GET)
-    @PreAuthorize("hasAuthority('destination:w')")
-    public ResponseMessage changeWeight(@PathVariable("id") String id, @PathVariable("sortNum") Float weightNum) throws Exception {
-        return destinationService.changeWeight(id,weightNum,getCurrentUser().getUsername());
+    @RequestMapping(value = "/changeWeight/{id}}", method = RequestMethod.GET)
+    @PreAuthorize("hasAuthority('destination:q')")
+    @OperationLog(value = "wtcp-bics/目的地基础信息权重修改", operate = "u", module = "目的地基础信息权重修改")
+    public ResponseMessage changeWeight(@PathVariable("id") String id, @PathVariable("weight") Float weight) throws Exception {
+        return destinationService.changeWeight(id,weight,getCurrentUser().getUsername());
     }
 
-    @ApiOperation(value = "目的地基础信息审核", notes = "目的地基础信息审核")
-    @ApiImplicitParam(name = "auditLogEntity", value = "审核记录实体", required = true, dataType = "AuditLogEntity")
+    @ApiOperation(value = "目的地信息审核", notes = "目的地信息审核")
+    @ApiImplicitParam(name = "auditLogEntity", value = "审核记录实体",required = true,dataType = "AuditLogEntity")
     @PostMapping(value = "/changeStatus")
-    @PreAuthorize("hasAuthority('destination:a')")
-    @OperationLog(value = "wtcp-bics/目的地基础信息审核", operate = "a", module = "目的地基础信息审核")
-    public ResponseMessage changeStatus(@RequestBody AuditLogEntity auditLogEntity) throws Exception {
-        auditLogEntity.setType(0);
+    public ResponseMessage changeStatus(@RequestBody AuditLogEntity auditLogEntity ,BindingResult bindingResult) throws Exception {
+        if(bindingResult.hasErrors()){
+            return ResponseMessage.validFailResponse().setMsg(bindingResult.getAllErrors());
+        }
         return destinationService.changeStatus(auditLogEntity,getCurrentUser().getUsername(),0);
     }
 
-    @ApiOperation(value = "目的地基础信息上线", notes = "目的地基础信息上线")
-    @ApiImplicitParam(name = "auditLogEntity", value = "审核记录实体", required = true, dataType = "AuditLogEntity")
+    @ApiOperation(value = "目的地信息上线", notes = "目的地信息上线")
+    @ApiImplicitParam(name = "auditLogEntity", value = "审核记录实体",required = true,dataType = "AuditLogEntity")
     @PostMapping(value = "/changeIssue")
-    @PreAuthorize("hasAuthority('destination:u')")
-    @OperationLog(value = "wtcp-bics/目的地基础信息上线", operate = "u", module = "目的地基础信息上线")
-    public ResponseMessage changeIssue(@RequestBody AuditLogEntity auditLogEntity) throws Exception {
+    public ResponseMessage changeIssue(@RequestBody AuditLogEntity auditLogEntity ,BindingResult bindingResult) throws Exception {
+        if(bindingResult.hasErrors()){
+            return ResponseMessage.validFailResponse().setMsg(bindingResult.getAllErrors());
+        }
         return destinationService.changeStatus(auditLogEntity,getCurrentUser().getUsername(),1);
     }
 

@@ -17,7 +17,7 @@ public interface DestinationRelationService {
      * @param destinationRelationEntityClass
      * @return
      */
-    ResponseMessage findPrincipalByDestinationId(String id, Class<DestinationRelationEntity> destinationRelationEntityClass);
+    ResponseMessage findPrincipalByDestinationId(String id, Class<DestinationRelationEntity> destinationRelationEntityClass) throws Exception;
 
     /**
      * 目的地关联信息新增
@@ -25,5 +25,5 @@ public interface DestinationRelationService {
      * @param username
      * @return
      */
-    ResponseMessage save(DestinationRelationEntity destinationRelationEntity, String username);
+    ResponseMessage save(DestinationRelationEntity destinationRelationEntity, String username) throws Exception;
 }

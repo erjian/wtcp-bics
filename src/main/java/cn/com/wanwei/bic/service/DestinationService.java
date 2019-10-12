@@ -48,7 +48,7 @@ public interface DestinationService {
      * @param id
      * @return
      */
-    ResponseMessage selectByPrimaryKey(String id);
+    ResponseMessage selectByPrimaryKey(String id) throws Exception;
 
     /**
      * 删除目的地信息
@@ -65,7 +65,7 @@ public interface DestinationService {
      * @param username
      * @return
      */
-    ResponseMessage changeWeight(String id, Float weightNum, String username);
+    ResponseMessage changeWeight(String id, Float weightNum, String username) throws Exception;
 
     /**
      * 目的地信息记录审核
@@ -73,5 +73,5 @@ public interface DestinationService {
      * @param username
      * @return
      */
-    ResponseMessage changeStatus(AuditLogEntity auditLogEntity, String username, int type);
+    ResponseMessage changeStatus(AuditLogEntity auditLogEntity, String username, int type) throws Exception;
 }

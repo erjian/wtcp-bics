@@ -34,17 +34,12 @@ public class DestinationRelationServiceImpl implements DestinationRelationServic
      * @return
      */
     @Override
-    public ResponseMessage findPrincipalByDestinationId(String id, Class<DestinationRelationEntity> destinationRelationEntityClass) {
-        try {
-            List<DestinationRelationEntity> destList = destinationRelationMapper.findPrincipalByDestinationId(id);
-            if(destList.size() > 0){
-                return ResponseMessage.defaultResponse().setData(destList);
-            }else{
-                return ResponseMessage.validFailResponse().setMsg("暂无关联信息!");
-            }
-        } catch (Exception e) {
-            log.error(e.getMessage());
-            return ResponseMessage.validFailResponse().setMsg("查询失败!");
+    public ResponseMessage findPrincipalByDestinationId(String id, Class<DestinationRelationEntity> destinationRelationEntityClass) throws Exception{
+        List<DestinationRelationEntity> destList = destinationRelationMapper.findPrincipalByDestinationId(id);
+        if(destList.size() > 0){
+            return ResponseMessage.defaultResponse().setData(destList);
+        }else{
+            return ResponseMessage.validFailResponse().setMsg("暂无关联信息!");
         }
     }
 
@@ -55,16 +50,11 @@ public class DestinationRelationServiceImpl implements DestinationRelationServic
      * @return
      */
     @Override
-    public ResponseMessage save(DestinationRelationEntity destinationRelationEntity, String username) {
-        try {
-            destinationRelationEntity.setId(UUIDUtils.getInstance().getId());
-            destinationRelationEntity.setCreatedUser(username);
-            destinationRelationEntity.setCreatedDate(new Date());
-            destinationRelationMapper.insert(destinationRelationEntity);
-            return ResponseMessage.defaultResponse().setMsg("保存成功!");
-        } catch (Exception e) {
-            log.error(e.getMessage());
-            return ResponseMessage.validFailResponse().setMsg("保存失败!");
-        }
+    public ResponseMessage save(DestinationRelationEntity destinationRelationEntity, String username) throws Exception{
+        destinationRelationEntity.setId(UUIDUtils.getInstance().getId());
+        destinationRelationEntity.setCreatedUser(username);
+        destinationRelationEntity.setCreatedDate(new Date());
+        destinationRelationMapper.insert(destinationRelationEntity);
+        return ResponseMessage.defaultResponse().setMsg("保存成功!");
     }
 }
