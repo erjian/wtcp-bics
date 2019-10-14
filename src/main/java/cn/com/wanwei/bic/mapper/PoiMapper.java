@@ -1,8 +1,10 @@
 package cn.com.wanwei.bic.mapper;
 
 import cn.com.wanwei.bic.entity.PoiEntity;
+import cn.com.wanwei.common.annotation.DataScope;
 import com.github.pagehelper.Page;
 import org.apache.ibatis.annotations.Mapper;
+
 import java.util.Map;
 
 @Mapper
@@ -11,6 +13,7 @@ public interface PoiMapper {
 
     int insert(PoiEntity record);
 
+    @DataScope
     PoiEntity selectByPrimaryKey(String id);
 
     int updateByPrimaryKey(PoiEntity record);
@@ -20,6 +23,7 @@ public interface PoiMapper {
      * @param filter
      * @return
      */
+    @DataScope
     Page<PoiEntity> findByPage(Map<String, Object> filter);
 
     /**
