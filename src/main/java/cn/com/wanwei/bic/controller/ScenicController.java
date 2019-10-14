@@ -2,6 +2,7 @@ package cn.com.wanwei.bic.controller;
 
 import cn.com.wanwei.bic.entity.ScenicEntity;
 import cn.com.wanwei.bic.model.DataBindModel;
+import cn.com.wanwei.bic.model.ScenicModel;
 import cn.com.wanwei.bic.service.ScenicService;
 import cn.com.wanwei.common.log.annotation.OperationLog;
 import cn.com.wanwei.common.model.ResponseMessage;
@@ -65,15 +66,15 @@ public class ScenicController extends BaseController {
     }
 
     @ApiOperation(value = "景区新增", notes = "景区新增")
-    @ApiImplicitParam(name = "scenicEntity", value = "景区", required = true, dataType = "ScenicEntity")
+    @ApiImplicitParam(name = "scenicModel", value = "景区model", required = true, dataType = "ScenicModel")
     @PostMapping(value = "/save")
     @PreAuthorize("hasAuthority('scenic:c')")
     @OperationLog(value = "wtcp-bics/景区新增", operate = "c", module = "景区管理")
-    public ResponseMessage save(@RequestBody ScenicEntity scenicEntity, BindingResult bindingResult) throws Exception {
+    public ResponseMessage save(@RequestBody ScenicModel scenicModel, BindingResult bindingResult) throws Exception {
         if (bindingResult.hasErrors()) {
             return ResponseMessage.validFailResponse().setMsg(bindingResult.getAllErrors());
         }
-        return scenicService.save(scenicEntity,getCurrentUser().getUsername());
+        return scenicService.save(scenicModel,getCurrentUser().getUsername(), ruleId, appCode);
     }
 
     @ApiOperation(value = "景区编辑", notes = "景区编辑")

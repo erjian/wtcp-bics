@@ -8,6 +8,7 @@ package cn.com.wanwei.bic.service;
 
 import cn.com.wanwei.bic.entity.ScenicEntity;
 import cn.com.wanwei.bic.model.DataBindModel;
+import cn.com.wanwei.bic.model.ScenicModel;
 import cn.com.wanwei.common.model.ResponseMessage;
 import cn.com.wanwei.common.model.User;
 
@@ -21,10 +22,10 @@ public interface ScenicService {
 	/**
 	 * 保存一条记录
 	 * @auth linjw 2019年10月9日14:48:19
-	 * @param record
+	 * @param scenicModel
 	 * @return
 	 */
-	ResponseMessage save(ScenicEntity record, String userName) throws Exception;
+	ResponseMessage save(ScenicModel scenicModel, String userName, Long ruleId, Integer appCode) throws Exception;
 
 	/**
 	 * 根据Id删除一条记录
