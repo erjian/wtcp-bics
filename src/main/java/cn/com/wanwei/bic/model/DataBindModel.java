@@ -13,8 +13,7 @@ import lombok.Data;
 import java.util.List;
 
 /**
- * wtcp-traveltips - DataBindModel
- * 攻略model
+ * wtcp-bics - DataBindModel
  */
 @Data
 public class DataBindModel {
