@@ -140,6 +140,7 @@ public class MaterialServiceTest {
     }
 
     @Test
+    @Rollback
     public void updateByPrimaryKeyTest() {
         log.info("--------------- 更新素材信息---------------");
         List<MaterialEntity> list = Lists.newArrayList();
@@ -147,6 +148,17 @@ public class MaterialServiceTest {
         ResponseMessage back = materialService.updateByPrimaryKey(materialEntity.getId(), materialEntity, user);
         System.out.println("返回值：" + back.getStatus());
         Assert.assertSame("返回值是1", 1, back.getStatus());
+    }
+
+    @Test
+    @Rollback
+    public void updateIdentifyTest() {
+        log.info("--------------- 更新素材信息---------------");
+        List<MaterialEntity> list = Lists.newArrayList();
+        list.add(materialEntity);
+        ResponseMessage back = materialService.updateIdentify(materialEntity.getPrincipalId(),materialEntity.getId(), materialEntity.getFileIdentify(), user);
+        System.out.println("返回值：" + back.getStatus());
+        Assert.assertSame("返回值是0", 0, back.getStatus());
     }
 
 }

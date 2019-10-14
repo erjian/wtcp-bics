@@ -5,7 +5,6 @@ import cn.com.wanwei.bic.entity.DestinationEntity;
 import cn.com.wanwei.bic.service.DestinationService;
 import cn.com.wanwei.common.log.annotation.OperationLog;
 import cn.com.wanwei.common.model.ResponseMessage;
-import cn.com.wanwei.common.model.User;
 import cn.com.wanwei.common.utils.RequestUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;

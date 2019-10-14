@@ -33,6 +33,14 @@
         where principal_id = #{principalId,jdbcType=VARCHAR}
     </select>
 
+    <select id="findByIdAndPid" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from t_bic_material
+        where principal_id = #{principalId,jdbcType=VARCHAR}
+        and id = #{id,jdbcType=VARCHAR}
+    </select>
+
     <select id="findByPidAndType" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
@@ -52,6 +60,11 @@
     <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
         delete from t_bic_material
         where id = #{id,jdbcType=VARCHAR}
+    </delete>
+
+    <delete id="deleteOneByPidAndId" parameterType="java.lang.String">
+        delete from t_bic_material
+        where id = #{id,jdbcType=VARCHAR} and principal_id = #{principalId,jdbcType=VARCHAR}
     </delete>
 
     <delete id="deleteByPrincipalIds" parameterType="java.util.List">
