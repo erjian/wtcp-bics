@@ -7,8 +7,10 @@
 package cn.com.wanwei.bic.service.impl;
 
 import cn.com.wanwei.bic.entity.ScenicEntity;
+import cn.com.wanwei.bic.feign.CoderServiceFeign;
 import cn.com.wanwei.bic.mapper.ScenicMapper;
 import cn.com.wanwei.bic.model.DataBindModel;
+import cn.com.wanwei.bic.model.ScenicModel;
 import cn.com.wanwei.bic.service.ScenicService;
 import cn.com.wanwei.bic.utils.UUIDUtils;
 import cn.com.wanwei.common.model.ResponseMessage;
@@ -38,9 +40,16 @@ public class ScenicServiceImpl implements ScenicService {
 	@Autowired
 	private ScenicMapper scenicMapper;
 
+	@Autowired
+	private CoderServiceFeign coderServiceFeign;
+
 	@Override
-	public ResponseMessage save(ScenicEntity record, String userName) {
+	public ResponseMessage save(ScenicModel scenicModel, String userName, Long ruleId, Integer appCode) {
+		ScenicEntity record = scenicModel.getScenicEntity();
+		String type = scenicModel.getType();
 		record.setId(UUIDUtils.getInstance().getId());
+		ResponseMessage result =coderServiceFeign.buildSerialByCode(ruleId, appCode, type);
+		record.setCode(result.getData().toString());
 		record.setCreatedUser(userName);
 		record.setCreatedDate(new Date());
 		record.setStatus(0);
@@ -66,6 +75,7 @@ public class ScenicServiceImpl implements ScenicService {
 			return ResponseMessage.validFailResponse().setMsg("不存在该景区");
 		}
 		record.setId(id);
+		record.setCode(entity.getCode());
 		record.setCreatedDate(entity.getCreatedDate());
 		record.setCreatedUser(entity.getCreatedUser());
 		record.setStatus(0);
