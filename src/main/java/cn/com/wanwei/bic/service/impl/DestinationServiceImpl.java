@@ -12,6 +12,7 @@ import cn.com.wanwei.persistence.mybatis.PageInfo;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.data.domain.Sort;
@@ -185,6 +186,26 @@ public class DestinationServiceImpl implements DestinationService {
         destinationMapper.updateByPrimaryKey(destinationEntity);
         // 记录审核/上线流水操作
         auditLogService.create(auditLogEntity,username);
+        return responseMessage;
+    }
+
+    /**
+     * 校验目的地名称的唯一性
+     * @param id
+     * @param regionFullName
+     * @return
+     */
+    @Override
+    public ResponseMessage checkRegionFullName(String id, String regionFullName) {
+        ResponseMessage responseMessage = ResponseMessage.defaultResponse();
+        if (StringUtils.isNotBlank(regionFullName)) {
+            DestinationEntity destinationEntity = destinationMapper.checkRegionFullName(regionFullName);
+            if (destinationEntity != null) {
+                if (!destinationEntity.getId().equals(id)) {
+                    return responseMessage.setStatus(ResponseMessage.FAILED).setMsg("目的地名称重复！");
+                }
+            }
+        }
         return responseMessage;
     }
 

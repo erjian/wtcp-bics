@@ -72,7 +72,7 @@ public class DestinationController extends BaseController {
     }
 
     @ApiOperation(value = "查询目的地基础信息详情", notes = "根据ID查询目的地基础信息详情")
-    @ApiImplicitParam(name = "id", value = "景区基础信息ID", required = true)
+    @ApiImplicitParam(name = "id", value = "目的地基础信息ID", required = true)
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     @PreAuthorize("hasAuthority('destination:v')")
     @OperationLog(value = "wtcp-bics/根据id查询目的地基础信息详情", operate = "v", module = "目的地基础信息管理")
@@ -104,6 +104,7 @@ public class DestinationController extends BaseController {
     @ApiOperation(value = "目的地信息审核", notes = "目的地信息审核")
     @ApiImplicitParam(name = "auditLogEntity", value = "审核记录实体",required = true,dataType = "AuditLogEntity")
     @PostMapping(value = "/changeStatus")
+    @PreAuthorize("hasAuthority('destination:a')")
     public ResponseMessage changeStatus(@RequestBody AuditLogEntity auditLogEntity ,BindingResult bindingResult) throws Exception {
         if(bindingResult.hasErrors()){
             return ResponseMessage.validFailResponse().setMsg(bindingResult.getAllErrors());
@@ -114,11 +115,23 @@ public class DestinationController extends BaseController {
     @ApiOperation(value = "目的地信息上线", notes = "目的地信息上线")
     @ApiImplicitParam(name = "auditLogEntity", value = "审核记录实体",required = true,dataType = "AuditLogEntity")
     @PostMapping(value = "/changeIssue")
+    @PreAuthorize("hasAuthority('destination:s')")
     public ResponseMessage changeIssue(@RequestBody AuditLogEntity auditLogEntity ,BindingResult bindingResult) throws Exception {
         if(bindingResult.hasErrors()){
             return ResponseMessage.validFailResponse().setMsg(bindingResult.getAllErrors());
         }
         return destinationService.changeStatus(auditLogEntity,getCurrentUser().getUsername(),1);
+    }
+
+    @ApiOperation(value = "目的地名称重名校验", notes = "目的地名称重名校验")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "id", value = "目的地信息ID"),
+            @ApiImplicitParam(name = "regionFullName", value = "目的地名称")
+    })
+    @GetMapping(value = "/checkRegionFullName")
+    public ResponseMessage checkRegionFullName(@RequestParam(value = "id",required = false) String id,
+                                      @RequestParam(value = "regionFullName",required = false) String regionFullName){
+        return destinationService.checkRegionFullName(id,regionFullName);
     }
 
 }

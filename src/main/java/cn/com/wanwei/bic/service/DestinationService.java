@@ -74,4 +74,12 @@ public interface DestinationService {
      * @return
      */
     ResponseMessage changeStatus(AuditLogEntity auditLogEntity, String username, int type) throws Exception;
+
+    /**
+     * 校验目的地名称唯一性
+     * @param id
+     * @param regionFullName
+     * @return
+     */
+    ResponseMessage checkRegionFullName(String id, String regionFullName);
 }

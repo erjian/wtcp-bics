@@ -25,4 +25,10 @@ public interface DestinationMapper {
     @DataScope
     Page<DestinationEntity> findByPage(Map<String, Object> filter);
 
+    /**
+     * 校验目的地名称的唯一性
+     * @param regionFullName
+     * @return
+     */
+    DestinationEntity checkRegionFullName(String regionFullName);
 }
