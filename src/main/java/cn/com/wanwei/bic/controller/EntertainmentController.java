@@ -31,16 +31,13 @@ public class EntertainmentController extends BaseController{
     private EntertainmentService entertainmentService;
 
     @ApiOperation(value = "休闲娱乐管理分页列表",notes = "休闲娱乐管理分页列表")
-    @ApiImplicitParam(name = "type", value = "类型（1：农家乐）",required = true)
     @GetMapping(value = "/page")
     @PreAuthorize("hasAuthority('entertainment:r')")
     @OperationLog(value = "wtcp-bics/休闲娱乐管理分页列表", operate = "r", module = "休闲娱乐管理")
-    public ResponseMessage findByPage(@RequestParam(value = "type") Integer type,
-                                      @RequestParam(value = "page", defaultValue = "1") Integer page,
+    public ResponseMessage findByPage(@RequestParam(value = "page", defaultValue = "1") Integer page,
                                       @RequestParam(value = "size", defaultValue = "10") Integer size,
                                       HttpServletRequest request){
         Map<String, Object> filter = RequestUtil.getParameters(request);
-        filter.put("type",type);
         return entertainmentService.findByPage(page,size,filter);
     }
 
@@ -115,6 +112,8 @@ public class EntertainmentController extends BaseController{
     @ApiOperation(value = "休闲娱乐信息审核", notes = "休闲娱乐信息审核")
     @ApiImplicitParam(name = "auditLogEntity", value = "审核记录实体",required = true,dataType = "AuditLogEntity")
     @PutMapping(value = "/audit")
+    @PreAuthorize("hasAuthority('entertainment:a')")
+    @OperationLog(value = "wtcp-bics/休闲娱乐信息审核", operate = "a", module = "休闲娱乐管理")
     public ResponseMessage audit(@RequestBody AuditLogEntity auditLogEntity , BindingResult bindingResult) throws Exception {
         if(bindingResult.hasErrors()){
             return ResponseMessage.validFailResponse().setMsg(bindingResult.getAllErrors());
@@ -125,6 +124,8 @@ public class EntertainmentController extends BaseController{
     @ApiOperation(value = "休闲娱乐信息上下线", notes = "休闲娱乐信息上下线")
     @ApiImplicitParam(name = "auditLogEntity", value = "审核记录实体",required = true,dataType = "AuditLogEntity")
     @PutMapping(value = "/issue")
+    @PreAuthorize("hasAuthority('entertainment:s')")
+    @OperationLog(value = "wtcp-bics/休闲娱乐信息上下线", operate = "u", module = "休闲娱乐管理")
     public ResponseMessage issue(@RequestBody AuditLogEntity auditLogEntity ,BindingResult bindingResult) throws Exception {
         if(bindingResult.hasErrors()){
             return ResponseMessage.validFailResponse().setMsg(bindingResult.getAllErrors());

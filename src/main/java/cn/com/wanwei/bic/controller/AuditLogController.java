@@ -33,13 +33,13 @@ public class AuditLogController extends BaseController {
     @ApiOperation(value = "审核记录管理分页列表",notes = "审核记录管理分页列表（根据关联信息principalId获取）")
    @ApiImplicitParams({
            @ApiImplicitParam(name = "principalId", value = "关联信息ID", required = true),
-           @ApiImplicitParam(name = "type", value = "操作记录类型（0：审核记录，1：上线/下线记录）", defaultValue = "0")
+           @ApiImplicitParam(name = "type", value = "操作记录类型（0：审核记录，1：上线/下线记录）")
    })
     @GetMapping(value = "/page")
     @PreAuthorize("hasAuthority('audit:r')")
     @OperationLog(value = "wtcp-bics/审核记录管理分页列表", operate = "r", module = "审核记录管理")
     public ResponseMessage findByPage(@RequestParam(value = "principalId") String principalId,
-                                      @RequestParam(value = "type") Integer type,
+                                      @RequestParam(value = "type",defaultValue = "0") Integer type,
                                       @RequestParam(value = "page", defaultValue = "1") Integer page,
                                       @RequestParam(value = "size", defaultValue = "10") Integer size,
                                       HttpServletRequest request){

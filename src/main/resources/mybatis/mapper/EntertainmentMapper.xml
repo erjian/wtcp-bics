@@ -99,7 +99,21 @@
     <include refid="Base_Column_List" />
     from t_bic_entertainment
     <where>
-      and  `type` = #{type,jdbcType=INTEGER}
+      <if test="type!=null and type!='' ">
+        and  `type` = #{type,jdbcType=INTEGER}
+      </if>
+      <if test="title!=null and title!='' ">
+        <bind name="title" value="title + '%'" ></bind>
+        and title like #{title}
+      </if>
+      <if test="subTitle != null and subTitle!='' ">
+        <bind name="subTitle" value="subTitle + '%'" ></bind>
+        and sub_title like #{subTitle}
+      </if>
+      <if test="areaName != null and areaName!='' ">
+        <bind name="areaName" value="areaName + '%'" ></bind>
+        and region_full_name like #{areaName}
+      </if>
     </where>
   </select>
   <select id="checkTitle"  parameterType="java.lang.String" resultMap="BaseResultMap">
