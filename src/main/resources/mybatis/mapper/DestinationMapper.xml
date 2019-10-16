@@ -79,6 +79,12 @@
     select
     <include refid="Base_Column_List" />
     from t_bic_destination
+    <where>
+      <if test="regionFullName != null and regionFullName!='' ">
+        <bind name="regionFullName" value="regionFullName + '%'" ></bind>
+        and region_full_name like #{regionFullName}
+      </if>
+    </where>
   </select>
 
   <!-- 校验目的地名称的唯一性  -->
@@ -86,7 +92,7 @@
     select
     <include refid="Base_Column_List" />
     from t_bic_destination
-    where regionFullName = #{regionFullName,jdbcType=VARCHAR}
+    where region_full_name = #{regionFullName,jdbcType=VARCHAR}
   </select>
 
 </mapper>

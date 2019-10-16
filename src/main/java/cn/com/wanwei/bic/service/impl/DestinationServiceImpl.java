@@ -72,7 +72,7 @@ public class DestinationServiceImpl implements DestinationService {
             destinationEntity.setId(UUIDUtils.getInstance().getId());
             destinationEntity.setCreatedUser(username);
             destinationEntity.setCreatedDate(new Date());
-            destinationEntity.setStatus(0);
+            destinationEntity.setStatus(1);
             destinationMapper.insert(destinationEntity);
             return ResponseMessage.defaultResponse().setMsg("保存成功!");
         }catch (Exception e){
@@ -98,7 +98,7 @@ public class DestinationServiceImpl implements DestinationService {
         destinationEntity.setId(id);
         destinationEntity.setCreatedDate(entity.getCreatedDate());
         destinationEntity.setCreatedUser(entity.getCreatedUser());
-        destinationEntity.setStatus(0);  //编辑修改状态为--> 0:待审
+        destinationEntity.setStatus(1);  //编辑修改状态为--> 1: 下线
         destinationEntity.setUpdatedDate(new Date());
         destinationEntity.setUpdatedUser(username);
         destinationMapper.updateByPrimaryKey(destinationEntity);
@@ -166,18 +166,11 @@ public class DestinationServiceImpl implements DestinationService {
             return ResponseMessage.validFailResponse().setMsg("无目的地信息！");
         }
         if(type == 1 ){
-            //上线
-            if(destinationEntity.getStatus() == 0 || destinationEntity.getStatus() == 2){
-                return ResponseMessage.validFailResponse().setMsg("该信息未审核通过,不可上下线操作!");
+            if(auditLogEntity.getStatus() == 9){
+                responseMessage.setMsg("上线成功!");
             }else{
-                if(auditLogEntity.getStatus() == 9){
-                    responseMessage.setMsg("上线成功!");
-                }else{
-                    responseMessage.setMsg("下线成功!");
-                }
+                responseMessage.setMsg("下线成功!");
             }
-        }else{
-            responseMessage.setMsg("审核成功!");
         }
         destinationEntity.setId(auditLogEntity.getPrincipalId());
         destinationEntity.setStatus(auditLogEntity.getStatus());
