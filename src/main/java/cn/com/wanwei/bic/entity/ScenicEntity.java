@@ -96,23 +96,7 @@ public class ScenicEntity extends BaseEntity{
     @ApiModelProperty(value = "在线状态")
     private Integer onlineStatus;
 
-    public Integer getStatus() {
-        return status;
-    }
-
-    public void setStatus(Integer status) {
-        if(null != this.onlineStatus && this.onlineStatus == 9){
-            this.status = this.onlineStatus;
-        }else{
-            this.status = status;
-        }
-    }
-
     public Integer getOnlineStatus() {
         return this.status == 9 ? this.status : 1;
-    }
-
-    public void setOnlineStatus() {
-        this.onlineStatus = this.status;
     }
 }
