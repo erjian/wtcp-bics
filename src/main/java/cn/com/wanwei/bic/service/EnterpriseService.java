@@ -27,14 +27,6 @@ public interface EnterpriseService {
 	ResponseMessage save(EnterpriseEntity record, String userName) throws Exception;
 
 	/**
-	 * 查询一条记录
-	 * @auth linjw 2019年10月9日14:49:18
-	 * @param id
-	 * @return
-	 */
-	EnterpriseEntity selectByPrimaryKey(String id) throws Exception;
-
-	/**
 	 * 编辑一条记录
 	 * @auth linjw 2019年10月9日14:50:01
 	 * @param id
@@ -42,4 +34,12 @@ public interface EnterpriseService {
 	 * @return
 	 */
 	ResponseMessage edit(String id, EnterpriseEntity record, String userName) throws Exception;
+
+	/**
+	 * 根据关联主键获取一条数据
+	 * @auth linjw 2019年10月16日09:39:57
+	 * @param principalId
+	 * @return
+	 */
+    EnterpriseEntity selectByPrincipalId(String principalId);
 }
