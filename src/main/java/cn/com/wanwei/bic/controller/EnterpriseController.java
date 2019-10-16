@@ -24,13 +24,13 @@ public class EnterpriseController extends BaseController {
     @Autowired
     private EnterpriseService enterpriseService;
 
-    @ApiOperation(value = "查询企业信息详情", notes = "根据ID查询企业信息详情")
-    @ApiImplicitParam(name = "id", value = "企业信息ID", required = true)
-    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
+    @ApiOperation(value = "根据关联主键查询企业信息详情", notes = "根据principalId查询企业信息详情")
+    @ApiImplicitParam(name = "principalId", value = "关联主键ID", required = true)
+    @RequestMapping(value = "/{principalId}", method = RequestMethod.GET)
     @PreAuthorize("hasAuthority('enterprise:v')")
-    @OperationLog(value = "wtcp-bics/根据id查询企业信息详情", operate = "v", module = "企业信息管理")
-    public ResponseMessage detail(@PathVariable("id") String id) throws Exception {
-        EnterpriseEntity entity = enterpriseService.selectByPrimaryKey(id);
+    @OperationLog(value = "wtcp-bics/根据关联主键查询企业信息详情", operate = "v", module = "企业信息管理")
+    public ResponseMessage detail(@PathVariable("principalId") String principalId) throws Exception {
+        EnterpriseEntity entity = enterpriseService.selectByPrincipalId(principalId);
         if (entity == null) {
             return ResponseMessage.validFailResponse().setMsg("数据不存在");
         }
@@ -46,19 +46,11 @@ public class EnterpriseController extends BaseController {
         if (bindingResult.hasErrors()) {
             return ResponseMessage.validFailResponse().setMsg(bindingResult.getAllErrors());
         }
-        return enterpriseService.save(enterpriseEntity,getCurrentUser().getUsername());
-    }
-
-    @ApiOperation(value = "企业信息编辑", notes = "企业信息编辑")
-    @ApiImplicitParam(name = "enterpriseEntity", value = "企业信息", required = true, dataType = "EnterpriseEntity")
-    @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
-    @PreAuthorize("hasAuthority('enterprise:u')")
-    @OperationLog(value = "wtcp-bics/企业信息编辑", operate = "u", module = "企业信息管理")
-    public ResponseMessage edit(@PathVariable("id") String id, @RequestBody EnterpriseEntity enterpriseEntity, BindingResult bindingResult) throws Exception {
-        if (bindingResult.hasErrors()) {
-            return ResponseMessage.validFailResponse().setMsg(bindingResult.getAllErrors());
+        if(null == enterpriseEntity.getId() || enterpriseEntity.getId().trim().equals("")){
+            return enterpriseService.save(enterpriseEntity,getCurrentUser().getUsername());
+        } else {
+            return enterpriseService.edit(enterpriseEntity.getId().trim(),enterpriseEntity,getCurrentUser().getUsername());
         }
-        return enterpriseService.edit(id,enterpriseEntity,getCurrentUser().getUsername());
     }
 }
 

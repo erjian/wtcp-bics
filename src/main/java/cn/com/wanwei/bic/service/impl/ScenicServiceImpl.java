@@ -78,6 +78,7 @@ public class ScenicServiceImpl implements ScenicService {
 		record.setCode(entity.getCode());
 		record.setCreatedDate(entity.getCreatedDate());
 		record.setCreatedUser(entity.getCreatedUser());
+		record.setDeptCode(entity.getDeptCode());
 		record.setStatus(0);
 		record.setUpdatedDate(new Date());
 		record.setUpdatedUser(userName);
@@ -117,5 +118,18 @@ public class ScenicServiceImpl implements ScenicService {
 		entity.setWeight(weightNum);
 		scenicMapper.updateByPrimaryKeyWithBLOBs(entity);
 		return ResponseMessage.defaultResponse().setMsg("权重修改成功");
+	}
+
+	@Override
+	public ResponseMessage changeStatus(String id, Integer status, String username) throws Exception {
+		ScenicEntity entity = scenicMapper.selectByPrimaryKey(id);
+		if(null == entity){
+			return ResponseMessage.validFailResponse().setMsg("无景区信息");
+		}
+		entity.setUpdatedUser(username);
+		entity.setUpdatedDate(new Date());
+		entity.setStatus(status);
+		scenicMapper.updateByPrimaryKeyWithBLOBs(entity);
+		return ResponseMessage.defaultResponse().setMsg("状态变更成功");
 	}
 }

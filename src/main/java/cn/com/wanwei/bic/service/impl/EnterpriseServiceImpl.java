@@ -6,11 +6,8 @@
  */
 package cn.com.wanwei.bic.service.impl;
 
-import cn.com.wanwei.bic.entity.BusinessEntity;
 import cn.com.wanwei.bic.entity.EnterpriseEntity;
-import cn.com.wanwei.bic.mapper.BusinessMapper;
 import cn.com.wanwei.bic.mapper.EnterpriseMapper;
-import cn.com.wanwei.bic.service.BusinessService;
 import cn.com.wanwei.bic.service.EnterpriseService;
 import cn.com.wanwei.bic.utils.UUIDUtils;
 import cn.com.wanwei.common.model.ResponseMessage;
@@ -42,11 +39,6 @@ public class EnterpriseServiceImpl implements EnterpriseService {
 	}
 
 	@Override
-	public EnterpriseEntity selectByPrimaryKey(String id) {
-		return enterpriseMapper.selectByPrimaryKey(id);
-	}
-
-	@Override
 	public ResponseMessage edit(String id, EnterpriseEntity record, String userName) {
 		EnterpriseEntity entity = enterpriseMapper.selectByPrimaryKey(id);
 		if(null == entity){
@@ -60,5 +52,10 @@ public class EnterpriseServiceImpl implements EnterpriseService {
 		record.setUpdatedUser(userName);
 		enterpriseMapper.updateByPrimaryKey(record);
 		return ResponseMessage.defaultResponse().setMsg("更新成功");
+	}
+
+	@Override
+	public EnterpriseEntity selectByPrincipalId(String principalId) {
+		return enterpriseMapper.selectByPrincipalId(principalId);
 	}
 }

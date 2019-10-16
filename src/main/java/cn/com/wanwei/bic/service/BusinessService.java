@@ -23,14 +23,6 @@ public interface BusinessService {
 	ResponseMessage save(BusinessEntity record, String userName) throws Exception;
 
 	/**
-	 * 查询一条记录
-	 * @auth linjw 2019年10月9日16:27:01
-	 * @param id
-	 * @return
-	 */
-	BusinessEntity selectByPrimaryKey(String id) throws Exception;
-
-	/**
 	 * 编辑一条记录
 	 * @auth linjw 2019年10月9日16:27:08
 	 * @param id
@@ -38,4 +30,6 @@ public interface BusinessService {
 	 * @return
 	 */
 	ResponseMessage edit(String id, BusinessEntity record, String userName) throws Exception;
+
+    BusinessEntity selectByPrincipalId(String principalId) throws Exception;
 }

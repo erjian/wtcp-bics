@@ -27,10 +27,12 @@
     from t_bic_contact
     where id = #{id,jdbcType=VARCHAR}
   </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
-    delete from t_bic_contact
-    where id = #{id,jdbcType=VARCHAR}
-  </delete>
+  <select id="selectByPrincipalId" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from t_bic_contact
+    where principal_id = #{principalId,jdbcType=VARCHAR}
+  </select>
   <insert id="insert" parameterType="cn.com.wanwei.bic.entity.ContactEntity">
     insert into t_bic_contact (id, principal_id, phone, fax,
       website, mail, wechat, 

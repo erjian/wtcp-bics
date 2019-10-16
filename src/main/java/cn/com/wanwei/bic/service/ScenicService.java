@@ -82,4 +82,15 @@ public interface ScenicService {
 	 * @return
 	 */
 	ResponseMessage changeWeight(String id, Float weightNum, String username) throws Exception;
+
+	/**
+	 * 修改审核状态
+	 * @author linjw 2019年10月16日11:27:27
+	 * @param id
+	 * @param status
+	 * @param username
+	 * @return
+	 * @throws Exception
+	 */
+    ResponseMessage changeStatus(String id, Integer status, String username) throws Exception;
 }

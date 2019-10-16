@@ -24,13 +24,13 @@ public class BusinessController extends BaseController {
     @Autowired
     private BusinessService businessService;
 
-    @ApiOperation(value = "查询营业信息详情", notes = "根据ID查询营业信息详情")
-    @ApiImplicitParam(name = "id", value = "营业信息ID", required = true)
-    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
+    @ApiOperation(value = "根据关联主键查询营业信息详情", notes = "根据关联主键查询营业信息详情")
+    @ApiImplicitParam(name = "principalId", value = "关联主键ID", required = true)
+    @RequestMapping(value = "/{principalId}", method = RequestMethod.GET)
     @PreAuthorize("hasAuthority('business:v')")
-    @OperationLog(value = "wtcp-bics/根据id查询营业信息详情", operate = "v", module = "营业信息管理")
-    public ResponseMessage detail(@PathVariable("id") String id) throws Exception {
-        BusinessEntity entity = businessService.selectByPrimaryKey(id);
+    @OperationLog(value = "wtcp-bics/根据关联主键查询营业信息详情", operate = "v", module = "营业信息管理")
+    public ResponseMessage detail(@PathVariable("principalId") String principalId) throws Exception {
+        BusinessEntity entity = businessService.selectByPrincipalId(principalId);
         if (entity == null) {
             return ResponseMessage.validFailResponse().setMsg("数据不存在");
         }
@@ -46,19 +46,11 @@ public class BusinessController extends BaseController {
         if (bindingResult.hasErrors()) {
             return ResponseMessage.validFailResponse().setMsg(bindingResult.getAllErrors());
         }
-        return businessService.save(businessEntity,getCurrentUser().getUsername());
-    }
-
-    @ApiOperation(value = "营业信息编辑", notes = "营业信息编辑")
-    @ApiImplicitParam(name = "businessEntity", value = "营业信息", required = true, dataType = "BusinessEntity")
-    @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
-    @PreAuthorize("hasAuthority('business:u')")
-    @OperationLog(value = "wtcp-bics/营业信息编辑", operate = "u", module = "营业信息管理")
-    public ResponseMessage edit(@PathVariable("id") String id, @RequestBody BusinessEntity businessEntity, BindingResult bindingResult) throws Exception {
-        if (bindingResult.hasErrors()) {
-            return ResponseMessage.validFailResponse().setMsg(bindingResult.getAllErrors());
+        if(null == businessEntity.getId() || businessEntity.getId().trim().equals("")){
+            return businessService.save(businessEntity,getCurrentUser().getUsername());
+        }else{
+            return businessService.edit(businessEntity.getId().trim(),businessEntity,getCurrentUser().getUsername());
         }
-        return businessService.edit(id,businessEntity,getCurrentUser().getUsername());
     }
 }
 

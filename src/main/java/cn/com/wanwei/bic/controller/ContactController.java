@@ -24,13 +24,13 @@ public class ContactController extends BaseController {
     @Autowired
     private ContactService contactService;
 
-    @ApiOperation(value = "查询通讯信息详情", notes = "根据ID查询通讯信息详情")
-    @ApiImplicitParam(name = "id", value = "通讯信息ID", required = true)
-    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
+    @ApiOperation(value = "根据关联主键查询通讯信息详情", notes = "根据关联主键ID查询通讯信息详情")
+    @ApiImplicitParam(name = "principalId", value = "关联主键ID", required = true)
+    @RequestMapping(value = "/{principalId}", method = RequestMethod.GET)
     @PreAuthorize("hasAuthority('contact:v')")
-    @OperationLog(value = "wtcp-bics/根据id查询通讯信息详情", operate = "v", module = "通讯信息管理")
-    public ResponseMessage detail(@PathVariable("id") String id) throws Exception {
-        ContactEntity entity = contactService.selectByPrimaryKey(id);
+    @OperationLog(value = "wtcp-bics/根据关联主键查询通讯信息详情", operate = "v", module = "通讯信息管理")
+    public ResponseMessage detail(@PathVariable("principalId") String principalId) throws Exception {
+        ContactEntity entity = contactService.selectByPrincipalId(principalId);
         if (entity == null) {
             return ResponseMessage.validFailResponse().setMsg("数据不存在");
         }
@@ -46,19 +46,11 @@ public class ContactController extends BaseController {
         if (bindingResult.hasErrors()) {
             return ResponseMessage.validFailResponse().setMsg(bindingResult.getAllErrors());
         }
-        return contactService.save(contactEntity,getCurrentUser().getUsername());
-    }
-
-    @ApiOperation(value = "通讯信息编辑", notes = "通讯信息编辑")
-    @ApiImplicitParam(name = "contactEntity", value = "通讯信息", required = true, dataType = "ContactEntity")
-    @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
-    @PreAuthorize("hasAuthority('contact:u')")
-    @OperationLog(value = "wtcp-bics/通讯信息编辑", operate = "u", module = "通讯信息管理")
-    public ResponseMessage edit(@PathVariable("id") String id, @RequestBody ContactEntity contactEntity, BindingResult bindingResult) throws Exception {
-        if (bindingResult.hasErrors()) {
-            return ResponseMessage.validFailResponse().setMsg(bindingResult.getAllErrors());
+        if(null == contactEntity.getId() || contactEntity.getId().trim().equals("")){
+            return contactService.save(contactEntity,getCurrentUser().getUsername());
+        }else{
+            return contactService.edit(contactEntity.getId().trim(),contactEntity,getCurrentUser().getUsername());
         }
-        return contactService.edit(id,contactEntity,getCurrentUser().getUsername());
     }
 }
 
