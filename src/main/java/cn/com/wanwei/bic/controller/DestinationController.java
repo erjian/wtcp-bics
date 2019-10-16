@@ -105,22 +105,22 @@ public class DestinationController extends BaseController {
     @ApiImplicitParam(name = "auditLogEntity", value = "审核记录实体",required = true,dataType = "AuditLogEntity")
     @PostMapping(value = "/changeStatus")
     @PreAuthorize("hasAuthority('destination:a')")
-    public ResponseMessage changeStatus(@RequestBody AuditLogEntity auditLogEntity ,BindingResult bindingResult) throws Exception {
+    public ResponseMessage changeStatus(@PathVariable("id") String id, @PathVariable("status") Integer status  ,BindingResult bindingResult) throws Exception {
         if(bindingResult.hasErrors()){
             return ResponseMessage.validFailResponse().setMsg(bindingResult.getAllErrors());
         }
-        return destinationService.changeStatus(auditLogEntity,getCurrentUser().getUsername(),0);
+        return destinationService.changeStatus(id, status ,getCurrentUser().getUsername(),0);
     }
 
     @ApiOperation(value = "目的地信息上线", notes = "目的地信息上线")
     @ApiImplicitParam(name = "auditLogEntity", value = "审核记录实体",required = true,dataType = "AuditLogEntity")
-    @PostMapping(value = "/changeIssue")
+    @PostMapping(value = "/changeIssue" )
     @PreAuthorize("hasAuthority('destination:s')")
-    public ResponseMessage changeIssue(@RequestBody AuditLogEntity auditLogEntity ,BindingResult bindingResult) throws Exception {
+    public ResponseMessage changeIssue(@PathVariable("id") String id, @PathVariable("status") Integer status ,BindingResult bindingResult) throws Exception {
         if(bindingResult.hasErrors()){
             return ResponseMessage.validFailResponse().setMsg(bindingResult.getAllErrors());
         }
-        return destinationService.changeStatus(auditLogEntity,getCurrentUser().getUsername(),1);
+        return destinationService.changeStatus(id, status,getCurrentUser().getUsername(),1);
     }
 
     @ApiOperation(value = "目的地名称重名校验", notes = "目的地名称重名校验")

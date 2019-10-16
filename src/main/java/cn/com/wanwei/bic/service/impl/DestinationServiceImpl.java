@@ -154,26 +154,34 @@ public class DestinationServiceImpl implements DestinationService {
 
     /**
      * 目的地信息审核/上线
-     * @param auditLogEntity   审核/上线实体类
+     * @param id  目的地id
+     * @param status  状态
      * @param username
+     * @param type  操作类型: 0-审核  1-上线
      * @return
+     * @throws Exception
      */
     @Override
-    public ResponseMessage changeStatus(AuditLogEntity auditLogEntity, String username, int type) throws Exception{
+    public ResponseMessage changeStatus(String id, Integer status, String username, int type) throws Exception{
         ResponseMessage responseMessage = ResponseMessage.defaultResponse();
-        DestinationEntity destinationEntity = destinationMapper.selectByPrimaryKey(auditLogEntity.getPrincipalId());
+        AuditLogEntity auditLogEntity = new AuditLogEntity();
+        DestinationEntity destinationEntity = destinationMapper.selectByPrimaryKey(id);
         if(null == destinationEntity){
             return ResponseMessage.validFailResponse().setMsg("无目的地信息！");
         }
+        auditLogEntity.setPrincipalId(id);
+        auditLogEntity.setType(type);
         if(type == 1 ){
-            if(auditLogEntity.getStatus() == 9){
+            if(status == 9){
                 responseMessage.setMsg("上线成功!");
+                auditLogEntity.setPreStatus(1);
             }else{
                 responseMessage.setMsg("下线成功!");
+                auditLogEntity.setPreStatus(9);
             }
         }
-        destinationEntity.setId(auditLogEntity.getPrincipalId());
-        destinationEntity.setStatus(auditLogEntity.getStatus());
+        destinationEntity.setId(id);
+        destinationEntity.setStatus(status);
         destinationEntity.setUpdatedUser(username);
         destinationEntity.setUpdatedDate(new Date());
         destinationMapper.updateByPrimaryKey(destinationEntity);

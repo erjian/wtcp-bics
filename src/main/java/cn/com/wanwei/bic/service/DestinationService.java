@@ -69,11 +69,14 @@ public interface DestinationService {
 
     /**
      * 目的地信息记录审核
-     * @param auditLogEntity
+     * @param id
+     * @param status
      * @param username
+     * @param type
      * @return
+     * @throws Exception
      */
-    ResponseMessage changeStatus(AuditLogEntity auditLogEntity, String username, int type) throws Exception;
+    ResponseMessage changeStatus(String id, Integer status, String username, int type) throws Exception;
 
     /**
      * 校验目的地名称唯一性

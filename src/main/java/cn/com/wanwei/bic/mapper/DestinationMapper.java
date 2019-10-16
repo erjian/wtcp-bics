@@ -31,4 +31,5 @@ public interface DestinationMapper {
      * @return
      */
     DestinationEntity checkRegionFullName(String regionFullName);
+
 }
