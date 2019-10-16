@@ -1,6 +1,7 @@
 package cn.com.wanwei.bic.controller;
 
 import cn.com.wanwei.bic.entity.*;
+import cn.com.wanwei.bic.feign.KbServiceFeign;
 import cn.com.wanwei.bic.service.TagsService;
 import cn.com.wanwei.common.log.annotation.OperationLog;
 import cn.com.wanwei.common.model.ResponseMessage;
@@ -22,6 +23,9 @@ public class TagsController extends BaseController {
 
     @Autowired
     private TagsService tagsService;
+
+    @Autowired
+    private KbServiceFeign kbServiceFeign;
 
     @ApiOperation(value = "根据关联ID获取景区标签信息", notes = "根据关联ID获取景区标签信息")
     @ApiImplicitParam(name = "principalId", value = "关联的景区ID", required = true)
@@ -75,6 +79,13 @@ public class TagsController extends BaseController {
     @RequestMapping(value = "/findPoiByPid", method = RequestMethod.GET)
     public ResponseMessage findPoiByPid(@RequestParam String principalId) {
         return tagsService.findByPrincipalId(principalId, PoiTagsEntity.class);
+    }
+
+    @ApiOperation(value = "根据feign接口获取标签数据", notes = "根据feign接口获取标签数据")
+    @OperationLog(value = "wtcp-bic/根据feign接口获取标签数据", operate = "r", module = "标签管理")
+    @RequestMapping(value = "/getTagsTree", method = RequestMethod.GET)
+    public ResponseMessage getTagsTree() {
+        return kbServiceFeign.getAllTreeNoRight(0L);
     }
 
 }
