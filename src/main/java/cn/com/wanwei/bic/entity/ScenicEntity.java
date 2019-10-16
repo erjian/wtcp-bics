@@ -9,6 +9,7 @@ package cn.com.wanwei.bic.entity;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import io.swagger.models.auth.In;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
@@ -91,4 +92,27 @@ public class ScenicEntity extends BaseEntity{
 
     @ApiModelProperty(value = "内容")
     private String content;
+
+    @ApiModelProperty(value = "在线状态")
+    private Integer onlineStatus;
+
+    public Integer getStatus() {
+        return status;
+    }
+
+    public void setStatus(Integer status) {
+        if(null != this.onlineStatus && this.onlineStatus == 9){
+            this.status = this.onlineStatus;
+        }else{
+            this.status = status;
+        }
+    }
+
+    public Integer getOnlineStatus() {
+        return this.status == 9 ? this.status : 1;
+    }
+
+    public void setOnlineStatus() {
+        this.onlineStatus = this.status;
+    }
 }
