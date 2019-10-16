@@ -39,11 +39,6 @@ public class ContactServiceImpl implements ContactService {
 	}
 
 	@Override
-	public ContactEntity selectByPrimaryKey(String id) {
-		return contactMapper.selectByPrimaryKey(id);
-	}
-
-	@Override
 	public ResponseMessage edit(String id, ContactEntity record, String userName) {
 		ContactEntity entity = contactMapper.selectByPrimaryKey(id);
 		if(null == entity){
@@ -57,5 +52,10 @@ public class ContactServiceImpl implements ContactService {
 		record.setUpdatedUser(userName);
 		contactMapper.updateByPrimaryKey(record);
 		return ResponseMessage.defaultResponse().setMsg("更新成功");
+	}
+
+	@Override
+	public ContactEntity selectByPrincipalId(String principalId) {
+		return contactMapper.selectByPrincipalId(principalId);
 	}
 }

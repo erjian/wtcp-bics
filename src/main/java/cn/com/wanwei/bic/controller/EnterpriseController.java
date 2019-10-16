@@ -28,7 +28,7 @@ public class EnterpriseController extends BaseController {
     @ApiImplicitParam(name = "principalId", value = "关联主键ID", required = true)
     @RequestMapping(value = "/{principalId}", method = RequestMethod.GET)
     @PreAuthorize("hasAuthority('enterprise:v')")
-    @OperationLog(value = "wtcp-bics/根据id查询企业信息详情", operate = "v", module = "企业信息管理")
+    @OperationLog(value = "wtcp-bics/根据关联主键查询企业信息详情", operate = "v", module = "企业信息管理")
     public ResponseMessage detail(@PathVariable("principalId") String principalId) throws Exception {
         EnterpriseEntity entity = enterpriseService.selectByPrincipalId(principalId);
         if (entity == null) {

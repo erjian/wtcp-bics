@@ -23,14 +23,6 @@ public interface ContactService {
 	ResponseMessage save(ContactEntity record, String userName) throws Exception;
 
 	/**
-	 * 查询一条记录
-	 * @auth linjw 2019年10月9日16:27:01
-	 * @param id
-	 * @return
-	 */
-	ContactEntity selectByPrimaryKey(String id) throws Exception;
-
-	/**
 	 * 编辑一条记录
 	 * @auth linjw 2019年10月9日16:27:08
 	 * @param id
@@ -38,4 +30,12 @@ public interface ContactService {
 	 * @return
 	 */
 	ResponseMessage edit(String id, ContactEntity record, String userName) throws Exception;
+
+	/**
+	 * 根据关联主键获取一条记录
+	 * @auth linjw 2019年10月16日14:14:07
+	 * @param principalId
+	 * @return
+	 */
+    ContactEntity selectByPrincipalId(String principalId) throws Exception;
 }

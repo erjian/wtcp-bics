@@ -39,11 +39,6 @@ public class BusinessServiceImpl implements BusinessService {
 	}
 
 	@Override
-	public BusinessEntity selectByPrimaryKey(String id) {
-		return businessMapper.selectByPrimaryKey(id);
-	}
-
-	@Override
 	public ResponseMessage edit(String id, BusinessEntity record, String userName) {
 		BusinessEntity entity = businessMapper.selectByPrimaryKey(id);
 		if(null == entity){
@@ -57,5 +52,10 @@ public class BusinessServiceImpl implements BusinessService {
 		record.setUpdatedUser(userName);
 		businessMapper.updateByPrimaryKey(record);
 		return ResponseMessage.defaultResponse().setMsg("更新成功");
+	}
+
+	@Override
+	public BusinessEntity selectByPrincipalId(String principalId) throws Exception {
+		return businessMapper.selectByPrincipalId(principalId);
 	}
 }

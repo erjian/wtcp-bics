@@ -5,11 +5,12 @@ import org.apache.ibatis.annotations.Mapper;
 
 @Mapper
 public interface BusinessMapper {
-    int deleteByPrimaryKey(String id);
 
     int insert(BusinessEntity record);
 
     BusinessEntity selectByPrimaryKey(String id);
 
     int updateByPrimaryKey(BusinessEntity record);
+
+    BusinessEntity selectByPrincipalId(String principalId);
 }
