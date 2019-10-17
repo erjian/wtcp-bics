@@ -33,7 +33,6 @@ public class TagsController extends BaseController {
     @RequestMapping(value = "/sort", method = RequestMethod.PUT)
     public ResponseMessage sort(@RequestBody Map<String, Object> data) {
         System.out.println(data);
-        System.out.println(data);
         return ResponseMessage.defaultResponse().setMsg("排序成功");
     }
 
