@@ -47,10 +47,10 @@ public interface ScenicService {
 	 * 编辑一条记录
 	 * @auth linjw 2019年10月9日14:50:01
 	 * @param id
-	 * @param record
+	 * @param scenicModel
 	 * @return
 	 */
-	ResponseMessage edit(String id, ScenicEntity record, String userName) throws Exception;
+	ResponseMessage edit(String id, ScenicModel scenicModel, User user) throws Exception;
 
 	/**
 	 * 获取分页列表

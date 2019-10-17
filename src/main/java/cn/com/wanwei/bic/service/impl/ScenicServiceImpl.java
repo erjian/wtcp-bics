@@ -6,12 +6,15 @@
  */
 package cn.com.wanwei.bic.service.impl;
 
+import cn.com.wanwei.bic.entity.BaseTagsEntity;
 import cn.com.wanwei.bic.entity.ScenicEntity;
+import cn.com.wanwei.bic.entity.ScenicTagsEntity;
 import cn.com.wanwei.bic.feign.CoderServiceFeign;
 import cn.com.wanwei.bic.mapper.ScenicMapper;
 import cn.com.wanwei.bic.model.DataBindModel;
 import cn.com.wanwei.bic.model.ScenicModel;
 import cn.com.wanwei.bic.service.ScenicService;
+import cn.com.wanwei.bic.service.TagsService;
 import cn.com.wanwei.bic.utils.UUIDUtils;
 import cn.com.wanwei.common.model.ResponseMessage;
 import cn.com.wanwei.common.model.User;
@@ -19,6 +22,7 @@ import cn.com.wanwei.persistence.mybatis.MybatisPageRequest;
 import cn.com.wanwei.persistence.mybatis.PageInfo;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
+import com.google.common.collect.Lists;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
@@ -42,6 +46,9 @@ public class ScenicServiceImpl implements ScenicService {
 
 	@Autowired
 	private CoderServiceFeign coderServiceFeign;
+
+	@Autowired
+	private TagsService tagsService;
 
 	@Override
 	public ResponseMessage save(ScenicModel scenicModel, String userName, Long ruleId, Integer appCode) {
@@ -69,8 +76,9 @@ public class ScenicServiceImpl implements ScenicService {
 	}
 
 	@Override
-	public ResponseMessage edit(String id, ScenicEntity record, String userName) {
+	public ResponseMessage edit(String id, ScenicModel scenicModel, User user) {
 		ScenicEntity entity = scenicMapper.selectByPrimaryKey(id);
+		ScenicEntity record = scenicModel.getScenicEntity();
 		if(null == entity){
 			return ResponseMessage.validFailResponse().setMsg("不存在该景区");
 		}
@@ -81,9 +89,21 @@ public class ScenicServiceImpl implements ScenicService {
 		record.setDeptCode(entity.getDeptCode());
 		record.setStatus(0);
 		record.setUpdatedDate(new Date());
-		record.setUpdatedUser(userName);
+		record.setUpdatedUser(user.getUsername());
 		scenicMapper.updateByPrimaryKeyWithBLOBs(record);
+		this.saveTags(scenicModel.getList(),id,user);
 		return ResponseMessage.defaultResponse().setMsg("更新成功");
+	}
+
+	private void saveTags(List<Map<String, Object>> tagsList, String principalId, User user){
+		List<BaseTagsEntity> list = Lists.newArrayList();
+		for(int i=0; i<tagsList.size(); i++){
+			BaseTagsEntity entity = new BaseTagsEntity();
+			entity.setTagCatagory(tagsList.get(i).get("tagCatagory").toString());
+			entity.setTagName(tagsList.get(i).get("tagName").toString());
+			list.add(entity);
+		}
+		tagsService.batchInsert(principalId,list,user, ScenicTagsEntity.class);
 	}
 
 	@Override
