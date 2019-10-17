@@ -40,4 +40,11 @@ public class EntertainmentEntity extends commonEntity{
     @ApiModelProperty(value = "组织机构编码" ,required = true)
     private String deptCode;
 
+    @ApiModelProperty(value = "在线状态")
+    private Integer onlineStatus;
+
+    public Integer getOnlineStatus() {
+        return this.status == 9 ? this.status : 1;
+    }
+
 }
