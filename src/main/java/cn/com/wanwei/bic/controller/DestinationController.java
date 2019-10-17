@@ -102,7 +102,10 @@ public class DestinationController extends BaseController {
     }
 
     @ApiOperation(value = "目的地信息审核", notes = "目的地信息审核")
-    @ApiImplicitParam(name = "auditLogEntity", value = "审核记录实体",required = true,dataType = "AuditLogEntity")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "id", value = "目的地基础信息ID", required = true),
+            @ApiImplicitParam(name = "status", value = "状态", required = true)
+    })
     @PostMapping(value = "/changeStatus")
     @PreAuthorize("hasAuthority('destination:a')")
     public ResponseMessage changeStatus(@PathVariable("id") String id, @PathVariable("status") Integer status  ,BindingResult bindingResult) throws Exception {
@@ -113,7 +116,10 @@ public class DestinationController extends BaseController {
     }
 
     @ApiOperation(value = "目的地信息上线", notes = "目的地信息上线")
-    @ApiImplicitParam(name = "auditLogEntity", value = "审核记录实体",required = true,dataType = "AuditLogEntity")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "id", value = "目的地基础信息ID", required = true),
+            @ApiImplicitParam(name = "status", value = "状态", required = true)
+    })
     @PostMapping(value = "/changeIssue" )
     @PreAuthorize("hasAuthority('destination:s')")
     public ResponseMessage changeIssue(@PathVariable("id") String id, @PathVariable("status") Integer status ,BindingResult bindingResult) throws Exception {

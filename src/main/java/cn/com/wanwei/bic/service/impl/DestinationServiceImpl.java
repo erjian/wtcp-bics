@@ -166,11 +166,12 @@ public class DestinationServiceImpl implements DestinationService {
         ResponseMessage responseMessage = ResponseMessage.defaultResponse();
         AuditLogEntity auditLogEntity = new AuditLogEntity();
         DestinationEntity destinationEntity = destinationMapper.selectByPrimaryKey(id);
-        if(null == destinationEntity){
+        if(destinationEntity == null){
             return ResponseMessage.validFailResponse().setMsg("无目的地信息！");
         }
         auditLogEntity.setPrincipalId(id);
         auditLogEntity.setType(type);
+        auditLogEntity.setStatus(status);
         if(type == 1 ){
             if(status == 9){
                 responseMessage.setMsg("上线成功!");
