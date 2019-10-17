@@ -104,29 +104,21 @@ public class DestinationController extends BaseController {
     @ApiOperation(value = "目的地信息审核", notes = "目的地信息审核")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "id", value = "目的地基础信息ID", required = true),
-            @ApiImplicitParam(name = "status", value = "状态", required = true)
     })
-    @PostMapping(value = "/changeStatus")
+    @RequestMapping(value = "/changeStatus/{id}", method = RequestMethod.PUT)
     @PreAuthorize("hasAuthority('destination:a')")
-    public ResponseMessage changeStatus(@RequestParam("id") String id, @RequestParam("status") Integer status  ,BindingResult bindingResult) throws Exception {
-        if(bindingResult.hasErrors()){
-            return ResponseMessage.validFailResponse().setMsg(bindingResult.getAllErrors());
-        }
-        return destinationService.changeStatus(id, status ,getCurrentUser().getUsername(),0);
+    public ResponseMessage changeStatus(@PathVariable("id") String id) throws Exception {
+        return destinationService.changeStatus(id,getCurrentUser().getUsername(),0);
     }
 
     @ApiOperation(value = "目的地信息上线", notes = "目的地信息上线")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "id", value = "目的地基础信息ID", required = true),
-            @ApiImplicitParam(name = "status", value = "状态", required = true)
     })
-    @PostMapping(value = "/changeIssue" )
+    @RequestMapping(value = "/changeIssue/{id}", method = RequestMethod.PUT)
     @PreAuthorize("hasAuthority('destination:s')")
-    public ResponseMessage changeIssue(@RequestParam("id") String id, @RequestParam("status") Integer status ,BindingResult bindingResult) throws Exception {
-        if(bindingResult.hasErrors()){
-            return ResponseMessage.validFailResponse().setMsg(bindingResult.getAllErrors());
-        }
-        return destinationService.changeStatus(id, status,getCurrentUser().getUsername(),1);
+    public ResponseMessage changeIssue(@PathVariable("id") String id) throws Exception {
+        return destinationService.changeStatus(id,getCurrentUser().getUsername(),1);
     }
 
     @ApiOperation(value = "目的地名称重名校验", notes = "目的地名称重名校验")
@@ -136,8 +128,8 @@ public class DestinationController extends BaseController {
     })
     @GetMapping(value = "/checkRegionFullName")
     public ResponseMessage checkRegionFullName(@RequestParam(value = "id",required = false) String id,
-                                      @RequestParam(value = "regionFullName",required = false) String regionFullName){
-        return destinationService.checkRegionFullName(id,regionFullName);
+                                      @RequestParam(value = "regionFullCode",required = false) String regionFullCode){
+        return destinationService.checkRegionFullName(id,regionFullCode);
     }
 
 }

@@ -155,14 +155,13 @@ public class DestinationServiceImpl implements DestinationService {
     /**
      * 目的地信息审核/上线
      * @param id  目的地id
-     * @param status  状态
      * @param username
      * @param type  操作类型: 0-审核  1-上线
      * @return
      * @throws Exception
      */
     @Override
-    public ResponseMessage changeStatus(String id, Integer status, String username, int type) throws Exception{
+    public ResponseMessage changeStatus(String id, String username, int type) throws Exception{
         ResponseMessage responseMessage = ResponseMessage.defaultResponse();
         AuditLogEntity auditLogEntity = new AuditLogEntity();
         DestinationEntity destinationEntity = destinationMapper.selectByPrimaryKey(id);
@@ -171,20 +170,23 @@ public class DestinationServiceImpl implements DestinationService {
         }
         auditLogEntity.setPrincipalId(id);
         auditLogEntity.setType(type);
-        auditLogEntity.setStatus(status);
-        if(type == 1 ){
-            if(status == 9){
-                responseMessage.setMsg("上线成功!");
-                auditLogEntity.setPreStatus(1);
-            }else{
-                responseMessage.setMsg("下线成功!");
-                auditLogEntity.setPreStatus(9);
-            }
-        }
+        //更新目的地状态
         destinationEntity.setId(id);
-        destinationEntity.setStatus(status);
         destinationEntity.setUpdatedUser(username);
         destinationEntity.setUpdatedDate(new Date());
+        if(type == 1 ){
+            if(destinationEntity.getStatus() == 1){
+                responseMessage.setMsg("上线成功!");
+                destinationEntity.setStatus(9);
+                auditLogEntity.setPreStatus(1);
+                auditLogEntity.setStatus(destinationEntity.getStatus());
+            }else{
+                responseMessage.setMsg("下线成功!");
+                destinationEntity.setStatus(1);
+                auditLogEntity.setPreStatus(9);
+                auditLogEntity.setStatus(destinationEntity.getStatus());
+            }
+        }
         destinationMapper.updateByPrimaryKey(destinationEntity);
         // 记录审核/上线流水操作
         auditLogService.create(auditLogEntity,username);
@@ -193,15 +195,15 @@ public class DestinationServiceImpl implements DestinationService {
 
     /**
      * 校验目的地名称的唯一性
-     * @param id
-     * @param regionFullName
+     * @param id   目的地id
+     * @param regionFullCode   目的地编码
      * @return
      */
     @Override
-    public ResponseMessage checkRegionFullName(String id, String regionFullName) {
+    public ResponseMessage checkRegionFullName(String id, String regionFullCode) {
         ResponseMessage responseMessage = ResponseMessage.defaultResponse();
-        if (StringUtils.isNotBlank(regionFullName)) {
-            DestinationEntity destinationEntity = destinationMapper.checkRegionFullName(regionFullName);
+        if (StringUtils.isNotBlank(regionFullCode)) {
+            DestinationEntity destinationEntity = destinationMapper.checkRegionFullCode(regionFullCode);
             if (destinationEntity != null) {
                 if (!destinationEntity.getId().equals(id)) {
                     return responseMessage.setStatus(ResponseMessage.FAILED).setMsg("目的地名称重复！");

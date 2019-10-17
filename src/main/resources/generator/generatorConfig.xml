@@ -49,11 +49,17 @@
         </table>
         -->
 
-         <table tableName="bic_scenic_tags" domainObjectName="Tags"
+         <table tableName="bic_destination" domainObjectName="DestinationEntity"
                 enableCountByExample="false" enableUpdateByExample="false"
                 enableDeleteByExample="false" enableSelectByExample="false"
                 selectByExampleQueryId="false">
              <generatedKey column="id" sqlStatement="Mysql" identity="true"/>
          </table>
+        <table tableName="bic_destination_relation" domainObjectName="DestinationRelationEntity"
+               enableCountByExample="false" enableUpdateByExample="false"
+               enableDeleteByExample="false" enableSelectByExample="false"
+               selectByExampleQueryId="false">
+            <generatedKey column="id" sqlStatement="Mysql" identity="true"/>
+        </table>
     </context>
 </generatorConfiguration>

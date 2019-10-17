@@ -70,19 +70,18 @@ public interface DestinationService {
     /**
      * 目的地信息记录审核
      * @param id
-     * @param status
      * @param username
      * @param type
      * @return
      * @throws Exception
      */
-    ResponseMessage changeStatus(String id, Integer status, String username, int type) throws Exception;
+    ResponseMessage changeStatus(String id,String username, int type) throws Exception;
 
     /**
      * 校验目的地名称唯一性
      * @param id
-     * @param regionFullName
+     * @param regionFullCode
      * @return
      */
-    ResponseMessage checkRegionFullName(String id, String regionFullName);
+    ResponseMessage checkRegionFullName(String id, String regionFullCode);
 }

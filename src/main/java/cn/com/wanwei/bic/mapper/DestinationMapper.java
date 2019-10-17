@@ -27,9 +27,9 @@ public interface DestinationMapper {
 
     /**
      * 校验目的地名称的唯一性
-     * @param regionFullName
+     * @param regionFullCode
      * @return
      */
-    DestinationEntity checkRegionFullName(String regionFullName);
+    DestinationEntity checkRegionFullCode(String regionFullCode);
 
 }
