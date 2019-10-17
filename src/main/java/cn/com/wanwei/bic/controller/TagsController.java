@@ -14,6 +14,9 @@ import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+import java.util.Map;
+
 @Slf4j
 @RefreshScope
 @RestController
@@ -26,6 +29,13 @@ public class TagsController extends BaseController {
 
     @Autowired
     private KbServiceFeign kbServiceFeign;
+
+    @RequestMapping(value = "/sort", method = RequestMethod.PUT)
+    public ResponseMessage sort(@RequestBody Map<String, Object> data) {
+        System.out.println(data);
+        System.out.println(data);
+        return ResponseMessage.defaultResponse().setMsg("排序成功");
+    }
 
     @ApiOperation(value = "根据关联ID获取景区标签信息", notes = "根据关联ID获取景区标签信息")
     @ApiImplicitParam(name = "principalId", value = "关联的景区ID", required = true)
