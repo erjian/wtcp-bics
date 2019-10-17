@@ -108,7 +108,7 @@ public class DestinationController extends BaseController {
     })
     @PostMapping(value = "/changeStatus")
     @PreAuthorize("hasAuthority('destination:a')")
-    public ResponseMessage changeStatus(@PathVariable("id") String id, @PathVariable("status") Integer status  ,BindingResult bindingResult) throws Exception {
+    public ResponseMessage changeStatus(@RequestParam("id") String id, @RequestParam("status") Integer status  ,BindingResult bindingResult) throws Exception {
         if(bindingResult.hasErrors()){
             return ResponseMessage.validFailResponse().setMsg(bindingResult.getAllErrors());
         }
@@ -122,7 +122,7 @@ public class DestinationController extends BaseController {
     })
     @PostMapping(value = "/changeIssue" )
     @PreAuthorize("hasAuthority('destination:s')")
-    public ResponseMessage changeIssue(@PathVariable("id") String id, @PathVariable("status") Integer status ,BindingResult bindingResult) throws Exception {
+    public ResponseMessage changeIssue(@RequestParam("id") String id, @RequestParam("status") Integer status ,BindingResult bindingResult) throws Exception {
         if(bindingResult.hasErrors()){
             return ResponseMessage.validFailResponse().setMsg(bindingResult.getAllErrors());
         }
