@@ -78,15 +78,15 @@ public class ScenicController extends BaseController {
     }
 
     @ApiOperation(value = "景区编辑", notes = "景区编辑")
-    @ApiImplicitParam(name = "scenicEntity", value = "景区", required = true, dataType = "ScenicEntity")
+    @ApiImplicitParam(name = "scenicModel", value = "景区", required = true, dataType = "ScenicModel")
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
     @PreAuthorize("hasAuthority('scenic:u')")
     @OperationLog(value = "wtcp-bics/景区编辑", operate = "u", module = "景区管理")
-    public ResponseMessage edit(@PathVariable("id") String id, @RequestBody ScenicEntity scenicEntity, BindingResult bindingResult) throws Exception {
+    public ResponseMessage edit(@PathVariable("id") String id, @RequestBody ScenicModel scenicModel, BindingResult bindingResult) throws Exception {
         if (bindingResult.hasErrors()) {
             return ResponseMessage.validFailResponse().setMsg(bindingResult.getAllErrors());
         }
-        return scenicService.edit(id,scenicEntity,getCurrentUser().getUsername());
+        return scenicService.edit(id,scenicModel,getCurrentUser());
     }
 
     @PreAuthorize("hasAuthority('scenic:w')")
