@@ -88,11 +88,11 @@
   </select>
 
   <!-- 校验目的地名称的唯一性  -->
-  <select id="checkRegionFullName"  parameterType="java.lang.String" resultMap="BaseResultMap">
+  <select id="checkRegionFullCode"  parameterType="java.lang.String" resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List" />
     from t_bic_destination
-    where region_full_name = #{regionFullName,jdbcType=VARCHAR}
+    where SUBSTRING_INDEX(region_full_code,',',-1) = #{regionFullCode,jdbcType=VARCHAR}
   </select>
 
 </mapper>
