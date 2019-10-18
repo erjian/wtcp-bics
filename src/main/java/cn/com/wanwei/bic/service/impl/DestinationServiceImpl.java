@@ -145,6 +145,7 @@ public class DestinationServiceImpl implements DestinationService {
         if(null == destinationEntity){
             return ResponseMessage.validFailResponse().setMsg("无目的地信息！");
         }
+        destinationEntity.setId(id);
         destinationEntity.setUpdatedUser(username);
         destinationEntity.setUpdatedDate(new Date());
         destinationEntity.setWeight(weightNum);
