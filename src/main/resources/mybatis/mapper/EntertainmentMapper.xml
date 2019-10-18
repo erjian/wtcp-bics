@@ -125,4 +125,15 @@
     from t_bic_entertainment
     where title = #{title,jdbcType=VARCHAR}
   </select>
+
+  <update id="dataBind">
+    update t_bic_entertainment
+    set updated_date = #{updatedDate,jdbcType=VARCHAR},
+    updated_user = #{updatedUser,jdbcType=VARCHAR},
+    dept_code = #{deptCode,jdbcType=VARCHAR}
+    where id in
+    <foreach collection="ids" item="item" index="index" open="(" separator="," close=")">
+        #{item}
+    </foreach>
+  </update>
 </mapper>

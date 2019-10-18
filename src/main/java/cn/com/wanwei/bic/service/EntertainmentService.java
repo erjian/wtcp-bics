@@ -2,6 +2,7 @@ package cn.com.wanwei.bic.service;
 
 import cn.com.wanwei.bic.entity.AuditLogEntity;
 import cn.com.wanwei.bic.entity.EntertainmentEntity;
+import cn.com.wanwei.bic.model.DataBindModel;
 import cn.com.wanwei.common.model.ResponseMessage;
 import cn.com.wanwei.common.model.User;
 
@@ -77,4 +78,12 @@ public interface EntertainmentService {
      * @return
      */
     ResponseMessage delete(String id);
+
+    /**
+     * 数据绑定
+     * @param updatedUser
+     * @param updatedDate
+     * @param model
+     */
+    int dataBind(String updatedUser, String updatedDate, DataBindModel model);
 }
