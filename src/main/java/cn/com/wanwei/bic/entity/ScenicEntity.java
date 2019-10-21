@@ -33,6 +33,12 @@ public class ScenicEntity extends BaseEntity{
     @ApiModelProperty(value = "标题")
     private String title;
 
+    @ApiModelProperty(value = "标题全拼")
+    private String titleQp;
+
+    @ApiModelProperty(value = "标题简拼")
+    private String titleJp;
+
     @ApiModelProperty(value = "子标题")
     private String subTitle;
 

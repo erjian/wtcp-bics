@@ -100,15 +100,27 @@ public class ScenicController extends BaseController {
         return scenicService.changeWeight(id,weightNum,getCurrentUser().getUsername());
     }
 
-    @PreAuthorize("hasAuthority('scenic:e') or hasAuthority('scenic:o')")
-    @ApiOperation(value = "景区审核和上下线状态变更", notes = "景区审核和上下线状态变更")
+    @PreAuthorize("hasAuthority('scenic:o')")
+    @ApiOperation(value = "上下线状态变更", notes = "上下线状态变更")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "id", value = "景区ID", required = true, dataType = "String"),
-            @ApiImplicitParam(name = "status", value = "审核状态", required = true, dataType = "String")
+            @ApiImplicitParam(name = "status", value = "上下线状态", required = true, dataType = "String")
     })
     @RequestMapping(value = "/changeStatus/{id}/{status}", method = RequestMethod.GET)
     public ResponseMessage changeStatus(@PathVariable("id") String id, @PathVariable("status") Integer status) throws Exception {
         return scenicService.changeStatus(id,status,getCurrentUser().getUsername());
+    }
+
+    @PreAuthorize("hasAuthority('scenic:e')")
+    @ApiOperation(value = "景区审核", notes = "景区审核")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "id", value = "景区信息ID", required = true),
+            @ApiImplicitParam(name = "auditStatus", value = "审核状态", required = true),
+            @ApiImplicitParam(name = "msg", value = "审核意见")
+    })
+    @RequestMapping(value = "/audit", method = RequestMethod.GET)
+    public ResponseMessage audit(@RequestParam String id, @RequestParam int auditStatus, String msg) throws Exception {
+        return scenicService.examineScenic(id, auditStatus, msg, getCurrentUser());
     }
 
     @PreAuthorize("hasAuthority('scenic:b')")
