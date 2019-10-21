@@ -20,6 +20,7 @@ import cn.com.wanwei.bic.service.TagsService;
 import cn.com.wanwei.bic.utils.UUIDUtils;
 import cn.com.wanwei.common.model.ResponseMessage;
 import cn.com.wanwei.common.model.User;
+import cn.com.wanwei.common.utils.PinyinUtils;
 import cn.com.wanwei.persistence.mybatis.MybatisPageRequest;
 import cn.com.wanwei.persistence.mybatis.PageInfo;
 import com.github.pagehelper.Page;
@@ -63,6 +64,8 @@ public class ScenicServiceImpl implements ScenicService {
 		record.setId(UUIDUtils.getInstance().getId());
 		ResponseMessage result =coderServiceFeign.buildSerialByCode(ruleId, appCode, type);
 		record.setCode(result.getData().toString());
+		record.setTitleQp(PinyinUtils.getPingYin(record.getTitle()).toLowerCase());
+		record.setTitleJp(PinyinUtils.converterToFirstSpell(record.getTitle()).toLowerCase());
 		record.setCreatedUser(userName);
 		record.setCreatedDate(new Date());
 		record.setStatus(0);
@@ -93,6 +96,8 @@ public class ScenicServiceImpl implements ScenicService {
 		record.setCreatedDate(entity.getCreatedDate());
 		record.setCreatedUser(entity.getCreatedUser());
 		record.setDeptCode(entity.getDeptCode());
+		record.setTitleQp(PinyinUtils.getPingYin(record.getTitle()).toLowerCase());
+		record.setTitleJp(PinyinUtils.converterToFirstSpell(record.getTitle()).toLowerCase());
 		record.setStatus(0);
 		record.setUpdatedDate(new Date());
 		record.setUpdatedUser(user.getUsername());
