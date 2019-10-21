@@ -4,6 +4,7 @@ import cn.com.wanwei.bic.entity.AuditLogEntity;
 import cn.com.wanwei.bic.entity.EntertainmentEntity;
 import cn.com.wanwei.bic.feign.CoderServiceFeign;
 import cn.com.wanwei.bic.mapper.EntertainmentMapper;
+import cn.com.wanwei.bic.model.DataBindModel;
 import cn.com.wanwei.bic.service.AuditLogService;
 import cn.com.wanwei.bic.service.EntertainmentService;
 import cn.com.wanwei.bic.utils.UUIDUtils;
@@ -22,6 +23,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -164,5 +166,12 @@ public class EntertainmentServiceImpl implements EntertainmentService {
     public ResponseMessage delete(String id) {
         entertainmentMapper.deleteByPrimaryKey(id);
         return ResponseMessage.defaultResponse().setMsg("删除成功！");
+    }
+
+    @Override
+    public int dataBind(String updatedUser, String updatedDate, DataBindModel model) {
+        String deptCode = model.getDeptCode();
+        List<String> ids = model.getIds();
+        return entertainmentMapper.dataBind(updatedUser, updatedDate, deptCode, ids);
     }
 }
