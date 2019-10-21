@@ -6,10 +6,12 @@
  */
 package cn.com.wanwei.bic.service.impl;
 
+import cn.com.wanwei.bic.entity.AuditLogEntity;
 import cn.com.wanwei.bic.entity.BaseTagsEntity;
 import cn.com.wanwei.bic.entity.ScenicEntity;
 import cn.com.wanwei.bic.entity.ScenicTagsEntity;
 import cn.com.wanwei.bic.feign.CoderServiceFeign;
+import cn.com.wanwei.bic.mapper.AuditLogMapper;
 import cn.com.wanwei.bic.mapper.ScenicMapper;
 import cn.com.wanwei.bic.model.DataBindModel;
 import cn.com.wanwei.bic.model.ScenicModel;
@@ -24,6 +26,7 @@ import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.google.common.collect.Lists;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.time.DateFormatUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.data.domain.Sort;
@@ -49,6 +52,9 @@ public class ScenicServiceImpl implements ScenicService {
 
 	@Autowired
 	private TagsService tagsService;
+
+	@Autowired
+	private AuditLogMapper auditLogMapper;
 
 	@Override
 	public ResponseMessage save(ScenicModel scenicModel, String userName, Long ruleId, Integer appCode) {
@@ -146,10 +152,44 @@ public class ScenicServiceImpl implements ScenicService {
 		if(null == entity){
 			return ResponseMessage.validFailResponse().setMsg("无景区信息");
 		}
+		if(status == 9 && entity.getStatus() != 1){
+			return ResponseMessage.validFailResponse().setMsg("景区未审核通过，不能上线，请先审核景区信息");
+		}
+		// 添加上下线记录
+		String msg = status == 9? "上线成功" : "下线成功";
+		saveAuditLog(entity.getStatus(),status,id,username,msg, 1);
 		entity.setUpdatedUser(username);
 		entity.setUpdatedDate(new Date());
 		entity.setStatus(status);
 		scenicMapper.updateByPrimaryKeyWithBLOBs(entity);
 		return ResponseMessage.defaultResponse().setMsg("状态变更成功");
+	}
+
+	@Override
+	public ResponseMessage examineScenic(String id, int auditStatus, String msg, User currentUser) throws Exception {
+		ScenicEntity scenicEntity = scenicMapper.selectByPrimaryKey(id);
+		if (scenicEntity != null) {
+			// 添加审核记录
+			saveAuditLog(scenicEntity.getStatus(),auditStatus,id,currentUser.getUsername(),msg, 0);
+			scenicEntity.setStatus(auditStatus);
+			scenicEntity.setUpdatedDate(new Date());
+			scenicMapper.updateByPrimaryKeyWithBLOBs(scenicEntity);
+		} else {
+			return ResponseMessage.validFailResponse().setMsg("景区信息不存在");
+		}
+		return ResponseMessage.defaultResponse();
+	}
+
+	private int saveAuditLog(int preStatus, int auditStatus, String principalId, String userName, String msg, int type){
+		AuditLogEntity auditLogEntity = new AuditLogEntity();
+		auditLogEntity.setId(UUIDUtils.getInstance().getId());
+		auditLogEntity.setType(type);
+		auditLogEntity.setPreStatus(preStatus);
+		auditLogEntity.setStatus(auditStatus);
+		auditLogEntity.setPrincipalId(principalId);
+		auditLogEntity.setCreatedDate(new Date());
+		auditLogEntity.setCreatedUser(userName);
+		auditLogEntity.setOpinion(msg);
+		return auditLogMapper.insert(auditLogEntity);
 	}
 }
