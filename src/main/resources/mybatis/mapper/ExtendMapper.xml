@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.com.wanwei.bic.mapper.ExtendMapper">
+  <resultMap id="BaseResultMap" type="cn.com.wanwei.bic.entity.ExtendEntity">
+    <id column="id" jdbcType="VARCHAR" property="id" />
+    <result column="principal_id" jdbcType="VARCHAR" property="principalId" />
+    <result column="code" jdbcType="VARCHAR" property="code" />
+    <result column="title" jdbcType="VARCHAR" property="title" />
+    <result column="sub_title" jdbcType="VARCHAR" property="subTitle" />
+    <result column="slogan" jdbcType="VARCHAR" property="slogan" />
+    <result column="summary" jdbcType="VARCHAR" property="summary" />
+    <result column="description" jdbcType="VARCHAR" property="description" />
+    <result column="weight" jdbcType="REAL" property="weight" />
+    <result column="type" jdbcType="INTEGER" property="type" />
+    <result column="status" jdbcType="INTEGER" property="status" />
+    <result column="price" jdbcType="REAL" property="price" />
+    <result column="created_user" jdbcType="VARCHAR" property="createdUser" />
+    <result column="created_date" jdbcType="TIMESTAMP" property="createdDate" />
+    <result column="updated_user" jdbcType="VARCHAR" property="updatedUser" />
+    <result column="updated_date" jdbcType="TIMESTAMP" property="updatedDate" />
+  </resultMap>
+  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="cn.com.wanwei.bic.entity.ExtendEntity">
+    <result column="content" jdbcType="LONGVARCHAR" property="content" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, principal_id, code, title, sub_title, slogan, summary, description, weight, type, 
+    status, price, created_user, created_date, updated_user, updated_date
+  </sql>
+  <sql id="Blob_Column_List">
+    content
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="ResultMapWithBLOBs">
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from t_bic_extend
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from t_bic_extend
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="cn.com.wanwei.bic.entity.ExtendEntity">
+    insert into t_bic_extend (id, principal_id, code, title,
+      sub_title, slogan, summary, 
+      description, weight, type, 
+      status, price, created_user, 
+      created_date, updated_user, updated_date, 
+      content)
+    values (#{id,jdbcType=VARCHAR}, #{principalId,jdbcType=VARCHAR}, #{code,jdbcType=VARCHAR}, #{title,jdbcType=VARCHAR},
+      #{subTitle,jdbcType=VARCHAR}, #{slogan,jdbcType=VARCHAR}, #{summary,jdbcType=VARCHAR}, 
+      #{description,jdbcType=VARCHAR}, #{weight,jdbcType=REAL}, #{type,jdbcType=INTEGER}, 
+      #{status,jdbcType=INTEGER}, #{price,jdbcType=REAL}, #{createdUser,jdbcType=VARCHAR}, 
+      #{createdDate,jdbcType=TIMESTAMP}, #{updatedUser,jdbcType=VARCHAR}, #{updatedDate,jdbcType=TIMESTAMP}, 
+      #{content,jdbcType=LONGVARCHAR})
+  </insert>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="cn.com.wanwei.bic.entity.ExtendEntity">
+    update t_bic_extend
+    set principal_id = #{principalId,jdbcType=VARCHAR},
+      code = #{code,jdbcType=VARCHAR},
+      title = #{title,jdbcType=VARCHAR},
+      sub_title = #{subTitle,jdbcType=VARCHAR},
+      slogan = #{slogan,jdbcType=VARCHAR},
+      summary = #{summary,jdbcType=VARCHAR},
+      description = #{description,jdbcType=VARCHAR},
+      weight = #{weight,jdbcType=REAL},
+      type = #{type,jdbcType=INTEGER},
+      status = #{status,jdbcType=INTEGER},
+      price = #{price,jdbcType=REAL},
+      created_user = #{createdUser,jdbcType=VARCHAR},
+      created_date = #{createdDate,jdbcType=TIMESTAMP},
+      updated_user = #{updatedUser,jdbcType=VARCHAR},
+      updated_date = #{updatedDate,jdbcType=TIMESTAMP},
+      content = #{content,jdbcType=LONGVARCHAR}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="cn.com.wanwei.bic.entity.ExtendEntity">
+    update t_bic_extend
+    set principal_id = #{principalId,jdbcType=VARCHAR},
+      code = #{code,jdbcType=VARCHAR},
+      title = #{title,jdbcType=VARCHAR},
+      sub_title = #{subTitle,jdbcType=VARCHAR},
+      slogan = #{slogan,jdbcType=VARCHAR},
+      summary = #{summary,jdbcType=VARCHAR},
+      description = #{description,jdbcType=VARCHAR},
+      weight = #{weight,jdbcType=REAL},
+      type = #{type,jdbcType=INTEGER},
+      status = #{status,jdbcType=INTEGER},
+      price = #{price,jdbcType=REAL},
+      created_user = #{createdUser,jdbcType=VARCHAR},
+      created_date = #{createdDate,jdbcType=TIMESTAMP},
+      updated_user = #{updatedUser,jdbcType=VARCHAR},
+      updated_date = #{updatedDate,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+
+  <!-- 分页查询扩展信息列表数据  -->
+  <select id="findByPage" parameterType="java.util.Map" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from t_bic_extend
+    <where>
+      <if test="principalId != null and principalId != '' ">
+        <bind name="principalId" value="principalId"></bind>
+        and principal_id = #{principalId}
+      </if>
+    </where>
+  </select>
+
+</mapper>
