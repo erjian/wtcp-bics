@@ -27,7 +27,7 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
 //                    .authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED)).and()
 //                    .authorizeRequests()
 //                    .mvcMatchers("/v2/api-docs", "/hystrix.stream", "/turbine.stream",
-//                            "/token" , "/public/**", "/actuator/prometheus")
+//                            "/token" , "/public/**", "/rpc/**", "/actuator/prometheus")
 //                    .permitAll().anyRequest().authenticated().and().httpBasic();
 
     }

@@ -39,4 +39,11 @@ public interface ScenicMapper {
      */
     int dataBind(@Param(value="updatedUser") String updatedUser, @Param(value="updatedDate") Date updatedDate,
                              @Param(value="deptCode") String deptCode, @Param(value="ids") List<String> ids);
+
+    /**
+     * 查询景区信息
+     * @param title
+     * @return
+     */
+    List<ScenicEntity> getScenicInfo(@Param(value="title") String title);
 }

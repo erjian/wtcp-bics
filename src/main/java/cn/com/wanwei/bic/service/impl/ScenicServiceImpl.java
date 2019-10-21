@@ -185,6 +185,12 @@ public class ScenicServiceImpl implements ScenicService {
 		return ResponseMessage.defaultResponse();
 	}
 
+	@Override
+	public ResponseMessage getScenicInfo(String title) {
+		List<ScenicEntity> entities = scenicMapper.getScenicInfo(title);
+		return ResponseMessage.defaultResponse().setData(entities);
+	}
+
 	private int saveAuditLog(int preStatus, int auditStatus, String principalId, String userName, String msg, int type){
 		AuditLogEntity auditLogEntity = new AuditLogEntity();
 		auditLogEntity.setId(UUIDUtils.getInstance().getId());

@@ -105,4 +105,11 @@ public interface ScenicService {
 	 * @throws Exception
 	 */
     ResponseMessage examineScenic(String id, int auditStatus, String msg, User currentUser) throws Exception;
+
+	/**
+	 * 获取景区信息，title可以为空
+	 * @param title
+	 * @return
+	 */
+	ResponseMessage getScenicInfo(String title);
 }
