@@ -116,15 +116,15 @@ public class EntertainmentServiceTest {
         Assert.assertSame("返回值是1", 1, status);
     }
 
-    @Test
-    @Rollback
-    public void goWeightTest() {
-        System.out.println("---------------权重更改---------------");
-        ResponseMessage back = entertainmentService.goWeight("-11111",Float.valueOf("1"), user);
-        int status=  back.getStatus();
-        System.out.println("返回值：" + status);
-        Assert.assertSame("返回值是0", 0, status);
-    }
+//    @Test
+//    @Rollback
+//    public void goWeightTest() {
+//        System.out.println("---------------权重更改---------------");
+//        ResponseMessage back = entertainmentService.goWeight("-11111",Float.valueOf("1"), user);
+//        int status=  back.getStatus();
+//        System.out.println("返回值：" + status);
+//        Assert.assertSame("返回值是0", 0, status);
+//    }
 
     @Test
     public void checkTitleTest(){
