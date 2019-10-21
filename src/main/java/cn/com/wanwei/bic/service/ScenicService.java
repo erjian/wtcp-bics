@@ -93,4 +93,23 @@ public interface ScenicService {
 	 * @throws Exception
 	 */
     ResponseMessage changeStatus(String id, Integer status, String username) throws Exception;
+
+	/**
+	 * 景区审核
+	 * @author linjw 2019年10月21日11:32:41
+	 * @param id
+	 * @param auditStatus
+	 * @param msg
+	 * @param currentUser
+	 * @return
+	 * @throws Exception
+	 */
+    ResponseMessage examineScenic(String id, int auditStatus, String msg, User currentUser) throws Exception;
+
+	/**
+	 * 获取景区信息，title可以为空
+	 * @param title
+	 * @return
+	 */
+	ResponseMessage getScenicInfo(String title);
 }
