@@ -51,11 +51,9 @@
     where id = #{id,jdbcType=VARCHAR}
   </select>
 
-  <select id="getScenicInfo" resultMap="ResultMapWithBLOBs">
+  <select id="getScenicInfo" resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List" />
-    ,
-    <include refid="Blob_Column_List" />
     from t_bic_scenic
     <where>
       <if test="title != null and title !='' ">
