@@ -20,10 +20,10 @@ import javax.persistence.Table;
 public class PoiEntity extends commonEntity {
 
     @ApiModelProperty(value = "父ID（第一级poi时值为0）" ,required = true)
-    private Long parentId;
+    private String parentId;
 
     @ApiModelProperty(value = "关联信息ID(景区id)" ,required = true)
-    private Long principalId;
+    private String principalId;
 
     @ApiModelProperty(value = "审核状态（0：待审，1：通过，9：上线）" )
     private Integer status;
@@ -32,6 +32,6 @@ public class PoiEntity extends commonEntity {
     private String deptCode;
 
     @ApiModelProperty(value = "类型（1：厕所，2：停车场，3：出入口，4：游客中心，5：景点）" ,required = true)
-    private Integer type;
+    private String type;
 
 }

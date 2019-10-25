@@ -22,6 +22,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -199,5 +200,24 @@ public class PoiServiceImpl implements PoiService {
             log.error(e.getMessage());
             return ResponseMessage.validFailResponse().setMsg("操作失败！");
         }
+    }
+
+    @Override
+    public ResponseMessage findScenicList(String parentId) {
+        List<PoiEntity> poiEntities = poiMapper.findScenicList(parentId);
+        return ResponseMessage.defaultResponse().setData(poiEntities);
+    }
+
+    @Override
+    public ResponseMessage batchDelete(List<String> ids) {
+        ResponseMessage responseMessage = ResponseMessage.defaultResponse();
+        for (String id : ids){
+            PoiEntity entity = poiMapper.selectByPrimaryKey(id);
+            if(entity.getStatus() == 9){
+                return responseMessage.setStatus(0).setMsg("所选数据中存在已上线数据，批量删除取消！");
+            }
+        }
+        poiMapper.batchDelete(ids);
+        return responseMessage.setStatus(1).setMsg("批量删除成功");
     }
 }

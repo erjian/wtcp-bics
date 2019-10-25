@@ -6,6 +6,7 @@ import cn.com.wanwei.bic.entity.PoiEntity;
 import cn.com.wanwei.common.model.ResponseMessage;
 import cn.com.wanwei.common.model.User;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -77,4 +78,18 @@ public interface PoiService {
      * @return
      */
     ResponseMessage auditOrIssue(AuditLogEntity auditLogEntity, User user, int type);
+
+    /**
+     * 查询一级景点
+     * @param parentId 一级景点id（0）
+     * @return list
+     */
+    ResponseMessage findScenicList(String parentId);
+
+    /**
+     * 批量删除poi管理信息
+     * @param ids
+     * @return
+     */
+    ResponseMessage batchDelete(List<String> ids);
 }
