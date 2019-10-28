@@ -131,10 +131,10 @@ public class PoiController extends  BaseController{
     }
 
     @ApiOperation(value = "查询景点信息列表", notes = "查询景点信息列表")
+    @ApiImplicitParam(name = "type",value = "类型code")
     @GetMapping("/findScenicList")
-    public ResponseMessage findScenicList(){
-        String parentId = "0";
-        return poiService.findScenicList(parentId);
+    public ResponseMessage findScenicList(@RequestParam String type){
+        return poiService.findScenicList(type);
     }
 
 

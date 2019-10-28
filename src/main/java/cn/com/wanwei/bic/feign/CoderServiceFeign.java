@@ -19,6 +19,9 @@ public interface CoderServiceFeign {
                                 @RequestParam(value = "appCode") Integer appCode,
                                 @RequestParam(value = "areaCode") String areaCode);
 
+    @GetMapping(value = "/dictionary/getByCode")
+    ResponseMessage getByCode(@RequestParam(value = "code") String code);
+
     @Component
     class CoderServiceFeignHystrix implements CoderServiceFeign {
 
@@ -29,6 +32,11 @@ public interface CoderServiceFeign {
 
         @Override
         public ResponseMessage buildSerialByCode(Long id, Integer appCode, String areaCode) {
+            return ResponseMessage.defaultFallBack();
+        }
+
+        @Override
+        public ResponseMessage getByCode(String code) {
             return ResponseMessage.defaultFallBack();
         }
     }

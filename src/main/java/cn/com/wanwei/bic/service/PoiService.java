@@ -81,10 +81,10 @@ public interface PoiService {
 
     /**
      * 查询一级景点
-     * @param parentId 一级景点id（0）
+     * @param type
      * @return list
      */
-    ResponseMessage findScenicList(String parentId);
+    ResponseMessage findScenicList(String type);
 
     /**
      * 批量删除poi管理信息

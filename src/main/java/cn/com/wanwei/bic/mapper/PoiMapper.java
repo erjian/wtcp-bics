@@ -40,7 +40,7 @@ public interface PoiMapper {
      * @param parentId
      * @return
      */
-    List<PoiEntity> findScenicList(String parentId);
+    List<PoiEntity> findScenicList(String type);
 
     /**
      * 批量删除poi信息

@@ -2,8 +2,10 @@ package cn.com.wanwei.bic.service.impl;
 
 import cn.com.wanwei.bic.entity.AuditLogEntity;
 import cn.com.wanwei.bic.entity.PoiEntity;
+import cn.com.wanwei.bic.entity.ScenicEntity;
 import cn.com.wanwei.bic.feign.CoderServiceFeign;
 import cn.com.wanwei.bic.mapper.PoiMapper;
+import cn.com.wanwei.bic.mapper.ScenicMapper;
 import cn.com.wanwei.bic.service.AuditLogService;
 import cn.com.wanwei.bic.service.PoiService;
 import cn.com.wanwei.bic.utils.UUIDUtils;
@@ -31,10 +33,14 @@ import java.util.Map;
 @Service
 @Slf4j
 @RefreshScope
+@SuppressWarnings("all")
 public class PoiServiceImpl implements PoiService {
 
     @Autowired
     private PoiMapper poiMapper;
+
+    @Autowired
+    private ScenicMapper scenicMapper;
 
     @Autowired
     private AuditLogService auditLogService;
@@ -50,9 +56,17 @@ public class PoiServiceImpl implements PoiService {
         try {
             Sort sort = Sort.by(new Sort.Order[]{new Sort.Order(Sort.Direction.DESC, "weight"), new Sort.Order(Sort.Direction.DESC, "created_date")});
             MybatisPageRequest pageRequest = MybatisPageRequest.of(page, size, sort);
-            PageHelper.startPage(pageRequest.getPage(), pageRequest.getSize(), pageRequest.getOrders());
+            PageHelper.startPage(pageRequest.getPage(), pageRequest.getSize());
+            PageHelper.orderBy(pageRequest.getOrders());
             Page<PoiEntity> poiEntities = poiMapper.findByPage(filter);
             PageInfo<PoiEntity> pageInfo = new PageInfo<>(poiEntities, pageRequest);
+            for (PoiEntity entity : pageInfo.getContent()) {
+                ScenicEntity scenicEntity = scenicMapper.selectByPrimaryKey(entity.getPrincipalId());
+                entity.setScenicName(scenicEntity.getTitle());
+                ResponseMessage result = coderServiceFeign.getByCode(entity.getType());
+//                Map<String, Object> map = (Map<String, Object>) result.getData();
+//                entity.setTypeName(map.get("name").toString());
+            }
             return ResponseMessage.defaultResponse().setData(pageInfo);
         } catch (Exception e) {
             log.error(e.getMessage());
@@ -86,6 +100,9 @@ public class PoiServiceImpl implements PoiService {
                 poiEntity.setCreatedUser(user.getUsername());
                 poiEntity.setCreatedDate(new Date());
                 poiEntity.setDeptCode(user.getOrg().getCode());
+                if(poiEntity.getParentId().length() == 0 && ("112005").equals(poiEntity.getType())){
+                    poiEntity.setParentId("0");
+                }
                 poiMapper.insert(poiEntity);
                 return ResponseMessage.defaultResponse().setMsg("保存成功!");
             }
@@ -170,21 +187,21 @@ public class PoiServiceImpl implements PoiService {
             if (pntity == null) {
                 return ResponseMessage.validFailResponse().setMsg("暂无该poi信息！");
             }
-            String msg="审核成功！";
-            if(type==1){
+            String msg = "审核成功！";
+            if (type == 1) {
                 //上线
-                if(auditLogEntity.getPreStatus()==0||auditLogEntity.getPreStatus()==2){
+                if (auditLogEntity.getPreStatus() == 0 || auditLogEntity.getPreStatus() == 2) {
                     return ResponseMessage.validFailResponse().setMsg("当前信息未审核通过，不可上下线操作！");
-                }else {
-                    if(auditLogEntity.getStatus()==1||auditLogEntity.getStatus()==9){
-                        msg=auditLogEntity.getStatus()==1?"下线成功！":"上线成功！";
-                    }else{
+                } else {
+                    if (auditLogEntity.getStatus() == 1 || auditLogEntity.getStatus() == 9) {
+                        msg = auditLogEntity.getStatus() == 1 ? "下线成功！" : "上线成功！";
+                    } else {
                         return ResponseMessage.validFailResponse().setMsg("上下线状态错误！");
                     }
                 }
-            }else {
+            } else {
                 //审核
-                if(auditLogEntity.getStatus()==9){
+                if (auditLogEntity.getStatus() == 9) {
                     return ResponseMessage.validFailResponse().setMsg("审核状态错误！");
                 }
             }
@@ -194,7 +211,7 @@ public class PoiServiceImpl implements PoiService {
             pntity.setUpdatedDate(new Date());
             poiMapper.updateByPrimaryKey(pntity);
             auditLogEntity.setType(type);
-            auditLogService.create(auditLogEntity,user.getUsername());
+            auditLogService.create(auditLogEntity, user.getUsername());
             return ResponseMessage.defaultResponse().setMsg(msg);
         } catch (Exception e) {
             log.error(e.getMessage());
@@ -203,17 +220,17 @@ public class PoiServiceImpl implements PoiService {
     }
 
     @Override
-    public ResponseMessage findScenicList(String parentId) {
-        List<PoiEntity> poiEntities = poiMapper.findScenicList(parentId);
+    public ResponseMessage findScenicList(String type) {
+        List<PoiEntity> poiEntities = poiMapper.findScenicList(type);
         return ResponseMessage.defaultResponse().setData(poiEntities);
     }
 
     @Override
     public ResponseMessage batchDelete(List<String> ids) {
         ResponseMessage responseMessage = ResponseMessage.defaultResponse();
-        for (String id : ids){
+        for (String id : ids) {
             PoiEntity entity = poiMapper.selectByPrimaryKey(id);
-            if(entity.getStatus() == 9){
+            if (entity.getStatus() == 9) {
                 return responseMessage.setStatus(0).setMsg("所选数据中存在已上线数据，批量删除取消！");
             }
         }
