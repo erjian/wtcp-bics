@@ -2,7 +2,6 @@ package cn.com.wanwei.bic.service.impl;
 
 import cn.com.wanwei.bic.entity.AuditLogEntity;
 import cn.com.wanwei.bic.entity.PoiEntity;
-import cn.com.wanwei.bic.entity.ScenicEntity;
 import cn.com.wanwei.bic.feign.CoderServiceFeign;
 import cn.com.wanwei.bic.mapper.PoiMapper;
 import cn.com.wanwei.bic.mapper.ScenicMapper;
@@ -60,13 +59,6 @@ public class PoiServiceImpl implements PoiService {
             PageHelper.orderBy(pageRequest.getOrders());
             Page<PoiEntity> poiEntities = poiMapper.findByPage(filter);
             PageInfo<PoiEntity> pageInfo = new PageInfo<>(poiEntities, pageRequest);
-            for (PoiEntity entity : pageInfo.getContent()) {
-                ScenicEntity scenicEntity = scenicMapper.selectByPrimaryKey(entity.getPrincipalId());
-                entity.setScenicName(scenicEntity.getTitle());
-                ResponseMessage result = coderServiceFeign.getByCode(entity.getType());
-//                Map<String, Object> map = (Map<String, Object>) result.getData();
-//                entity.setTypeName(map.get("name").toString());
-            }
             return ResponseMessage.defaultResponse().setData(pageInfo);
         } catch (Exception e) {
             log.error(e.getMessage());
