@@ -3,6 +3,7 @@ package cn.com.wanwei.bic.service;
 import cn.com.wanwei.bic.entity.AuditLogEntity;
 import cn.com.wanwei.bic.entity.EntertainmentEntity;
 import cn.com.wanwei.bic.model.DataBindModel;
+import cn.com.wanwei.bic.model.WeightModel;
 import cn.com.wanwei.common.model.ResponseMessage;
 import cn.com.wanwei.common.model.User;
 
@@ -46,14 +47,22 @@ public interface EntertainmentService {
      */
     ResponseMessage update(String id, EntertainmentEntity entertainmentEntity, User user);
 
+//    /**
+//     * 休闲娱乐信息排序
+//     * @param id
+//     * @param weight
+//     * @param user
+//     * @return
+//     */
+//    ResponseMessage goWeight(String id, Float weight, User user);
+
     /**
-     * 删除休闲娱乐信息
-     * @param id
-     * @param weight
+     * 休闲娱乐信息排序
+     * @param weightModel
      * @param user
      * @return
      */
-    ResponseMessage goWeight(String id, Float weight, User user);
+    ResponseMessage goWeight(WeightModel weightModel, User user);
 
     /**
      * 标题重名校验

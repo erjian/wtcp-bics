@@ -4,7 +4,9 @@ import cn.com.wanwei.bic.entity.PoiEntity;
 import cn.com.wanwei.common.annotation.DataScope;
 import com.github.pagehelper.Page;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
+import java.util.List;
 import java.util.Map;
 
 @Mapper
@@ -32,4 +34,17 @@ public interface PoiMapper {
      * @return
      */
     PoiEntity checkTitle( String title);
+
+    /**
+     * 查询一级景点
+     * @param parentId
+     * @return
+     */
+    List<PoiEntity> findScenicList(String type);
+
+    /**
+     * 批量删除poi信息
+     * @param ids
+     */
+    void batchDelete(@Param(value="ids") List<String> ids);
 }

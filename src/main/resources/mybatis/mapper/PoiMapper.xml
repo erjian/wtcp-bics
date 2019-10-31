@@ -1,48 +1,48 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="cn.com.wanwei.bic.mapper.PoiMapper">
-  <resultMap id="BaseResultMap" type="cn.com.wanwei.bic.entity.PoiEntity">
-    <id column="id" jdbcType="VARCHAR" property="id" />
-    <result column="parent_id" jdbcType="BIGINT" property="parentId" />
-    <result column="principal_id" jdbcType="BIGINT" property="principalId" />
-    <result column="code" jdbcType="VARCHAR" property="code" />
-    <result column="title" jdbcType="VARCHAR" property="title" />
-    <result column="sub_title" jdbcType="VARCHAR" property="subTitle" />
-    <result column="slogan" jdbcType="VARCHAR" property="slogan" />
-    <result column="summary" jdbcType="VARCHAR" property="summary" />
-    <result column="description" jdbcType="VARCHAR" property="description" />
-    <result column="weight" jdbcType="REAL" property="weight" />
-    <result column="longitude" jdbcType="DOUBLE" property="longitude" />
-    <result column="latitude" jdbcType="DOUBLE" property="latitude" />
-    <result column="region_full_name" jdbcType="VARCHAR" property="regionFullName" />
-    <result column="region_full_code" jdbcType="VARCHAR" property="regionFullCode" />
-    <result column="region" jdbcType="VARCHAR" property="region" />
-    <result column="address" jdbcType="VARCHAR" property="address" />
-    <result column="status" jdbcType="INTEGER" property="status" />
-    <result column="dept_code" jdbcType="VARCHAR" property="deptCode" />
-    <result column="created_user" jdbcType="VARCHAR" property="createdUser" />
-    <result column="created_date" jdbcType="TIMESTAMP" property="createdDate" />
-    <result column="updated_user" jdbcType="VARCHAR" property="updatedUser" />
-    <result column="updated_date" jdbcType="TIMESTAMP" property="updatedDate" />
-    <result column="content" jdbcType="LONGVARCHAR" property="content" />
-    <result column="type" jdbcType="INTEGER" property="type" />
-  </resultMap>
-  <sql id="Base_Column_List">
+    <resultMap id="BaseResultMap" type="cn.com.wanwei.bic.entity.PoiEntity">
+        <id column="id" jdbcType="VARCHAR" property="id"/>
+        <result column="parent_id" jdbcType="BIGINT" property="parentId"/>
+        <result column="principal_id" jdbcType="BIGINT" property="principalId"/>
+        <result column="code" jdbcType="VARCHAR" property="code"/>
+        <result column="title" jdbcType="VARCHAR" property="title"/>
+        <result column="sub_title" jdbcType="VARCHAR" property="subTitle"/>
+        <result column="slogan" jdbcType="VARCHAR" property="slogan"/>
+        <result column="summary" jdbcType="VARCHAR" property="summary"/>
+        <result column="description" jdbcType="VARCHAR" property="description"/>
+        <result column="weight" jdbcType="REAL" property="weight"/>
+        <result column="longitude" jdbcType="DOUBLE" property="longitude"/>
+        <result column="latitude" jdbcType="DOUBLE" property="latitude"/>
+        <result column="region_full_name" jdbcType="VARCHAR" property="regionFullName"/>
+        <result column="region_full_code" jdbcType="VARCHAR" property="regionFullCode"/>
+        <result column="region" jdbcType="VARCHAR" property="region"/>
+        <result column="address" jdbcType="VARCHAR" property="address"/>
+        <result column="status" jdbcType="INTEGER" property="status"/>
+        <result column="dept_code" jdbcType="VARCHAR" property="deptCode"/>
+        <result column="created_user" jdbcType="VARCHAR" property="createdUser"/>
+        <result column="created_date" jdbcType="TIMESTAMP" property="createdDate"/>
+        <result column="updated_user" jdbcType="VARCHAR" property="updatedUser"/>
+        <result column="updated_date" jdbcType="TIMESTAMP" property="updatedDate"/>
+        <result column="content" jdbcType="LONGVARCHAR" property="content"/>
+        <result column="type" jdbcType="INTEGER" property="type"/>
+    </resultMap>
+    <sql id="Base_Column_List">
     id, parent_id, principal_id, code, title, sub_title, slogan, summary, description, weight,
     longitude, latitude, region_full_name, region_full_code, region, address, status, 
     dept_code, created_user, created_date, updated_user, updated_date,content,`type`
   </sql>
-  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
-    select 
-    <include refid="Base_Column_List" />
-    from t_bic_poi
-    where id = #{id,jdbcType=VARCHAR}
-  </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from t_bic_poi
+        where id = #{id,jdbcType=VARCHAR}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
     delete from t_bic_poi
     where id = #{id,jdbcType=VARCHAR}
   </delete>
-  <insert id="insert" parameterType="cn.com.wanwei.bic.entity.PoiEntity">
+    <insert id="insert" parameterType="cn.com.wanwei.bic.entity.PoiEntity">
     insert into t_bic_poi (id,parent_id, principal_id, code,
       title, sub_title, slogan, 
       summary, description, weight, 
@@ -60,7 +60,7 @@
       #{createdDate,jdbcType=TIMESTAMP}, #{updatedUser,jdbcType=VARCHAR}, #{updatedDate,jdbcType=TIMESTAMP}, 
       #{content,jdbcType=LONGVARCHAR},#{type,jdbcType=INTEGER})
   </insert>
-  <update id="updateByPrimaryKey" parameterType="cn.com.wanwei.bic.entity.PoiEntity">
+    <update id="updateByPrimaryKey" parameterType="cn.com.wanwei.bic.entity.PoiEntity">
     update t_bic_poi
     set parent_id = #{parentId,jdbcType=BIGINT},
       principal_id = #{principalId,jdbcType=BIGINT},
@@ -87,15 +87,56 @@
       `type`=#{type,jdbcType=INTEGER}
     where id = #{id,jdbcType=VARCHAR}
   </update>
-  <select id="findByPage" parameterType="java.util.Map" resultMap="BaseResultMap">
-    select
-    <include refid="Base_Column_List" />
-    from t_bic_poi
-  </select>
-  <select id="checkTitle"  parameterType="java.lang.String" resultMap="BaseResultMap">
-    select
-    <include refid="Base_Column_List" />
-    from t_bic_poi
-    where title = #{title,jdbcType=VARCHAR}
-  </select>
+    <select id="findByPage" parameterType="java.util.Map" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from t_bic_poi
+        <where>
+            <if test="title != null and title!='' ">
+                <bind name="title" value="title + '%'" ></bind>
+                and title like #{title}
+            </if>
+            <if test="principalId != null and principalId!='' ">
+                <bind name="principalId" value="principalId + '%'" ></bind>
+                and principal_id like #{principalId}
+            </if>
+            <if test="type != null and type!='' ">
+                <bind name="type" value="type + '%'" ></bind>
+                and type like #{type}
+            </if>
+            <if test="regionFullCode != null and regionFullCode!='' ">
+                <bind name="regionFullCode" value="'%'+regionFullCode + '%'" ></bind>
+                and region_full_code like #{regionFullCode}
+            </if>
+            <if test="status != null">
+                <if test="status == 9">
+                    and status = #{status,jdbcType=INTEGER}
+                </if>
+                <if test="status == 1">
+                    and 9 > status
+                </if>
+            </if>
+        </where>
+    </select>
+    <select id="checkTitle" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from t_bic_poi
+        where title = #{title,jdbcType=VARCHAR}
+    </select>
+    <select id="findScenicList" parameterType="java.util.Map" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from t_bic_poi
+        where type = #{type,jdbcType=VARCHAR}
+        and parent_id = "0"
+    </select>
+    <!-- 批量删除 -->
+    <delete id="batchDelete">
+        delete from t_bic_poi
+        where id in
+        <foreach collection="ids" item="item" index="index" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </delete>
 </mapper>

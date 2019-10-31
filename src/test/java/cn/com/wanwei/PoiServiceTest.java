@@ -48,8 +48,8 @@ public class PoiServiceTest {
         poiEntity.setDescription("ceshi1");
         poiEntity.setLatitude(12.111);
         poiEntity.setLongitude(12.111);
-        poiEntity.setParentId(1L);
-        poiEntity.setPrincipalId(1L);
+        poiEntity.setParentId("1");
+        poiEntity.setPrincipalId("1");
         poiEntity.setRegion("ceshi");
         poiEntity.setRegionFullCode("12,13");
         poiEntity.setRegionFullName("甘肃省，兰州市，城关区");
@@ -57,7 +57,7 @@ public class PoiServiceTest {
         poiEntity.setSubTitle("1233");
         poiEntity.setSummary("123123");
         poiEntity.setTitle("qeq23");
-        poiEntity.setType(123);
+        poiEntity.setType("123");
         //user填充数据
         user=new User();
         user.setUsername("ceshi");

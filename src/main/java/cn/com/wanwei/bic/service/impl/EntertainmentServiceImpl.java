@@ -5,6 +5,7 @@ import cn.com.wanwei.bic.entity.EntertainmentEntity;
 import cn.com.wanwei.bic.feign.CoderServiceFeign;
 import cn.com.wanwei.bic.mapper.EntertainmentMapper;
 import cn.com.wanwei.bic.model.DataBindModel;
+import cn.com.wanwei.bic.model.WeightModel;
 import cn.com.wanwei.bic.service.AuditLogService;
 import cn.com.wanwei.bic.service.EntertainmentService;
 import cn.com.wanwei.bic.utils.UUIDUtils;
@@ -22,6 +23,7 @@ import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -100,18 +102,41 @@ public class EntertainmentServiceImpl implements EntertainmentService {
         return ResponseMessage.validFailResponse().setMsg("暂无该休闲娱乐信息！");
     }
 
+//    @Override
+//    public ResponseMessage goWeight(String id, Float weight, User user) {
+//        EntertainmentEntity entertainmentEntity = entertainmentMapper.selectByPrimaryKey(id);
+//        if (entertainmentEntity != null) {
+//            entertainmentEntity.setWeight(weight);
+//            entertainmentEntity.setDeptCode(user.getOrg().getCode());
+//            entertainmentEntity.setUpdatedUser(user.getUsername());
+//            entertainmentEntity.setUpdatedDate(new Date());
+//            entertainmentMapper.updateByPrimaryKey(entertainmentEntity);
+//            return ResponseMessage.defaultResponse().setMsg("权重修改成功！");
+//        }
+//        return ResponseMessage.validFailResponse().setMsg("暂无该休闲娱乐信息！");
+//    }
+
     @Override
-    public ResponseMessage goWeight(String id, Float weight, User user) {
-        EntertainmentEntity entertainmentEntity = entertainmentMapper.selectByPrimaryKey(id);
-        if (entertainmentEntity != null) {
-            entertainmentEntity.setWeight(weight);
-            entertainmentEntity.setDeptCode(user.getOrg().getCode());
-            entertainmentEntity.setUpdatedUser(user.getUsername());
-            entertainmentEntity.setUpdatedDate(new Date());
-            entertainmentMapper.updateByPrimaryKey(entertainmentEntity);
-            return ResponseMessage.defaultResponse().setMsg("权重修改成功！");
+    public ResponseMessage goWeight(WeightModel weightModel,User user) {
+        List<String>ids =weightModel.getIds();
+        if(ids!=null&&ids.size()>0){
+            for(int i=0;i<ids.size();i++){
+                EntertainmentEntity entertainmentEntity = entertainmentMapper.selectByPrimaryKey(ids.get(i));
+                if(weightModel.isFlag()){
+                    entertainmentEntity.setWeight(Float.valueOf(ids.size()-i));
+                }else{
+                    BigDecimal b1=new BigDecimal(entertainmentEntity.getWeight());
+                    BigDecimal b2=new BigDecimal(Float.valueOf(ids.size()-i));
+                    float f1=b1.add(b2).floatValue();
+                    entertainmentEntity.setWeight(f1);
+                }
+                entertainmentEntity.setDeptCode(user.getOrg().getCode());
+                entertainmentEntity.setUpdatedUser(user.getUsername());
+                entertainmentEntity.setUpdatedDate(new Date());
+                entertainmentMapper.updateByPrimaryKey(entertainmentEntity);
+            }
         }
-        return ResponseMessage.validFailResponse().setMsg("暂无该休闲娱乐信息！");
+        return ResponseMessage.defaultResponse().setMsg("权重修改成功！");
     }
 
     @Override

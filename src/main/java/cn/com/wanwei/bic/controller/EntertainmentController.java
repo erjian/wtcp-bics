@@ -3,6 +3,7 @@ package cn.com.wanwei.bic.controller;
 import cn.com.wanwei.bic.entity.AuditLogEntity;
 import cn.com.wanwei.bic.entity.EntertainmentEntity;
 import cn.com.wanwei.bic.model.DataBindModel;
+import cn.com.wanwei.bic.model.WeightModel;
 import cn.com.wanwei.bic.service.EntertainmentService;
 import cn.com.wanwei.common.log.annotation.OperationLog;
 import cn.com.wanwei.common.model.ResponseMessage;
@@ -90,16 +91,30 @@ public class EntertainmentController extends BaseController{
         return entertainmentService.delete(id);
     }
 
+//    @ApiOperation(value = "权重更改", notes = "权重更改")
+//    @ApiImplicitParams({
+//            @ApiImplicitParam(name = "id", value = "休闲娱乐信息ID", required = true),
+//            @ApiImplicitParam(name = "weight", value = "权重", required = true)
+//    })
+//    @GetMapping(value = "/weight/{id}")
+//    @PreAuthorize("hasAuthority('entertainment:w')")
+//    @OperationLog(value = "wtcp-bics/权重更改", operate = "u", module = "休闲娱乐管理")
+//    public ResponseMessage goWeight(@PathVariable(value = "id") String id,@RequestParam Float weight) throws Exception {
+//        return entertainmentService.goWeight(id,weight,getCurrentUser());
+//    }
+
     @ApiOperation(value = "权重更改", notes = "权重更改")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "id", value = "休闲娱乐信息ID", required = true),
-            @ApiImplicitParam(name = "weight", value = "权重", required = true)
+            @ApiImplicitParam(name = "weightModel", value = "排序model", required = true, dataType = "WeightModel")
     })
-    @GetMapping(value = "/weight/{id}")
-    @PreAuthorize("hasAuthority('entertainment:q')")
+    @PutMapping(value = "/weight")
+    @PreAuthorize("hasAuthority('entertainment:w')")
     @OperationLog(value = "wtcp-bics/权重更改", operate = "u", module = "休闲娱乐管理")
-    public ResponseMessage goWeight(@PathVariable(value = "id") String id,@RequestParam Float weight) throws Exception {
-        return entertainmentService.goWeight(id,weight,getCurrentUser());
+    public ResponseMessage goWeight(@RequestBody @Valid WeightModel weightModel,BindingResult bindingResult) throws Exception {
+        if(bindingResult.hasErrors()){
+            return ResponseMessage.validFailResponse().setMsg(bindingResult.getAllErrors());
+        }
+        return entertainmentService.goWeight(weightModel,getCurrentUser());
     }
 
     @ApiOperation(value = "标题重名校验", notes = "标题重名校验")
