@@ -106,9 +106,6 @@ public class ExtendServiceImpl implements ExtendService {
         extendEntity.setCreatedDate(entity.getCreatedDate());
         extendEntity.setCreatedUser(entity.getCreatedUser());
         extendEntity.setStatus(0);  //编辑修改状态为--> 0: 待审
-        if(entity.getType() != extendEntity.getType()){
-            extendEntity.setCode(responseMessage.getData().toString());
-        }
         extendEntity.setUpdatedDate(new Date());
         extendEntity.setUpdatedUser(username);
         extendMapper.updateByPrimaryKey(extendEntity);
