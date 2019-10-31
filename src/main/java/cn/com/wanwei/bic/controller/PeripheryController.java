@@ -66,7 +66,7 @@ public class PeripheryController extends BaseController {
     @ApiOperation(value = "编辑周边信息", notes = "编辑周边信息")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "id", value = "周边信息ID", required = true),
-            @ApiImplicitParam(name = "PeripheryEntity", value = "周边信息实体",dataType="PeripheryEntity", required = true)
+            @ApiImplicitParam(name = "peripheryEntity", value = "周边信息实体",dataType="PeripheryEntity", required = true)
     })
     @PutMapping(value = "/{id}")
     @PreAuthorize("hasAuthority('perip:u')")
