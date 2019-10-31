@@ -37,7 +37,7 @@ public interface PoiMapper {
 
     /**
      * 查询一级景点
-     * @param parentId
+     * @param type
      * @return
      */
     List<PoiEntity> findScenicList(String type);
