@@ -2,6 +2,7 @@ package cn.com.wanwei.bic.service.impl;
 
 import cn.com.wanwei.bic.entity.AuditLogEntity;
 import cn.com.wanwei.bic.entity.ExtendEntity;
+import cn.com.wanwei.bic.feign.CoderServiceFeign;
 import cn.com.wanwei.bic.mapper.ExtendMapper;
 import cn.com.wanwei.bic.service.ExtendService;
 import cn.com.wanwei.bic.utils.UUIDUtils;
@@ -13,6 +14,7 @@ import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
@@ -36,6 +38,15 @@ public class ExtendServiceImpl implements ExtendService {
 
     @Autowired
     private AuditLogServiceImpl auditLogService;
+
+    @Autowired
+    private CoderServiceFeign coderServiceFeign;
+
+    @Value("${wtcp.bic.appCode}")
+    private Integer appCode;
+
+    @Value("${wtcp.bic.ruleId}")
+    private Long ruleId;
 
     /**
      * 扩展信息管理分页列表
@@ -67,10 +78,12 @@ public class ExtendServiceImpl implements ExtendService {
      */
     @Override
     public ResponseMessage save(ExtendEntity extendEntity, String username) throws Exception{
+        ResponseMessage responseMessage = coderServiceFeign.buildSerialByCode(ruleId,appCode,extendEntity.getCode());
         extendEntity.setId(UUIDUtils.getInstance().getId());
         extendEntity.setCreatedUser(username);
         extendEntity.setCreatedDate(new Date());
         extendEntity.setStatus(0);
+        extendEntity.setCode(responseMessage.getData().toString());
         extendMapper.insert(extendEntity);
         return ResponseMessage.defaultResponse().setMsg("新增成功!");
     }

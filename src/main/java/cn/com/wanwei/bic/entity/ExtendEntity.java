@@ -62,4 +62,11 @@ public class ExtendEntity extends BaseEntity{
     @ApiModelProperty(value = "内容")
     private String content;
 
+    @ApiModelProperty(value = "在线状态")
+    private Integer onlineStatus;
+
+    public Integer getOnlineStatus() {
+        return this.status == 9 ? this.status : 1;
+    }
+
 }
