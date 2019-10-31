@@ -122,43 +122,34 @@ public class ExtendServiceImpl implements ExtendService {
      * @throws Exception
      */
     @Override
-    public ResponseMessage auditOrIssue(String id, String username, int type) throws Exception {
-        ResponseMessage responseMessage = ResponseMessage.defaultResponse();
-        AuditLogEntity auditLogEntity = new AuditLogEntity();
-        ExtendEntity extendEntity = extendMapper.selectByPrimaryKey(id);
+    public ResponseMessage auditOrIssue(AuditLogEntity auditLogEntity, User user, int type) throws Exception {
+        ExtendEntity extendEntity = extendMapper.selectByPrimaryKey(auditLogEntity.getPrincipalId());
         if(extendEntity == null){
             return ResponseMessage.validFailResponse().setMsg("无扩展信息!");
         }
-        auditLogEntity.setPrincipalId(id);
-        auditLogEntity.setType(type);
-        //更新扩展信息状态
-        extendEntity.setId(id);
-        extendEntity.setUpdatedUser(username);
-        extendEntity.setUpdatedDate(new Date());
-        if(type == 1 ){
-            if(extendEntity.getStatus() == 1){
-                responseMessage.setMsg("上线成功!");
-                extendEntity.setStatus(9);
-                auditLogEntity.setPreStatus(1);
-                auditLogEntity.setStatus(extendEntity.getStatus());
-            }else{
-                responseMessage.setMsg("下线成功!");
-                extendEntity.setStatus(1);
-                auditLogEntity.setPreStatus(9);
-                auditLogEntity.setStatus(extendEntity.getStatus());
+        String msg="审核成功！";
+        if(type==1){  //上线操作
+            if(auditLogEntity.getPreStatus()==0||auditLogEntity.getPreStatus()==2){
+                return ResponseMessage.validFailResponse().setMsg("当前信息未审核通过，不可上下线操作！");
+            }else {
+                if(auditLogEntity.getStatus()==1||auditLogEntity.getStatus()==9){
+                    msg=auditLogEntity.getStatus()==1?"下线成功！":"上线成功！";
+                }else{
+                    return ResponseMessage.validFailResponse().setMsg("上下线状态错误！");
+                }
             }
-        }else{
-            //审核
-            if(extendEntity.getStatus() == 0){
-                extendEntity.setStatus(1);
-                auditLogEntity.setPreStatus(0);
-                auditLogEntity.setStatus(1);
+        }else {  //审核操作
+            if(auditLogEntity.getStatus()==9){
+                return ResponseMessage.validFailResponse().setMsg("审核状态错误！");
             }
         }
+        extendEntity.setStatus(auditLogEntity.getStatus());
+        extendEntity.setUpdatedUser(user.getUsername());
+        extendEntity.setUpdatedDate(new Date());
         extendMapper.updateByPrimaryKey(extendEntity);
-        // 记录审核/上线流水操作
-        auditLogService.create(auditLogEntity,username);
-        return responseMessage;
+        auditLogEntity.setType(type);
+        auditLogService.create(auditLogEntity,user.getUsername());
+        return ResponseMessage.defaultResponse().setMsg(msg);
     }
 
     /**

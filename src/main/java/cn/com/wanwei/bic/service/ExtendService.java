@@ -1,5 +1,6 @@
 package cn.com.wanwei.bic.service;
 
+import cn.com.wanwei.bic.entity.AuditLogEntity;
 import cn.com.wanwei.bic.entity.ExtendEntity;
 import cn.com.wanwei.common.model.ResponseMessage;
 import cn.com.wanwei.common.model.User;
@@ -55,7 +56,7 @@ public interface ExtendService {
      * @param i
      * @return
      */
-    ResponseMessage auditOrIssue(String id, String username, int type) throws Exception;
+    ResponseMessage auditOrIssue(AuditLogEntity auditLogEntity, User user, int type) throws Exception;
 
     /**
      * 根据id删除扩展信息

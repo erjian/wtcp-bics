@@ -1,5 +1,6 @@
 package cn.com.wanwei.bic.controller;
 
+import cn.com.wanwei.bic.entity.AuditLogEntity;
 import cn.com.wanwei.bic.entity.ExtendEntity;
 import cn.com.wanwei.bic.service.ExtendService;
 import cn.com.wanwei.common.log.annotation.OperationLog;
@@ -80,23 +81,25 @@ public class ExtendController extends BaseController{
     }
 
     @ApiOperation(value = "扩展信息上线", notes = "扩展信息上线")
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "id", value = "扩展信息ID", required = true),
-    })
-    @RequestMapping(value = "/issue/{id}", method = RequestMethod.PUT)
+    @ApiImplicitParam(name = "auditLogEntity", value = "审核记录实体",required = true,dataType = "AuditLogEntity")
+    @RequestMapping(value = "/issue")
     @PreAuthorize("hasAuthority('extend:s')")
-    public ResponseMessage issue(@PathVariable("id") String id) throws Exception {
-        return extendService.auditOrIssue(id,getCurrentUser().getUsername(),1);
+    public ResponseMessage issue(@RequestBody AuditLogEntity auditLogEntity , BindingResult bindingResult) throws Exception {
+        if(bindingResult.hasErrors()){
+            return ResponseMessage.validFailResponse().setMsg(bindingResult.getAllErrors());
+        }
+        return extendService.auditOrIssue(auditLogEntity,getCurrentUser(),1);
     }
 
     @ApiOperation(value = "扩展信息审核", notes = "扩展信息审核")
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "id", value = "扩展信息ID", required = true),
-    })
-    @RequestMapping(value = "/audit/{id}", method = RequestMethod.PUT)
+    @ApiImplicitParam(name = "auditLogEntity", value = "审核记录实体",required = true,dataType = "AuditLogEntity")
+    @RequestMapping(value = "/audit")
     @PreAuthorize("hasAuthority('extend:a')")
-    public ResponseMessage audit(@PathVariable("id") String id) throws Exception {
-        return extendService.auditOrIssue(id,getCurrentUser().getUsername(),0);
+    public ResponseMessage audit(@RequestBody AuditLogEntity auditLogEntity , BindingResult bindingResult) throws Exception {
+        if(bindingResult.hasErrors()){
+            return ResponseMessage.validFailResponse().setMsg(bindingResult.getAllErrors());
+        }
+        return extendService.auditOrIssue(auditLogEntity,getCurrentUser(),0);
     }
 
     @ApiOperation(value = "删除扩展信息", notes = "根据ID删除扩展信息")
