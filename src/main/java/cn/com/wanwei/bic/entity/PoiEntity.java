@@ -37,7 +37,4 @@ public class PoiEntity extends commonEntity {
     @ApiModelProperty(value = "景区名称")
     private String scenicName;
 
-    @ApiModelProperty(value = "类型名称")
-    private String typeName;
-
 }
