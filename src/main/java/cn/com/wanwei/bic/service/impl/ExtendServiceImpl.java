@@ -97,6 +97,7 @@ public class ExtendServiceImpl implements ExtendService {
      */
     @Override
     public ResponseMessage edit(String id, ExtendEntity extendEntity, String username) throws Exception{
+        ResponseMessage responseMessage = coderServiceFeign.buildSerialByCode(ruleId,appCode,extendEntity.getCode());
         ExtendEntity entity = extendMapper.selectByPrimaryKey(id);
         if(null == entity){
             return ResponseMessage.validFailResponse().setMsg("不存在扩展信息");
@@ -104,7 +105,10 @@ public class ExtendServiceImpl implements ExtendService {
         extendEntity.setId(id);
         extendEntity.setCreatedDate(entity.getCreatedDate());
         extendEntity.setCreatedUser(entity.getCreatedUser());
-        extendEntity.setStatus(1);  //编辑修改状态为--> 1: 下线
+        extendEntity.setStatus(0);  //编辑修改状态为--> 0: 待审
+        if(entity.getType() != extendEntity.getType()){
+            extendEntity.setCode(responseMessage.getData().toString());
+        }
         extendEntity.setUpdatedDate(new Date());
         extendEntity.setUpdatedUser(username);
         extendMapper.updateByPrimaryKey(extendEntity);
