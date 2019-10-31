@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.com.wanwei.bic.mapper.PeripheryMapper">
+    <resultMap id="BaseResultMap" type="cn.com.wanwei.bic.entity.PeripheryEntity">
+        <id column="id" jdbcType="VARCHAR" property="id"/>
+        <result column="category" jdbcType="INTEGER" property="category"/>
+        <result column="code" jdbcType="VARCHAR" property="code"/>
+        <result column="title" jdbcType="VARCHAR" property="title"/>
+        <result column="sub_title" jdbcType="VARCHAR" property="subTitle"/>
+        <result column="slogan" jdbcType="VARCHAR" property="slogan"/>
+        <result column="summary" jdbcType="VARCHAR" property="summary"/>
+        <result column="description" jdbcType="VARCHAR" property="description"/>
+        <result column="weight" jdbcType="REAL" property="weight"/>
+        <result column="longitude" jdbcType="DOUBLE" property="longitude"/>
+        <result column="latitude" jdbcType="DOUBLE" property="latitude"/>
+        <result column="region_full_name" jdbcType="VARCHAR" property="regionFullName"/>
+        <result column="region_full_code" jdbcType="VARCHAR" property="regionFullCode"/>
+        <result column="region" jdbcType="VARCHAR" property="region"/>
+        <result column="address" jdbcType="VARCHAR" property="address"/>
+        <result column="phone" jdbcType="VARCHAR" property="phone"/>
+        <result column="trading_area" jdbcType="VARCHAR" property="tradingArea"/>
+        <result column="type" jdbcType="INTEGER" property="type"/>
+        <result column="status" jdbcType="BIT" property="status"/>
+        <result column="score" jdbcType="REAL" property="score"/>
+        <result column="per_consumption" jdbcType="REAL" property="perConsumption"/>
+        <result column="dept_code" jdbcType="VARCHAR" property="deptCode"/>
+        <result column="created_user" jdbcType="VARCHAR" property="createdUser"/>
+        <result column="created_date" jdbcType="TIMESTAMP" property="createdDate"/>
+        <result column="updated_user" jdbcType="VARCHAR" property="updatedUser"/>
+        <result column="updated_date" jdbcType="TIMESTAMP" property="updatedDate"/>
+    </resultMap>
+    <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="cn.com.wanwei.bic.entity.PeripheryEntity">
+        <result column="content" jdbcType="LONGVARCHAR" property="content"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+    id, category, code, title, sub_title, slogan, summary, description, weight, longitude, 
+    latitude, region_full_name, region_full_code, region, address, phone, trading_area, 
+    type, status, score, per_consumption, dept_code, created_user, created_date, updated_user, 
+    updated_date
+  </sql>
+    <sql id="Blob_Column_List">
+    content
+  </sql>
+    <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="ResultMapWithBLOBs">
+        select
+        <include refid="Base_Column_List"/>
+        ,
+        <include refid="Blob_Column_List"/>
+        from t_bic_periphery
+        where id = #{id,jdbcType=VARCHAR}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from t_bic_periphery
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+    <insert id="insert" parameterType="cn.com.wanwei.bic.entity.PeripheryEntity">
+    insert into t_bic_periphery (id,category, code, title,
+      sub_title, slogan, summary, 
+      description, weight, longitude, 
+      latitude, region_full_name, region_full_code, 
+      region, address, phone, 
+      trading_area, type, status, 
+      score, per_consumption, dept_code, 
+      created_user, created_date, updated_user, 
+      updated_date, content)
+    values (#{id,jdbcType=VARCHAR},#{category,jdbcType=INTEGER}, #{code,jdbcType=VARCHAR}, #{title,jdbcType=VARCHAR},
+      #{subTitle,jdbcType=VARCHAR}, #{slogan,jdbcType=VARCHAR}, #{summary,jdbcType=VARCHAR}, 
+      #{description,jdbcType=VARCHAR}, #{weight,jdbcType=REAL}, #{longitude,jdbcType=DOUBLE}, 
+      #{latitude,jdbcType=DOUBLE}, #{regionFullName,jdbcType=VARCHAR}, #{regionFullCode,jdbcType=VARCHAR}, 
+      #{region,jdbcType=VARCHAR}, #{address,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR}, 
+      #{tradingArea,jdbcType=VARCHAR}, #{type,jdbcType=INTEGER}, #{status,jdbcType=BIT}, 
+      #{score,jdbcType=REAL}, #{perConsumption,jdbcType=REAL}, #{deptCode,jdbcType=VARCHAR}, 
+      #{createdUser,jdbcType=VARCHAR}, #{createdDate,jdbcType=TIMESTAMP}, #{updatedUser,jdbcType=VARCHAR}, 
+      #{updatedDate,jdbcType=TIMESTAMP}, #{content,jdbcType=LONGVARCHAR})
+  </insert>
+    <update id="updateByPrimaryKey" parameterType="cn.com.wanwei.bic.entity.PeripheryEntity">
+    update t_bic_periphery
+    set category = #{category,jdbcType=INTEGER},
+      code = #{code,jdbcType=VARCHAR},
+      title = #{title,jdbcType=VARCHAR},
+      sub_title = #{subTitle,jdbcType=VARCHAR},
+      slogan = #{slogan,jdbcType=VARCHAR},
+      summary = #{summary,jdbcType=VARCHAR},
+      description = #{description,jdbcType=VARCHAR},
+      weight = #{weight,jdbcType=REAL},
+      longitude = #{longitude,jdbcType=DOUBLE},
+      latitude = #{latitude,jdbcType=DOUBLE},
+      region_full_name = #{regionFullName,jdbcType=VARCHAR},
+      region_full_code = #{regionFullCode,jdbcType=VARCHAR},
+      region = #{region,jdbcType=VARCHAR},
+      address = #{address,jdbcType=VARCHAR},
+      phone = #{phone,jdbcType=VARCHAR},
+      trading_area = #{tradingArea,jdbcType=VARCHAR},
+      type = #{type,jdbcType=INTEGER},
+      status = #{status,jdbcType=BIT},
+      score = #{score,jdbcType=REAL},
+      per_consumption = #{perConsumption,jdbcType=REAL},
+      dept_code = #{deptCode,jdbcType=VARCHAR},
+      created_user = #{createdUser,jdbcType=VARCHAR},
+      created_date = #{createdDate,jdbcType=TIMESTAMP},
+      updated_user = #{updatedUser,jdbcType=VARCHAR},
+      updated_date = #{updatedDate,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+    <select id="findByPage" parameterType="java.util.Map" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"/>
+    from t_bic_periphery
+  </select>
+    <select id="checkTitle" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from t_bic_periphery
+        where title = #{title,jdbcType=VARCHAR}
+    </select>
+</mapper>
