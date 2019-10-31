@@ -89,6 +89,16 @@ public class ExtendController extends BaseController{
         return extendService.auditOrIssue(id,getCurrentUser().getUsername(),1);
     }
 
+    @ApiOperation(value = "扩展信息审核", notes = "扩展信息审核")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "id", value = "扩展信息ID", required = true),
+    })
+    @RequestMapping(value = "/audit/{id}", method = RequestMethod.PUT)
+    @PreAuthorize("hasAuthority('extend:a')")
+    public ResponseMessage audit(@PathVariable("id") String id) throws Exception {
+        return extendService.auditOrIssue(id,getCurrentUser().getUsername(),0);
+    }
+
     @ApiOperation(value = "删除扩展信息", notes = "根据ID删除扩展信息")
     @ApiImplicitParam(name = "id", value = "扩展信息ID", required = true)
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)

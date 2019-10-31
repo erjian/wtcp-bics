@@ -105,6 +105,10 @@
         <bind name="principalId" value="principalId"></bind>
         and principal_id = #{principalId}
       </if>
+      <if test="title != null and title != '' ">
+        <bind name="title" value="'%' + title + '%'"></bind>
+        and title like #{title}
+      </if>
     </where>
   </select>
 

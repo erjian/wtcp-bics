@@ -70,7 +70,7 @@ public class ExtendServiceImpl implements ExtendService {
         extendEntity.setId(UUIDUtils.getInstance().getId());
         extendEntity.setCreatedUser(username);
         extendEntity.setCreatedDate(new Date());
-        extendEntity.setStatus(1);
+        extendEntity.setStatus(0);
         extendMapper.insert(extendEntity);
         return ResponseMessage.defaultResponse().setMsg("新增成功!");
     }
@@ -146,6 +146,13 @@ public class ExtendServiceImpl implements ExtendService {
                 extendEntity.setStatus(1);
                 auditLogEntity.setPreStatus(9);
                 auditLogEntity.setStatus(extendEntity.getStatus());
+            }
+        }else{
+            //审核
+            if(extendEntity.getStatus() == 0){
+                extendEntity.setStatus(1);
+                auditLogEntity.setPreStatus(0);
+                auditLogEntity.setStatus(1);
             }
         }
         extendMapper.updateByPrimaryKey(extendEntity);
