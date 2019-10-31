@@ -82,7 +82,7 @@ public class ExtendController extends BaseController{
 
     @ApiOperation(value = "扩展信息上线", notes = "扩展信息上线")
     @ApiImplicitParam(name = "auditLogEntity", value = "审核记录实体",required = true,dataType = "AuditLogEntity")
-    @RequestMapping(value = "/issue")
+    @PutMapping(value = "/issue")
     @PreAuthorize("hasAuthority('extend:s')")
     public ResponseMessage issue(@RequestBody AuditLogEntity auditLogEntity , BindingResult bindingResult) throws Exception {
         if(bindingResult.hasErrors()){
@@ -93,7 +93,7 @@ public class ExtendController extends BaseController{
 
     @ApiOperation(value = "扩展信息审核", notes = "扩展信息审核")
     @ApiImplicitParam(name = "auditLogEntity", value = "审核记录实体",required = true,dataType = "AuditLogEntity")
-    @RequestMapping(value = "/audit")
+    @PutMapping(value = "/audit")
     @PreAuthorize("hasAuthority('extend:a')")
     public ResponseMessage audit(@RequestBody AuditLogEntity auditLogEntity , BindingResult bindingResult) throws Exception {
         if(bindingResult.hasErrors()){

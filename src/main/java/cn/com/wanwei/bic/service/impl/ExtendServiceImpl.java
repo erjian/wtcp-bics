@@ -114,10 +114,10 @@ public class ExtendServiceImpl implements ExtendService {
     }
 
     /**
-     * 扩展信息上线
-     * @param id
-     * @param username
-     * @param type
+     * 扩展信息审核 、 上线
+     * @param auditLogEntity  审核实体类
+     * @param user  用户
+     * @param type 0-审核   1-上线
      * @return
      * @throws Exception
      */
