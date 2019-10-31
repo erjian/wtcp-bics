@@ -2,6 +2,7 @@ package cn.com.wanwei.bic.service.impl;
 
 import cn.com.wanwei.bic.entity.AuditLogEntity;
 import cn.com.wanwei.bic.entity.PoiEntity;
+import cn.com.wanwei.bic.entity.ScenicEntity;
 import cn.com.wanwei.bic.feign.CoderServiceFeign;
 import cn.com.wanwei.bic.mapper.PoiMapper;
 import cn.com.wanwei.bic.mapper.ScenicMapper;
@@ -59,6 +60,10 @@ public class PoiServiceImpl implements PoiService {
             PageHelper.orderBy(pageRequest.getOrders());
             Page<PoiEntity> poiEntities = poiMapper.findByPage(filter);
             PageInfo<PoiEntity> pageInfo = new PageInfo<>(poiEntities, pageRequest);
+            for (PoiEntity entity : pageInfo.getContent()) {
+                ScenicEntity scenicEntity = scenicMapper.selectByPrimaryKey(entity.getPrincipalId());
+                entity.setScenicName(scenicEntity.getTitle());
+            }
             return ResponseMessage.defaultResponse().setData(pageInfo);
         } catch (Exception e) {
             log.error(e.getMessage());
@@ -130,9 +135,16 @@ public class PoiServiceImpl implements PoiService {
 
     @Override
     public ResponseMessage delete(String id) {
+        ResponseMessage responseMessage = ResponseMessage.defaultResponse();
         try {
-            poiMapper.deleteByPrimaryKey(id);
-            return ResponseMessage.defaultResponse().setMsg("删除成功！");
+            PoiEntity entity = poiMapper.selectByPrimaryKey(id);
+            if(entity.getStatus() == 9){
+                responseMessage.setStatus(0).setMsg("已上线，禁止删除");
+            }else {
+                poiMapper.deleteByPrimaryKey(id);
+                responseMessage.setMsg("删除成功！");
+            }
+            return responseMessage;
         } catch (Exception e) {
             log.error(e.getMessage());
             return ResponseMessage.validFailResponse().setMsg("删除失败！");
@@ -222,7 +234,7 @@ public class PoiServiceImpl implements PoiService {
         ResponseMessage responseMessage = ResponseMessage.defaultResponse();
         for (String id : ids) {
             PoiEntity entity = poiMapper.selectByPrimaryKey(id);
-            if (entity.getStatus() == 9) {
+                if (entity.getStatus() == 9) {
                 return responseMessage.setStatus(0).setMsg("所选数据中存在已上线数据，批量删除取消！");
             }
         }
