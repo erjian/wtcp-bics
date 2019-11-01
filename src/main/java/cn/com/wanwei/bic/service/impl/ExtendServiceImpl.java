@@ -97,7 +97,6 @@ public class ExtendServiceImpl implements ExtendService {
      */
     @Override
     public ResponseMessage edit(String id, ExtendEntity extendEntity, String username) throws Exception{
-        ResponseMessage responseMessage = coderServiceFeign.buildSerialByCode(ruleId,appCode,extendEntity.getCode());
         ExtendEntity entity = extendMapper.selectByPrimaryKey(id);
         if(null == entity){
             return ResponseMessage.validFailResponse().setMsg("不存在扩展信息");
