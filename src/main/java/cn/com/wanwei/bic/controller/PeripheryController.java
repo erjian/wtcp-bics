@@ -123,7 +123,7 @@ public class PeripheryController extends BaseController {
 
     @ApiOperation(value = "批量删除周边管理信息", notes = "根据ID批量删除周边管理信息")
     @RequestMapping(value = "/batchDelete", method = RequestMethod.PUT)
-    @PreAuthorize("hasAuthority('poi:bd')")
+    @PreAuthorize("hasAuthority('perip:bd')")
     public ResponseMessage batchDelete(@RequestBody List<String> ids, BindingResult bindingResult) throws Exception {
         if (bindingResult.hasErrors()) {
             return ResponseMessage.validFailResponse().setMsg(bindingResult.getAllErrors());
