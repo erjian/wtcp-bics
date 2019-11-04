@@ -60,7 +60,7 @@ public interface PoiService {
      * @param weight
      * @return
      */
-    ResponseMessage goWeight(String id, Float weight, User user);
+    ResponseMessage goWeight(String id, Integer weight, User user);
 
     /**
      * 标题重名校验

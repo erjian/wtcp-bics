@@ -95,7 +95,7 @@ public class PoiController extends  BaseController{
     @GetMapping(value = "/weight/{id}")
     @PreAuthorize("hasAuthority('poi:q')")
     @OperationLog(value = "wtcp-bics/权重更改", operate = "u", module = "poi管理")
-    public ResponseMessage goWeight(@PathVariable(value = "id") String id,@RequestParam Float weight) throws Exception {
+    public ResponseMessage goWeight(@PathVariable(value = "id") String id,@RequestParam Integer weight) throws Exception {
         return poiService.goWeight(id,weight,getCurrentUser());
     }
 

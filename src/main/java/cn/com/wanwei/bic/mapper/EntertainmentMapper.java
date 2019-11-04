@@ -44,4 +44,15 @@ public interface EntertainmentMapper {
      */
     int dataBind(@Param(value="updatedUser") String updatedUser, @Param(value="updatedDate") String updatedDate,
                   @Param(value="deptCode") String deptCode, @Param(value="ids") List<String> ids);
+
+    /**
+     * 重置数据所有排序
+     * @return
+     */
+    int clearWeight();
+
+    /**
+     * 获取最大的权重
+     */
+    Integer maxWeight();
 }

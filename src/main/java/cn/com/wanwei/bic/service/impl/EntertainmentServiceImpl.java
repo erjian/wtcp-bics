@@ -23,7 +23,6 @@ import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -75,6 +74,7 @@ public class EntertainmentServiceImpl implements EntertainmentService {
             entertainmentEntity.setId(UUIDUtils.getInstance().getId());
             entertainmentEntity.setCode(responseMessageGetCode.getData().toString());
             entertainmentEntity.setStatus(0);
+            entertainmentEntity.setWeight(0);
             entertainmentEntity.setCreatedUser(user.getUsername());
             entertainmentEntity.setCreatedDate(new Date());
             entertainmentEntity.setDeptCode(user.getOrg().getCode());
@@ -118,17 +118,21 @@ public class EntertainmentServiceImpl implements EntertainmentService {
 
     @Override
     public ResponseMessage goWeight(WeightModel weightModel,User user) {
+        //查出最大权重
+        Integer maxNum= entertainmentMapper.maxWeight();
         List<String>ids =weightModel.getIds();
         if(ids!=null&&ids.size()>0){
+            //判断为重新排序或者最大权重与排序大于999时所有数据权重清0
+            if(weightModel.isFlag()||(maxNum+ids.size())>Integer.MAX_VALUE){
+                entertainmentMapper.clearWeight();
+                maxNum=0;
+            }
             for(int i=0;i<ids.size();i++){
                 EntertainmentEntity entertainmentEntity = entertainmentMapper.selectByPrimaryKey(ids.get(i));
                 if(weightModel.isFlag()){
-                    entertainmentEntity.setWeight(Float.valueOf(ids.size()-i));
+                    entertainmentEntity.setWeight(ids.size()-i);
                 }else{
-                    BigDecimal b1=new BigDecimal(entertainmentEntity.getWeight());
-                    BigDecimal b2=new BigDecimal(Float.valueOf(ids.size()-i));
-                    float f1=b1.add(b2).floatValue();
-                    entertainmentEntity.setWeight(f1);
+                    entertainmentEntity.setWeight(maxNum+ids.size()-i);
                 }
                 entertainmentEntity.setDeptCode(user.getOrg().getCode());
                 entertainmentEntity.setUpdatedUser(user.getUsername());

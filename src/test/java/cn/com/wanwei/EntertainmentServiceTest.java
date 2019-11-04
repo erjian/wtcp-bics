@@ -40,7 +40,7 @@ public class EntertainmentServiceTest {
         entertainmentEntity.setDeptCode("111111");
         entertainmentEntity.setCode("123");
         entertainmentEntity.setStatus(0);
-        entertainmentEntity.setWeight(Float.valueOf("4.00"));
+        entertainmentEntity.setWeight(4);
         entertainmentEntity.setAddress("ceshi");
         entertainmentEntity.setContent("ceshi");
         entertainmentEntity.setDescription("ceshi1");

@@ -152,7 +152,7 @@ public class PoiServiceImpl implements PoiService {
     }
 
     @Override
-    public ResponseMessage goWeight(String id, Float weight, User user) {
+    public ResponseMessage goWeight(String id, Integer weight, User user) {
         try {
             PoiEntity pntity = poiMapper.selectByPrimaryKey(id);
             if (pntity != null) {

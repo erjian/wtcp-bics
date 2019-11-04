@@ -11,7 +11,7 @@
         <result column="slogan" jdbcType="VARCHAR" property="slogan"/>
         <result column="summary" jdbcType="VARCHAR" property="summary"/>
         <result column="description" jdbcType="VARCHAR" property="description"/>
-        <result column="weight" jdbcType="REAL" property="weight"/>
+        <result column="weight" jdbcType="INTEGER" property="weight"/>
         <result column="longitude" jdbcType="DOUBLE" property="longitude"/>
         <result column="latitude" jdbcType="DOUBLE" property="latitude"/>
         <result column="region_full_name" jdbcType="VARCHAR" property="regionFullName"/>
@@ -53,7 +53,7 @@
       content,`type`)
     values (#{id,jdbcType=VARCHAR},#{parentId,jdbcType=BIGINT}, #{principalId,jdbcType=BIGINT}, #{code,jdbcType=VARCHAR},
       #{title,jdbcType=VARCHAR}, #{subTitle,jdbcType=VARCHAR}, #{slogan,jdbcType=VARCHAR}, 
-      #{summary,jdbcType=VARCHAR}, #{description,jdbcType=VARCHAR}, #{weight,jdbcType=REAL}, 
+      #{summary,jdbcType=VARCHAR}, #{description,jdbcType=VARCHAR}, #{weight,jdbcType=INTEGER},
       #{longitude,jdbcType=DOUBLE}, #{latitude,jdbcType=DOUBLE}, #{regionFullName,jdbcType=VARCHAR}, 
       #{regionFullCode,jdbcType=VARCHAR}, #{region,jdbcType=VARCHAR}, #{address,jdbcType=VARCHAR}, 
       #{status,jdbcType=INTEGER}, #{deptCode,jdbcType=VARCHAR}, #{createdUser,jdbcType=VARCHAR},
@@ -70,7 +70,7 @@
       slogan = #{slogan,jdbcType=VARCHAR},
       summary = #{summary,jdbcType=VARCHAR},
       description = #{description,jdbcType=VARCHAR},
-      weight = #{weight,jdbcType=REAL},
+      weight = #{weight,jdbcType=INTEGER},
       longitude = #{longitude,jdbcType=DOUBLE},
       latitude = #{latitude,jdbcType=DOUBLE},
       region_full_name = #{regionFullName,jdbcType=VARCHAR},

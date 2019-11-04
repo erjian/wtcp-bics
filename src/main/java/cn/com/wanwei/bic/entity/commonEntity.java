@@ -31,7 +31,7 @@ public class commonEntity extends BaseEntity{
     private String content;
 
     @ApiModelProperty(value = "权重" )
-    private Float weight;
+    private Integer weight;
 
     @ApiModelProperty(value = "经度" ,required = true)
     private Double longitude;
