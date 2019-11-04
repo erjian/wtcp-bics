@@ -138,7 +138,7 @@ public class PoiController extends  BaseController{
     }
 
 
-    @ApiOperation(value = "批量删除poi管理信息", notes = "根据ID批量删除批量删除poi管理信息")
+    @ApiOperation(value = "批量删除poi管理信息", notes = "根据ID批量删除poi管理信息")
     @RequestMapping(value = "/batchDelete", method = RequestMethod.PUT)
     @PreAuthorize("hasAuthority('poi:bd')")
     public ResponseMessage batchDelete(@RequestBody List<String> ids, BindingResult bindingResult) throws Exception {

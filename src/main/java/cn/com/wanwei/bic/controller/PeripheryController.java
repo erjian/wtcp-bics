@@ -18,6 +18,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 import java.util.Map;
 
 @Slf4j
@@ -117,6 +118,17 @@ public class PeripheryController extends BaseController {
     public ResponseMessage checkTitle(@RequestParam(value = "id",required = false) String id,
                                       @RequestParam(value = "title",required = false) String title){
         return peripheryService.checkTitle(id,title);
+    }
+
+
+    @ApiOperation(value = "批量删除周边管理信息", notes = "根据ID批量删除周边管理信息")
+    @RequestMapping(value = "/batchDelete", method = RequestMethod.PUT)
+    @PreAuthorize("hasAuthority('poi:bd')")
+    public ResponseMessage batchDelete(@RequestBody List<String> ids, BindingResult bindingResult) throws Exception {
+        if (bindingResult.hasErrors()) {
+            return ResponseMessage.validFailResponse().setMsg(bindingResult.getAllErrors());
+        }
+        return peripheryService.batchDelete(ids);
     }
 
 }

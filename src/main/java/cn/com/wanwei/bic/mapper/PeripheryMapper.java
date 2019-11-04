@@ -4,7 +4,9 @@ import cn.com.wanwei.bic.entity.PeripheryEntity;
 import cn.com.wanwei.common.annotation.DataScope;
 import com.github.pagehelper.Page;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
+import java.util.List;
 import java.util.Map;
 
 @Mapper
@@ -32,4 +34,10 @@ public interface PeripheryMapper {
      * @return
      */
     PeripheryEntity checkTitle(String title);
+
+    /**
+     * 批量删除
+     * @param ids
+     */
+    void batchDelete(@Param(value="ids") List<String> ids);
 }
