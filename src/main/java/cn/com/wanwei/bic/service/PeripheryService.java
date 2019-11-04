@@ -5,6 +5,7 @@ import cn.com.wanwei.bic.entity.PeripheryEntity;
 import cn.com.wanwei.common.model.ResponseMessage;
 import cn.com.wanwei.common.model.User;
 
+import java.util.List;
 import java.util.Map;
 
 public interface PeripheryService {
@@ -64,4 +65,11 @@ public interface PeripheryService {
      * @return
      */
     ResponseMessage checkTitle(String id, String title);
+
+    /**
+     * 批量删除周边信息
+     * @param ids
+     * @return
+     */
+    ResponseMessage batchDelete(List<String> ids);
 }

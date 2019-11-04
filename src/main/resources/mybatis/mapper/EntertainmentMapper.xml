@@ -10,7 +10,7 @@
     <result column="slogan" jdbcType="VARCHAR" property="slogan" />
     <result column="summary" jdbcType="VARCHAR" property="summary" />
     <result column="description" jdbcType="VARCHAR" property="description" />
-    <result column="weight" jdbcType="REAL" property="weight" />
+    <result column="weight" jdbcType="INTEGER" property="weight" />
     <result column="longitude" jdbcType="DOUBLE" property="longitude" />
     <result column="latitude" jdbcType="DOUBLE" property="latitude" />
     <result column="region_full_name" jdbcType="VARCHAR" property="regionFullName" />
@@ -57,7 +57,7 @@
       content)
     values (#{id,jdbcType=VARCHAR},#{type,jdbcType=INTEGER}, #{code,jdbcType=VARCHAR}, #{title,jdbcType=VARCHAR},
       #{subTitle,jdbcType=VARCHAR}, #{slogan,jdbcType=VARCHAR}, #{summary,jdbcType=VARCHAR}, 
-      #{description,jdbcType=VARCHAR}, #{weight,jdbcType=REAL}, #{longitude,jdbcType=DOUBLE}, 
+      #{description,jdbcType=VARCHAR}, #{weight,jdbcType=INTEGER}, #{longitude,jdbcType=DOUBLE},
       #{latitude,jdbcType=DOUBLE}, #{regionFullName,jdbcType=VARCHAR}, #{regionFullCode,jdbcType=VARCHAR}, 
       #{region,jdbcType=VARCHAR}, #{address,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER},
       #{scenicId,jdbcType=VARCHAR}, #{withinScenic,jdbcType=INTEGER}, #{withinPark,jdbcType=INTEGER},
@@ -74,7 +74,7 @@
       slogan = #{slogan,jdbcType=VARCHAR},
       summary = #{summary,jdbcType=VARCHAR},
       description = #{description,jdbcType=VARCHAR},
-      weight = #{weight,jdbcType=REAL},
+      weight = #{weight,jdbcType=INTEGER},
       longitude = #{longitude,jdbcType=DOUBLE},
       latitude = #{latitude,jdbcType=DOUBLE},
       region_full_name = #{regionFullName,jdbcType=VARCHAR},
@@ -149,4 +149,11 @@
         #{item}
     </foreach>
   </update>
+
+  <update id="clearWeight">
+    update t_bic_entertainment set weight=0
+  </update>
+  <select id="maxWeight" resultType="Integer">
+    select weight from t_bic_entertainment order by weight desc limit 1
+  </select>
 </mapper>

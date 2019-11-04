@@ -21,6 +21,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 
 @Service
@@ -155,5 +156,18 @@ public class PeripheryServiceImpl implements PeripheryService {
             }
         }
         return responseMessage;
+    }
+
+    @Override
+    public ResponseMessage batchDelete(List<String> ids) {
+        ResponseMessage responseMessage = ResponseMessage.defaultResponse();
+        for (String id : ids){
+            PeripheryEntity entity = peripheryMapper.selectByPrimaryKey(id);
+            if (entity.getStatus() == 9) {
+                return responseMessage.setStatus(0).setMsg("所选数据中存在已上线数据，批量删除取消！");
+            }
+        }
+        peripheryMapper.batchDelete(ids);
+        return responseMessage.setStatus(1).setMsg("批量删除成功");
     }
 }

@@ -3,12 +3,10 @@ package cn.com.wanwei;
 import cn.com.wanwei.bic.BicApplication;
 import cn.com.wanwei.bic.entity.PoiEntity;
 import cn.com.wanwei.bic.service.PoiService;
-import cn.com.wanwei.bic.utils.UUIDUtils;
 import cn.com.wanwei.common.model.Org;
 import cn.com.wanwei.common.model.ResponseMessage;
 import cn.com.wanwei.common.model.User;
 import com.google.common.collect.Maps;
-import lombok.extern.slf4j.Slf4j;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
@@ -42,7 +40,7 @@ public class PoiServiceTest {
         poiEntity.setDeptCode("111111");
         poiEntity.setCode("123");
         poiEntity.setStatus(0);
-        poiEntity.setWeight(Float.valueOf("4.00"));
+        poiEntity.setWeight(4);
         poiEntity.setAddress("ceshi");
         poiEntity.setContent("ceshi");
         poiEntity.setDescription("ceshi1");
@@ -122,7 +120,7 @@ public class PoiServiceTest {
     @Rollback
     public void goWeightTest() {
         System.out.println("---------------权重更改---------------");
-        ResponseMessage back = poiService.goWeight("-11111",Float.valueOf("1"), user);
+        ResponseMessage back = poiService.goWeight("-11111",1, user);
         int status=  back.getStatus();
         System.out.println("返回值：" + status);
         Assert.assertSame("返回值是0", 0, status);

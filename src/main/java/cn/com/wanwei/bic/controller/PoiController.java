@@ -95,7 +95,7 @@ public class PoiController extends  BaseController{
     @GetMapping(value = "/weight/{id}")
     @PreAuthorize("hasAuthority('poi:q')")
     @OperationLog(value = "wtcp-bics/权重更改", operate = "u", module = "poi管理")
-    public ResponseMessage goWeight(@PathVariable(value = "id") String id,@RequestParam Float weight) throws Exception {
+    public ResponseMessage goWeight(@PathVariable(value = "id") String id,@RequestParam Integer weight) throws Exception {
         return poiService.goWeight(id,weight,getCurrentUser());
     }
 
@@ -138,7 +138,7 @@ public class PoiController extends  BaseController{
     }
 
 
-    @ApiOperation(value = "批量删除poi管理信息", notes = "根据ID批量删除批量删除poi管理信息")
+    @ApiOperation(value = "批量删除poi管理信息", notes = "根据ID批量删除poi管理信息")
     @RequestMapping(value = "/batchDelete", method = RequestMethod.PUT)
     @PreAuthorize("hasAuthority('poi:bd')")
     public ResponseMessage batchDelete(@RequestBody List<String> ids, BindingResult bindingResult) throws Exception {

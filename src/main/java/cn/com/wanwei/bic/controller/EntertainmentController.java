@@ -91,18 +91,6 @@ public class EntertainmentController extends BaseController{
         return entertainmentService.delete(id);
     }
 
-//    @ApiOperation(value = "权重更改", notes = "权重更改")
-//    @ApiImplicitParams({
-//            @ApiImplicitParam(name = "id", value = "休闲娱乐信息ID", required = true),
-//            @ApiImplicitParam(name = "weight", value = "权重", required = true)
-//    })
-//    @GetMapping(value = "/weight/{id}")
-//    @PreAuthorize("hasAuthority('entertainment:w')")
-//    @OperationLog(value = "wtcp-bics/权重更改", operate = "u", module = "休闲娱乐管理")
-//    public ResponseMessage goWeight(@PathVariable(value = "id") String id,@RequestParam Float weight) throws Exception {
-//        return entertainmentService.goWeight(id,weight,getCurrentUser());
-//    }
-
     @ApiOperation(value = "权重更改", notes = "权重更改")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "weightModel", value = "排序model", required = true, dataType = "WeightModel")
