@@ -109,6 +109,26 @@
         <bind name="title" value="'%' + title + '%'"></bind>
         and title like #{title}
       </if>
+      <if test="type != null and type != '' ">
+        <bind name="type" value="type"></bind>
+        and type = #{type}
+      </if>
+      <if test="status != null">
+        <if test="status == 0 or status == 2">
+          and status = #{status,jdbcType=INTEGER}
+        </if>
+        <if test="status == 1">
+          and (status = 1 or status = 9)
+        </if>
+      </if>
+      <if test="onlineStatus != null">
+        <if test="onlineStatus == 9">
+          and status = #{onlineStatus,jdbcType=INTEGER}
+        </if>
+        <if test="onlineStatus == 1">
+          and 9 > status
+        </if>
+      </if>
     </where>
   </select>
 
