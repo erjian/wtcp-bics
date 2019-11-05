@@ -2,6 +2,8 @@ package cn.com.wanwei.bic.controller;
 
 import cn.com.wanwei.bic.entity.AuditLogEntity;
 import cn.com.wanwei.bic.entity.PeripheryEntity;
+import cn.com.wanwei.bic.model.DataBindModel;
+import cn.com.wanwei.bic.model.WeightModel;
 import cn.com.wanwei.bic.service.PeripheryService;
 import cn.com.wanwei.common.log.annotation.OperationLog;
 import cn.com.wanwei.common.model.ResponseMessage;
@@ -11,6 +13,7 @@ import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.time.DateFormatUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -18,6 +21,8 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -54,7 +59,7 @@ public class PeripheryController extends BaseController {
     @ApiOperation(value = "新增周边信息", notes = "新增周边信息")
     @ApiImplicitParam(name = "peripheryEntity", value = "周边信息实体",dataType="PeripheryEntity", required = true)
     @PostMapping
-//    @PreAuthorize("hasAuthority('perip:c')")
+    @PreAuthorize("hasAuthority('perip:c')")
     @OperationLog(value = "wtcp-bics/新增周边信息", operate = "c", module = "周边管理")
     public ResponseMessage create(@RequestBody PeripheryEntity peripheryEntity, BindingResult bindingResult) throws Exception {
         if(bindingResult.hasErrors()){
@@ -129,6 +134,37 @@ public class PeripheryController extends BaseController {
             return ResponseMessage.validFailResponse().setMsg(bindingResult.getAllErrors());
         }
         return peripheryService.batchDelete(ids);
+    }
+
+
+    @PreAuthorize("hasAuthority('perip:g')")
+    @ApiOperation(value = "数据绑定", notes = "数据绑定")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "model", value = "数据绑定实体", required = true, dataType = "DataBindModel")
+    })
+    @RequestMapping(value = "/dataBind", method = {RequestMethod.PUT, RequestMethod.PATCH})
+    public ResponseMessage dataBind(@RequestBody @Valid DataBindModel model, BindingResult bindingResult) throws Exception {
+        if (bindingResult.hasErrors()) {
+            return ResponseMessage.validFailResponse().setMsg(bindingResult.getAllErrors());
+        }
+        String updatedDate = DateFormatUtils.format(new Date(), "yyyy-MM-dd HH:mm:ss");
+        String updatedUser = getCurrentUser().getUsername();
+        peripheryService.dataBind(updatedUser,updatedDate,model);
+        return ResponseMessage.defaultResponse().setMsg("数据绑定成功");
+    }
+
+    @ApiOperation(value = "权重更改", notes = "权重更改")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "weightModel", value = "排序model", required = true, dataType = "WeightModel")
+    })
+    @PutMapping(value = "/weight")
+    @PreAuthorize("hasAuthority('perip:w')")
+    @OperationLog(value = "wtcp-bics/权重更改", operate = "u", module = "周边管理")
+    public ResponseMessage goWeight(@RequestBody @Valid WeightModel weightModel, BindingResult bindingResult) throws Exception {
+        if(bindingResult.hasErrors()){
+            return ResponseMessage.validFailResponse().setMsg(bindingResult.getAllErrors());
+        }
+        return peripheryService.goWeight(weightModel,getCurrentUser());
     }
 
 }

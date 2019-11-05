@@ -4,6 +4,8 @@ import cn.com.wanwei.bic.entity.AuditLogEntity;
 import cn.com.wanwei.bic.entity.PeripheryEntity;
 import cn.com.wanwei.bic.feign.CoderServiceFeign;
 import cn.com.wanwei.bic.mapper.PeripheryMapper;
+import cn.com.wanwei.bic.model.DataBindModel;
+import cn.com.wanwei.bic.model.WeightModel;
 import cn.com.wanwei.bic.service.AuditLogService;
 import cn.com.wanwei.bic.service.PeripheryService;
 import cn.com.wanwei.bic.utils.UUIDUtils;
@@ -20,6 +22,7 @@ import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -169,5 +172,39 @@ public class PeripheryServiceImpl implements PeripheryService {
         }
         peripheryMapper.batchDelete(ids);
         return responseMessage.setStatus(1).setMsg("批量删除成功");
+    }
+
+    @Override
+    public int dataBind(String updatedUser, String updatedDate, DataBindModel model) {
+        String deptCode = model.getDeptCode();
+        List<String> ids = model.getIds();
+        return peripheryMapper.dataBind(updatedUser, updatedDate, deptCode, ids);
+    }
+
+    @Override
+    public ResponseMessage goWeight(WeightModel weightModel, User user) {
+        //查出最大权重
+        Integer maxNum= peripheryMapper.maxWeight();
+        List<String>ids =weightModel.getIds();
+        if(ids!=null&&ids.size()>0){
+            //判断为重新排序或者最大权重与排序大于999时所有数据权重清0
+            if(weightModel.isFlag()||(maxNum+ids.size())>Integer.MAX_VALUE){
+                peripheryMapper.clearWeight();
+                maxNum=0;
+            }
+            for(int i=0;i<ids.size();i++){
+                PeripheryEntity peripheryEntity = peripheryMapper.selectByPrimaryKey(ids.get(i));
+                if(weightModel.isFlag()){
+                    peripheryEntity.setWeight(ids.size()-i);
+                }else{
+                    peripheryEntity.setWeight(maxNum+ids.size()-i);
+                }
+                peripheryEntity.setDeptCode(user.getOrg().getCode());
+                peripheryEntity.setUpdatedUser(user.getUsername());
+                peripheryEntity.setUpdatedDate(new Date());
+                peripheryMapper.updateByPrimaryKey(peripheryEntity);
+            }
+        }
+        return ResponseMessage.defaultResponse().setMsg("权重修改成功！");
     }
 }

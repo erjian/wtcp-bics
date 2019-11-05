@@ -2,6 +2,8 @@ package cn.com.wanwei.bic.service;
 
 import cn.com.wanwei.bic.entity.AuditLogEntity;
 import cn.com.wanwei.bic.entity.PeripheryEntity;
+import cn.com.wanwei.bic.model.DataBindModel;
+import cn.com.wanwei.bic.model.WeightModel;
 import cn.com.wanwei.common.model.ResponseMessage;
 import cn.com.wanwei.common.model.User;
 
@@ -72,4 +74,20 @@ public interface PeripheryService {
      * @return
      */
     ResponseMessage batchDelete(List<String> ids);
+
+    /**
+     * 数据绑定
+     * @param updatedUser
+     * @param updatedDate
+     * @param model
+     */
+    int dataBind(String updatedUser, String updatedDate, DataBindModel model);
+
+    /**
+     * 权重修改
+     * @param weightModel
+     * @param user
+     * @return
+     */
+    ResponseMessage goWeight(WeightModel weightModel, User user);
 }

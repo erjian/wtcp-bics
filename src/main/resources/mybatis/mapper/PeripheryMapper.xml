@@ -142,4 +142,21 @@
             #{item}
         </foreach>
     </delete>
+    <update id="dataBind">
+        update t_bic_periphery
+        set updated_date = #{updatedDate,jdbcType=VARCHAR},
+        updated_user = #{updatedUser,jdbcType=VARCHAR},
+        dept_code = #{deptCode,jdbcType=VARCHAR}
+        where id in
+        <foreach collection="ids" item="item" index="index" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </update>
+
+    <update id="clearWeight">
+    update t_bic_periphery set weight=0
+  </update>
+    <select id="maxWeight" resultType="Integer">
+    select weight from t_bic_periphery order by weight desc limit 1
+  </select>
 </mapper>

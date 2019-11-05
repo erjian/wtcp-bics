@@ -40,4 +40,25 @@ public interface PeripheryMapper {
      * @param ids
      */
     void batchDelete(@Param(value="ids") List<String> ids);
+
+    /**
+     * 数据绑定
+     * @param updatedUser
+     * @param updatedDate
+     * @param deptCode
+     * @param ids
+     */
+    int dataBind(@Param(value="updatedUser") String updatedUser, @Param(value="updatedDate") String updatedDate,
+                  @Param(value="deptCode") String deptCode, @Param(value="ids") List<String> ids);
+
+    /**
+     * 查询最大权重值
+     * @return
+     */
+    Integer maxWeight();
+
+    /**
+     * 清空排序
+     */
+    void clearWeight();
 }
