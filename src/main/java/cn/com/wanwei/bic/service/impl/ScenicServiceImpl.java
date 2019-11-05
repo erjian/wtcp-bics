@@ -6,7 +6,10 @@
  */
 package cn.com.wanwei.bic.service.impl;
 
-import cn.com.wanwei.bic.entity.*;
+import cn.com.wanwei.bic.entity.AuditLogEntity;
+import cn.com.wanwei.bic.entity.BaseTagsEntity;
+import cn.com.wanwei.bic.entity.ScenicEntity;
+import cn.com.wanwei.bic.entity.ScenicTagsEntity;
 import cn.com.wanwei.bic.feign.CoderServiceFeign;
 import cn.com.wanwei.bic.mapper.AuditLogMapper;
 import cn.com.wanwei.bic.mapper.ScenicMapper;
@@ -25,7 +28,6 @@ import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.google.common.collect.Lists;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.time.DateFormatUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.data.domain.Sort;
@@ -141,7 +143,7 @@ public class ScenicServiceImpl implements ScenicService {
 		//查出最大权重
 		Integer maxNum= scenicMapper.maxWeight();
 		List<String>ids =weightModel.getIds();
-		if(ids!=null&&ids.size()>0){
+		if(ids!=null&&!ids.isEmpty()){
 			//判断为重新排序或者最大权重与排序大于999时所有数据权重清0
 			if(weightModel.isFlag()||(maxNum+ids.size())>Integer.MAX_VALUE){
 				scenicMapper.clearWeight();
