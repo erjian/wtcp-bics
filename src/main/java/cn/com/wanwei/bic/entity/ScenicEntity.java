@@ -52,7 +52,7 @@ public class ScenicEntity extends BaseEntity{
     private String description;
 
     @ApiModelProperty(value = "权重")
-    private Float weight;
+    private Integer weight;
 
     @ApiModelProperty(value = "经度")
     private Double longitude;

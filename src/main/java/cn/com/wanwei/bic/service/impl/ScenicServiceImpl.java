@@ -6,15 +6,13 @@
  */
 package cn.com.wanwei.bic.service.impl;
 
-import cn.com.wanwei.bic.entity.AuditLogEntity;
-import cn.com.wanwei.bic.entity.BaseTagsEntity;
-import cn.com.wanwei.bic.entity.ScenicEntity;
-import cn.com.wanwei.bic.entity.ScenicTagsEntity;
+import cn.com.wanwei.bic.entity.*;
 import cn.com.wanwei.bic.feign.CoderServiceFeign;
 import cn.com.wanwei.bic.mapper.AuditLogMapper;
 import cn.com.wanwei.bic.mapper.ScenicMapper;
 import cn.com.wanwei.bic.model.DataBindModel;
 import cn.com.wanwei.bic.model.ScenicModel;
+import cn.com.wanwei.bic.model.WeightModel;
 import cn.com.wanwei.bic.service.ScenicService;
 import cn.com.wanwei.bic.service.TagsService;
 import cn.com.wanwei.bic.utils.UUIDUtils;
@@ -139,16 +137,30 @@ public class ScenicServiceImpl implements ScenicService {
 	}
 
 	@Override
-	public ResponseMessage changeWeight(String id, Float weightNum, String username) {
-		ScenicEntity entity = scenicMapper.selectByPrimaryKey(id);
-		if(null == entity){
-			return ResponseMessage.validFailResponse().setMsg("无景区信息");
+	public ResponseMessage changeWeight(WeightModel weightModel, User user) {
+		//查出最大权重
+		Integer maxNum= scenicMapper.maxWeight();
+		List<String>ids =weightModel.getIds();
+		if(ids!=null&&ids.size()>0){
+			//判断为重新排序或者最大权重与排序大于999时所有数据权重清0
+			if(weightModel.isFlag()||(maxNum+ids.size())>Integer.MAX_VALUE){
+				scenicMapper.clearWeight();
+				maxNum=0;
+			}
+			for(int i=0;i<ids.size();i++){
+				ScenicEntity scenicEntity = scenicMapper.selectByPrimaryKey(ids.get(i));
+				if(weightModel.isFlag()){
+					scenicEntity.setWeight(ids.size()-i);
+				}else{
+					scenicEntity.setWeight(maxNum+ids.size()-i);
+				}
+				scenicEntity.setDeptCode(user.getOrg().getCode());
+				scenicEntity.setUpdatedUser(user.getUsername());
+				scenicEntity.setUpdatedDate(new Date());
+				scenicMapper.updateByPrimaryKey(scenicEntity);
+			}
 		}
-		entity.setUpdatedUser(username);
-		entity.setUpdatedDate(new Date());
-		entity.setWeight(weightNum);
-		scenicMapper.updateByPrimaryKeyWithBLOBs(entity);
-		return ResponseMessage.defaultResponse().setMsg("权重修改成功");
+		return ResponseMessage.defaultResponse().setMsg("权重修改成功！");
 	}
 
 	@Override

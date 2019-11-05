@@ -46,4 +46,16 @@ public interface ScenicMapper {
      * @return
      */
     List<ScenicEntity> getScenicInfo(@Param(value="title") String title);
+
+    /**
+     * 获取最大权重
+     * @return
+     */
+    Integer maxWeight();
+
+    /**
+     * 重置权重
+     * @return
+     */
+    int clearWeight();
 }

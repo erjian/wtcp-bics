@@ -11,7 +11,7 @@
     <result column="slogan" jdbcType="VARCHAR" property="slogan" />
     <result column="summary" jdbcType="VARCHAR" property="summary" />
     <result column="description" jdbcType="VARCHAR" property="description" />
-    <result column="weight" jdbcType="REAL" property="weight" />
+    <result column="weight" jdbcType="INTEGER" property="weight" />
     <result column="longitude" jdbcType="DOUBLE" property="longitude" />
     <result column="latitude" jdbcType="DOUBLE" property="latitude" />
     <result column="region_full_name" jdbcType="VARCHAR" property="regionFullName" />
@@ -198,4 +198,12 @@
       #{item}
     </foreach>
   </update>
+
+  <update id="clearWeight">
+    update t_bic_scenic set weight=0
+  </update>
+
+  <select id="maxWeight" resultType="Integer">
+    select weight from t_bic_scenic order by weight desc limit 1
+  </select>
 </mapper>

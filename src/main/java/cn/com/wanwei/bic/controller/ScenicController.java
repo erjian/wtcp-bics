@@ -3,6 +3,7 @@ package cn.com.wanwei.bic.controller;
 import cn.com.wanwei.bic.entity.ScenicEntity;
 import cn.com.wanwei.bic.model.DataBindModel;
 import cn.com.wanwei.bic.model.ScenicModel;
+import cn.com.wanwei.bic.model.WeightModel;
 import cn.com.wanwei.bic.service.ScenicService;
 import cn.com.wanwei.common.log.annotation.OperationLog;
 import cn.com.wanwei.common.model.ResponseMessage;
@@ -90,14 +91,16 @@ public class ScenicController extends BaseController {
     }
 
     @PreAuthorize("hasAuthority('scenic:w')")
-    @ApiOperation(value = "景区权重修改", notes = "景区权重修改")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "id", value = "景区ID", required = true, dataType = "String"),
-            @ApiImplicitParam(name = "weightNum", value = "权重", required = true, dataType = "String")
+            @ApiImplicitParam(name = "weightModel", value = "排序model", required = true, dataType = "WeightModel")
     })
-    @RequestMapping(value = "/changeWeight/{id}/{sortNum}", method = RequestMethod.GET)
-    public ResponseMessage changeWeight(@PathVariable("id") String id, @PathVariable("sortNum") Float weightNum) throws Exception {
-        return scenicService.changeWeight(id,weightNum,getCurrentUser().getUsername());
+    @PutMapping(value = "/weight")
+    @OperationLog(value = "wtcp-bics/权重更改", operate = "u", module = "景区基础信息管理")
+    public ResponseMessage changeWeight(@RequestBody @Valid WeightModel weightModel, BindingResult bindingResult) throws Exception {
+        if(bindingResult.hasErrors()){
+            return ResponseMessage.validFailResponse().setMsg(bindingResult.getAllErrors());
+        }
+        return scenicService.changeWeight(weightModel,getCurrentUser());
     }
 
     @PreAuthorize("hasAuthority('scenic:o')")

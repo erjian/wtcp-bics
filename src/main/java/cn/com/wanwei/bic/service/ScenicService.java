@@ -9,6 +9,7 @@ package cn.com.wanwei.bic.service;
 import cn.com.wanwei.bic.entity.ScenicEntity;
 import cn.com.wanwei.bic.model.DataBindModel;
 import cn.com.wanwei.bic.model.ScenicModel;
+import cn.com.wanwei.bic.model.WeightModel;
 import cn.com.wanwei.common.model.ResponseMessage;
 import cn.com.wanwei.common.model.User;
 
@@ -76,12 +77,11 @@ public interface ScenicService {
 	/**
 	 * 修改权重
 	 * @author linjw 2019年10月9日17:45:27
-	 * @param id
-	 * @param weightNum
-	 * @param username
+	 * @param weightModel
+	 * @param user
 	 * @return
 	 */
-	ResponseMessage changeWeight(String id, Float weightNum, String username) throws Exception;
+	ResponseMessage changeWeight(WeightModel weightModel, User user) throws Exception;
 
 	/**
 	 * 修改审核状态
