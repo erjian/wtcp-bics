@@ -17,6 +17,8 @@ public interface MaterialService {
 
     ResponseMessage insert(MaterialEntity materialEntity, User user);
 
+    ResponseMessage saveByDom(String content, String principalId, User user);
+
     ResponseMessage batchInsert(String principalId, List<MaterialEntity> materialList, User user);
 
     ResponseMessage selectByPrimaryKey(String id);

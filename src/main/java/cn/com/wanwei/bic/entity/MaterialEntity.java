@@ -25,6 +25,9 @@ public class MaterialEntity extends BaseEntity{
     @ApiModelProperty(value = "素材ID")
     private String materialId;
 
+    @ApiModelProperty(value = "素材名称")
+    private String fileName;
+
     @ApiModelProperty(value = "素材类型（image：图片，audio：音频，video：视频， file: 文档）")
     private String fileType;
 

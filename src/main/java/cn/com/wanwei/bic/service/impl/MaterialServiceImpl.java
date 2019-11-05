@@ -3,6 +3,7 @@ package cn.com.wanwei.bic.service.impl;
 import cn.com.wanwei.bic.entity.MaterialEntity;
 import cn.com.wanwei.bic.mapper.MaterialMapper;
 import cn.com.wanwei.bic.service.MaterialService;
+import cn.com.wanwei.bic.utils.ParseContentUtils;
 import cn.com.wanwei.bic.utils.UUIDUtils;
 import cn.com.wanwei.common.model.ResponseMessage;
 import cn.com.wanwei.common.model.User;
@@ -53,6 +54,14 @@ public class MaterialServiceImpl implements MaterialService {
         materialEntity.setCreatedDate(new Date());
         materialMapper.insert(materialEntity);
         return ResponseMessage.defaultResponse().setMsg("添加成功");
+    }
+
+    @Override
+    public ResponseMessage saveByDom(String content, String principalId, User user) {
+        ResponseMessage responseMessage = ResponseMessage.defaultResponse();
+        List<MaterialEntity> fileList = ParseContentUtils.getInstance().parse(content,principalId, user);
+        materialMapper.batchInsert(fileList);
+        return responseMessage.setMsg("保存成功");
     }
 
     @Override
