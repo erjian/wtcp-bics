@@ -133,5 +133,14 @@ public class ScenicController extends BaseController {
         }
         return scenicService.dataBind(getCurrentUser().getUsername(),model);
     }
+
+    @ApiOperation(value = "获取景区列表", notes = "获取景区列表")
+    @RequestMapping(value = "/getScenicList", method = RequestMethod.GET)
+    @PreAuthorize("hasAuthority('scenic:r')")
+    @OperationLog(value = "wtcp-bics/获取景区列表", operate = "r", module = "景区管理")
+    public ResponseMessage getScenicList(String title) throws Exception {
+        title = title == null? "":title;
+        return scenicService.getScenicInfo(title.trim().toLowerCase());
+    }
 }
 

@@ -121,7 +121,7 @@ public class EntertainmentServiceImpl implements EntertainmentService {
         //查出最大权重
         Integer maxNum= entertainmentMapper.maxWeight();
         List<String>ids =weightModel.getIds();
-        if(ids!=null&&ids.size()>0){
+        if(ids!=null&&!ids.isEmpty()){
             //判断为重新排序或者最大权重与排序大于999时所有数据权重清0
             if(weightModel.isFlag()||(maxNum+ids.size())>Integer.MAX_VALUE){
                 entertainmentMapper.clearWeight();
