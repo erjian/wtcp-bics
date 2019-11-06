@@ -10,6 +10,7 @@ import cn.com.wanwei.bic.model.DataBindModel;
 import cn.com.wanwei.bic.model.PeripheryModel;
 import cn.com.wanwei.bic.model.WeightModel;
 import cn.com.wanwei.bic.service.AuditLogService;
+import cn.com.wanwei.bic.service.MaterialService;
 import cn.com.wanwei.bic.service.PeripheryService;
 import cn.com.wanwei.bic.service.TagsService;
 import cn.com.wanwei.bic.utils.UUIDUtils;
@@ -49,6 +50,9 @@ public class PeripheryServiceImpl implements PeripheryService {
     @Autowired
     private TagsService tagsService;
 
+    @Autowired
+    private MaterialService materialService;
+
     @Override
     public ResponseMessage findByPage(Integer page, Integer size, Map<String, Object> filter) {
         Sort sort = Sort.by(new Sort.Order[]{new Sort.Order(Sort.Direction.DESC, "weight"), new Sort.Order(Sort.Direction.DESC, "created_date")});
@@ -87,6 +91,10 @@ public class PeripheryServiceImpl implements PeripheryService {
             peripheryEntity.setCreatedDate(new Date());
             peripheryMapper.insert(peripheryEntity);
             this.saveTags(peripheryModel.getList(),peripheryEntity.getId(),user);
+
+            // 解析富文本中的附件并保存
+            materialService.saveByDom(peripheryEntity.getContent(), peripheryEntity.getId(), user);
+
             return ResponseMessage.defaultResponse().setMsg("保存成功!");
         }
         return responseMessageGetCode;
@@ -116,6 +124,11 @@ public class PeripheryServiceImpl implements PeripheryService {
             peripheryEntity.setCode(entity.getCode());
             peripheryMapper.updateByPrimaryKey(peripheryEntity);
             this.saveTags(peripheryModel.getList(),id,user);
+
+            // 先删除关联的附件再解析富文本中的附件并保存
+            materialService.deleteByPrincipalId(id);
+            materialService.saveByDom(peripheryEntity.getContent(), id, user);
+
             responseMessage.setMsg("更新成功");
         }else {
             responseMessage.setStatus(0).setMsg("暂无该周边信息");

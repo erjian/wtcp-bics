@@ -76,6 +76,11 @@
         </foreach>
     </delete>
 
+    <delete id="deleteByPrincipalId" parameterType="java.lang.String">
+        delete from t_bic_material
+        where principal_id = #{principalId,jdbcType=VARCHAR}
+    </delete>
+
     <insert id="insert" parameterType="cn.com.wanwei.bic.entity.MaterialEntity" useGeneratedKeys="true" keyProperty="id" keyColumn="id">
         insert into t_bic_material (id, principal_id, material_id, file_type, file_name,
         file_url, file_identify, created_user, created_date, updated_user, updated_date )

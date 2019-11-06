@@ -16,6 +16,7 @@ import cn.com.wanwei.bic.mapper.ScenicMapper;
 import cn.com.wanwei.bic.model.DataBindModel;
 import cn.com.wanwei.bic.model.ScenicModel;
 import cn.com.wanwei.bic.model.WeightModel;
+import cn.com.wanwei.bic.service.MaterialService;
 import cn.com.wanwei.bic.service.ScenicService;
 import cn.com.wanwei.bic.service.TagsService;
 import cn.com.wanwei.bic.utils.PageUtils;
@@ -58,6 +59,9 @@ public class ScenicServiceImpl implements ScenicService {
 	@Autowired
 	private AuditLogMapper auditLogMapper;
 
+	@Autowired
+	private MaterialService materialService;
+
 	@Override
 	public ResponseMessage save(ScenicModel scenicModel, User user, Long ruleId, Integer appCode) {
 		ScenicEntity record = scenicModel.getScenicEntity();
@@ -71,7 +75,11 @@ public class ScenicServiceImpl implements ScenicService {
 		record.setCreatedDate(new Date());
 		record.setStatus(0);
 		scenicMapper.insert(record);
-		this.saveTags(scenicModel.getList(),record.getId(),user);
+		this.saveTags(scenicModel.getList(), record.getId(),user);
+
+		// 解析富文本中的附件并保存
+		materialService.saveByDom(record.getContent(), record.getId(), user);
+
 		return ResponseMessage.defaultResponse().setMsg("保存成功");
 	}
 
@@ -105,6 +113,11 @@ public class ScenicServiceImpl implements ScenicService {
 		record.setUpdatedUser(user.getUsername());
 		scenicMapper.updateByPrimaryKeyWithBLOBs(record);
 		this.saveTags(scenicModel.getList(),id,user);
+
+		// 先删除关联的附件再解析富文本中的附件并保存
+		materialService.deleteByPrincipalId(id);
+		materialService.saveByDom(record.getContent(), id, user);
+
 		return ResponseMessage.defaultResponse().setMsg("更新成功");
 	}
 
