@@ -1,9 +1,6 @@
 package cn.com.wanwei.bic.service.impl;
 
-import cn.com.wanwei.bic.entity.AuditLogEntity;
-import cn.com.wanwei.bic.entity.BaseTagsEntity;
-import cn.com.wanwei.bic.entity.PoiEntity;
-import cn.com.wanwei.bic.entity.ScenicEntity;
+import cn.com.wanwei.bic.entity.*;
 import cn.com.wanwei.bic.feign.CoderServiceFeign;
 import cn.com.wanwei.bic.mapper.PoiMapper;
 import cn.com.wanwei.bic.mapper.ScenicMapper;
@@ -129,13 +126,13 @@ public class PoiServiceImpl implements PoiService {
      */
     private void saveTags(List<Map<String, Object>> tagsList, String poiId, User user) {
         List<BaseTagsEntity> list = Lists.newArrayList();
-        for (int i = 0; i < tagsList.size(); i++) {
-            BaseTagsEntity baseTagsEntity = new BaseTagsEntity();
-            baseTagsEntity.setTagName(tagsList.get(i).get("tagName").toString());
-            baseTagsEntity.setTagCatagory(tagsList.get(i).get("tagCatagory").toString());
-            list.add(baseTagsEntity);
+        for(int i=0; i<tagsList.size(); i++){
+            BaseTagsEntity entity = new BaseTagsEntity();
+            entity.setTagCatagory(tagsList.get(i).get("tagCatagory").toString());
+            entity.setTagName(tagsList.get(i).get("tagName").toString());
+            list.add(entity);
         }
-        tagsService.batchInsert(poiId, list, user, PoiEntity.class);
+        tagsService.batchInsert(poiId, list, user, PoiTagsEntity.class);
     }
 
     @Override
@@ -143,9 +140,7 @@ public class PoiServiceImpl implements PoiService {
         PoiEntity poiEntity = poiModel.getPoiEntity();
         PoiEntity pEntity = poiMapper.selectByPrimaryKey(id);
         if (pEntity != null) {
-            poiEntity.setId(pEntity.getId());
-            poiEntity.setCreatedUser(pEntity.getCreatedUser());
-            poiEntity.setCreatedDate(pEntity.getCreatedDate());
+            poiEntity.setId(id);
             poiEntity.setStatus(0);
             poiEntity.setCode(pEntity.getCode());
             poiEntity.setDeptCode(user.getOrg().getCode());
