@@ -18,6 +18,7 @@ import cn.com.wanwei.bic.model.ScenicModel;
 import cn.com.wanwei.bic.model.WeightModel;
 import cn.com.wanwei.bic.service.ScenicService;
 import cn.com.wanwei.bic.service.TagsService;
+import cn.com.wanwei.bic.utils.PageUtils;
 import cn.com.wanwei.bic.utils.UUIDUtils;
 import cn.com.wanwei.common.model.ResponseMessage;
 import cn.com.wanwei.common.model.User;
@@ -119,15 +120,10 @@ public class ScenicServiceImpl implements ScenicService {
 	}
 
 	@Override
-	public ResponseMessage findByPage(Integer page, Integer size, User user, Map<String, Object> filter) {
-		Sort.Order[] order = new Sort.Order[]{new Sort.Order(Sort.Direction.DESC, "created_date"),
-				new Sort.Order(Sort.Direction.DESC, "updated_date")};
-		Sort sort = Sort.by(order);
-		MybatisPageRequest pageRequest = MybatisPageRequest.of(page, size, sort);
-		PageHelper.startPage(pageRequest.getPage(), pageRequest.getSize());
-		PageHelper.orderBy(pageRequest.getOrders());
-		Page<ScenicEntity> userEntities = scenicMapper.findByPage(filter);
-		PageInfo<ScenicEntity> pageInfo = new PageInfo<>(userEntities, pageRequest);
+	public ResponseMessage findByPage(Integer page, Integer size, User user1, Map<String, Object> filter) {
+		MybatisPageRequest pageRequest = PageUtils.getInstance().setPage(page, size, Sort.Direction.DESC, "created_date", "updated_date");
+		Page<ScenicEntity> scenicEntities = scenicMapper.findByPage(filter);
+		PageInfo<ScenicEntity> pageInfo = new PageInfo<>(scenicEntities, pageRequest);
 		return ResponseMessage.defaultResponse().setData(pageInfo);
 	}
 
