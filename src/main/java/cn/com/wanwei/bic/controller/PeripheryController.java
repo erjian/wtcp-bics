@@ -3,6 +3,7 @@ package cn.com.wanwei.bic.controller;
 import cn.com.wanwei.bic.entity.AuditLogEntity;
 import cn.com.wanwei.bic.entity.PeripheryEntity;
 import cn.com.wanwei.bic.model.DataBindModel;
+import cn.com.wanwei.bic.model.PeripheryModel;
 import cn.com.wanwei.bic.model.WeightModel;
 import cn.com.wanwei.bic.service.PeripheryService;
 import cn.com.wanwei.common.log.annotation.OperationLog;
@@ -57,31 +58,31 @@ public class PeripheryController extends BaseController {
 
 
     @ApiOperation(value = "新增周边信息", notes = "新增周边信息")
-    @ApiImplicitParam(name = "peripheryEntity", value = "周边信息实体",dataType="PeripheryEntity", required = true)
+    @ApiImplicitParam(name = "peripheryModel", value = "周边信息model",dataType="PeripheryModel", required = true)
     @PostMapping
     @PreAuthorize("hasAuthority('perip:c')")
     @OperationLog(value = "wtcp-bics/新增周边信息", operate = "c", module = "周边管理")
-    public ResponseMessage create(@RequestBody PeripheryEntity peripheryEntity, BindingResult bindingResult) throws Exception {
+    public ResponseMessage create(@RequestBody PeripheryModel peripheryModel, BindingResult bindingResult) throws Exception {
         if(bindingResult.hasErrors()){
             return ResponseMessage.validFailResponse().setMsg(bindingResult.getAllErrors());
         }
-        return peripheryService.save(peripheryEntity,getCurrentUser(),ruleId,appCode);
+        return peripheryService.save(peripheryModel,getCurrentUser(),ruleId,appCode);
     }
 
 
     @ApiOperation(value = "编辑周边信息", notes = "编辑周边信息")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "id", value = "周边信息ID", required = true),
-            @ApiImplicitParam(name = "peripheryEntity", value = "周边信息实体",dataType="PeripheryEntity", required = true)
+            @ApiImplicitParam(name = "peripheryModel", value = "周边信息model",dataType="PeripheryModel", required = true)
     })
     @PutMapping(value = "/{id}")
     @PreAuthorize("hasAuthority('perip:u')")
     @OperationLog(value = "wtcp-bics/编辑周边信息", operate = "u", module = "周边管理")
-    public ResponseMessage edit(@PathVariable(value = "id") String id, @RequestBody PeripheryEntity peripheryEntity, BindingResult bindingResult) throws Exception {
+    public ResponseMessage edit(@PathVariable(value = "id") String id, @RequestBody PeripheryModel peripheryModel, BindingResult bindingResult) throws Exception {
         if(bindingResult.hasErrors()){
             return ResponseMessage.validFailResponse().setMsg(bindingResult.getAllErrors());
         }
-        return peripheryService.edit(id,peripheryEntity,getCurrentUser());
+        return peripheryService.edit(id,peripheryModel,getCurrentUser());
     }
 
 
