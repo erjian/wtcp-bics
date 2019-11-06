@@ -1,7 +1,6 @@
 package cn.com.wanwei.bic.controller;
 
 import cn.com.wanwei.bic.entity.AuditLogEntity;
-import cn.com.wanwei.bic.entity.PoiEntity;
 import cn.com.wanwei.bic.model.PoiModel;
 import cn.com.wanwei.bic.service.PoiService;
 import cn.com.wanwei.common.log.annotation.OperationLog;
