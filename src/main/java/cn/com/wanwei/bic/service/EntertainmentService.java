@@ -1,8 +1,8 @@
 package cn.com.wanwei.bic.service;
 
 import cn.com.wanwei.bic.entity.AuditLogEntity;
-import cn.com.wanwei.bic.entity.EntertainmentEntity;
 import cn.com.wanwei.bic.model.DataBindModel;
+import cn.com.wanwei.bic.model.EntertainmentModel;
 import cn.com.wanwei.bic.model.WeightModel;
 import cn.com.wanwei.common.model.ResponseMessage;
 import cn.com.wanwei.common.model.User;
@@ -32,29 +32,22 @@ public interface EntertainmentService {
 
     /**
      * 新增休闲娱乐信息
-     * @param entertainmentEntity
+     * @param entertainmentModel
      * @param user
+     * @param ruleId
+     * @param appCode
      * @return
      */
-    ResponseMessage create(EntertainmentEntity entertainmentEntity, User user);
+    ResponseMessage create(EntertainmentModel entertainmentModel, User user, Long ruleId, Integer appCode);
 
     /**
      * 编辑休闲娱乐信息
      * @param id
-     * @param entertainmentEntity
+     * @param entertainmentModel
      * @param user
      * @return
      */
-    ResponseMessage update(String id, EntertainmentEntity entertainmentEntity, User user);
-
-//    /**
-//     * 休闲娱乐信息排序
-//     * @param id
-//     * @param weight
-//     * @param user
-//     * @return
-//     */
-//    ResponseMessage goWeight(String id, Float weight, User user);
+    ResponseMessage update(String id, EntertainmentModel entertainmentModel, User user);
 
     /**
      * 休闲娱乐信息排序

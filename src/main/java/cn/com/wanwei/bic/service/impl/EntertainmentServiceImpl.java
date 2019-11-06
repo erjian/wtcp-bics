@@ -1,13 +1,17 @@
 package cn.com.wanwei.bic.service.impl;
 
 import cn.com.wanwei.bic.entity.AuditLogEntity;
+import cn.com.wanwei.bic.entity.BaseTagsEntity;
 import cn.com.wanwei.bic.entity.EntertainmentEntity;
+import cn.com.wanwei.bic.entity.EntertainmentTagsEntity;
 import cn.com.wanwei.bic.feign.CoderServiceFeign;
 import cn.com.wanwei.bic.mapper.EntertainmentMapper;
 import cn.com.wanwei.bic.model.DataBindModel;
+import cn.com.wanwei.bic.model.EntertainmentModel;
 import cn.com.wanwei.bic.model.WeightModel;
 import cn.com.wanwei.bic.service.AuditLogService;
 import cn.com.wanwei.bic.service.EntertainmentService;
+import cn.com.wanwei.bic.service.TagsService;
 import cn.com.wanwei.bic.service.MaterialService;
 import cn.com.wanwei.bic.utils.UUIDUtils;
 import cn.com.wanwei.common.model.ResponseMessage;
@@ -16,6 +20,7 @@ import cn.com.wanwei.persistence.mybatis.MybatisPageRequest;
 import cn.com.wanwei.persistence.mybatis.PageInfo;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
+import com.google.common.collect.Lists;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,16 +54,19 @@ public class EntertainmentServiceImpl implements EntertainmentService {
     private AuditLogService auditLogService;
 
     @Autowired
+    private TagsService tagsService;
+
+    @Autowired
     private MaterialService materialService;
 
     @Override
     public ResponseMessage findByPage(Integer page, Integer size, Map<String, Object> filter) {
-            Sort sort = Sort.by(new Sort.Order[]{new Sort.Order(Sort.Direction.DESC, "weight"), new Sort.Order(Sort.Direction.DESC, "created_date")});
-            MybatisPageRequest pageRequest = MybatisPageRequest.of(page, size, sort);
-            PageHelper.startPage(pageRequest.getPage(), pageRequest.getSize(), pageRequest.getOrders());
-            Page<EntertainmentEntity> entertainmentEntities = entertainmentMapper.findByPage(filter);
-            PageInfo<EntertainmentEntity> pageInfo = new PageInfo<>(entertainmentEntities, pageRequest);
-            return ResponseMessage.defaultResponse().setData(pageInfo);
+        Sort sort = Sort.by(new Sort.Order[]{new Sort.Order(Sort.Direction.DESC, "weight"), new Sort.Order(Sort.Direction.DESC, "created_date")});
+        MybatisPageRequest pageRequest = MybatisPageRequest.of(page, size, sort);
+        PageHelper.startPage(pageRequest.getPage(), pageRequest.getSize(), pageRequest.getOrders());
+        Page<EntertainmentEntity> entertainmentEntities = entertainmentMapper.findByPage(filter);
+        PageInfo<EntertainmentEntity> pageInfo = new PageInfo<>(entertainmentEntities, pageRequest);
+        return ResponseMessage.defaultResponse().setData(pageInfo);
     }
 
     @Override
@@ -71,11 +79,13 @@ public class EntertainmentServiceImpl implements EntertainmentService {
     }
 
     @Override
-    public ResponseMessage create(EntertainmentEntity entertainmentEntity, User user) {
+    public ResponseMessage create(EntertainmentModel entertainmentModel, User user, Long ruleId, Integer appCode) {
         //获取统一认证生成的code
-        ResponseMessage responseMessageGetCode = coderServiceFeign.buildSerialNum(appId);
+        ResponseMessage responseMessageGetCode =coderServiceFeign.buildSerialByCode(ruleId, appCode, entertainmentModel.getJpin());
         if (responseMessageGetCode.getStatus() == 1 && responseMessageGetCode.getData() != null) {
-            entertainmentEntity.setId(UUIDUtils.getInstance().getId());
+            EntertainmentEntity entertainmentEntity= entertainmentModel.getEntertainmentEntity();
+            String id=UUIDUtils.getInstance().getId();
+            entertainmentEntity.setId(id);
             entertainmentEntity.setCode(responseMessageGetCode.getData().toString());
             entertainmentEntity.setStatus(0);
             entertainmentEntity.setWeight(0);
@@ -83,19 +93,19 @@ public class EntertainmentServiceImpl implements EntertainmentService {
             entertainmentEntity.setCreatedDate(new Date());
             entertainmentEntity.setDeptCode(user.getOrg().getCode());
             entertainmentMapper.insert(entertainmentEntity);
-
+            this.saveTags(entertainmentModel.getList(),id,user);
             // 解析富文本中的附件并保存
             materialService.saveByDom(entertainmentEntity.getContent(), entertainmentEntity.getId(), user);
-
             return ResponseMessage.defaultResponse().setMsg("保存成功!");
         }
         return responseMessageGetCode;
     }
 
     @Override
-    public ResponseMessage update(String id, EntertainmentEntity entertainmentEntity, User user) {
+    public ResponseMessage update(String id, EntertainmentModel entertainmentModel, User user) {
         EntertainmentEntity eEntity = entertainmentMapper.selectByPrimaryKey(id);
         if (eEntity != null) {
+            EntertainmentEntity entertainmentEntity= entertainmentModel.getEntertainmentEntity();
             entertainmentEntity.setId(eEntity.getId());
             entertainmentEntity.setCreatedUser(eEntity.getCreatedUser());
             entertainmentEntity.setCreatedDate(eEntity.getCreatedDate());
@@ -105,29 +115,25 @@ public class EntertainmentServiceImpl implements EntertainmentService {
             entertainmentEntity.setUpdatedUser(user.getUsername());
             entertainmentEntity.setUpdatedDate(new Date());
             entertainmentMapper.updateByPrimaryKey(entertainmentEntity);
-
+            this.saveTags(entertainmentModel.getList(),id,user);
             // 先删除关联的附件再解析富文本中的附件并保存
             materialService.deleteByPrincipalId(id);
             materialService.saveByDom(entertainmentEntity.getContent(), id, user);
-
             return ResponseMessage.defaultResponse().setMsg("更新成功！");
         }
         return ResponseMessage.validFailResponse().setMsg("暂无该休闲娱乐信息！");
     }
 
-//    @Override
-//    public ResponseMessage goWeight(String id, Float weight, User user) {
-//        EntertainmentEntity entertainmentEntity = entertainmentMapper.selectByPrimaryKey(id);
-//        if (entertainmentEntity != null) {
-//            entertainmentEntity.setWeight(weight);
-//            entertainmentEntity.setDeptCode(user.getOrg().getCode());
-//            entertainmentEntity.setUpdatedUser(user.getUsername());
-//            entertainmentEntity.setUpdatedDate(new Date());
-//            entertainmentMapper.updateByPrimaryKey(entertainmentEntity);
-//            return ResponseMessage.defaultResponse().setMsg("权重修改成功！");
-//        }
-//        return ResponseMessage.validFailResponse().setMsg("暂无该休闲娱乐信息！");
-//    }
+    private void saveTags(List<Map<String, Object>> tagsList, String principalId, User user){
+        List<BaseTagsEntity> list = Lists.newArrayList();
+        for(int i=0; i<tagsList.size(); i++){
+            BaseTagsEntity entity = new BaseTagsEntity();
+            entity.setTagCatagory(tagsList.get(i).get("tagCatagory").toString());
+            entity.setTagName(tagsList.get(i).get("tagName").toString());
+            list.add(entity);
+        }
+        tagsService.batchInsert(principalId,list,user, EntertainmentTagsEntity.class);
+    }
 
     @Override
     public ResponseMessage goWeight(WeightModel weightModel,User user) {

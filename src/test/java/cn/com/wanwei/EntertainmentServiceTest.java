@@ -2,6 +2,7 @@ package cn.com.wanwei;
 
 import cn.com.wanwei.bic.BicApplication;
 import cn.com.wanwei.bic.entity.EntertainmentEntity;
+import cn.com.wanwei.bic.model.EntertainmentModel;
 import cn.com.wanwei.bic.service.EntertainmentService;
 import cn.com.wanwei.common.model.Org;
 import cn.com.wanwei.common.model.ResponseMessage;
@@ -30,6 +31,8 @@ public class EntertainmentServiceTest {
 
     private EntertainmentEntity entertainmentEntity;
 
+    private EntertainmentModel entertainmentModel;
+
     private User user;
 
     @Before
@@ -56,6 +59,9 @@ public class EntertainmentServiceTest {
         entertainmentEntity.setType(123);
         entertainmentEntity.setWithinPark(1);
         entertainmentEntity.setWithinScenic(1);
+        entertainmentModel=new EntertainmentModel();
+        entertainmentModel.setJpin("NJL");
+        entertainmentModel.setEntertainmentEntity(entertainmentEntity);
         //user填充数据
         user=new User();
         user.setUsername("ceshi");
@@ -90,7 +96,7 @@ public class EntertainmentServiceTest {
     @Rollback
     public void createTest() {
         System.out.println("---------------新增休闲娱乐信息---------------");
-        ResponseMessage back = entertainmentService.create(entertainmentEntity, user);
+        ResponseMessage back = entertainmentService.create(entertainmentModel, user,123L,21);
         int status=  back.getStatus();
         System.out.println("返回值：" + status);
         Assert.assertSame("返回值是1", 1, status);
@@ -100,7 +106,7 @@ public class EntertainmentServiceTest {
     @Rollback
     public void updateTest() {
         System.out.println("---------------编辑休闲娱乐信息---------------");
-        ResponseMessage back = entertainmentService.update("-11111",entertainmentEntity, user);
+        ResponseMessage back = entertainmentService.update("-11111",entertainmentModel, user);
         int status=  back.getStatus();
         System.out.println("返回值：" + status);
         Assert.assertSame("返回值是0", 0, status);

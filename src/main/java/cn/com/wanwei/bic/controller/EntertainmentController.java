@@ -1,8 +1,8 @@
 package cn.com.wanwei.bic.controller;
 
 import cn.com.wanwei.bic.entity.AuditLogEntity;
-import cn.com.wanwei.bic.entity.EntertainmentEntity;
 import cn.com.wanwei.bic.model.DataBindModel;
+import cn.com.wanwei.bic.model.EntertainmentModel;
 import cn.com.wanwei.bic.model.WeightModel;
 import cn.com.wanwei.bic.service.EntertainmentService;
 import cn.com.wanwei.common.log.annotation.OperationLog;
@@ -56,30 +56,30 @@ public class EntertainmentController extends BaseController{
     }
 
     @ApiOperation(value = "新增休闲娱乐信息", notes = "新增休闲娱乐信息")
-    @ApiImplicitParam(name = "entertainmentEntity", value = "休闲娱乐实体",dataType="EntertainmentEntity", required = true)
+    @ApiImplicitParam(name = "entertainmentModel", value = "休闲娱乐实体",dataType="EntertainmentModel", required = true)
     @PostMapping
     @PreAuthorize("hasAuthority('entertainment:c')")
     @OperationLog(value = "wtcp-bics/新增休闲娱乐信息", operate = "c", module = "休闲娱乐管理")
-    public ResponseMessage create(@RequestBody EntertainmentEntity entertainmentEntity, BindingResult bindingResult) throws Exception {
+    public ResponseMessage create(@RequestBody EntertainmentModel entertainmentModel, BindingResult bindingResult) throws Exception {
         if(bindingResult.hasErrors()){
             return ResponseMessage.validFailResponse().setMsg(bindingResult.getAllErrors());
         }
-        return entertainmentService.create(entertainmentEntity,getCurrentUser());
+        return entertainmentService.create(entertainmentModel,getCurrentUser(), ruleId, appCode);
     }
 
     @ApiOperation(value = "编辑休闲娱乐信息", notes = "编辑休闲娱乐信息")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "id", value = "休闲娱乐信息ID", required = true),
-            @ApiImplicitParam(name = "entertainmentEntity", value = "休闲娱乐实体",dataType="EntertainmentEntity", required = true)
+            @ApiImplicitParam(name = "entertainmentModel", value = "休闲娱乐实体",dataType="EntertainmentModel", required = true)
     })
     @PutMapping(value = "/{id}")
     @PreAuthorize("hasAuthority('entertainment:u')")
     @OperationLog(value = "wtcp-bics/编辑休闲娱乐信息", operate = "u", module = "休闲娱乐管理")
-    public ResponseMessage edit(@PathVariable(value = "id") String id, @RequestBody EntertainmentEntity entertainmentEntity, BindingResult bindingResult) throws Exception {
+    public ResponseMessage edit(@PathVariable(value = "id") String id, @RequestBody EntertainmentModel entertainmentModel, BindingResult bindingResult) throws Exception {
         if(bindingResult.hasErrors()){
             return ResponseMessage.validFailResponse().setMsg(bindingResult.getAllErrors());
         }
-        return entertainmentService.update(id,entertainmentEntity,getCurrentUser());
+        return entertainmentService.update(id,entertainmentModel,getCurrentUser());
     }
 
     @ApiOperation(value = "删除休闲娱乐信息", notes = "删除休闲娱乐信息")
