@@ -37,7 +37,6 @@ public class TagsController extends BaseController {
 
     @ApiOperation(value = "根据关联ID获取景区标签信息", notes = "根据关联ID获取景区标签信息")
     @ApiImplicitParam(name = "principalId", value = "关联的景区ID", required = true)
-    @PreAuthorize("hasAuthority('bictags:r')")
     @OperationLog(value = "wtcp-bic/根据关联ID获取景区标签信息", operate = "r", module = "标签管理")
     @RequestMapping(value = "/findScenicByPid", method = RequestMethod.GET)
     public ResponseMessage findScenicByPid(@RequestParam String principalId) {
@@ -46,7 +45,6 @@ public class TagsController extends BaseController {
 
     @ApiOperation(value = "根据关联ID获取目的地标签信息", notes = "根据关联ID获取目的地标签信息")
     @ApiImplicitParam(name = "principalId", value = "关联的目的地ID", required = true)
-    @PreAuthorize("hasAuthority('bictags:r')")
     @OperationLog(value = "wtcp-bic/根据关联ID获取目的地标签信息", operate = "r", module = "标签管理")
     @RequestMapping(value = "/findDestByPid", method = RequestMethod.GET)
     public ResponseMessage findDestByPid(@RequestParam String principalId) {
@@ -55,7 +53,6 @@ public class TagsController extends BaseController {
 
     @ApiOperation(value = "根据关联ID获取休闲娱乐标签信息", notes = "根据关联ID获取休闲娱乐标签信息")
     @ApiImplicitParam(name = "principalId", value = "关联的休闲娱乐ID", required = true)
-    @PreAuthorize("hasAuthority('bictags:r')")
     @OperationLog(value = "wtcp-bic/根据关联ID获取休闲娱乐标签信息", operate = "r", module = "标签管理")
     @RequestMapping(value = "/findEmByPid", method = RequestMethod.GET)
     public ResponseMessage findEmByPid(@RequestParam String principalId) {
@@ -64,7 +61,6 @@ public class TagsController extends BaseController {
 
     @ApiOperation(value = "根据关联ID获取扩展信息的标签信息", notes = "根据关联ID获取扩展信息的标签信息")
     @ApiImplicitParam(name = "principalId", value = "关联的扩展信息的ID", required = true)
-    @PreAuthorize("hasAuthority('bictags:r')")
     @OperationLog(value = "wtcp-bic/根据关联ID获取扩展信息的标签信息", operate = "r", module = "标签管理")
     @RequestMapping(value = "/findExtendByPid", method = RequestMethod.GET)
     public ResponseMessage findExtendByPid(@RequestParam String principalId) {
@@ -73,7 +69,6 @@ public class TagsController extends BaseController {
 
     @ApiOperation(value = "根据关联ID获取周边标签信息", notes = "根据关联ID获取周边标签信息")
     @ApiImplicitParam(name = "principalId", value = "关联的周边ID", required = true)
-    @PreAuthorize("hasAuthority('bictags:r')")
     @OperationLog(value = "wtcp-bic/根据关联ID获取周边标签信息", operate = "r", module = "标签管理")
     @RequestMapping(value = "/findPeripheryByPid", method = RequestMethod.GET)
     public ResponseMessage findPeripheryByPid(@RequestParam String principalId) {
@@ -82,7 +77,6 @@ public class TagsController extends BaseController {
 
     @ApiOperation(value = "根据关联ID获取POI标签信息", notes = "根据关联ID获取POI标签信息")
     @ApiImplicitParam(name = "principalId", value = "关联的POIID", required = true)
-    @PreAuthorize("hasAuthority('bictags:r')")
     @OperationLog(value = "wtcp-bic/根据关联ID获取POI标签信息", operate = "r", module = "标签管理")
     @RequestMapping(value = "/findPoiByPid", method = RequestMethod.GET)
     public ResponseMessage findPoiByPid(@RequestParam String principalId) {
