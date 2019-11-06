@@ -72,7 +72,7 @@ public class ExtendServiceTest {
         Assert.assertSame("返回值是1", true, back.getData()!=null?true:false);
     }
 
-    @Test
+   /* @Test
     @Rollback
     public void createTest() throws Exception{
         System.out.println("---------------新增扩展信息---------------");
@@ -90,7 +90,7 @@ public class ExtendServiceTest {
         int status=  back.getStatus();
         System.out.println("返回值：" + status);
         Assert.assertSame("返回值是0", 0, status);
-    }
+    }*/
 
     @Test
     @Rollback
