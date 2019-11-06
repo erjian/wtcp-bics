@@ -7,12 +7,10 @@ import cn.com.wanwei.bic.utils.ParseContentUtils;
 import cn.com.wanwei.bic.utils.UUIDUtils;
 import cn.com.wanwei.common.model.ResponseMessage;
 import cn.com.wanwei.common.model.User;
-import cn.com.wanwei.common.utils.DateFormatUtil;
-import org.apache.commons.lang3.time.DateFormatUtils;
+import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -66,8 +64,11 @@ public class MaterialServiceImpl implements MaterialService {
     public ResponseMessage saveByDom(String content, String principalId, User user) {
         ResponseMessage responseMessage = ResponseMessage.defaultResponse();
         List<MaterialEntity> fileList = ParseContentUtils.getInstance().parse(content,principalId, user);
-        materialMapper.batchInsert(fileList);
-        return responseMessage.setMsg("保存成功");
+        if(CollectionUtils.isNotEmpty(fileList)){
+            materialMapper.batchInsert(fileList);
+            responseMessage.setMsg("保存成功");
+        }
+        return responseMessage;
     }
 
     @Override
