@@ -14,7 +14,8 @@ import javax.persistence.Table;
 @NoArgsConstructor
 @Entity
 @Table(name = "t_bic_extend_tags")
-@ApiModel(description = "扩展信息标签表")
+@ApiModel(description = "扩展信息管理")
 @ToString(callSuper = true)
-public class ExtendTagsEntity extends BaseTagsEntity{
+public class ExtendTagsEntity  extends BaseTagsEntity {
+
 }

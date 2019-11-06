@@ -2,6 +2,7 @@ package cn.com.wanwei.bic.service;
 
 import cn.com.wanwei.bic.entity.AuditLogEntity;
 import cn.com.wanwei.bic.entity.ExtendEntity;
+import cn.com.wanwei.bic.model.ExtendModel;
 import cn.com.wanwei.common.model.ResponseMessage;
 import cn.com.wanwei.common.model.User;
 
@@ -27,20 +28,24 @@ public interface ExtendService {
 
     /**
      * 扩展信息新增
-     * @param extendEntity
-     * @param username
+     * @param extendModel
+     * @param user
+     * @param ruleId
+     * @param appCode
      * @return
+     * @throws Exception
      */
-    ResponseMessage save(ExtendEntity extendEntity, String username) throws Exception;
+    ResponseMessage save(ExtendModel extendModel, User user,  Long ruleId, Integer appCode) throws Exception;
 
     /**
      * 扩展信息编辑
      * @param id
-     * @param extendEntity
-     * @param username
+     * @param extendModel
+     * @param user
      * @return
+     * @throws Exception
      */
-    ResponseMessage edit(String id, ExtendEntity extendEntity, String username) throws Exception;
+    ResponseMessage edit(String id, ExtendModel extendModel, User user) throws Exception;
 
     /**
      * 根据扩展信息id查询扩展信息详情
