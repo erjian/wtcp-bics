@@ -64,7 +64,7 @@ public class MaterialServiceImpl implements MaterialService {
     public ResponseMessage saveByDom(String content, String principalId, User user) {
         ResponseMessage responseMessage = ResponseMessage.defaultResponse();
         List<MaterialEntity> fileList = ParseContentUtils.getInstance().parse(content,principalId, user);
-        if(CollectionUtils.isNotEmpty(fileList)){
+        if(null != fileList && CollectionUtils.isNotEmpty(fileList)){
             materialMapper.batchInsert(fileList);
             responseMessage.setMsg("保存成功");
         }
