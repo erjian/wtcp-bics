@@ -169,6 +169,10 @@
         <bind name="areaName" value="areaName + '%'" ></bind>
         and region_full_name like #{areaName}
       </if>
+      <if test="areaCode != null and areaCode!='' ">
+        <bind name="areaCode" value="areaCode + '%'" ></bind>
+        and region_full_code like #{areaCode}
+      </if>
       <if test="examineStatus != null">
         <if test="examineStatus == 0 or examineStatus == 2">
           and status = #{examineStatus,jdbcType=INTEGER}

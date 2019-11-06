@@ -15,6 +15,8 @@ public interface MaterialService {
 
     ResponseMessage deleteByPrincipalIds(List<String> ids);
 
+    ResponseMessage deleteByPrincipalId(String principalId);
+
     ResponseMessage insert(MaterialEntity materialEntity, User user);
 
     ResponseMessage saveByDom(String content, String principalId, User user);

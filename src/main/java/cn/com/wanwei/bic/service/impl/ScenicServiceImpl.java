@@ -16,8 +16,10 @@ import cn.com.wanwei.bic.mapper.ScenicMapper;
 import cn.com.wanwei.bic.model.DataBindModel;
 import cn.com.wanwei.bic.model.ScenicModel;
 import cn.com.wanwei.bic.model.WeightModel;
+import cn.com.wanwei.bic.service.MaterialService;
 import cn.com.wanwei.bic.service.ScenicService;
 import cn.com.wanwei.bic.service.TagsService;
+import cn.com.wanwei.bic.utils.PageUtils;
 import cn.com.wanwei.bic.utils.UUIDUtils;
 import cn.com.wanwei.common.model.ResponseMessage;
 import cn.com.wanwei.common.model.User;
@@ -57,6 +59,9 @@ public class ScenicServiceImpl implements ScenicService {
 	@Autowired
 	private AuditLogMapper auditLogMapper;
 
+	@Autowired
+	private MaterialService materialService;
+
 	@Override
 	public ResponseMessage save(ScenicModel scenicModel, User user, Long ruleId, Integer appCode) {
 		ScenicEntity record = scenicModel.getScenicEntity();
@@ -70,7 +75,11 @@ public class ScenicServiceImpl implements ScenicService {
 		record.setCreatedDate(new Date());
 		record.setStatus(0);
 		scenicMapper.insert(record);
-		this.saveTags(scenicModel.getList(),record.getId(),user);
+		this.saveTags(scenicModel.getList(), record.getId(),user);
+
+		// 解析富文本中的附件并保存
+		materialService.saveByDom(record.getContent(), record.getId(), user);
+
 		return ResponseMessage.defaultResponse().setMsg("保存成功");
 	}
 
@@ -104,6 +113,11 @@ public class ScenicServiceImpl implements ScenicService {
 		record.setUpdatedUser(user.getUsername());
 		scenicMapper.updateByPrimaryKeyWithBLOBs(record);
 		this.saveTags(scenicModel.getList(),id,user);
+
+		// 先删除关联的附件再解析富文本中的附件并保存
+		materialService.deleteByPrincipalId(id);
+		materialService.saveByDom(record.getContent(), id, user);
+
 		return ResponseMessage.defaultResponse().setMsg("更新成功");
 	}
 
@@ -119,15 +133,10 @@ public class ScenicServiceImpl implements ScenicService {
 	}
 
 	@Override
-	public ResponseMessage findByPage(Integer page, Integer size, User user, Map<String, Object> filter) {
-		Sort.Order[] order = new Sort.Order[]{new Sort.Order(Sort.Direction.DESC, "created_date"),
-				new Sort.Order(Sort.Direction.DESC, "updated_date")};
-		Sort sort = Sort.by(order);
-		MybatisPageRequest pageRequest = MybatisPageRequest.of(page, size, sort);
-		PageHelper.startPage(pageRequest.getPage(), pageRequest.getSize());
-		PageHelper.orderBy(pageRequest.getOrders());
-		Page<ScenicEntity> userEntities = scenicMapper.findByPage(filter);
-		PageInfo<ScenicEntity> pageInfo = new PageInfo<>(userEntities, pageRequest);
+	public ResponseMessage findByPage(Integer page, Integer size, User user1, Map<String, Object> filter) {
+		MybatisPageRequest pageRequest = PageUtils.getInstance().setPage(page, size, Sort.Direction.DESC, "created_date", "updated_date");
+		Page<ScenicEntity> scenicEntities = scenicMapper.findByPage(filter);
+		PageInfo<ScenicEntity> pageInfo = new PageInfo<>(scenicEntities, pageRequest);
 		return ResponseMessage.defaultResponse().setData(pageInfo);
 	}
 

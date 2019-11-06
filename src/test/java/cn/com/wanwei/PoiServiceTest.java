@@ -2,11 +2,13 @@ package cn.com.wanwei;
 
 import cn.com.wanwei.bic.BicApplication;
 import cn.com.wanwei.bic.entity.PoiEntity;
+import cn.com.wanwei.bic.model.PoiModel;
 import cn.com.wanwei.bic.service.PoiService;
 import cn.com.wanwei.common.model.Org;
 import cn.com.wanwei.common.model.ResponseMessage;
 import cn.com.wanwei.common.model.User;
 import com.google.common.collect.Maps;
+import io.swagger.models.auth.In;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
@@ -90,7 +92,10 @@ public class PoiServiceTest {
     @Rollback
     public void createTest() {
         System.out.println("---------------新增poi信息---------------");
-        ResponseMessage back = poiService.create(poiEntity, user);
+        Long ruleId = 1233L;
+        Integer appCode = 18;
+        PoiModel poiModel = new PoiModel();
+        ResponseMessage back = poiService.create(poiModel, user,ruleId,appCode);
         int status=  back.getStatus();
         System.out.println("返回值：" + status);
         Assert.assertSame("返回值是1", 1, status);
@@ -99,8 +104,9 @@ public class PoiServiceTest {
     @Test
     @Rollback
     public void updateTest() {
+        PoiModel poiModel = new PoiModel();
         System.out.println("---------------编辑poi信息---------------");
-        ResponseMessage back = poiService.update("-11111",poiEntity, user);
+        ResponseMessage back = poiService.update("-11111",poiModel, user);
         int status=  back.getStatus();
         System.out.println("返回值：" + status);
         Assert.assertSame("返回值是0", 0, status);

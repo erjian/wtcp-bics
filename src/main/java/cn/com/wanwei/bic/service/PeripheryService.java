@@ -3,6 +3,7 @@ package cn.com.wanwei.bic.service;
 import cn.com.wanwei.bic.entity.AuditLogEntity;
 import cn.com.wanwei.bic.entity.PeripheryEntity;
 import cn.com.wanwei.bic.model.DataBindModel;
+import cn.com.wanwei.bic.model.PeripheryModel;
 import cn.com.wanwei.bic.model.WeightModel;
 import cn.com.wanwei.common.model.ResponseMessage;
 import cn.com.wanwei.common.model.User;
@@ -29,20 +30,20 @@ public interface PeripheryService {
 
     /**
      * 新增周边管理信息
-     * @param peripheryEntity 实体
+     * @param peripheryModel 实体
      * @param user 用户信息
      * @return
      */
-    ResponseMessage save(PeripheryEntity peripheryEntity, User user,Long ruleId,Integer appCode);
+    ResponseMessage save(PeripheryModel peripheryModel, User user, Long ruleId, Integer appCode);
 
     /**
      * 拜
      * @param id 周边信息id
-     * @param peripheryEntity 实体
+     * @param peripheryModel 实体
      * @param user 用户信息
      * @return
      */
-    ResponseMessage edit(String id, PeripheryEntity peripheryEntity, User user);
+    ResponseMessage edit(String id, PeripheryModel peripheryModel, User user);
 
     /**
      * 通过id删除周边信息

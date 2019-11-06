@@ -1,13 +1,16 @@
 package cn.com.wanwei.bic.service.impl;
 
 import cn.com.wanwei.bic.entity.AuditLogEntity;
+import cn.com.wanwei.bic.entity.BaseTagsEntity;
 import cn.com.wanwei.bic.entity.PoiEntity;
 import cn.com.wanwei.bic.entity.ScenicEntity;
 import cn.com.wanwei.bic.feign.CoderServiceFeign;
 import cn.com.wanwei.bic.mapper.PoiMapper;
 import cn.com.wanwei.bic.mapper.ScenicMapper;
+import cn.com.wanwei.bic.model.PoiModel;
 import cn.com.wanwei.bic.service.AuditLogService;
 import cn.com.wanwei.bic.service.PoiService;
+import cn.com.wanwei.bic.service.TagsService;
 import cn.com.wanwei.bic.utils.UUIDUtils;
 import cn.com.wanwei.common.model.ResponseMessage;
 import cn.com.wanwei.common.model.User;
@@ -15,6 +18,7 @@ import cn.com.wanwei.persistence.mybatis.MybatisPageRequest;
 import cn.com.wanwei.persistence.mybatis.PageInfo;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
+import com.google.common.collect.Lists;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,6 +51,9 @@ public class PoiServiceImpl implements PoiService {
 
     @Autowired
     private CoderServiceFeign coderServiceFeign;
+
+    @Autowired
+    private TagsService tagsService;
 
     @Value("${wtcp.bic.appCode}")
     protected Integer appId;
@@ -86,10 +93,12 @@ public class PoiServiceImpl implements PoiService {
     }
 
     @Override
-    public ResponseMessage create(PoiEntity poiEntity, User user) {
+    public ResponseMessage create(PoiModel poiModel, User user, Long ruleId, Integer appCode) {
         try {
+            PoiEntity poiEntity = poiModel.getPoiEntity();
             //获取统一认证生成的code
-            ResponseMessage responseMessageGetCode = coderServiceFeign.buildSerialNum(appId);
+            String type = poiModel.getType();
+            ResponseMessage responseMessageGetCode = coderServiceFeign.buildSerialByCode(ruleId,appCode,type);
             if (responseMessageGetCode.getStatus() == 1 && responseMessageGetCode.getData() != null) {
                 poiEntity.setId(UUIDUtils.getInstance().getId());
                 poiEntity.setCode(responseMessageGetCode.getData().toString());
@@ -101,6 +110,7 @@ public class PoiServiceImpl implements PoiService {
                     poiEntity.setParentId("0");
                 }
                 poiMapper.insert(poiEntity);
+                this.saveTags(poiModel.getList(),poiEntity.getId(),user);
                 return ResponseMessage.defaultResponse().setMsg("保存成功!");
             }
             return responseMessageGetCode;
@@ -110,9 +120,27 @@ public class PoiServiceImpl implements PoiService {
         }
     }
 
+    /**
+     * 保存标签
+     * @param tagsList
+     * @param poiId
+     * @param user
+     */
+    private void saveTags(List<Map<String, Object>> tagsList, String poiId, User user){
+        List<BaseTagsEntity> list = Lists.newArrayList();
+        for(int i=0; i<tagsList.size(); i++){
+            BaseTagsEntity baseTagsEntity = new BaseTagsEntity();
+            baseTagsEntity.setTagName(tagsList.get(i).get("tagName").toString());
+            baseTagsEntity.setTagCatagory(tagsList.get(i).get("tagCatagory").toString());
+            list.add(baseTagsEntity);
+        }
+        tagsService.batchInsert(poiId,list,user, PoiEntity.class);
+    }
+
     @Override
-    public ResponseMessage update(String id, PoiEntity poiEntity, User user) {
+    public ResponseMessage update(String id, PoiModel poiModel, User user) {
         try {
+            PoiEntity poiEntity = poiModel.getPoiEntity();
             PoiEntity pEntity = poiMapper.selectByPrimaryKey(id);
             if (pEntity != null) {
                 poiEntity.setId(pEntity.getId());
@@ -124,6 +152,7 @@ public class PoiServiceImpl implements PoiService {
                 poiEntity.setUpdatedUser(user.getUsername());
                 poiEntity.setUpdatedDate(new Date());
                 poiMapper.updateByPrimaryKey(poiEntity);
+                this.saveTags(poiModel.getList(),id,user);
                 return ResponseMessage.defaultResponse().setMsg("更新成功！");
             }
             return ResponseMessage.validFailResponse().setMsg("暂无该poi信息！");
