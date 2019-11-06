@@ -8,6 +8,7 @@ import cn.com.wanwei.bic.model.DataBindModel;
 import cn.com.wanwei.bic.model.WeightModel;
 import cn.com.wanwei.bic.service.AuditLogService;
 import cn.com.wanwei.bic.service.EntertainmentService;
+import cn.com.wanwei.bic.service.MaterialService;
 import cn.com.wanwei.bic.utils.UUIDUtils;
 import cn.com.wanwei.common.model.ResponseMessage;
 import cn.com.wanwei.common.model.User;
@@ -47,6 +48,9 @@ public class EntertainmentServiceImpl implements EntertainmentService {
     @Autowired
     private AuditLogService auditLogService;
 
+    @Autowired
+    private MaterialService materialService;
+
     @Override
     public ResponseMessage findByPage(Integer page, Integer size, Map<String, Object> filter) {
             Sort sort = Sort.by(new Sort.Order[]{new Sort.Order(Sort.Direction.DESC, "weight"), new Sort.Order(Sort.Direction.DESC, "created_date")});
@@ -79,6 +83,10 @@ public class EntertainmentServiceImpl implements EntertainmentService {
             entertainmentEntity.setCreatedDate(new Date());
             entertainmentEntity.setDeptCode(user.getOrg().getCode());
             entertainmentMapper.insert(entertainmentEntity);
+
+            // 解析富文本中的附件并保存
+            materialService.saveByDom(entertainmentEntity.getContent(), entertainmentEntity.getId(), user);
+
             return ResponseMessage.defaultResponse().setMsg("保存成功!");
         }
         return responseMessageGetCode;
@@ -97,6 +105,11 @@ public class EntertainmentServiceImpl implements EntertainmentService {
             entertainmentEntity.setUpdatedUser(user.getUsername());
             entertainmentEntity.setUpdatedDate(new Date());
             entertainmentMapper.updateByPrimaryKey(entertainmentEntity);
+
+            // 先删除关联的附件再解析富文本中的附件并保存
+            materialService.deleteByPrincipalId(id);
+            materialService.saveByDom(entertainmentEntity.getContent(), id, user);
+
             return ResponseMessage.defaultResponse().setMsg("更新成功！");
         }
         return ResponseMessage.validFailResponse().setMsg("暂无该休闲娱乐信息！");

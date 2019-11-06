@@ -1,6 +1,7 @@
 package cn.com.wanwei.bic.mapper;
 
 import cn.com.wanwei.bic.entity.MaterialEntity;
+import cn.com.wanwei.common.model.ResponseMessage;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -30,4 +31,6 @@ public interface MaterialMapper {
     int updateByPrimaryKey(MaterialEntity materialEntity);
 
     MaterialEntity findByIdAndPid(@Param("id")String id, @Param("principalId")String principalId);
+
+    int deleteByPrincipalId(String principalId);
 }

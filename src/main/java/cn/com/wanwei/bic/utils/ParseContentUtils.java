@@ -60,6 +60,7 @@ public class ParseContentUtils {
                 url = url.substring(url.indexOf(subStr) + subStr.length());
                 if (!Strings.isNullOrEmpty(url)) {
                     MaterialEntity materialEntity = new MaterialEntity();
+                    materialEntity.setId(UUIDUtils.getInstance().getId());
                     materialEntity.setFileName(System.currentTimeMillis() + url.substring(url.lastIndexOf(".")));
                     materialEntity.setFileType(type);
                     materialEntity.setFileUrl(url);

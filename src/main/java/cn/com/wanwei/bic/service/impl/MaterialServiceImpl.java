@@ -48,6 +48,12 @@ public class MaterialServiceImpl implements MaterialService {
     }
 
     @Override
+    public ResponseMessage deleteByPrincipalId(String principalId) {
+        materialMapper.deleteByPrincipalId(principalId);
+        return ResponseMessage.defaultResponse().setMsg("删除成功");
+    }
+
+    @Override
     public ResponseMessage insert(MaterialEntity materialEntity, User user) {
         materialEntity.setId(UUIDUtils.getInstance().getId());
         materialEntity.setCreatedUser(user.getUsername());
