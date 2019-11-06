@@ -98,7 +98,7 @@ public class PoiServiceImpl implements PoiService {
             PoiEntity poiEntity = poiModel.getPoiEntity();
             //获取统一认证生成的code
             String type = poiModel.getType();
-            ResponseMessage responseMessageGetCode = coderServiceFeign.buildSerialByCode(ruleId,appCode,type);
+            ResponseMessage responseMessageGetCode = coderServiceFeign.buildSerialByCode(ruleId, appCode, type);
             if (responseMessageGetCode.getStatus() == 1 && responseMessageGetCode.getData() != null) {
                 poiEntity.setId(UUIDUtils.getInstance().getId());
                 poiEntity.setCode(responseMessageGetCode.getData().toString());
@@ -106,11 +106,11 @@ public class PoiServiceImpl implements PoiService {
                 poiEntity.setCreatedUser(user.getUsername());
                 poiEntity.setCreatedDate(new Date());
                 poiEntity.setDeptCode(user.getOrg().getCode());
-                if(poiEntity.getParentId().length() == 0 && ("112005").equals(poiEntity.getType())){
+                if (poiEntity.getParentId().length() == 0 && ("112005").equals(poiEntity.getType())) {
                     poiEntity.setParentId("0");
                 }
                 poiMapper.insert(poiEntity);
-                this.saveTags(poiModel.getList(),poiEntity.getId(),user);
+                this.saveTags(poiModel.getList(), poiEntity.getId(), user);
                 return ResponseMessage.defaultResponse().setMsg("保存成功!");
             }
             return responseMessageGetCode;
@@ -122,44 +122,41 @@ public class PoiServiceImpl implements PoiService {
 
     /**
      * 保存标签
+     *
      * @param tagsList
      * @param poiId
      * @param user
      */
-    private void saveTags(List<Map<String, Object>> tagsList, String poiId, User user){
+    private void saveTags(List<Map<String, Object>> tagsList, String poiId, User user) {
         List<BaseTagsEntity> list = Lists.newArrayList();
-        for(int i=0; i<tagsList.size(); i++){
+        for (int i = 0; i < tagsList.size(); i++) {
             BaseTagsEntity baseTagsEntity = new BaseTagsEntity();
             baseTagsEntity.setTagName(tagsList.get(i).get("tagName").toString());
             baseTagsEntity.setTagCatagory(tagsList.get(i).get("tagCatagory").toString());
             list.add(baseTagsEntity);
         }
-        tagsService.batchInsert(poiId,list,user, PoiEntity.class);
+        tagsService.batchInsert(poiId, list, user, PoiEntity.class);
     }
 
     @Override
     public ResponseMessage update(String id, PoiModel poiModel, User user) {
-        try {
-            PoiEntity poiEntity = poiModel.getPoiEntity();
-            PoiEntity pEntity = poiMapper.selectByPrimaryKey(id);
-            if (pEntity != null) {
-                poiEntity.setId(pEntity.getId());
-                poiEntity.setCreatedUser(pEntity.getCreatedUser());
-                poiEntity.setCreatedDate(pEntity.getCreatedDate());
-                poiEntity.setStatus(0);
-                poiEntity.setCode(pEntity.getCode());
-                poiEntity.setDeptCode(user.getOrg().getCode());
-                poiEntity.setUpdatedUser(user.getUsername());
-                poiEntity.setUpdatedDate(new Date());
-                poiMapper.updateByPrimaryKey(poiEntity);
-                this.saveTags(poiModel.getList(),id,user);
-                return ResponseMessage.defaultResponse().setMsg("更新成功！");
-            }
-            return ResponseMessage.validFailResponse().setMsg("暂无该poi信息！");
-        } catch (Exception e) {
-            log.error(e.getMessage());
-            return ResponseMessage.validFailResponse().setMsg("更新失败！");
+        PoiEntity poiEntity = poiModel.getPoiEntity();
+        PoiEntity pEntity = poiMapper.selectByPrimaryKey(id);
+        if (pEntity != null) {
+            poiEntity.setId(pEntity.getId());
+            poiEntity.setCreatedUser(pEntity.getCreatedUser());
+            poiEntity.setCreatedDate(pEntity.getCreatedDate());
+            poiEntity.setStatus(0);
+            poiEntity.setCode(pEntity.getCode());
+            poiEntity.setDeptCode(user.getOrg().getCode());
+            poiEntity.setUpdatedUser(user.getUsername());
+            poiEntity.setUpdatedDate(new Date());
+            poiMapper.updateByPrimaryKey(poiEntity);
+            this.saveTags(poiModel.getList(), id, user);
+            return ResponseMessage.defaultResponse().setMsg("更新成功！");
         }
+        return ResponseMessage.validFailResponse().setMsg("暂无该poi信息！");
+
     }
 
     @Override
@@ -167,9 +164,9 @@ public class PoiServiceImpl implements PoiService {
         ResponseMessage responseMessage = ResponseMessage.defaultResponse();
         try {
             PoiEntity entity = poiMapper.selectByPrimaryKey(id);
-            if(entity.getStatus() == 9){
+            if (entity.getStatus() == 9) {
                 responseMessage.setStatus(0).setMsg("已上线，禁止删除");
-            }else {
+            } else {
                 poiMapper.deleteByPrimaryKey(id);
                 responseMessage.setMsg("删除成功！");
             }
@@ -263,7 +260,7 @@ public class PoiServiceImpl implements PoiService {
         ResponseMessage responseMessage = ResponseMessage.defaultResponse();
         for (String id : ids) {
             PoiEntity entity = poiMapper.selectByPrimaryKey(id);
-                if (entity.getStatus() == 9) {
+            if (entity.getStatus() == 9) {
                 return responseMessage.setStatus(0).setMsg("所选数据中存在已上线数据，批量删除取消！");
             }
         }
