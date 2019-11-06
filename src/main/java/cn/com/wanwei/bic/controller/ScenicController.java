@@ -75,7 +75,7 @@ public class ScenicController extends BaseController {
         if (bindingResult.hasErrors()) {
             return ResponseMessage.validFailResponse().setMsg(bindingResult.getAllErrors());
         }
-        return scenicService.save(scenicModel,getCurrentUser().getUsername(), ruleId, appCode);
+        return scenicService.save(scenicModel,getCurrentUser(), ruleId, appCode);
     }
 
     @ApiOperation(value = "景区编辑", notes = "景区编辑")

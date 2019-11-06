@@ -58,7 +58,7 @@ public class ScenicServiceImpl implements ScenicService {
 	private AuditLogMapper auditLogMapper;
 
 	@Override
-	public ResponseMessage save(ScenicModel scenicModel, String userName, Long ruleId, Integer appCode) {
+	public ResponseMessage save(ScenicModel scenicModel, User user, Long ruleId, Integer appCode) {
 		ScenicEntity record = scenicModel.getScenicEntity();
 		String type = scenicModel.getType();
 		record.setId(UUIDUtils.getInstance().getId());
@@ -66,10 +66,11 @@ public class ScenicServiceImpl implements ScenicService {
 		record.setCode(result.getData().toString());
 		record.setTitleQp(PinyinUtils.getPingYin(record.getTitle()).toLowerCase());
 		record.setTitleJp(PinyinUtils.converterToFirstSpell(record.getTitle()).toLowerCase());
-		record.setCreatedUser(userName);
+		record.setCreatedUser(user.getUsername());
 		record.setCreatedDate(new Date());
 		record.setStatus(0);
 		scenicMapper.insert(record);
+		this.saveTags(scenicModel.getList(),record.getId(),user);
 		return ResponseMessage.defaultResponse().setMsg("保存成功");
 	}
 

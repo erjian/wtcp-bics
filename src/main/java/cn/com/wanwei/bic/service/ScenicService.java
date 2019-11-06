@@ -26,7 +26,7 @@ public interface ScenicService {
 	 * @param scenicModel
 	 * @return
 	 */
-	ResponseMessage save(ScenicModel scenicModel, String userName, Long ruleId, Integer appCode) throws Exception;
+	ResponseMessage save(ScenicModel scenicModel, User user, Long ruleId, Integer appCode) throws Exception;
 
 	/**
 	 * 根据Id删除一条记录
