@@ -38,14 +38,21 @@ public class TagsController extends BaseController {
     @Autowired
     private ProgressUtils progressUtils;
 
-    @RequestMapping(value = "/progress", method = RequestMethod.GET)
-    public ResponseMessage testProgress() throws Exception{
-        Object back = redisTemplate.opsForValue().get("testProgress");
-        if(null == back){
-            back = 0;
-            progressUtils.setProgress(redisTemplate);
+    @RequestMapping(value = "/test/progress", method = RequestMethod.GET)
+    public ResponseMessage testProgress(@RequestParam String key){
+        ResponseMessage responseMessage = ResponseMessage.defaultResponse();
+        try {
+            String progressKey = key.concat("_test_progress");
+            Object back = redisTemplate.opsForValue().get(progressKey);
+            if(null == back){
+                back = 0;
+                progressUtils.setProgress(redisTemplate, progressKey);
+            }
+            responseMessage.setData(back);
+        }catch (Exception e){
+            responseMessage.setStatus(ResponseMessage.FAILED);
         }
-        return ResponseMessage.defaultResponse().setData(back);
+        return responseMessage;
     }
 
     @ApiOperation(value = "根据关联ID获取景区标签信息", notes = "根据关联ID获取景区标签信息")

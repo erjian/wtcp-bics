@@ -8,14 +8,14 @@ import org.springframework.stereotype.Component;
 public class ProgressUtils {
 
     @Async
-    public void setProgress(RedisTemplate redisTemplate) throws Exception {
+    public void setProgress(RedisTemplate redisTemplate, String progressKey) throws Exception {
         Integer[] num = new Integer[]{10, 18, 23, 30, 39, 50, 66, 73, 88, 96, 100};
         for(Integer item : num){
             if(item <= 100){
-                redisTemplate.opsForValue().set("testProgress", item);
+                redisTemplate.opsForValue().set(progressKey, item);
                 Thread.sleep(500);
                 if(item == 100){
-                    redisTemplate.delete("testProgress");
+                    redisTemplate.delete(progressKey);
                 }
             }
         }
