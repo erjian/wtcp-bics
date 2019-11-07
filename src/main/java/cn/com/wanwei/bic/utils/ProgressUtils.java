@@ -15,6 +15,7 @@ public class ProgressUtils {
                 redisTemplate.opsForValue().set(progressKey, item);
                 Thread.sleep(500);
                 if(item == 100){
+                    Thread.sleep(1000);
                     redisTemplate.delete(progressKey);
                 }
             }
