@@ -6,6 +6,7 @@ import org.springframework.cloud.client.circuitbreaker.EnableCircuitBreaker;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 
 @EnableFeignClients(basePackages = "cn.com.wanwei")
@@ -13,6 +14,7 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 @EnableDiscoveryClient
 @EnableCircuitBreaker
 @ComponentScan("cn.com.wanwei")
+@EnableAsync
 //@EnableGlobalMethodSecurity(prePostEnabled = true)
 public class BicApplication {
 
