@@ -3,6 +3,7 @@ package cn.com.wanwei.bic.controller;
 import cn.com.wanwei.bic.entity.*;
 import cn.com.wanwei.bic.feign.KbServiceFeign;
 import cn.com.wanwei.bic.service.TagsService;
+import cn.com.wanwei.bic.utils.ProgressUtils;
 import cn.com.wanwei.common.log.annotation.OperationLog;
 import cn.com.wanwei.common.model.ResponseMessage;
 import io.swagger.annotations.Api;
@@ -11,6 +12,8 @@ import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
@@ -29,10 +32,20 @@ public class TagsController extends BaseController {
     @Autowired
     private KbServiceFeign kbServiceFeign;
 
-    @RequestMapping(value = "/sort", method = RequestMethod.PUT)
-    public ResponseMessage sort(@RequestBody Map<String, Object> data) {
-        System.out.println(data);
-        return ResponseMessage.defaultResponse().setMsg("排序成功");
+    @Autowired
+    private RedisTemplate redisTemplate;
+
+    @Autowired
+    private ProgressUtils progressUtils;
+
+    @RequestMapping(value = "/progress", method = RequestMethod.GET)
+    public ResponseMessage testProgress() throws Exception{
+        Object back = redisTemplate.opsForValue().get("testProgress");
+        if(null == back){
+            back = 0;
+            progressUtils.setProgress(redisTemplate);
+        }
+        return ResponseMessage.defaultResponse().setData(back);
     }
 
     @ApiOperation(value = "根据关联ID获取景区标签信息", notes = "根据关联ID获取景区标签信息")
