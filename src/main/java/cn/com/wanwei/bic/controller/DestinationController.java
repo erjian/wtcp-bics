@@ -1,7 +1,7 @@
 package cn.com.wanwei.bic.controller;
 
-import cn.com.wanwei.bic.entity.AuditLogEntity;
 import cn.com.wanwei.bic.entity.DestinationEntity;
+import cn.com.wanwei.bic.model.DestinationModel;
 import cn.com.wanwei.bic.service.DestinationService;
 import cn.com.wanwei.common.log.annotation.OperationLog;
 import cn.com.wanwei.common.model.ResponseMessage;
@@ -48,27 +48,27 @@ public class DestinationController extends BaseController {
     }
 
     @ApiOperation(value = "目的地基础信息新增", notes = "目的地基础信息新增")
-    @ApiImplicitParam(name = "destinationEntity", value = "目的地基础信息", required = true, dataType = "DestinationEntity")
+    @ApiImplicitParam(name = "destinationModel", value = "目的地基础信息", required = true, dataType = "DestinationModel")
     @PostMapping(value = "/save")
     @PreAuthorize("hasAuthority('destination:c')")
     @OperationLog(value = "wtcp-bics/目的地基础信息新增", operate = "c", module = "目的地基础信息管理")
-    public ResponseMessage save(@RequestBody DestinationEntity destinationEntity, BindingResult bindingResult) throws Exception {
+    public ResponseMessage save(@RequestBody DestinationModel destinationModel, BindingResult bindingResult) throws Exception {
         if (bindingResult.hasErrors()) {
             return ResponseMessage.validFailResponse().setMsg(bindingResult.getAllErrors());
         }
-        return destinationService.save(destinationEntity,getCurrentUser().getUsername());
+        return destinationService.save(destinationModel,getCurrentUser());
     }
 
     @ApiOperation(value = "目的地基础信息编辑", notes = "目的地基础信息编辑")
-    @ApiImplicitParam(name = "destinationEntity", value = "目的地基础信息", required = true, dataType = "DestinationEntity")
+    @ApiImplicitParam(name = "destinationModel", value = "目的地基础信息", required = true, dataType = "DestinationModel")
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
     @PreAuthorize("hasAuthority('destination:u')")
     @OperationLog(value = "wtcp-bics/目的地基础信息编辑", operate = "u", module = "目的地基础信息管理")
-    public ResponseMessage edit(@PathVariable("id") String id, @RequestBody DestinationEntity destinationEntity, BindingResult bindingResult) throws Exception {
+    public ResponseMessage edit(@PathVariable("id") String id, @RequestBody DestinationModel destinationModel, BindingResult bindingResult) throws Exception {
         if (bindingResult.hasErrors()) {
             return ResponseMessage.validFailResponse().setMsg(bindingResult.getAllErrors());
         }
-        return destinationService.edit(id,destinationEntity,getCurrentUser().getUsername());
+        return destinationService.edit(id,destinationModel,getCurrentUser());
     }
 
     @ApiOperation(value = "查询目的地基础信息详情", notes = "根据ID查询目的地基础信息详情")

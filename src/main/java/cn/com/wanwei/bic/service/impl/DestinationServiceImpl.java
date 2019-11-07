@@ -1,9 +1,11 @@
 package cn.com.wanwei.bic.service.impl;
 
-import cn.com.wanwei.bic.entity.AuditLogEntity;
-import cn.com.wanwei.bic.entity.DestinationEntity;
+import cn.com.wanwei.bic.entity.*;
 import cn.com.wanwei.bic.mapper.DestinationMapper;
+import cn.com.wanwei.bic.model.DestinationModel;
 import cn.com.wanwei.bic.service.DestinationService;
+import cn.com.wanwei.bic.service.TagsService;
+import cn.com.wanwei.bic.utils.PageUtils;
 import cn.com.wanwei.bic.utils.UUIDUtils;
 import cn.com.wanwei.common.model.ResponseMessage;
 import cn.com.wanwei.common.model.User;
@@ -11,6 +13,7 @@ import cn.com.wanwei.persistence.mybatis.MybatisPageRequest;
 import cn.com.wanwei.persistence.mybatis.PageInfo;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
+import com.google.common.collect.Lists;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +22,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -38,6 +42,9 @@ public class DestinationServiceImpl implements DestinationService {
     @Autowired
     AuditLogServiceImpl auditLogService;
 
+    @Autowired
+    private TagsService tagsService;
+
     /**
      * 查询目的地分页列表数据
      * @param page  页数
@@ -49,59 +56,64 @@ public class DestinationServiceImpl implements DestinationService {
      */
     @Override
     public ResponseMessage findByPage(Integer page, Integer size, User user, Map<String, Object> filter) throws Exception {
-        Sort.Order[] order = new Sort.Order[]{new Sort.Order(Sort.Direction.DESC, "created_date"),
-                new Sort.Order(Sort.Direction.DESC, "updated_date")};
-        Sort sort = Sort.by(order);
-        MybatisPageRequest pageRequest = MybatisPageRequest.of(page, size, sort);
-        PageHelper.startPage(pageRequest.getPage(), pageRequest.getSize());
-        PageHelper.orderBy(pageRequest.getOrders());
-        Page<DestinationEntity> userEntities = destinationMapper.findByPage(filter);
-        PageInfo<DestinationEntity> pageInfo = new PageInfo<>(userEntities, pageRequest);
+        MybatisPageRequest pageRequest = PageUtils.getInstance().setPage(page, size, Sort.Direction.DESC, "created_date", "updated_date");
+        Page<DestinationEntity> DestinationEntities = destinationMapper.findByPage(filter);
+        PageInfo<DestinationEntity> pageInfo = new PageInfo<>(DestinationEntities, pageRequest);
         return ResponseMessage.defaultResponse().setData(pageInfo);
     }
 
     /**
      * 目的地基础信息新增
-     * @param destinationEntity  目的地基础信息实体
-     * @param username  用户名
+     * @param destinationModel
+     * @param user
      * @return
      */
     @Override
-    public ResponseMessage save(DestinationEntity destinationEntity, String username) throws Exception{
-        try{
-            destinationEntity.setId(UUIDUtils.getInstance().getId());
-            destinationEntity.setCreatedUser(username);
-            destinationEntity.setCreatedDate(new Date());
-            destinationEntity.setStatus(1);
-            destinationMapper.insert(destinationEntity);
-            return ResponseMessage.defaultResponse().setMsg("保存成功!");
-        }catch (Exception e){
-            log.error(e.getMessage());
-            return ResponseMessage.validFailResponse().setMsg("保存失败!");
-        }
+    public ResponseMessage save(DestinationModel destinationModel, User user) throws Exception{
+        DestinationEntity destinationEntity = destinationModel.getDestinationEntity();
+        destinationEntity.setId(UUIDUtils.getInstance().getId());
+        destinationEntity.setCreatedUser(user.getUsername());
+        destinationEntity.setCreatedDate(new Date());
+        destinationEntity.setStatus(1);
+        destinationEntity.setDeptCode(user.getOrg().getCode());
+        destinationMapper.insert(destinationEntity);
+        this.saveTags(destinationModel.getList(), destinationEntity.getId(),user);
+        return ResponseMessage.defaultResponse().setMsg("保存成功!");
+    }
 
+    private void saveTags(List<Map<String, Object>> tagsList, String principalId, User user){
+        List<BaseTagsEntity> list = Lists.newArrayList();
+        for(int i=0; i<tagsList.size(); i++){
+            BaseTagsEntity entity = new BaseTagsEntity();
+            entity.setTagCatagory(tagsList.get(i).get("tagCatagory").toString());
+            entity.setTagName(tagsList.get(i).get("tagName").toString());
+            list.add(entity);
+        }
+        tagsService.batchInsert(principalId,list,user, ScenicTagsEntity.class);
     }
 
     /**
      *
      * @param id  主键ID
-     * @param destinationEntity  目的地基础信息实体
-     * @param username  用户名
+     * @param destinationModel
+     * @param user
      * @return
      */
     @Override
-    public ResponseMessage edit(String id, DestinationEntity destinationEntity, String username)throws Exception {
+    public ResponseMessage edit(String id, DestinationModel destinationModel, User user)throws Exception {
         DestinationEntity entity = destinationMapper.selectByPrimaryKey(id);
         if(null == entity){
             return ResponseMessage.validFailResponse().setMsg("不存在该目的地！");
         }
+        DestinationEntity destinationEntity = destinationModel.getDestinationEntity();
         destinationEntity.setId(id);
         destinationEntity.setCreatedDate(entity.getCreatedDate());
         destinationEntity.setCreatedUser(entity.getCreatedUser());
         destinationEntity.setStatus(1);  //编辑修改状态为--> 1: 下线
         destinationEntity.setUpdatedDate(new Date());
-        destinationEntity.setUpdatedUser(username);
+        destinationEntity.setUpdatedUser(user.getUsername());
         destinationMapper.updateByPrimaryKey(destinationEntity);
+        this.saveTags(destinationModel.getList(), destinationEntity.getId(),user);
         return ResponseMessage.defaultResponse().setMsg("更新成功!");
     }
 
@@ -207,7 +219,7 @@ public class DestinationServiceImpl implements DestinationService {
             DestinationEntity destinationEntity = destinationMapper.checkRegionFullCode(regionFullCode);
             if (destinationEntity != null) {
                 if (!destinationEntity.getId().equals(id)) {
-                    return responseMessage.setStatus(ResponseMessage.FAILED).setMsg("目的地名称重复！");
+                    return responseMessage.setStatus(ResponseMessage.FAILED).setMsg("该目的地已经存在！");
                 }
             }
         }
