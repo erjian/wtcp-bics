@@ -90,6 +90,18 @@ public class ScenicController extends BaseController {
         return scenicService.edit(id,scenicModel,getCurrentUser());
     }
 
+    @ApiOperation(value = "景区基础信息关联标签", notes = "景区基础信息关联标签")
+    @ApiImplicitParam(name = "tags", value = "关联标签", required = true, dataType = "Map")
+    @RequestMapping(value = "/relateTags", method = RequestMethod.PUT)
+    @PreAuthorize("hasAuthority('scenic:rt')")
+    @OperationLog(value = "wtcp-bics/景区编辑", operate = "u", module = "景区管理")
+    public ResponseMessage relateTags(@RequestBody Map<String, Object> tags, BindingResult bindingResult) throws Exception {
+        if (bindingResult.hasErrors()) {
+            return ResponseMessage.validFailResponse().setMsg(bindingResult.getAllErrors());
+        }
+        return scenicService.relateTags(tags,getCurrentUser());
+    }
+
     @PreAuthorize("hasAuthority('scenic:w')")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "weightModel", value = "排序model", required = true, dataType = "WeightModel")

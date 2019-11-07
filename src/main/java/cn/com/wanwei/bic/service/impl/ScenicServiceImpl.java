@@ -215,6 +215,16 @@ public class ScenicServiceImpl implements ScenicService {
 		return ResponseMessage.defaultResponse().setData(entities);
 	}
 
+	@Override
+	public ResponseMessage relateTags(Map<String, Object> tags, User user) {
+		List<Map<String, Object>> tagsList = (List<Map<String, Object>>) tags.get("tagsArr");
+		String relateId = tags.get("id").toString();
+		if(null != tagsList && !tagsList.isEmpty()){
+			this.saveTags(tagsList,relateId,user);
+		}
+		return ResponseMessage.defaultResponse().setMsg("标签关联成功");
+	}
+
 	private int saveAuditLog(int preStatus, int auditStatus, String principalId, String userName, String msg, int type){
 		AuditLogEntity auditLogEntity = new AuditLogEntity();
 		auditLogEntity.setId(UUIDUtils.getInstance().getId());

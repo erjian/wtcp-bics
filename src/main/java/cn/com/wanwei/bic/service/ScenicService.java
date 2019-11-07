@@ -112,4 +112,12 @@ public interface ScenicService {
 	 * @return
 	 */
 	ResponseMessage getScenicInfo(String title);
+
+	/**
+	 * 关联标签
+	 * @param tags
+	 * @param user
+	 * @return
+	 */
+    ResponseMessage relateTags(Map<String, Object> tags, User user);
 }
