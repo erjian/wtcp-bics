@@ -78,4 +78,12 @@ public interface ExtendService {
      * @return
      */
     ResponseMessage changeWeight(String id, Float weight, String username) throws Exception;
+
+    /**
+     * 扩展信息关联标签
+     * @param tags
+     * @param currentUser
+     * @return
+     */
+    ResponseMessage relateTags(Map<String, Object> tags, User currentUser) throws Exception;
 }

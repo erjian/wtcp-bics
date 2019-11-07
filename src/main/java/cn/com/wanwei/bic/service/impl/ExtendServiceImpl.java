@@ -227,4 +227,20 @@ public class ExtendServiceImpl implements ExtendService {
         extendMapper.updateByPrimaryKey(extendEntity);
         return ResponseMessage.defaultResponse().setMsg("权重修改成功！");
     }
+
+    /**
+     * 扩展信息关联标签
+     * @param tags
+     * @param currentUser
+     * @return
+     */
+    @Override
+    public ResponseMessage relateTags(Map<String, Object> tags, User user) throws Exception{
+        List<Map<String, Object>> tagsList = (List<Map<String, Object>>) tags.get("tagsArr");
+        String relateId = tags.get("id").toString();
+        if(null != tagsList && !tagsList.isEmpty()){
+            this.saveTags(tagsList,relateId,user);
+        }
+        return ResponseMessage.defaultResponse().setMsg("标签关联成功");
+    }
 }

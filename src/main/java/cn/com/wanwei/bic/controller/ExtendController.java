@@ -124,4 +124,16 @@ public class ExtendController extends BaseController{
         return extendService.changeWeight(id,weight,getCurrentUser().getUsername());
     }
 
+    @ApiOperation(value = "扩展信息关联标签", notes = "扩展信息关联标签")
+    @ApiImplicitParam(name = "tags", value = "关联标签", required = true, dataType = "Map")
+    @RequestMapping(value = "/relateTags", method = RequestMethod.PUT)
+    @PreAuthorize("hasAuthority('extend:t')")
+    @OperationLog(value = "wtcp-bics/扩展信息关联标签", operate = "u", module = "扩展信息")
+    public ResponseMessage relateTags(@RequestBody Map<String, Object> tags, BindingResult bindingResult) throws Exception {
+        if (bindingResult.hasErrors()) {
+            return ResponseMessage.validFailResponse().setMsg(bindingResult.getAllErrors());
+        }
+        return extendService.relateTags(tags,getCurrentUser());
+    }
+
 }
