@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 
 @Slf4j
@@ -155,6 +156,20 @@ public class EntertainmentController extends BaseController{
         entertainmentService.dataBind(updatedUser,updatedDate,model);
 
         return ResponseMessage.defaultResponse().setMsg("数据绑定成功");
+    }
+
+    @ApiOperation(value = "休闲娱乐信息标签关联", notes = "休闲娱乐信息标签关联")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "id", value = "休闲娱乐信息ID", required = true)
+    })
+    @PutMapping(value = "relateTags/{id}")
+    @PreAuthorize("hasAuthority('entertainment:u')")
+    @OperationLog(value = "wtcp-bics/休闲娱乐信息标签关联", operate = "u", module = "休闲娱乐管理")
+    public ResponseMessage relateTags(@PathVariable(value = "id") String id, @RequestBody List<Map<String, Object>> list , BindingResult bindingResult) throws Exception {
+        if(bindingResult.hasErrors()){
+            return ResponseMessage.validFailResponse().setMsg(bindingResult.getAllErrors());
+        }
+        return entertainmentService.relateTags(id,list,getCurrentUser());
     }
 
 }

@@ -222,4 +222,10 @@ public class EntertainmentServiceImpl implements EntertainmentService {
         List<String> ids = model.getIds();
         return entertainmentMapper.dataBind(updatedUser, updatedDate, deptCode, ids);
     }
+
+    @Override
+    public ResponseMessage relateTags(String id, List<Map<String, Object>> list, User user) {
+        this.saveTags(list,id,user);
+        return ResponseMessage.defaultResponse().setMsg("关联成功！");
+    }
 }

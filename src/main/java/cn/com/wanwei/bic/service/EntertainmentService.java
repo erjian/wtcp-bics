@@ -7,6 +7,7 @@ import cn.com.wanwei.bic.model.WeightModel;
 import cn.com.wanwei.common.model.ResponseMessage;
 import cn.com.wanwei.common.model.User;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -88,4 +89,13 @@ public interface EntertainmentService {
      * @param model
      */
     int dataBind(String updatedUser, String updatedDate, DataBindModel model);
+
+    /**
+     * 休闲娱乐信息标签关联
+     * @param id
+     * @param list
+     * @param user
+     * @return
+     */
+    ResponseMessage relateTags(String id, List<Map<String, Object>> list, User user);
 }
