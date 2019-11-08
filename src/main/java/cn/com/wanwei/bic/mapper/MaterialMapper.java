@@ -1,7 +1,6 @@
 package cn.com.wanwei.bic.mapper;
 
 import cn.com.wanwei.bic.entity.MaterialEntity;
-import cn.com.wanwei.common.model.ResponseMessage;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 

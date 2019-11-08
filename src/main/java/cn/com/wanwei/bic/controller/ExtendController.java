@@ -1,7 +1,6 @@
 package cn.com.wanwei.bic.controller;
 
 import cn.com.wanwei.bic.entity.AuditLogEntity;
-import cn.com.wanwei.bic.entity.ExtendEntity;
 import cn.com.wanwei.bic.model.ExtendModel;
 import cn.com.wanwei.bic.service.ExtendService;
 import cn.com.wanwei.common.log.annotation.OperationLog;

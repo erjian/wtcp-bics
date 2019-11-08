@@ -1,7 +1,6 @@
 package cn.com.wanwei.bic.service;
 
 import cn.com.wanwei.bic.entity.AuditLogEntity;
-import cn.com.wanwei.bic.entity.PeripheryEntity;
 import cn.com.wanwei.bic.model.DataBindModel;
 import cn.com.wanwei.bic.model.PeripheryModel;
 import cn.com.wanwei.bic.model.WeightModel;

@@ -1,7 +1,5 @@
 package cn.com.wanwei.bic.service;
 
-import cn.com.wanwei.bic.entity.AuditLogEntity;
-import cn.com.wanwei.bic.entity.DestinationEntity;
 import cn.com.wanwei.bic.model.DataBindModel;
 import cn.com.wanwei.bic.model.DestinationModel;
 import cn.com.wanwei.common.model.ResponseMessage;

@@ -2,7 +2,6 @@ package cn.com.wanwei.bic.service;
 
 
 import cn.com.wanwei.bic.entity.AuditLogEntity;
-import cn.com.wanwei.bic.entity.PoiEntity;
 import cn.com.wanwei.bic.model.PoiModel;
 import cn.com.wanwei.common.model.ResponseMessage;
 import cn.com.wanwei.common.model.User;
