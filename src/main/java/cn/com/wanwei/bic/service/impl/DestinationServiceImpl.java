@@ -2,6 +2,7 @@ package cn.com.wanwei.bic.service.impl;
 
 import cn.com.wanwei.bic.entity.*;
 import cn.com.wanwei.bic.mapper.DestinationMapper;
+import cn.com.wanwei.bic.model.DataBindModel;
 import cn.com.wanwei.bic.model.DestinationModel;
 import cn.com.wanwei.bic.service.DestinationService;
 import cn.com.wanwei.bic.service.TagsService;
@@ -234,6 +235,14 @@ public class DestinationServiceImpl implements DestinationService {
             this.saveTags(tagsList, relateId, user);
         }
         return ResponseMessage.defaultResponse().setMsg("标签关联成功");
+    }
+
+    @Override
+    public ResponseMessage dataBind(String updatedUser, DataBindModel model) {
+        String deptCode = model.getDeptCode();
+        List<String> ids = model.getIds();
+        destinationMapper.dataBind(updatedUser, new Date(), deptCode, ids);
+        return ResponseMessage.defaultResponse().setMsg("关联机构成功");
     }
 
 }

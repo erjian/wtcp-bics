@@ -95,4 +95,14 @@
     where SUBSTRING_INDEX(region_full_code,',',-1) = #{regionFullCode,jdbcType=VARCHAR}
   </select>
 
+  <update id="dataBind">
+    update t_bic_destination
+    set updated_date = #{updatedDate,jdbcType=TIMESTAMP},
+    updated_user = #{updatedUser,jdbcType=VARCHAR},
+    dept_code = #{deptCode,jdbcType=VARCHAR}
+    where id in
+    <foreach collection="ids" item="item" index="index" open="(" separator="," close=")">
+      #{item}
+    </foreach>
+  </update>
 </mapper>

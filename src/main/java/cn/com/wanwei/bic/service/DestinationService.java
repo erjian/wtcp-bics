@@ -2,6 +2,7 @@ package cn.com.wanwei.bic.service;
 
 import cn.com.wanwei.bic.entity.AuditLogEntity;
 import cn.com.wanwei.bic.entity.DestinationEntity;
+import cn.com.wanwei.bic.model.DataBindModel;
 import cn.com.wanwei.bic.model.DestinationModel;
 import cn.com.wanwei.common.model.ResponseMessage;
 import cn.com.wanwei.common.model.User;
@@ -93,4 +94,12 @@ public interface DestinationService {
      * @return
      */
     ResponseMessage relateTags(Map<String, Object> tags, User user);
+
+    /**
+     * 数据绑定
+     * @param username
+     * @param model
+     * @return
+     */
+    ResponseMessage dataBind(String username, DataBindModel model);
 }

@@ -1,6 +1,7 @@
 package cn.com.wanwei.bic.controller;
 
 import cn.com.wanwei.bic.entity.DestinationEntity;
+import cn.com.wanwei.bic.model.DataBindModel;
 import cn.com.wanwei.bic.model.DestinationModel;
 import cn.com.wanwei.bic.service.DestinationService;
 import cn.com.wanwei.common.log.annotation.OperationLog;
@@ -18,6 +19,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 import java.util.Map;
 
 /**
@@ -142,6 +144,17 @@ public class DestinationController extends BaseController {
             return ResponseMessage.validFailResponse().setMsg(bindingResult.getAllErrors());
         }
         return destinationService.relateTags(tags,getCurrentUser());
+    }
+
+    @PreAuthorize("hasAuthority('destination:b')")
+    @ApiOperation(value = "数据绑定", notes = "数据绑定")
+    @ApiImplicitParams({@ApiImplicitParam(name = "model", value = "数据绑定model", required = true, dataType = "DataBindModel")})
+    @RequestMapping(value = "/dataBind", method = {RequestMethod.PUT, RequestMethod.PATCH})
+    public ResponseMessage dataBind(@RequestBody @Valid DataBindModel model, BindingResult bindingResult) throws Exception {
+        if (bindingResult.hasErrors()) {
+            return ResponseMessage.validFailResponse().setMsg(bindingResult.getAllErrors());
+        }
+        return destinationService.dataBind(getCurrentUser().getUsername(),model);
     }
 
 }
