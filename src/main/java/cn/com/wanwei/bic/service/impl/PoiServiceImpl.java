@@ -262,4 +262,20 @@ public class PoiServiceImpl implements PoiService {
         poiMapper.batchDelete(ids);
         return responseMessage.setStatus(1).setMsg("批量删除成功");
     }
+
+    @Override
+    public ResponseMessage relateTags(Map<String,Object> tags, User user){
+        ResponseMessage responseMessage = ResponseMessage.defaultResponse();
+        List<Map<String, Object>> tagsList = (List<Map<String, Object>>) tags.get("tagsArr");
+        String relateId = tags.get("id").toString();
+        if (null != tagsList && !tagsList.isEmpty()) {
+            this.saveTags(tagsList, relateId, user);
+            responseMessage.setMsg("关联标签成功");
+        }else {
+            responseMessage.setStatus(0).setMsg("关联标签失败，请重新关联");
+        }
+        return responseMessage;
+    }
+
+
 }

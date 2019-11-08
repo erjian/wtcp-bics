@@ -91,4 +91,12 @@ public interface PeripheryService {
      * @return
      */
     ResponseMessage goWeight(WeightModel weightModel, User user);
+
+    /**
+     * 周边管理关联标签
+     * @param tags
+     * @param currentUser
+     * @return
+     */
+    ResponseMessage relateTags(Map<String,Object> tags, User currentUser);
 }

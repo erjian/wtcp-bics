@@ -149,4 +149,16 @@ public class PoiController extends  BaseController{
     }
 
 
+    @ApiOperation(value = "POI管理信息关联标签", notes = "POI管理信息关联标签")
+    @ApiImplicitParam(name = "tags", value = "关联标签", required = true, dataType = "Map")
+    @RequestMapping(value = "/relateTags", method = RequestMethod.PUT)
+    @PreAuthorize("hasAuthority('poi:rt')")
+    public ResponseMessage relateTags(@RequestBody Map<String, Object> tags, BindingResult bindingResult) throws Exception {
+        if (bindingResult.hasErrors()) {
+            return ResponseMessage.validFailResponse().setMsg(bindingResult.getAllErrors());
+        }
+        return poiService.relateTags(tags,getCurrentUser());
+    }
+
+
 }

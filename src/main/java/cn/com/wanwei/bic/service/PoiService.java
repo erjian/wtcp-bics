@@ -93,4 +93,12 @@ public interface PoiService {
      * @return
      */
     ResponseMessage batchDelete(List<String> ids);
+
+    /**
+     * poi关联标签
+     * @param tags
+     * @param user
+     * @return
+     */
+    ResponseMessage relateTags(Map<String,Object> tags, User user);
 }

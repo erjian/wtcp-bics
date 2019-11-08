@@ -168,4 +168,16 @@ public class PeripheryController extends BaseController {
         return peripheryService.goWeight(weightModel,getCurrentUser());
     }
 
+
+    @ApiOperation(value = "周边管理信息关联标签", notes = "周边管理信息关联标签")
+    @ApiImplicitParam(name = "tags", value = "关联标签", required = true, dataType = "Map")
+    @RequestMapping(value = "/relateTags", method = RequestMethod.PUT)
+    @PreAuthorize("hasAuthority('perip:rt')")
+    public ResponseMessage relateTags(@RequestBody Map<String, Object> tags, BindingResult bindingResult) throws Exception {
+        if (bindingResult.hasErrors()) {
+            return ResponseMessage.validFailResponse().setMsg(bindingResult.getAllErrors());
+        }
+        return peripheryService.relateTags(tags,getCurrentUser());
+    }
+
 }

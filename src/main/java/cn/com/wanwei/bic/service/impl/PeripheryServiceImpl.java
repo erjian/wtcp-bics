@@ -60,7 +60,7 @@ public class PeripheryServiceImpl implements PeripheryService {
         PageHelper.startPage(pageRequest.getPage(), pageRequest.getSize());
         PageHelper.orderBy(pageRequest.getOrders());
         Page<PeripheryEntity> peripheryEntities = peripheryMapper.findByPage(filter);
-        PageInfo<PeripheryEntity> pageInfo = new PageInfo<>(peripheryEntities,pageRequest);
+        PageInfo<PeripheryEntity> pageInfo = new PageInfo<>(peripheryEntities, pageRequest);
         return ResponseMessage.defaultResponse().setData(pageInfo);
     }
 
@@ -68,9 +68,9 @@ public class PeripheryServiceImpl implements PeripheryService {
     public ResponseMessage find(String id) {
         ResponseMessage responseMessage = ResponseMessage.defaultResponse();
         PeripheryEntity entity = peripheryMapper.selectByPrimaryKey(id);
-        if (entity != null){
+        if (entity != null) {
             responseMessage.setData(entity);
-        }else {
+        } else {
             responseMessage.setStatus(0).setMsg("暂无该周边信息");
         }
         return responseMessage;
@@ -81,7 +81,7 @@ public class PeripheryServiceImpl implements PeripheryService {
         PeripheryEntity peripheryEntity = peripheryModel.getPeripheryEntity();
         String type = peripheryModel.getType();
         //获取统一认证生成的code
-        ResponseMessage responseMessageGetCode = coderServiceFeign.buildSerialByCode(ruleId,appCode,type);
+        ResponseMessage responseMessageGetCode = coderServiceFeign.buildSerialByCode(ruleId, appCode, type);
         if (responseMessageGetCode.getStatus() == 1 && responseMessageGetCode.getData() != null) {
             peripheryEntity.setId(UUIDUtils.getInstance().getId());
             peripheryEntity.setCode(responseMessageGetCode.getData().toString());
@@ -90,7 +90,7 @@ public class PeripheryServiceImpl implements PeripheryService {
             peripheryEntity.setCreatedUser(user.getUsername());
             peripheryEntity.setCreatedDate(new Date());
             peripheryMapper.insert(peripheryEntity);
-            this.saveTags(peripheryModel.getList(),peripheryEntity.getId(),user);
+            this.saveTags(peripheryModel.getList(), peripheryEntity.getId(), user);
 
             // 解析富文本中的附件并保存
             materialService.saveByDom(peripheryEntity.getContent(), peripheryEntity.getId(), user);
@@ -100,15 +100,15 @@ public class PeripheryServiceImpl implements PeripheryService {
         return responseMessageGetCode;
     }
 
-    private void saveTags(List<Map<String, Object>> tagsList, String peripheryId, User user){
+    private void saveTags(List<Map<String, Object>> tagsList, String peripheryId, User user) {
         List<BaseTagsEntity> list = Lists.newArrayList();
-        for(int i=0; i<tagsList.size(); i++){
+        for (int i = 0; i < tagsList.size(); i++) {
             BaseTagsEntity baseTagsEntity = new BaseTagsEntity();
             baseTagsEntity.setTagName(tagsList.get(i).get("tagName").toString());
             baseTagsEntity.setTagCatagory(tagsList.get(i).get("tagCatagory").toString());
             list.add(baseTagsEntity);
         }
-        tagsService.batchInsert(peripheryId,list,user, PeripheryTagsEntity.class);
+        tagsService.batchInsert(peripheryId, list, user, PeripheryTagsEntity.class);
     }
 
     @Override
@@ -116,21 +116,21 @@ public class PeripheryServiceImpl implements PeripheryService {
         ResponseMessage responseMessage = ResponseMessage.defaultResponse();
         PeripheryEntity peripheryEntity = peripheryModel.getPeripheryEntity();
         PeripheryEntity entity = peripheryMapper.selectByPrimaryKey(id);
-        if(entity != null){
+        if (entity != null) {
             peripheryEntity.setUpdatedUser(user.getUsername());
             peripheryEntity.setUpdatedDate(new Date());
             peripheryEntity.setId(entity.getId());
             peripheryEntity.setStatus(0);
             peripheryEntity.setCode(entity.getCode());
             peripheryMapper.updateByPrimaryKey(peripheryEntity);
-            this.saveTags(peripheryModel.getList(),id,user);
+            this.saveTags(peripheryModel.getList(), id, user);
 
             // 先删除关联的附件再解析富文本中的附件并保存
             materialService.deleteByPrincipalId(id);
             materialService.saveByDom(peripheryEntity.getContent(), id, user);
 
             responseMessage.setMsg("更新成功");
-        }else {
+        } else {
             responseMessage.setStatus(0).setMsg("暂无该周边信息");
         }
         return responseMessage;
@@ -140,9 +140,9 @@ public class PeripheryServiceImpl implements PeripheryService {
     public ResponseMessage delete(String id) {
         ResponseMessage responseMessage = ResponseMessage.defaultResponse();
         PeripheryEntity entity = peripheryMapper.selectByPrimaryKey(id);
-        if(entity.getStatus() == 9){
+        if (entity.getStatus() == 9) {
             responseMessage.setStatus(0).setMsg("已上线，禁止删除");
-        }else {
+        } else {
             peripheryMapper.deleteByPrimaryKey(id);
             responseMessage.setMsg("删除成功");
         }
@@ -200,7 +200,7 @@ public class PeripheryServiceImpl implements PeripheryService {
     @Override
     public ResponseMessage batchDelete(List<String> ids) {
         ResponseMessage responseMessage = ResponseMessage.defaultResponse();
-        for (String id : ids){
+        for (String id : ids) {
             PeripheryEntity entity = peripheryMapper.selectByPrimaryKey(id);
             if (entity.getStatus() == 9) {
                 return responseMessage.setStatus(0).setMsg("所选数据中存在已上线数据，批量删除取消！");
@@ -220,20 +220,20 @@ public class PeripheryServiceImpl implements PeripheryService {
     @Override
     public ResponseMessage goWeight(WeightModel weightModel, User user) {
         //查出最大权重
-        Integer maxNum= peripheryMapper.maxWeight();
-        List<String>ids =weightModel.getIds();
-        if(ids!=null&&!ids.isEmpty()){
+        Integer maxNum = peripheryMapper.maxWeight();
+        List<String> ids = weightModel.getIds();
+        if (ids != null && !ids.isEmpty()) {
             //判断为重新排序或者最大权重与排序大于999时所有数据权重清0
-            if(weightModel.isFlag()||(maxNum+ids.size())>Integer.MAX_VALUE){
+            if (weightModel.isFlag() || (maxNum + ids.size()) > Integer.MAX_VALUE) {
                 peripheryMapper.clearWeight();
-                maxNum=0;
+                maxNum = 0;
             }
-            for(int i=0;i<ids.size();i++){
+            for (int i = 0; i < ids.size(); i++) {
                 PeripheryEntity peripheryEntity = peripheryMapper.selectByPrimaryKey(ids.get(i));
-                if(weightModel.isFlag()){
-                    peripheryEntity.setWeight(ids.size()-i);
-                }else{
-                    peripheryEntity.setWeight(maxNum+ids.size()-i);
+                if (weightModel.isFlag()) {
+                    peripheryEntity.setWeight(ids.size() - i);
+                } else {
+                    peripheryEntity.setWeight(maxNum + ids.size() - i);
                 }
                 peripheryEntity.setDeptCode(user.getOrg().getCode());
                 peripheryEntity.setUpdatedUser(user.getUsername());
@@ -242,5 +242,19 @@ public class PeripheryServiceImpl implements PeripheryService {
             }
         }
         return ResponseMessage.defaultResponse().setMsg("权重修改成功！");
+    }
+
+    @Override
+    public ResponseMessage relateTags(Map<String, Object> tags, User currentUser) {
+        ResponseMessage responseMessage = ResponseMessage.defaultResponse();
+        List<Map<String, Object>> tagsList = (List<Map<String, Object>>) tags.get("tagsArr");
+        String relateId = tags.get("id").toString();
+        if (null != tagsList && !tagsList.isEmpty()) {
+            this.saveTags(tagsList, relateId, currentUser);
+            responseMessage.setMsg("关联标签成功");
+        } else {
+            responseMessage.setStatus(0).setMsg("关联标签失败，请重新关联");
+        }
+        return responseMessage;
     }
 }
