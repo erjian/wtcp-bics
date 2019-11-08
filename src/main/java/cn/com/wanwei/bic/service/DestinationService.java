@@ -85,4 +85,12 @@ public interface DestinationService {
      * @return
      */
     ResponseMessage checkRegionFullName(String id, String regionFullCode);
+
+    /**
+     * 关联标签
+     * @param tags
+     * @param user
+     * @return
+     */
+    ResponseMessage relateTags(Map<String, Object> tags, User user);
 }

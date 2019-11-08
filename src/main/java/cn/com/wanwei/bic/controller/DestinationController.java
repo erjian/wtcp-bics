@@ -132,4 +132,16 @@ public class DestinationController extends BaseController {
         return destinationService.checkRegionFullName(id,regionFullCode);
     }
 
+    @ApiOperation(value = "目的地管理关联标签", notes = "目的地管理关联标签")
+    @ApiImplicitParam(name = "tags", value = "关联标签", required = true, dataType = "Map")
+    @RequestMapping(value = "/relateTags", method = RequestMethod.PUT)
+    @PreAuthorize("hasAuthority('destination:rt')")
+    @OperationLog(value = "wtcp-bics/目的地管理关联标签", operate = "u", module = "目的地管理")
+    public ResponseMessage relateTags(@RequestBody Map<String, Object> tags, BindingResult bindingResult) throws Exception {
+        if (bindingResult.hasErrors()) {
+            return ResponseMessage.validFailResponse().setMsg(bindingResult.getAllErrors());
+        }
+        return destinationService.relateTags(tags,getCurrentUser());
+    }
+
 }

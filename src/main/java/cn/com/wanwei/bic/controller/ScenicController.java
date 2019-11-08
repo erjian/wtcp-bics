@@ -94,7 +94,7 @@ public class ScenicController extends BaseController {
     @ApiImplicitParam(name = "tags", value = "关联标签", required = true, dataType = "Map")
     @RequestMapping(value = "/relateTags", method = RequestMethod.PUT)
     @PreAuthorize("hasAuthority('scenic:rt')")
-    @OperationLog(value = "wtcp-bics/景区编辑", operate = "u", module = "景区管理")
+    @OperationLog(value = "wtcp-bics/景区基础信息关联标签", operate = "u", module = "景区管理")
     public ResponseMessage relateTags(@RequestBody Map<String, Object> tags, BindingResult bindingResult) throws Exception {
         if (bindingResult.hasErrors()) {
             return ResponseMessage.validFailResponse().setMsg(bindingResult.getAllErrors());

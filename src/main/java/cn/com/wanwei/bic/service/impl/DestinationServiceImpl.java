@@ -89,7 +89,7 @@ public class DestinationServiceImpl implements DestinationService {
             entity.setTagName(tagsList.get(i).get("tagName").toString());
             list.add(entity);
         }
-        tagsService.batchInsert(principalId,list,user, ScenicTagsEntity.class);
+        tagsService.batchInsert(principalId,list,user, DestinationTagsEntity.class);
     }
 
     /**
@@ -224,6 +224,16 @@ public class DestinationServiceImpl implements DestinationService {
             }
         }
         return responseMessage;
+    }
+
+    @Override
+    public ResponseMessage relateTags(Map<String, Object> tags, User user) {
+        List<Map<String, Object>> tagsList = (List<Map<String, Object>>) tags.get("tagsArr");
+        String relateId = tags.get("id").toString();
+        if (null != tagsList && !tagsList.isEmpty()) {
+            this.saveTags(tagsList, relateId, user);
+        }
+        return ResponseMessage.defaultResponse().setMsg("标签关联成功");
     }
 
 }
