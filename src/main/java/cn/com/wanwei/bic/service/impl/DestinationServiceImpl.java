@@ -1,12 +1,10 @@
 package cn.com.wanwei.bic.service.impl;
 
-import cn.com.wanwei.bic.entity.AuditLogEntity;
-import cn.com.wanwei.bic.entity.BaseTagsEntity;
-import cn.com.wanwei.bic.entity.DestinationEntity;
-import cn.com.wanwei.bic.entity.DestinationTagsEntity;
+import cn.com.wanwei.bic.entity.*;
 import cn.com.wanwei.bic.mapper.DestinationMapper;
 import cn.com.wanwei.bic.model.DataBindModel;
 import cn.com.wanwei.bic.model.DestinationModel;
+import cn.com.wanwei.bic.model.WeightModel;
 import cn.com.wanwei.bic.service.DestinationService;
 import cn.com.wanwei.bic.service.TagsService;
 import cn.com.wanwei.bic.utils.PageUtils;
@@ -148,27 +146,6 @@ public class DestinationServiceImpl implements DestinationService {
     }
 
     /**
-     * 目的地权重修改
-     * @param id  主键ID
-     * @param weightNum   权重
-     * @param username
-     * @return
-     */
-    @Override
-    public ResponseMessage changeWeight(String id, Float weightNum, String username) throws Exception{
-        DestinationEntity destinationEntity = destinationMapper.selectByPrimaryKey(id);
-        if(null == destinationEntity){
-            return ResponseMessage.validFailResponse().setMsg("无目的地信息！");
-        }
-        destinationEntity.setId(id);
-        destinationEntity.setUpdatedUser(username);
-        destinationEntity.setUpdatedDate(new Date());
-        destinationEntity.setWeight(weightNum);
-        destinationMapper.updateByPrimaryKey(destinationEntity);
-        return ResponseMessage.defaultResponse().setMsg("权重修改成功！");
-    }
-
-    /**
      * 目的地信息审核/上线
      * @param id  目的地id
      * @param username
@@ -245,6 +222,28 @@ public class DestinationServiceImpl implements DestinationService {
         List<String> ids = model.getIds();
         destinationMapper.dataBind(updatedUser, new Date(), deptCode, ids);
         return ResponseMessage.defaultResponse().setMsg("关联机构成功");
+    }
+
+    @Override
+    public ResponseMessage changeWeight(WeightModel weightModel, User user) {
+        //查出最大权重
+        Integer maxNum = destinationMapper.maxWeight();
+        List<String> ids = weightModel.getIds();
+        if (ids != null && !ids.isEmpty()) {
+            //判断为重新排序或者最大权重与排序大于999时所有数据权重清0
+            if (weightModel.isFlag() || (maxNum + ids.size()) > Integer.MAX_VALUE) {
+                destinationMapper.clearWeight();
+                maxNum = 0;
+            }
+            for (int i = 0; i < ids.size(); i++) {
+                DestinationEntity destinationEntity = destinationMapper.selectByPrimaryKey(ids.get(i));
+                destinationEntity.setWeight(maxNum + ids.size() - i);
+                destinationEntity.setUpdatedUser(user.getUsername());
+                destinationEntity.setUpdatedDate(new Date());
+                destinationMapper.updateByPrimaryKey(destinationEntity);
+            }
+        }
+        return ResponseMessage.defaultResponse().setMsg("权重修改成功！");
     }
 
 }

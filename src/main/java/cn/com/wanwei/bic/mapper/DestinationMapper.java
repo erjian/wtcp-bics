@@ -45,4 +45,16 @@ public interface DestinationMapper {
      */
     int dataBind(@Param(value="updatedUser") String updatedUser, @Param(value="updatedDate") Date updatedDate,
                  @Param(value="deptCode") String deptCode, @Param(value="ids") List<String> ids);
+
+    /**
+     * 获取最大权重
+     * @return
+     */
+    Integer maxWeight();
+
+    /**
+     * 重置权重
+     * @return
+     */
+    int clearWeight();
 }

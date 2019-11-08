@@ -2,6 +2,7 @@ package cn.com.wanwei.bic.service;
 
 import cn.com.wanwei.bic.model.DataBindModel;
 import cn.com.wanwei.bic.model.DestinationModel;
+import cn.com.wanwei.bic.model.WeightModel;
 import cn.com.wanwei.common.model.ResponseMessage;
 import cn.com.wanwei.common.model.User;
 
@@ -59,15 +60,6 @@ public interface DestinationService {
     ResponseMessage deleteByPrimaryKey(String id) throws Exception;
 
     /**
-     * 目的地权重修改
-     * @param id  主键ID
-     * @param weightNum   权重
-     * @param username
-     * @return
-     */
-    ResponseMessage changeWeight(String id, Float weightNum, String username) throws Exception;
-
-    /**
      * 目的地信息记录审核
      * @param id
      * @param username
@@ -100,4 +92,12 @@ public interface DestinationService {
      * @return
      */
     ResponseMessage dataBind(String username, DataBindModel model);
+
+    /**
+     * 权重修改
+     * @param weightModel
+     * @param currentUser
+     * @return
+     */
+    ResponseMessage changeWeight(WeightModel weightModel, User currentUser);
 }

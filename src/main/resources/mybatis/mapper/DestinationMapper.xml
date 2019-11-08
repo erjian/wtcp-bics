@@ -14,7 +14,7 @@
     <result column="tourism_introduce" jdbcType="VARCHAR" property="tourismIntroduce" />
     <result column="shop_introduce" jdbcType="VARCHAR" property="shopIntroduce" />
     <result column="entertainment_introduce" jdbcType="VARCHAR" property="entertainmentIntroduce" />
-    <result column="weight" jdbcType="REAL" property="weight" />
+    <result column="weight" jdbcType="INTEGER" property="weight" />
     <result column="dept_code" jdbcType="VARCHAR" property="deptCode" />
     <result column="created_user" jdbcType="VARCHAR" property="createdUser" />
     <result column="created_date" jdbcType="TIMESTAMP" property="createdDate" />
@@ -48,7 +48,7 @@
       #{region,jdbcType=VARCHAR}, #{introduce,jdbcType=VARCHAR}, #{eatIntroduce,jdbcType=VARCHAR}, 
       #{drinkIntroduce,jdbcType=VARCHAR}, #{playIntroduce,jdbcType=VARCHAR}, #{tourismIntroduce,jdbcType=VARCHAR}, 
       #{shopIntroduce,jdbcType=VARCHAR}, #{entertainmentIntroduce,jdbcType=VARCHAR}, 
-      #{weight,jdbcType=REAL}, #{deptCode,jdbcType=VARCHAR}, #{createdUser,jdbcType=VARCHAR}, 
+      #{weight,jdbcType=INTEGER}, #{deptCode,jdbcType=VARCHAR}, #{createdUser,jdbcType=VARCHAR},
       #{createdDate,jdbcType=TIMESTAMP}, #{updatedUser,jdbcType=VARCHAR}, #{updatedDate,jdbcType=TIMESTAMP}
       )
   </insert>
@@ -65,7 +65,7 @@
       tourism_introduce = #{tourismIntroduce,jdbcType=VARCHAR},
       shop_introduce = #{shopIntroduce,jdbcType=VARCHAR},
       entertainment_introduce = #{entertainmentIntroduce,jdbcType=VARCHAR},
-      weight = #{weight,jdbcType=REAL},
+      weight = #{weight,jdbcType=INTEGER},
       dept_code = #{deptCode,jdbcType=VARCHAR},
       created_user = #{createdUser,jdbcType=VARCHAR},
       created_date = #{createdDate,jdbcType=TIMESTAMP},
@@ -105,4 +105,12 @@
       #{item}
     </foreach>
   </update>
+
+  <update id="clearWeight">
+    update t_bic_destination set weight=0
+  </update>
+
+  <select id="maxWeight" resultType="Integer">
+    select weight from t_bic_destination order by weight desc limit 1
+  </select>
 </mapper>

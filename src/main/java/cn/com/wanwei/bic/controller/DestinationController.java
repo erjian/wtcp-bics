@@ -2,6 +2,7 @@ package cn.com.wanwei.bic.controller;
 
 import cn.com.wanwei.bic.model.DataBindModel;
 import cn.com.wanwei.bic.model.DestinationModel;
+import cn.com.wanwei.bic.model.WeightModel;
 import cn.com.wanwei.bic.service.DestinationService;
 import cn.com.wanwei.common.log.annotation.OperationLog;
 import cn.com.wanwei.common.model.ResponseMessage;
@@ -90,18 +91,6 @@ public class DestinationController extends BaseController {
         return destinationService.deleteByPrimaryKey(id);
     }
 
-    @ApiOperation(value = "目的地基础信息权重修改", notes = "目的地基础信息权重修改")
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "id", value = "目的地基础信息ID", required = true),
-            @ApiImplicitParam(name = "weight", value = "权重", required = true)
-    })
-    @RequestMapping(value = "/changeWeight/{id}}", method = RequestMethod.GET)
-    @PreAuthorize("hasAuthority('destination:q')")
-    @OperationLog(value = "wtcp-bics/目的地基础信息权重修改", operate = "u", module = "目的地基础信息权重修改")
-    public ResponseMessage changeWeight(@PathVariable("id") String id, @PathVariable("weight") Float weight) throws Exception {
-        return destinationService.changeWeight(id,weight,getCurrentUser().getUsername());
-    }
-
     @ApiOperation(value = "目的地信息审核", notes = "目的地信息审核")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "id", value = "目的地基础信息ID", required = true),
@@ -156,4 +145,16 @@ public class DestinationController extends BaseController {
         return destinationService.dataBind(getCurrentUser().getUsername(),model);
     }
 
+    @PreAuthorize("hasAuthority('destination:w')")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "weightModel", value = "排序model", required = true, dataType = "WeightModel")
+    })
+    @PutMapping(value = "/weight")
+    @OperationLog(value = "wtcp-bics/权重更改", operate = "u", module = "目的地管理")
+    public ResponseMessage changeWeight(@RequestBody @Valid WeightModel weightModel, BindingResult bindingResult) throws Exception {
+        if(bindingResult.hasErrors()){
+            return ResponseMessage.validFailResponse().setMsg(bindingResult.getAllErrors());
+        }
+        return destinationService.changeWeight(weightModel,getCurrentUser());
+    }
 }

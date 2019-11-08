@@ -59,7 +59,7 @@ public class DestinationEntity extends BaseEntity{
     private String entertainmentIntroduce;
 
     @ApiModelProperty(value = "权重")
-    private Float weight;
+    private Integer weight;
 
     @ApiModelProperty(value = "组织机构编码")
     private String deptCode;
