@@ -20,17 +20,16 @@ public class PageUtils {
         return instance;
     }
 
-    public MybatisPageRequest setPage(Integer page, Integer size, Map<String, Object> filter, Sort.Direction sortBy, String... sortFields){
+    public MybatisPageRequest setPage(Integer page, Integer size, Map<String, Object> filter, Sort.Direction orderBy, String... sortFields){
         List<Sort.Order> sortList = Lists.newArrayList();
+        if(filter.containsKey("orderBy") && StringUtils.equals("acs", filter.get("orderBy").toString())){
+            orderBy = Sort.Direction.ASC;
+        }
         if(filter.containsKey("sortField") && null != filter.get("sortField") && StringUtils.isNotEmpty(filter.get("sortField").toString())){
-            Sort.Direction orderBy = Sort.Direction.DESC;
-            if(filter.containsKey("orderBy") && StringUtils.equals("acs", filter.get("orderBy").toString())){
-                orderBy = Sort.Direction.ASC;
-            }
             sortList.add(new Sort.Order(orderBy, filter.get("sortField").toString()));
         }else{
             for(String field : sortFields){
-                sortList.add(new Sort.Order(sortBy, field));
+                sortList.add(new Sort.Order(orderBy, field));
             }
         }
         Sort sort = Sort.by(sortList);
