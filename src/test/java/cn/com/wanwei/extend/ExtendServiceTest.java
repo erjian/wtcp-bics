@@ -2,6 +2,7 @@ package cn.com.wanwei.extend;
 
 import cn.com.wanwei.bic.BicApplication;
 import cn.com.wanwei.bic.entity.ExtendEntity;
+import cn.com.wanwei.bic.model.ExtendModel;
 import cn.com.wanwei.bic.service.ExtendService;
 import cn.com.wanwei.common.model.ResponseMessage;
 import cn.com.wanwei.common.model.User;
@@ -17,7 +18,9 @@ import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -35,10 +38,12 @@ public class ExtendServiceTest {
     private ExtendService extendService;
 
     private ExtendEntity extendEntity;
+    private ExtendModel extendModel;
     private User user;
 
     @Before
     public void before() {
+        List<Map<String,Object>> list = new ArrayList<Map<String,Object>>();
         System.out.println("---------------- 扩展信息管理接口单元测试开始 ---------------------");
         extendEntity = new ExtendEntity();
         extendEntity.setId("TEST_1001");
@@ -57,6 +62,8 @@ public class ExtendServiceTest {
         extendEntity.setCreatedUser("zhanglei");
         extendEntity.setCreatedDate(new Date());
         extendEntity.setWeight(Float.valueOf("4.00"));
+        extendModel.setExtendEntity(extendEntity);
+        extendModel.setList(list);
     }
     @After
     public void after(){
@@ -72,11 +79,11 @@ public class ExtendServiceTest {
         Assert.assertSame("返回值是1", true, back.getData()!=null?true:false);
     }
 
-   /* @Test
+    @Test
     @Rollback
     public void createTest() throws Exception{
         System.out.println("---------------新增扩展信息---------------");
-        ResponseMessage back = extendService.save(extendEntity, "zhanglei");
+        ResponseMessage back = extendService.save(extendModel,user, Long.valueOf("1001"), 1002);
         int status=  back.getStatus();
         System.out.println("返回值：" + status);
         Assert.assertSame("返回值是1", 1, status);
@@ -86,11 +93,11 @@ public class ExtendServiceTest {
     @Rollback
     public void updateTest() throws Exception{
         System.out.println("---------------编辑扩展信息---------------");
-        ResponseMessage back = extendService.edit("-111111111",extendEntity, "zhanglei");
+        ResponseMessage back = extendService.edit("-111111111",extendModel,user);
         int status=  back.getStatus();
         System.out.println("返回值：" + status);
         Assert.assertSame("返回值是0", 0, status);
-    }*/
+    }
 
     @Test
     @Rollback
