@@ -134,7 +134,7 @@ public class ScenicServiceImpl implements ScenicService {
 
     @Override
     public ResponseMessage findByPage(Integer page, Integer size, User user1, Map<String, Object> filter) {
-        MybatisPageRequest pageRequest = PageUtils.getInstance().setPage(page, size, Sort.Direction.DESC, "created_date", "updated_date");
+        MybatisPageRequest pageRequest = PageUtils.getInstance().setPage(page, size, filter, Sort.Direction.DESC, "created_date", "updated_date");
         Page<ScenicEntity> scenicEntities = scenicMapper.findByPage(filter);
         PageInfo<ScenicEntity> pageInfo = new PageInfo<>(scenicEntities, pageRequest);
         return ResponseMessage.defaultResponse().setData(pageInfo);

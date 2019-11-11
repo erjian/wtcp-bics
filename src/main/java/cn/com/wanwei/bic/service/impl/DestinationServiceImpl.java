@@ -57,7 +57,7 @@ public class DestinationServiceImpl implements DestinationService {
      */
     @Override
     public ResponseMessage findByPage(Integer page, Integer size, User user, Map<String, Object> filter) throws Exception {
-        MybatisPageRequest pageRequest = PageUtils.getInstance().setPage(page, size, Sort.Direction.DESC, "created_date", "updated_date");
+        MybatisPageRequest pageRequest = PageUtils.getInstance().setPage(page, size, filter, Sort.Direction.DESC, "created_date", "updated_date");
         Page<DestinationEntity> DestinationEntities = destinationMapper.findByPage(filter);
         PageInfo<DestinationEntity> pageInfo = new PageInfo<>(DestinationEntities, pageRequest);
         return ResponseMessage.defaultResponse().setData(pageInfo);
