@@ -84,6 +84,10 @@
         <bind name="regionFullName" value="'%' + regionFullName + '%'" ></bind>
         and region_full_name like #{regionFullName}
       </if>
+      <if test="regionFullCode != null and regionFullCode!='' ">
+        <bind name="regionFullCode" value="regionFullCode + '%'" ></bind>
+        and region_full_code like #{regionFullCode}
+      </if>
     </where>
   </select>
 
