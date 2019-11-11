@@ -22,8 +22,12 @@ public class PageUtils {
 
     public MybatisPageRequest setPage(Integer page, Integer size, Map<String, Object> filter, Sort.Direction orderBy, String... sortFields){
         List<Sort.Order> sortList = Lists.newArrayList();
-        if(filter.containsKey("orderBy") && StringUtils.equals("asc", filter.get("orderBy").toString().toLowerCase())){
-            orderBy = Sort.Direction.ASC;
+        if(filter.containsKey("orderBy")){
+            if(StringUtils.equals("asc", filter.get("orderBy").toString().toLowerCase())){
+                orderBy = Sort.Direction.ASC;
+            }else{
+                orderBy = Sort.Direction.DESC;
+            }
         }
         if(filter.containsKey("sortField") && null != filter.get("sortField") && StringUtils.isNotEmpty(filter.get("sortField").toString())){
             sortList.add(new Sort.Order(orderBy, filter.get("sortField").toString()));
