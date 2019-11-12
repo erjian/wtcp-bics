@@ -1,6 +1,7 @@
 package cn.com.wanwei.bic.mapper;
 
 import cn.com.wanwei.bic.entity.ExtendEntity;
+import cn.com.wanwei.common.annotation.DataScope;
 import com.github.pagehelper.Page;
 import org.apache.ibatis.annotations.Mapper;
 
@@ -12,6 +13,7 @@ public interface ExtendMapper {
 
     int insert(ExtendEntity record);
 
+    @DataScope
     ExtendEntity selectByPrimaryKey(String id);
 
     int updateByPrimaryKey(ExtendEntity record);
@@ -21,6 +23,7 @@ public interface ExtendMapper {
      * @param filter
      * @return
      */
+    @DataScope
     Page<ExtendEntity> findByPage(Map<String, Object> filter);
 
     /**
