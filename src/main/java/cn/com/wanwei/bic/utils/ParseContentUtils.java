@@ -1,20 +1,17 @@
 package cn.com.wanwei.bic.utils;
 
 import cn.com.wanwei.bic.entity.MaterialEntity;
-import cn.com.wanwei.common.model.ResponseMessage;
 import cn.com.wanwei.common.model.User;
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringEscapeUtils;
-import org.apache.commons.lang3.time.DateFormatUtils;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
-import org.jsoup.nodes.Node;
 import org.jsoup.select.Elements;
 
-import java.util.*;
+import java.util.Date;
+import java.util.List;
 
 @Slf4j
 public class ParseContentUtils {

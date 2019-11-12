@@ -7,13 +7,9 @@
  */
 package cn.com.wanwei.bic.service.impl;
 
-import cn.com.wanwei.bic.entity.AuditLogEntity;
-import cn.com.wanwei.bic.entity.BaseTagsEntity;
-import cn.com.wanwei.bic.entity.ScenicEntity;
-import cn.com.wanwei.bic.entity.ScenicTagsEntity;
+import cn.com.wanwei.bic.entity.*;
 import cn.com.wanwei.bic.feign.CoderServiceFeign;
-import cn.com.wanwei.bic.mapper.AuditLogMapper;
-import cn.com.wanwei.bic.mapper.ScenicMapper;
+import cn.com.wanwei.bic.mapper.*;
 import cn.com.wanwei.bic.model.DataBindModel;
 import cn.com.wanwei.bic.model.ScenicModel;
 import cn.com.wanwei.bic.model.WeightModel;
@@ -29,7 +25,9 @@ import cn.com.wanwei.persistence.mybatis.MybatisPageRequest;
 import cn.com.wanwei.persistence.mybatis.PageInfo;
 import com.github.pagehelper.Page;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.data.domain.Sort;
@@ -49,6 +47,18 @@ public class ScenicServiceImpl implements ScenicService {
 
     @Autowired
     private ScenicMapper scenicMapper;
+
+    @Autowired
+    private EnterpriseMapper enterpriseMapper;
+
+    @Autowired
+    private BusinessMapper businessMapper;
+
+    @Autowired
+    private ContactMapper contactMapper;
+
+    @Autowired
+    private MaterialMapper materialMapper;
 
     @Autowired
     private CoderServiceFeign coderServiceFeign;
@@ -218,6 +228,41 @@ public class ScenicServiceImpl implements ScenicService {
             this.saveTags(tagsList, relateId, user);
         }
         return ResponseMessage.defaultResponse().setMsg("标签关联成功");
+    }
+
+    @Override
+    public ResponseMessage getOne(String id) throws Exception {
+        //1、查询景区信息，若存在，则添加到返回数据中
+        ScenicEntity scenicEntity = scenicMapper.selectByPrimaryKey(id);
+        if (scenicEntity == null) {
+            return ResponseMessage.validFailResponse().setMsg("无景区信息");
+        }
+
+        Map<String, Object> data = Maps.newHashMap();
+        data.put("scenicEntity", scenicEntity);
+
+        //2、查询企业信息并添加到返回数据中
+        EnterpriseEntity enterpriseEntity = enterpriseMapper.selectByPrincipalId(id);
+        data.put("enterpriseEntity", enterpriseEntity);
+
+        //3、查询营业信息并添加到返回数据中
+        BusinessEntity businessEntity = businessMapper.selectByPrincipalId(id);
+        data.put("businessEntity", businessEntity);
+
+        //4、查询通讯信息并添加到返回数据中
+        ContactEntity contactEntity = contactMapper.selectByPrincipalId(id);
+        data.put("contactEntity", contactEntity);
+
+        //5、查询素材信息，按照素材类型分类处理并添加到返回数据中
+        List<MaterialEntity> list = materialMapper.findByPrincipalId(id);
+        if(CollectionUtils.isNotEmpty(list)){
+            for(MaterialEntity entity:list){
+
+            }
+        }else {
+            data.put("fileList", Maps.newHashMap());
+        }
+        return null;
     }
 
     private int saveAuditLog(int preStatus, int auditStatus, String principalId, String userName, String msg, int type) {

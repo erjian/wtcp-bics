@@ -120,4 +120,11 @@ public interface ScenicService {
 	 * @return
 	 */
     ResponseMessage relateTags(Map<String, Object> tags, User user);
+
+	/**
+	 * C端获取一条景区详情
+	 * @param id
+	 * @return
+	 */
+	ResponseMessage getOne(String id) throws Exception;
 }

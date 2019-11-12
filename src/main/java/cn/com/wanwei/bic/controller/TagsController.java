@@ -109,4 +109,12 @@ public class TagsController extends BaseController {
         return kbServiceFeign.getAllTreeNoRight(0L);
     }
 
+    @ApiOperation(value = "根据feign接口获取标签数据", notes = "根据feign接口获取标签数据")
+    @ApiImplicitParam(name = "kind", value = "标签类型kind", required = true)
+    @OperationLog(value = "wtcp-bic/根据feign接口获取标签数据", operate = "r", module = "标签管理")
+    @RequestMapping(value = "/getTagsByKind", method = RequestMethod.GET)
+    public ResponseMessage getTagsByKind(@RequestParam Integer kind) {
+        return kbServiceFeign.getTagsByKind(kind);
+    }
+
 }
