@@ -13,6 +13,7 @@ import cn.com.wanwei.bic.service.AuditLogService;
 import cn.com.wanwei.bic.service.EntertainmentService;
 import cn.com.wanwei.bic.service.TagsService;
 import cn.com.wanwei.bic.service.MaterialService;
+import cn.com.wanwei.bic.utils.PageUtils;
 import cn.com.wanwei.bic.utils.UUIDUtils;
 import cn.com.wanwei.common.model.ResponseMessage;
 import cn.com.wanwei.common.model.User;
@@ -61,8 +62,7 @@ public class EntertainmentServiceImpl implements EntertainmentService {
 
     @Override
     public ResponseMessage findByPage(Integer page, Integer size, Map<String, Object> filter) {
-        Sort sort = Sort.by(new Sort.Order[]{new Sort.Order(Sort.Direction.DESC, "weight"), new Sort.Order(Sort.Direction.DESC, "created_date")});
-        MybatisPageRequest pageRequest = MybatisPageRequest.of(page, size, sort);
+        MybatisPageRequest pageRequest = PageUtils.getInstance().setPage(page, size,filter, Sort.Direction.DESC, "weight", "created_date");
         PageHelper.startPage(pageRequest.getPage(), pageRequest.getSize(), pageRequest.getOrders());
         Page<EntertainmentEntity> entertainmentEntities = entertainmentMapper.findByPage(filter);
         PageInfo<EntertainmentEntity> pageInfo = new PageInfo<>(entertainmentEntities, pageRequest);
@@ -111,7 +111,6 @@ public class EntertainmentServiceImpl implements EntertainmentService {
             entertainmentEntity.setCreatedDate(eEntity.getCreatedDate());
             entertainmentEntity.setStatus(0);
             entertainmentEntity.setCode(eEntity.getCode());
-            entertainmentEntity.setDeptCode(user.getOrg().getCode());
             entertainmentEntity.setUpdatedUser(user.getUsername());
             entertainmentEntity.setUpdatedDate(new Date());
             entertainmentMapper.updateByPrimaryKey(entertainmentEntity);
@@ -148,12 +147,7 @@ public class EntertainmentServiceImpl implements EntertainmentService {
             }
             for(int i=0;i<ids.size();i++){
                 EntertainmentEntity entertainmentEntity = entertainmentMapper.selectByPrimaryKey(ids.get(i));
-                if(weightModel.isFlag()){
-                    entertainmentEntity.setWeight(ids.size()-i);
-                }else{
-                    entertainmentEntity.setWeight(maxNum+ids.size()-i);
-                }
-                entertainmentEntity.setDeptCode(user.getOrg().getCode());
+                entertainmentEntity.setWeight(maxNum+ids.size()-i);
                 entertainmentEntity.setUpdatedUser(user.getUsername());
                 entertainmentEntity.setUpdatedDate(new Date());
                 entertainmentMapper.updateByPrimaryKey(entertainmentEntity);
@@ -201,7 +195,6 @@ public class EntertainmentServiceImpl implements EntertainmentService {
             }
         }
         eEntity.setStatus(auditLogEntity.getStatus());
-        eEntity.setDeptCode(user.getOrg().getCode());
         eEntity.setUpdatedUser(user.getUsername());
         eEntity.setUpdatedDate(new Date());
         entertainmentMapper.updateByPrimaryKey(eEntity);
