@@ -14,8 +14,6 @@ public interface ExtendMapper {
 
     ExtendEntity selectByPrimaryKey(String id);
 
-    int updateByPrimaryKeyWithBLOBs(ExtendEntity record);
-
     int updateByPrimaryKey(ExtendEntity record);
 
     /**
@@ -24,4 +22,11 @@ public interface ExtendMapper {
      * @return
      */
     Page<ExtendEntity> findByPage(Map<String, Object> filter);
+
+    /**
+     * 标题重名校验
+     * @param title
+     * @return
+     */
+    ExtendEntity checkTitle(String title);
 }

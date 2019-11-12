@@ -1,14 +1,12 @@
 package cn.com.wanwei.bic.service.impl;
 
-import cn.com.wanwei.bic.entity.AuditLogEntity;
-import cn.com.wanwei.bic.entity.BaseTagsEntity;
-import cn.com.wanwei.bic.entity.ExtendEntity;
-import cn.com.wanwei.bic.entity.ExtendTagsEntity;
+import cn.com.wanwei.bic.entity.*;
 import cn.com.wanwei.bic.feign.CoderServiceFeign;
 import cn.com.wanwei.bic.mapper.ExtendMapper;
 import cn.com.wanwei.bic.model.ExtendModel;
 import cn.com.wanwei.bic.service.ExtendService;
 import cn.com.wanwei.bic.service.TagsService;
+import cn.com.wanwei.bic.utils.PageUtils;
 import cn.com.wanwei.bic.utils.UUIDUtils;
 import cn.com.wanwei.common.model.ResponseMessage;
 import cn.com.wanwei.common.model.User;
@@ -18,6 +16,7 @@ import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.google.common.collect.Lists;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.data.domain.Sort;
@@ -60,12 +59,8 @@ public class ExtendServiceImpl implements ExtendService {
      */
     @Override
     public ResponseMessage findByPage(Integer page, Integer size, User currentUser, Map<String, Object> filter) throws Exception{
-        Sort.Order[] order = new Sort.Order[]{new Sort.Order(Sort.Direction.DESC, "created_date"),
-                new Sort.Order(Sort.Direction.DESC, "updated_date")};
-        Sort sort = Sort.by(order);
-        MybatisPageRequest pageRequest = MybatisPageRequest.of(page, size, sort);
-        PageHelper.startPage(pageRequest.getPage(), pageRequest.getSize());
-        PageHelper.orderBy(pageRequest.getOrders());
+        MybatisPageRequest pageRequest = PageUtils.getInstance().setPage(page, size,filter, Sort.Direction.DESC,  "created_date");
+        PageHelper.startPage(pageRequest.getPage(), pageRequest.getSize(), pageRequest.getOrders());
         //查询扩展信息列表数据
         Page<ExtendEntity> userEntities = extendMapper.findByPage(filter);
         PageInfo<ExtendEntity> pageInfo = new PageInfo<>(userEntities, pageRequest);
@@ -230,7 +225,7 @@ public class ExtendServiceImpl implements ExtendService {
     /**
      * 扩展信息关联标签
      * @param tags
-     * @param currentUser
+     * @param user
      * @return
      */
     @Override
@@ -241,5 +236,19 @@ public class ExtendServiceImpl implements ExtendService {
             this.saveTags(tagsList,relateId,user);
         }
         return ResponseMessage.defaultResponse().setMsg("标签关联成功");
+    }
+
+    @Override
+    public ResponseMessage checkTitle(String id, String title) {
+        ResponseMessage responseMessage = ResponseMessage.defaultResponse();
+        if (StringUtils.isNotBlank(title)) {
+            ExtendEntity extendEntity = extendMapper.checkTitle(title);
+            if (extendEntity != null) {
+                if (!extendEntity.getId().equals(id)) {
+                    return responseMessage.setStatus(ResponseMessage.FAILED).setMsg("标题名称重复！");
+                }
+            }
+        }
+        return responseMessage;
     }
 }
