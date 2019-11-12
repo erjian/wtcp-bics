@@ -1,10 +1,10 @@
 package cn.com.wanwei.bic.mapper;
 
 import cn.com.wanwei.bic.entity.ScenicEntity;
-import cn.com.wanwei.common.model.ResponseMessage;
 import com.github.pagehelper.Page;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
+import org.springframework.cloud.context.config.annotation.RefreshScope;
 
 import java.util.Date;
 import java.util.List;
@@ -27,6 +27,7 @@ public interface ScenicMapper {
      * @param filter 查询参数
      * @return Page<ScenicEntity>
      */
+    @RefreshScope
     Page<ScenicEntity> findByPage(Map<String, Object> filter);
 
     /**
