@@ -129,6 +129,7 @@
         <include refid="Base_Column_List"/>
         from t_bic_poi
         where type = #{type,jdbcType=VARCHAR}
+        and principal_id = #{principalId,jdbcType=VARCHAR}
         and parent_id = "0"
     </select>
     <!-- 批量删除 -->
