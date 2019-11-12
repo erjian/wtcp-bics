@@ -265,6 +265,21 @@ public class ScenicServiceImpl implements ScenicService {
         return null;
     }
 
+    @Override
+    public ResponseMessage findByTitleAndIdNot(String title, String id) {
+        ResponseMessage responseMessage = ResponseMessage.defaultResponse();
+        try {
+            List<ScenicEntity> scenicEntities = scenicMapper.findByTitleAndIdNot(title, id);
+            if (CollectionUtils.isNotEmpty(scenicEntities)) {
+                responseMessage.setStatus(ResponseMessage.FAILED).setMsg("该名称已经存在！");
+            }
+        } catch (Exception e) {
+            log.error(e.getMessage());
+            responseMessage.setStatus(ResponseMessage.FAILED).setMsg(e.getMessage());
+        }
+        return responseMessage;
+    }
+
     private int saveAuditLog(int preStatus, int auditStatus, String principalId, String userName, String msg, int type) {
         AuditLogEntity auditLogEntity = new AuditLogEntity();
         auditLogEntity.setId(UUIDUtils.getInstance().getId());

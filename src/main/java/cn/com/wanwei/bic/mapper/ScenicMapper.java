@@ -1,6 +1,7 @@
 package cn.com.wanwei.bic.mapper;
 
 import cn.com.wanwei.bic.entity.ScenicEntity;
+import cn.com.wanwei.common.model.ResponseMessage;
 import com.github.pagehelper.Page;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -57,4 +58,12 @@ public interface ScenicMapper {
      * @return
      */
     int clearWeight();
+
+    /**
+     * 根据景区名称和主键验重
+     * @param title
+     * @param id
+     * @return
+     */
+    List<ScenicEntity> findByTitleAndIdNot(@Param(value="title")String title, @Param(value="id")String id);
 }

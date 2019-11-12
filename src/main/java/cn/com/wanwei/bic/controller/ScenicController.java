@@ -157,5 +157,16 @@ public class ScenicController extends BaseController {
         title = title == null? "":title;
         return scenicService.getScenicInfo(title.trim().toLowerCase());
     }
+
+    @ApiOperation(value = "景区名称是否重复", notes = "景区名称是否重复(status:1 表示不重复，0表示重复)")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "title", value = "景区名称", required = true, dataType = "String"),
+            @ApiImplicitParam(name = "id", value = "景区id")
+    })
+    @RequestMapping(value = "/existByTitle", method = RequestMethod.GET)
+    @OperationLog(value = "wtcp-bics/检查景区名称是否重复", operate = "", module = "景区基础信息管理", frontCode = "", resource = "")
+    public ResponseMessage existByTitle(@RequestParam String title, String id) {
+        return scenicService.findByTitleAndIdNot(title, id != null ? id : "-1");
+    }
 }
 
