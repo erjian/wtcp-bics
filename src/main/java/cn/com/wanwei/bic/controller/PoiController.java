@@ -37,7 +37,7 @@ public class PoiController extends  BaseController{
     @OperationLog(value = "wtcp-bics/poi管理分页列表", operate = "r", module = "poi管理")
     public ResponseMessage findByPage(@RequestParam(value = "page", defaultValue = "1") Integer page,
                                       @RequestParam(value = "size", defaultValue = "10") Integer size,
-                                      HttpServletRequest request){
+                                      HttpServletRequest request) throws Exception{
         Map<String, Object> filter = RequestUtil.getParameters(request);
         return poiService.findByPage(page,size,filter);
     }
