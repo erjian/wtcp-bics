@@ -255,14 +255,62 @@ public class ScenicServiceImpl implements ScenicService {
 
         //5、查询素材信息，按照素材类型分类处理并添加到返回数据中
         List<MaterialEntity> list = materialMapper.findByPrincipalId(id);
+        Map<String, Object> materialList = Maps.newHashMap();
         if(CollectionUtils.isNotEmpty(list)){
+            List<MaterialEntity> imageList = Lists.newArrayList();
+            List<MaterialEntity> audioList = Lists.newArrayList();
+            List<MaterialEntity> videoList = Lists.newArrayList();
+            List<MaterialEntity> fileList = Lists.newArrayList();
+            List<MaterialEntity> titleImageList = Lists.newArrayList();
+            List<MaterialEntity> spotImageList = Lists.newArrayList();
             for(MaterialEntity entity:list){
-
+                if(entity.getFileType().toLowerCase().equals("image")){
+                    imageList.add(entity);
+                }
+                if(entity.getFileType().toLowerCase().equals("audio")){
+                    audioList.add(entity);
+                }
+                if(entity.getFileType().toLowerCase().equals("video")){
+                    videoList.add(entity);
+                }
+                if(entity.getFileType().toLowerCase().equals("file")){
+                    fileList.add(entity);
+                }
+                if(null != entity.getFileIdentify() && entity.getFileIdentify() == 1){
+                    titleImageList.add(entity);
+                }
+                if(null != entity.getFileIdentify() && entity.getFileIdentify() == 2){
+                    spotImageList.add(entity);
+                }
+                if(null != entity.getFileIdentify() && entity.getFileIdentify() == 3){
+                    titleImageList.add(entity);
+                    spotImageList.add(entity);
+                }
             }
-        }else {
-            data.put("fileList", Maps.newHashMap());
+            materialList.put("image", imageList);
+            materialList.put("audio", audioList);
+            materialList.put("video", videoList);
+            materialList.put("file", fileList);
+            materialList.put("titleImage", titleImageList);
+            materialList.put("spotImage", spotImageList);
         }
-        return null;
+        data.put("fileList", materialList);
+        return ResponseMessage.defaultResponse().setData(data);
+    }
+
+    @Override
+    public ResponseMessage findByTitleAndIdNot(String title, String id) {
+        ResponseMessage responseMessage = ResponseMessage.defaultResponse();
+        try {
+            List<ScenicEntity> scenicEntities = scenicMapper.findByTitleAndIdNot(title, id);
+            if (CollectionUtils.isNotEmpty(scenicEntities)) {
+                responseMessage.setStatus(ResponseMessage.FAILED).setMsg("该名称已经存在！");
+            }
+        } catch (Exception e) {
+            log.error(e.getMessage());
+            responseMessage.setStatus(ResponseMessage.FAILED).setMsg(e.getMessage());
+        }
+        return responseMessage;
     }
 
     private int saveAuditLog(int preStatus, int auditStatus, String principalId, String userName, String msg, int type) {

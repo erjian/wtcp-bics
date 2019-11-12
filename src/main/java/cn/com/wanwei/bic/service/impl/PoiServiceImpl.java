@@ -238,8 +238,8 @@ public class PoiServiceImpl implements PoiService {
     }
 
     @Override
-    public ResponseMessage findScenicList(String type) {
-        List<PoiEntity> poiEntities = poiMapper.findScenicList(type);
+    public ResponseMessage findScenicList(String type,String principalId) {
+        List<PoiEntity> poiEntities = poiMapper.findScenicList(type,principalId);
         return ResponseMessage.defaultResponse().setData(poiEntities);
     }
 

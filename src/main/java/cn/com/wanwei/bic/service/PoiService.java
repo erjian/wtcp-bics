@@ -84,7 +84,7 @@ public interface PoiService {
      * @param type
      * @return list
      */
-    ResponseMessage findScenicList(String type);
+    ResponseMessage findScenicList(String type,String principalId);
 
     /**
      * 批量删除poi管理信息

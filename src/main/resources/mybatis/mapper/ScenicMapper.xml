@@ -216,4 +216,19 @@
   <select id="maxWeight" resultType="Integer">
     select weight from t_bic_scenic order by weight desc limit 1
   </select>
+
+  <!-- 组织机构名称验重 蔺健武 2019年7月3日16:41:14 -->
+  <select id="findByTitleAndIdNot" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"/>
+    from t_bic_scenic
+    <where>
+      <if test="title != null">
+        and title = #{title,jdbcType=VARCHAR}
+      </if>
+      <if test="id != null and id != '-1'.toString()">
+        and id != #{id,jdbcType=BIGINT}
+      </if>
+    </where>
+  </select>
 </mapper>

@@ -34,6 +34,9 @@ public class MaterialEntity extends BaseEntity{
     @ApiModelProperty(value = "路径(相对路径)")
     private String fileUrl;
 
+    @ApiModelProperty(value = "视频封面图地址")
+    private String coverImageUrl;
+
     @ApiModelProperty(value = "素材标识（1：标题图片，2：亮点图片，3：标题且亮点图片）")
     private Integer fileIdentify;
 

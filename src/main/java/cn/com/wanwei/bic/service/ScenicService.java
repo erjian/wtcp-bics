@@ -127,4 +127,6 @@ public interface ScenicService {
 	 * @return
 	 */
 	ResponseMessage getOne(String id) throws Exception;
+
+    ResponseMessage findByTitleAndIdNot(String title, String s);
 }
