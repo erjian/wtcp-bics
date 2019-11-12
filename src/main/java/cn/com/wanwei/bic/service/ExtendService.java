@@ -55,9 +55,9 @@ public interface ExtendService {
 
     /**
      * 扩展信息审核/上线
-     * @param id
-     * @param username
-     * @param i
+     * @param auditLogEntity
+     * @param user
+     * @param type
      * @return
      */
     ResponseMessage auditOrIssue(AuditLogEntity auditLogEntity, User user, int type) throws Exception;
@@ -85,4 +85,12 @@ public interface ExtendService {
      * @return
      */
     ResponseMessage relateTags(Map<String, Object> tags, User currentUser) throws Exception;
+
+    /**
+     * 标题重名校验
+     * @param id
+     * @param title
+     * @return
+     */
+    ResponseMessage checkTitle(String id, String title);
 }

@@ -135,4 +135,15 @@ public class ExtendController extends BaseController{
         return extendService.relateTags(tags,getCurrentUser());
     }
 
+    @ApiOperation(value = "标题重名校验", notes = "标题重名校验")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "id", value = "扩展信息信息ID"),
+            @ApiImplicitParam(name = "title", value = "标题")
+    })
+    @GetMapping(value = "/checkTitle")
+    public ResponseMessage checkTitle(@RequestParam(value = "id",required = false) String id,
+                                      @RequestParam(value = "title",required = false) String title){
+        return extendService.checkTitle(id,title);
+    }
+
 }

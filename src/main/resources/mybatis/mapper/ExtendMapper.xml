@@ -131,5 +131,11 @@
       </if>
     </where>
   </select>
+  <select id="checkTitle"  parameterType="java.lang.String" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from t_bic_extend
+    where title = #{title,jdbcType=VARCHAR}
+  </select>
 
 </mapper>
