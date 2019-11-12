@@ -7,6 +7,7 @@
         <result column="material_id" jdbcType="VARCHAR" property="materialId"/>
         <result column="file_type" jdbcType="VARCHAR" property="fileType"/>
         <result column="file_url" jdbcType="VARCHAR" property="fileUrl"/>
+        <result column="cover_image_url" jdbcType="VARCHAR" property="coverImageUrl"/>
         <result column="file_name" jdbcType="VARCHAR" property="fileName"/>
         <result column="file_identify" jdbcType="INTEGER" property="fileIdentify"/>
         <result column="created_user" jdbcType="VARCHAR" property="createdUser"/>
@@ -16,7 +17,7 @@
     </resultMap>
 
     <sql id="Base_Column_List">
-        id, principal_id, material_id, file_type, file_url, file_name, file_identify,
+        id, principal_id, material_id, file_type, file_url, cover_image_url, file_name, file_identify,
         created_user, created_date, updated_user, updated_date
     </sql>
 
@@ -83,12 +84,12 @@
 
     <insert id="insert" parameterType="cn.com.wanwei.bic.entity.MaterialEntity" useGeneratedKeys="true" keyProperty="id" keyColumn="id">
         insert into t_bic_material (id, principal_id, material_id, file_type, file_name,
-        file_url, file_identify, created_user, created_date, updated_user, updated_date )
+        file_url, cover_image_url, file_identify, created_user, created_date, updated_user, updated_date )
         values
         (   #{id,jdbcType=VARCHAR},
             #{principalId,jdbcType=VARCHAR}, #{materialId,jdbcType=VARCHAR},
             #{fileType,jdbcType=VARCHAR}, #{fileName,jdbcType=VARCHAR},
-            #{fileUrl,jdbcType=VARCHAR}, #{fileIdentify,jdbcType=BIT},
+            #{fileUrl,jdbcType=VARCHAR}, #{coverImageUrl,jdbcType=VARCHAR}, #{fileIdentify,jdbcType=BIT},
             #{createdUser,jdbcType=VARCHAR}, #{createdDate,jdbcType=TIMESTAMP},
             #{updatedUser,jdbcType=VARCHAR}, #{updatedDate,jdbcType=TIMESTAMP}
         )
@@ -96,13 +97,13 @@
 
     <insert id="batchInsert" parameterType="java.util.List">
         insert into t_bic_material (id, principal_id, material_id, file_type, file_name,
-        file_url, file_identify, created_user, created_date, updated_user, updated_date )
+        file_url, cover_image_url, file_identify, created_user, created_date, updated_user, updated_date )
         values
         <foreach collection="list" item="item" index="index" separator=",">
             (   #{item.id,jdbcType=VARCHAR},
                 #{item.principalId,jdbcType=VARCHAR}, #{item.materialId,jdbcType=VARCHAR},
                 #{item.fileType,jdbcType=VARCHAR}, #{item.fileName,jdbcType=VARCHAR},
-                #{item.fileUrl,jdbcType=VARCHAR}, #{item.fileIdentify,jdbcType=INTEGER},
+                #{item.fileUrl,jdbcType=VARCHAR}, #{item.coverImageUrl,jdbcType=VARCHAR}, #{item.fileIdentify,jdbcType=INTEGER},
                 #{item.createdUser,jdbcType=VARCHAR}, #{item.createdDate,jdbcType=TIMESTAMP},
                 #{item.updatedUser,jdbcType=VARCHAR}, #{item.updatedDate,jdbcType=TIMESTAMP}
             )
@@ -116,6 +117,7 @@
             file_type = #{fileType,jdbcType=VARCHAR},
             file_name = #{fileName,jdbcType=VARCHAR},
             file_url = #{fileUrl,jdbcType=VARCHAR},
+            cover_image_url = #{coverImageUrl,jdbcType=VARCHAR},
             file_identify = #{fileIdentify,jdbcType=INTEGER},
             created_user = #{createdUser,jdbcType=VARCHAR},
             created_date = #{createdDate,jdbcType=TIMESTAMP},
