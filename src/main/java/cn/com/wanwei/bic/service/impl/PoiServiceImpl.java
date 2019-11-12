@@ -8,6 +8,7 @@ import cn.com.wanwei.bic.model.PoiModel;
 import cn.com.wanwei.bic.service.AuditLogService;
 import cn.com.wanwei.bic.service.PoiService;
 import cn.com.wanwei.bic.service.TagsService;
+import cn.com.wanwei.bic.utils.PageUtils;
 import cn.com.wanwei.bic.utils.UUIDUtils;
 import cn.com.wanwei.common.model.ResponseMessage;
 import cn.com.wanwei.common.model.User;
@@ -57,22 +58,14 @@ public class PoiServiceImpl implements PoiService {
 
     @Override
     public ResponseMessage findByPage(Integer page, Integer size, Map<String, Object> filter) {
-        try {
-            Sort sort = Sort.by(new Sort.Order[]{new Sort.Order(Sort.Direction.DESC, "weight"), new Sort.Order(Sort.Direction.DESC, "created_date")});
-            MybatisPageRequest pageRequest = MybatisPageRequest.of(page, size, sort);
-            PageHelper.startPage(pageRequest.getPage(), pageRequest.getSize());
-            PageHelper.orderBy(pageRequest.getOrders());
-            Page<PoiEntity> poiEntities = poiMapper.findByPage(filter);
-            PageInfo<PoiEntity> pageInfo = new PageInfo<>(poiEntities, pageRequest);
-            for (PoiEntity entity : pageInfo.getContent()) {
-                ScenicEntity scenicEntity = scenicMapper.selectByPrimaryKey(entity.getPrincipalId());
-                entity.setScenicName(scenicEntity.getTitle());
-            }
-            return ResponseMessage.defaultResponse().setData(pageInfo);
-        } catch (Exception e) {
-            log.error(e.getMessage());
-            return ResponseMessage.validFailResponse().setMsg("获取失败！");
+        MybatisPageRequest pageRequest = PageUtils.getInstance().setPage(page, size, filter, Sort.Direction.DESC, "weight", "created_date");
+        Page<PoiEntity> poiEntities = poiMapper.findByPage(filter);
+        PageInfo<PoiEntity> pageInfo = new PageInfo<>(poiEntities, pageRequest);
+        for (PoiEntity entity : pageInfo.getContent()) {
+            ScenicEntity scenicEntity = scenicMapper.selectByPrimaryKey(entity.getPrincipalId());
+            entity.setScenicName(scenicEntity.getTitle());
         }
+        return ResponseMessage.defaultResponse().setData(pageInfo);
     }
 
     @Override
