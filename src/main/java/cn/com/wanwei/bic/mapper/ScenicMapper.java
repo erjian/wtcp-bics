@@ -1,6 +1,7 @@
 package cn.com.wanwei.bic.mapper;
 
 import cn.com.wanwei.bic.entity.ScenicEntity;
+import cn.com.wanwei.common.annotation.DataScope;
 import com.github.pagehelper.Page;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -27,7 +28,7 @@ public interface ScenicMapper {
      * @param filter 查询参数
      * @return Page<ScenicEntity>
      */
-    @RefreshScope
+    @DataScope
     Page<ScenicEntity> findByPage(Map<String, Object> filter);
 
     /**
