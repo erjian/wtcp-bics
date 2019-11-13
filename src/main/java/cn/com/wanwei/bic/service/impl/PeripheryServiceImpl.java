@@ -82,7 +82,7 @@ public class PeripheryServiceImpl implements PeripheryService {
         if (responseMessageGetCode.getStatus() == 1 && responseMessageGetCode.getData() != null) {
             peripheryEntity.setId(UUIDUtils.getInstance().getId());
             peripheryEntity.setCode(responseMessageGetCode.getData().toString());
-            peripheryEntity.setStatus(0);
+            peripheryEntity.setStatus(1);
             peripheryEntity.setDeptCode(user.getOrg().getCode());
             peripheryEntity.setCreatedUser(user.getUsername());
             peripheryEntity.setCreatedDate(new Date());

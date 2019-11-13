@@ -92,7 +92,7 @@ public class PoiServiceImpl implements PoiService {
             if (responseMessageGetCode.getStatus() == 1 && responseMessageGetCode.getData() != null) {
                 poiEntity.setId(UUIDUtils.getInstance().getId());
                 poiEntity.setCode(responseMessageGetCode.getData().toString());
-                poiEntity.setStatus(0);
+                poiEntity.setStatus(1);
                 poiEntity.setCreatedUser(user.getUsername());
                 poiEntity.setCreatedDate(new Date());
                 poiEntity.setDeptCode(user.getOrg().getCode());
