@@ -93,6 +93,7 @@ public class PoiServiceImpl implements PoiService {
                 poiEntity.setId(UUIDUtils.getInstance().getId());
                 poiEntity.setCode(responseMessageGetCode.getData().toString());
                 poiEntity.setStatus(1);
+                poiEntity.setWeight(0);
                 poiEntity.setCreatedUser(user.getUsername());
                 poiEntity.setCreatedDate(new Date());
                 poiEntity.setDeptCode(user.getOrg().getCode());
@@ -134,7 +135,7 @@ public class PoiServiceImpl implements PoiService {
         PoiEntity pEntity = poiMapper.selectByPrimaryKey(id);
         if (pEntity != null) {
             poiEntity.setId(id);
-            poiEntity.setStatus(0);
+            poiEntity.setStatus(1);
             poiEntity.setCode(pEntity.getCode());
             poiEntity.setDeptCode(user.getOrg().getCode());
             poiEntity.setUpdatedUser(user.getUsername());

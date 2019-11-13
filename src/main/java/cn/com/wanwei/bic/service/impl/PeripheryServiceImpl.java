@@ -83,6 +83,7 @@ public class PeripheryServiceImpl implements PeripheryService {
             peripheryEntity.setId(UUIDUtils.getInstance().getId());
             peripheryEntity.setCode(responseMessageGetCode.getData().toString());
             peripheryEntity.setStatus(1);
+            peripheryEntity.setWeight(0);
             peripheryEntity.setDeptCode(user.getOrg().getCode());
             peripheryEntity.setCreatedUser(user.getUsername());
             peripheryEntity.setCreatedDate(new Date());
@@ -117,7 +118,7 @@ public class PeripheryServiceImpl implements PeripheryService {
             peripheryEntity.setUpdatedUser(user.getUsername());
             peripheryEntity.setUpdatedDate(new Date());
             peripheryEntity.setId(entity.getId());
-            peripheryEntity.setStatus(0);
+            peripheryEntity.setStatus(1);
             peripheryEntity.setCode(entity.getCode());
             peripheryMapper.updateByPrimaryKey(peripheryEntity);
             this.saveTags(peripheryModel.getList(), id, user);
