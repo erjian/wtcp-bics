@@ -55,7 +55,7 @@ public class PeripheryServiceImpl implements PeripheryService {
 
     @Override
     public ResponseMessage findByPage(Integer page, Integer size, Map<String, Object> filter) {
-        MybatisPageRequest pageRequest = PageUtils.getInstance().setPage(page, size, filter, Sort.Direction.DESC, "created_date", "updated_date");
+        MybatisPageRequest pageRequest = PageUtils.getInstance().setPage(page, size, filter, Sort.Direction.DESC, "weight", "created_date");
         Page<PeripheryEntity> peripheryEntities = peripheryMapper.findByPage(filter);
         PageInfo<PeripheryEntity> pageInfo = new PageInfo<>(peripheryEntities, pageRequest);
         return ResponseMessage.defaultResponse().setData(pageInfo);
