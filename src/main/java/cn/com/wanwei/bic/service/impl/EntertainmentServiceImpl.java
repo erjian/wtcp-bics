@@ -1,11 +1,9 @@
 package cn.com.wanwei.bic.service.impl;
 
-import cn.com.wanwei.bic.entity.AuditLogEntity;
-import cn.com.wanwei.bic.entity.BaseTagsEntity;
-import cn.com.wanwei.bic.entity.EntertainmentEntity;
-import cn.com.wanwei.bic.entity.EntertainmentTagsEntity;
+import cn.com.wanwei.bic.entity.*;
 import cn.com.wanwei.bic.feign.CoderServiceFeign;
 import cn.com.wanwei.bic.mapper.EntertainmentMapper;
+import cn.com.wanwei.bic.mapper.ExtendMapper;
 import cn.com.wanwei.bic.model.DataBindModel;
 import cn.com.wanwei.bic.model.EntertainmentModel;
 import cn.com.wanwei.bic.model.WeightModel;
@@ -59,6 +57,9 @@ public class EntertainmentServiceImpl implements EntertainmentService {
 
     @Autowired
     private MaterialService materialService;
+
+    @Autowired
+    private ExtendMapper extendMapper;
 
     @Override
     public ResponseMessage findByPage(Integer page, Integer size, Map<String, Object> filter) {
@@ -210,10 +211,11 @@ public class EntertainmentServiceImpl implements EntertainmentService {
     }
 
     @Override
-    public int dataBind(String updatedUser, String updatedDate, DataBindModel model) {
+    public void dataBind(String updatedUser, String updatedDate, DataBindModel model) {
         String deptCode = model.getDeptCode();
         List<String> ids = model.getIds();
-        return entertainmentMapper.dataBind(updatedUser, updatedDate, deptCode, ids);
+        entertainmentMapper.dataBind(updatedUser, updatedDate, deptCode, ids);
+         extendMapper.dataBindExtend(updatedUser, updatedDate, deptCode,ids);
     }
 
     @Override

@@ -88,7 +88,7 @@ public interface EntertainmentService {
      * @param updatedDate
      * @param model
      */
-    int dataBind(String updatedUser, String updatedDate, DataBindModel model);
+    void dataBind(String updatedUser, String updatedDate, DataBindModel model);
 
     /**
      * 休闲娱乐信息标签关联

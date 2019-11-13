@@ -4,7 +4,9 @@ import cn.com.wanwei.bic.entity.ExtendEntity;
 import cn.com.wanwei.common.annotation.DataScope;
 import com.github.pagehelper.Page;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
+import java.util.List;
 import java.util.Map;
 
 @Mapper
@@ -32,4 +34,14 @@ public interface ExtendMapper {
      * @return
      */
     ExtendEntity checkTitle(String title);
+
+    /**
+     * 扩展信息组织关联
+     * @param updatedUser
+     * @param updatedDate
+     * @param deptCode
+     * @param ids
+     */
+    void dataBindExtend(@Param(value="updatedUser") String updatedUser, @Param(value="updatedDate") String updatedDate,
+                        @Param(value="deptCode") String deptCode, @Param(value="ids") List<String> ids);
 }

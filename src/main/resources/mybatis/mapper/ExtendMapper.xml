@@ -18,22 +18,16 @@
     <result column="created_date" jdbcType="TIMESTAMP" property="createdDate" />
     <result column="updated_user" jdbcType="VARCHAR" property="updatedUser" />
     <result column="updated_date" jdbcType="TIMESTAMP" property="updatedDate" />
-  </resultMap>
-  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="cn.com.wanwei.bic.entity.ExtendEntity">
     <result column="content" jdbcType="LONGVARCHAR" property="content" />
+    <result column="dept_code" jdbcType="VARCHAR" property="deptCode" />
   </resultMap>
   <sql id="Base_Column_List">
     id, principal_id, code, title, sub_title, slogan, summary, description, weight, type, 
-    status, price, created_user, created_date, updated_user, updated_date
+    status, price, created_user, created_date, updated_user, updated_date,content,dept_code
   </sql>
-  <sql id="Blob_Column_List">
-    content
-  </sql>
-  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="ResultMapWithBLOBs">
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
-    ,
-    <include refid="Blob_Column_List" />
     from t_bic_extend
     where id = #{id,jdbcType=VARCHAR}
   </select>
@@ -46,35 +40,15 @@
       sub_title, slogan, summary, 
       description, weight, type, 
       status, price, created_user, 
-      created_date, updated_user, updated_date, 
-      content)
+      created_date, updated_user, updated_date,
+      content,dept_code)
     values (#{id,jdbcType=VARCHAR}, #{principalId,jdbcType=VARCHAR}, #{code,jdbcType=VARCHAR}, #{title,jdbcType=VARCHAR},
       #{subTitle,jdbcType=VARCHAR}, #{slogan,jdbcType=VARCHAR}, #{summary,jdbcType=VARCHAR}, 
       #{description,jdbcType=VARCHAR}, #{weight,jdbcType=REAL}, #{type,jdbcType=INTEGER}, 
       #{status,jdbcType=INTEGER}, #{price,jdbcType=REAL}, #{createdUser,jdbcType=VARCHAR}, 
       #{createdDate,jdbcType=TIMESTAMP}, #{updatedUser,jdbcType=VARCHAR}, #{updatedDate,jdbcType=TIMESTAMP}, 
-      #{content,jdbcType=LONGVARCHAR})
+      #{content,jdbcType=LONGVARCHAR},#{deptCode,jdbcType=VARCHAR})
   </insert>
-  <update id="updateByPrimaryKeyWithBLOBs" parameterType="cn.com.wanwei.bic.entity.ExtendEntity">
-    update t_bic_extend
-    set principal_id = #{principalId,jdbcType=VARCHAR},
-      code = #{code,jdbcType=VARCHAR},
-      title = #{title,jdbcType=VARCHAR},
-      sub_title = #{subTitle,jdbcType=VARCHAR},
-      slogan = #{slogan,jdbcType=VARCHAR},
-      summary = #{summary,jdbcType=VARCHAR},
-      description = #{description,jdbcType=VARCHAR},
-      weight = #{weight,jdbcType=REAL},
-      type = #{type,jdbcType=INTEGER},
-      status = #{status,jdbcType=INTEGER},
-      price = #{price,jdbcType=REAL},
-      created_user = #{createdUser,jdbcType=VARCHAR},
-      created_date = #{createdDate,jdbcType=TIMESTAMP},
-      updated_user = #{updatedUser,jdbcType=VARCHAR},
-      updated_date = #{updatedDate,jdbcType=TIMESTAMP},
-      content = #{content,jdbcType=LONGVARCHAR}
-    where id = #{id,jdbcType=VARCHAR}
-  </update>
   <update id="updateByPrimaryKey" parameterType="cn.com.wanwei.bic.entity.ExtendEntity">
     update t_bic_extend
     set principal_id = #{principalId,jdbcType=VARCHAR},
@@ -91,7 +65,9 @@
       created_user = #{createdUser,jdbcType=VARCHAR},
       created_date = #{createdDate,jdbcType=TIMESTAMP},
       updated_user = #{updatedUser,jdbcType=VARCHAR},
-      updated_date = #{updatedDate,jdbcType=TIMESTAMP}
+      updated_date = #{updatedDate,jdbcType=TIMESTAMP},
+      content = #{content,jdbcType=LONGVARCHAR},
+      dept_code=#{deptCode,jdbcType=VARCHAR}
     where id = #{id,jdbcType=VARCHAR}
   </update>
 
@@ -138,4 +114,21 @@
     where title = #{title,jdbcType=VARCHAR}
   </select>
 
+  <select id=" getExtendList"  parameterType="java.lang.String" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from t_bic_extend
+    where principalId = #{principalId,jdbcType=VARCHAR}
+  </select>
+
+  <update id="dataBindExtend">
+    update t_bic_extend
+    set updated_date = #{updatedDate,jdbcType=VARCHAR},
+    updated_user = #{updatedUser,jdbcType=VARCHAR},
+    dept_code = #{deptCode,jdbcType=VARCHAR}
+    where principal_id in
+    <foreach collection="ids" item="item" index="index" open="(" separator="," close=")">
+      #{item}
+    </foreach>
+  </update>
 </mapper>

@@ -62,6 +62,9 @@ public class ExtendEntity extends BaseEntity{
     @ApiModelProperty(value = "内容")
     private String content;
 
+    @ApiModelProperty(value = "组织机构编码")
+    private String deptCode;
+
     @ApiModelProperty(value = "在线状态")
     private Integer onlineStatus;
 

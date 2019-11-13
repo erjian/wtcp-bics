@@ -83,6 +83,7 @@ public class ExtendServiceImpl implements ExtendService {
         extendEntity.setId(UUIDUtils.getInstance().getId());
         extendEntity.setCreatedUser(user.getUsername());
         extendEntity.setCreatedDate(new Date());
+        extendEntity.setDeptCode(user.getOrg().getCode());
         extendEntity.setStatus(0);
         extendEntity.setCode(responseMessage.getData().toString());
         extendMapper.insert(extendEntity);
