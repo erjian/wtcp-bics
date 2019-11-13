@@ -6,6 +6,7 @@ import com.github.pagehelper.Page;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -48,4 +49,15 @@ public interface PoiMapper {
      * @param ids
      */
     void batchDelete(@Param(value="ids") List<String> ids);
+
+    /**
+     * 关联机构
+     * @param updatedUser
+     * @param updatedDate
+     * @param deptCode
+     * @param ids
+     * @return
+     */
+    int dataBind(@Param(value="updatedUser") String updatedUser, @Param(value="updatedDate") Date updatedDate,
+                 @Param(value="deptCode") String deptCode, @Param(value="ids") List<String> ids);
 }

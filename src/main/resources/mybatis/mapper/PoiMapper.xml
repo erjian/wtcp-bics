@@ -87,6 +87,16 @@
       `type`=#{type,jdbcType=INTEGER}
     where id = #{id,jdbcType=VARCHAR}
   </update>
+    <update id="dataBind">
+        update t_bic_poi
+        set updated_date = #{updatedDate,jdbcType=TIMESTAMP},
+        updated_user = #{updatedUser,jdbcType=VARCHAR},
+        dept_code = #{deptCode,jdbcType=VARCHAR}
+        where principal_id in
+        <foreach collection="ids" item="item" index="index" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </update>
     <select id="findByPage" parameterType="java.util.Map" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>

@@ -5,7 +5,6 @@ import cn.com.wanwei.common.annotation.DataScope;
 import com.github.pagehelper.Page;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
-import org.springframework.cloud.context.config.annotation.RefreshScope;
 
 import java.util.Date;
 import java.util.List;

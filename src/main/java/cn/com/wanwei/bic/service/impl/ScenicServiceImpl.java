@@ -64,6 +64,9 @@ public class ScenicServiceImpl implements ScenicService {
     private CoderServiceFeign coderServiceFeign;
 
     @Autowired
+    private PoiMapper poiMapper;
+
+    @Autowired
     private TagsService tagsService;
 
     @Autowired
@@ -155,6 +158,7 @@ public class ScenicServiceImpl implements ScenicService {
         String deptCode = model.getDeptCode();
         List<String> ids = model.getIds();
         scenicMapper.dataBind(updatedUser, new Date(), deptCode, ids);
+        poiMapper.dataBind(updatedUser, new Date(), deptCode, ids);
         return ResponseMessage.defaultResponse().setMsg("关联机构成功");
     }
 
