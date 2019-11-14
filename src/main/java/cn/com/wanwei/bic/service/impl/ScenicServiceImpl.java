@@ -79,7 +79,8 @@ public class ScenicServiceImpl implements ScenicService {
     public ResponseMessage save(ScenicModel scenicModel, User user, Long ruleId, Integer appCode) {
         ScenicEntity record = scenicModel.getScenicEntity();
         String type = scenicModel.getType();
-        record.setId(UUIDUtils.getInstance().getId());
+        String id=UUIDUtils.getInstance().getId();
+        record.setId(id);
         ResponseMessage result = coderServiceFeign.buildSerialByCode(ruleId, appCode, type);
         record.setCode(result.getData().toString());
         record.setTitleQp(PinyinUtils.getPingYin(record.getTitle()).toLowerCase());
@@ -93,7 +94,7 @@ public class ScenicServiceImpl implements ScenicService {
         // 解析富文本中的附件并保存
         materialService.saveByDom(record.getContent(), record.getId(), user);
 
-        return ResponseMessage.defaultResponse().setMsg("保存成功");
+        return ResponseMessage.defaultResponse().setMsg("保存成功").setData(id);
     }
 
     @Override
