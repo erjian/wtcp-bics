@@ -223,4 +223,9 @@ public class EntertainmentServiceImpl implements EntertainmentService {
         this.saveTags(list,id,user);
         return ResponseMessage.defaultResponse().setMsg("关联成功！");
     }
+
+    @Override
+    public ResponseMessage getEnterList() {
+        return ResponseMessage.defaultResponse().setData(entertainmentMapper.getEnterList());
+    }
 }

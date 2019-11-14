@@ -98,4 +98,10 @@ public interface EntertainmentService {
      * @return
      */
     ResponseMessage relateTags(String id, List<Map<String, Object>> list, User user);
+
+    /**
+     * 获取休闲娱乐信息
+     * @return
+     */
+    ResponseMessage getEnterList();
 }

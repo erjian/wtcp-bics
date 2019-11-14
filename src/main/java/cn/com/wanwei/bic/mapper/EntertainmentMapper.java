@@ -55,4 +55,10 @@ public interface EntertainmentMapper {
      * 获取最大的权重
      */
     Integer maxWeight();
+
+    /**
+     * 获取休闲娱乐信息
+     * @return
+     */
+    List<EntertainmentEntity> getEnterList();
 }

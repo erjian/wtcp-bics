@@ -156,4 +156,9 @@
   <select id="maxWeight" resultType="Integer">
     select weight from t_bic_entertainment order by weight desc limit 1
   </select>
+  <select id="getEnterList" resultMap="BaseResultMap">
+      select
+      <include refid="Base_Column_List" />
+      from t_bic_entertainment
+  </select>
 </mapper>

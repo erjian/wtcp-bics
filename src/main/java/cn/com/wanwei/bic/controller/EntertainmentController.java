@@ -172,4 +172,12 @@ public class EntertainmentController extends BaseController{
         return entertainmentService.relateTags(id,list,getCurrentUser());
     }
 
+    @ApiOperation(value = "获取休闲娱乐信息", notes = "获取休闲娱乐信息")
+    @GetMapping(value = "/getEnterList")
+    @PreAuthorize("hasAuthority('entertainment:r')")
+    @OperationLog(value = "wtcp-bics/获取休闲娱乐信息", operate = "r", module = "休闲娱乐管理")
+    public ResponseMessage getEnterList() {
+        return entertainmentService.getEnterList();
+    }
+
 }
