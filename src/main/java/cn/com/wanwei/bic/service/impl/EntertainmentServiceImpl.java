@@ -181,7 +181,7 @@ public class EntertainmentServiceImpl implements EntertainmentService {
         if(type==1){
             //上线
             if(auditLogEntity.getPreStatus()==0||auditLogEntity.getPreStatus()==2){
-                return ResponseMessage.validFailResponse().setMsg("当前信息未审核通过，不可上下线操作！");
+                return ResponseMessage.validFailResponse().setMsg("请先审核通过后，再进⾏上线操作！");
             }else {
                 if(auditLogEntity.getStatus()==1||auditLogEntity.getStatus()==9){
                     msg=auditLogEntity.getStatus()==1?"下线成功！":"上线成功！";
