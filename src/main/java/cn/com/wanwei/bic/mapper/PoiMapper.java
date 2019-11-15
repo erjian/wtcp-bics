@@ -40,9 +40,12 @@ public interface PoiMapper {
      * 查询一级景点
      * @param type 景点
      * @param principalId 景区
+     * @param id poiID
      * @return
      */
-    List<PoiEntity> findScenicList(@Param(value = "type")String type,@Param(value = "principalId")String principalId);
+    List<PoiEntity> findScenicList(@Param(value = "type")String type,
+                                   @Param(value = "principalId")String principalId,
+                                   @Param(value = "id")String id);
 
     /**
      * 批量删除poi信息

@@ -141,6 +141,9 @@
         where type = #{type,jdbcType=VARCHAR}
         and principal_id = #{principalId,jdbcType=VARCHAR}
         and parent_id = "0"
+        <if test="id != null and id!=''">
+            and id != #{id,jdbcType=VARCHAR}
+        </if>
     </select>
     <!-- 批量删除 -->
     <delete id="batchDelete">
