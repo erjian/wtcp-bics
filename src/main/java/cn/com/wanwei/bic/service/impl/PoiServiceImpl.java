@@ -2,12 +2,14 @@ package cn.com.wanwei.bic.service.impl;
 
 import cn.com.wanwei.bic.entity.*;
 import cn.com.wanwei.bic.feign.CoderServiceFeign;
+import cn.com.wanwei.bic.mapper.MaterialMapper;
 import cn.com.wanwei.bic.mapper.PoiMapper;
 import cn.com.wanwei.bic.mapper.ScenicMapper;
 import cn.com.wanwei.bic.model.PoiModel;
 import cn.com.wanwei.bic.service.AuditLogService;
 import cn.com.wanwei.bic.service.PoiService;
 import cn.com.wanwei.bic.service.TagsService;
+import cn.com.wanwei.bic.utils.MaterialUtils;
 import cn.com.wanwei.bic.utils.PageUtils;
 import cn.com.wanwei.bic.utils.UUIDUtils;
 import cn.com.wanwei.common.model.ResponseMessage;
@@ -15,9 +17,10 @@ import cn.com.wanwei.common.model.User;
 import cn.com.wanwei.persistence.mybatis.MybatisPageRequest;
 import cn.com.wanwei.persistence.mybatis.PageInfo;
 import com.github.pagehelper.Page;
-import com.github.pagehelper.PageHelper;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -26,6 +29,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -49,6 +53,9 @@ public class PoiServiceImpl implements PoiService {
 
     @Autowired
     private CoderServiceFeign coderServiceFeign;
+
+    @Autowired
+    private MaterialMapper materialMapper;
 
     @Autowired
     private TagsService tagsService;
@@ -269,6 +276,21 @@ public class PoiServiceImpl implements PoiService {
             responseMessage.setStatus(0).setMsg("关联标签失败，请重新关联");
         }
         return responseMessage;
+    }
+
+    @Override
+    public ResponseMessage getOne(String id) {
+        //1、查询poi实体并判断是否存在
+        PoiEntity poiEntity = poiMapper.selectByPrimaryKey(id);
+        if(poiEntity == null) {
+            return ResponseMessage.validFailResponse().setMsg("该POI不存在");
+        }
+        Map<String, Object> map = new HashMap<>();
+        map.put("poiEntity", poiEntity);
+
+        //2、查询poi相关的素材信息
+        map.put("fileList", new MaterialUtils().handleMaterial(id));
+        return ResponseMessage.defaultResponse().setData(map);
     }
 
 

@@ -100,4 +100,11 @@ public interface PoiService {
      * @return
      */
     ResponseMessage relateTags(Map<String,Object> tags, User user);
+
+    /**
+     * C端根据id获取POI详情的接口
+     * @param id
+     * @return
+     */
+    ResponseMessage getOne(String id);
 }

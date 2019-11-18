@@ -16,6 +16,7 @@ import cn.com.wanwei.bic.model.WeightModel;
 import cn.com.wanwei.bic.service.MaterialService;
 import cn.com.wanwei.bic.service.ScenicService;
 import cn.com.wanwei.bic.service.TagsService;
+import cn.com.wanwei.bic.utils.MaterialUtils;
 import cn.com.wanwei.bic.utils.PageUtils;
 import cn.com.wanwei.bic.utils.UUIDUtils;
 import cn.com.wanwei.common.model.ResponseMessage;
@@ -259,47 +260,7 @@ public class ScenicServiceImpl implements ScenicService {
         data.put("contactEntity", contactEntity);
 
         //5、查询素材信息，按照素材类型分类处理并添加到返回数据中
-        List<MaterialEntity> list = materialMapper.findByPrincipalId(id);
-        Map<String, Object> materialList = Maps.newHashMap();
-        if(CollectionUtils.isNotEmpty(list)){
-            List<MaterialEntity> imageList = Lists.newArrayList();
-            List<MaterialEntity> audioList = Lists.newArrayList();
-            List<MaterialEntity> videoList = Lists.newArrayList();
-            List<MaterialEntity> fileList = Lists.newArrayList();
-            List<MaterialEntity> titleImageList = Lists.newArrayList();
-            List<MaterialEntity> spotImageList = Lists.newArrayList();
-            for(MaterialEntity entity:list){
-                if(entity.getFileType().toLowerCase().equals("image")){
-                    imageList.add(entity);
-                }
-                if(entity.getFileType().toLowerCase().equals("audio")){
-                    audioList.add(entity);
-                }
-                if(entity.getFileType().toLowerCase().equals("video")){
-                    videoList.add(entity);
-                }
-                if(entity.getFileType().toLowerCase().equals("file")){
-                    fileList.add(entity);
-                }
-                if(null != entity.getFileIdentify() && entity.getFileIdentify() == 1){
-                    titleImageList.add(entity);
-                }
-                if(null != entity.getFileIdentify() && entity.getFileIdentify() == 2){
-                    spotImageList.add(entity);
-                }
-                if(null != entity.getFileIdentify() && entity.getFileIdentify() == 3){
-                    titleImageList.add(entity);
-                    spotImageList.add(entity);
-                }
-            }
-            materialList.put("image", imageList);
-            materialList.put("audio", audioList);
-            materialList.put("video", videoList);
-            materialList.put("file", fileList);
-            materialList.put("titleImage", titleImageList);
-            materialList.put("spotImage", spotImageList);
-        }
-        data.put("fileList", materialList);
+        data.put("fileList", new MaterialUtils().handleMaterial(id));
         return ResponseMessage.defaultResponse().setData(data);
     }
 
