@@ -7,12 +7,15 @@ import cn.com.wanwei.bic.utils.ParseContentUtils;
 import cn.com.wanwei.bic.utils.UUIDUtils;
 import cn.com.wanwei.common.model.ResponseMessage;
 import cn.com.wanwei.common.model.User;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class MaterialServiceImpl implements MaterialService {
@@ -159,5 +162,50 @@ public class MaterialServiceImpl implements MaterialService {
             responseMessage.setMsg("设置成功");
         }
         return responseMessage;
+    }
+
+    @Override
+    public Map<String, Object> handleMaterial(String principalId) {
+        List<MaterialEntity> list = materialMapper.findByPrincipalId(principalId);
+        Map<String, Object> materialList = Maps.newHashMap();
+        if(CollectionUtils.isNotEmpty(list)){
+            List<MaterialEntity> imageList = Lists.newArrayList();
+            List<MaterialEntity> audioList = Lists.newArrayList();
+            List<MaterialEntity> videoList = Lists.newArrayList();
+            List<MaterialEntity> fileList = Lists.newArrayList();
+            List<MaterialEntity> titleImageList = Lists.newArrayList();
+            List<MaterialEntity> spotImageList = Lists.newArrayList();
+            for(MaterialEntity entity:list){
+                if(entity.getFileType().toLowerCase().equals("image")){
+                    imageList.add(entity);
+                }
+                if(entity.getFileType().toLowerCase().equals("audio")){
+                    audioList.add(entity);
+                }
+                if(entity.getFileType().toLowerCase().equals("video")){
+                    videoList.add(entity);
+                }
+                if(entity.getFileType().toLowerCase().equals("file")){
+                    fileList.add(entity);
+                }
+                if(null != entity.getFileIdentify() && entity.getFileIdentify() == 1){
+                    titleImageList.add(entity);
+                }
+                if(null != entity.getFileIdentify() && entity.getFileIdentify() == 2){
+                    spotImageList.add(entity);
+                }
+                if(null != entity.getFileIdentify() && entity.getFileIdentify() == 3){
+                    titleImageList.add(entity);
+                    spotImageList.add(entity);
+                }
+            }
+            materialList.put("image", imageList);
+            materialList.put("audio", audioList);
+            materialList.put("video", videoList);
+            materialList.put("file", fileList);
+            materialList.put("titleImage", titleImageList);
+            materialList.put("spotImage", spotImageList);
+        }
+        return materialList;
     }
 }

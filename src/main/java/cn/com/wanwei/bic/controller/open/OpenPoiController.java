@@ -9,6 +9,7 @@ package cn.com.wanwei.bic.controller.open;
 import cn.com.wanwei.bic.controller.BaseController;
 import cn.com.wanwei.bic.service.PoiService;
 import cn.com.wanwei.common.model.ResponseMessage;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +26,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RefreshScope
 @RequestMapping("/public/poi")
+@Api(value = "C端POI管理", tags = "C端POI管理相关接口")
 public class OpenPoiController extends BaseController {
 	
 	@Autowired

@@ -95,8 +95,6 @@ public class EntertainmentServiceImpl implements EntertainmentService {
             entertainmentEntity.setDeptCode(user.getOrg().getCode());
             entertainmentMapper.insert(entertainmentEntity);
             this.saveTags(entertainmentModel.getList(),id,user);
-            // 解析富文本中的附件并保存
-            materialService.saveByDom(entertainmentEntity.getContent(), entertainmentEntity.getId(), user);
             return ResponseMessage.defaultResponse().setMsg("保存成功!").setData(id);
         }
         return responseMessageGetCode;

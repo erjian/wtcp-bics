@@ -16,7 +16,6 @@ import cn.com.wanwei.bic.model.WeightModel;
 import cn.com.wanwei.bic.service.MaterialService;
 import cn.com.wanwei.bic.service.ScenicService;
 import cn.com.wanwei.bic.service.TagsService;
-import cn.com.wanwei.bic.utils.MaterialUtils;
 import cn.com.wanwei.bic.utils.PageUtils;
 import cn.com.wanwei.bic.utils.UUIDUtils;
 import cn.com.wanwei.common.model.ResponseMessage;
@@ -59,9 +58,6 @@ public class ScenicServiceImpl implements ScenicService {
     private ContactMapper contactMapper;
 
     @Autowired
-    private MaterialMapper materialMapper;
-
-    @Autowired
     private CoderServiceFeign coderServiceFeign;
 
     @Autowired
@@ -91,9 +87,6 @@ public class ScenicServiceImpl implements ScenicService {
         record.setStatus(0);
         scenicMapper.insert(record);
         this.saveTags(scenicModel.getList(), record.getId(), user);
-
-        // 解析富文本中的附件并保存
-        materialService.saveByDom(record.getContent(), record.getId(), user);
 
         return ResponseMessage.defaultResponse().setMsg("保存成功").setData(id);
     }
@@ -128,10 +121,6 @@ public class ScenicServiceImpl implements ScenicService {
         record.setUpdatedUser(user.getUsername());
         scenicMapper.updateByPrimaryKeyWithBLOBs(record);
         this.saveTags(scenicModel.getList(), id, user);
-
-        // 先删除关联的附件再解析富文本中的附件并保存
-        materialService.deleteByPrincipalId(id);
-        materialService.saveByDom(record.getContent(), id, user);
 
         return ResponseMessage.defaultResponse().setMsg("更新成功");
     }
@@ -260,7 +249,7 @@ public class ScenicServiceImpl implements ScenicService {
         data.put("contactEntity", contactEntity);
 
         //5、查询素材信息，按照素材类型分类处理并添加到返回数据中
-        data.put("fileList", MaterialUtils.getInstance().handleMaterial(id));
+        data.put("fileList", materialService.handleMaterial(id));
         return ResponseMessage.defaultResponse().setData(data);
     }
 

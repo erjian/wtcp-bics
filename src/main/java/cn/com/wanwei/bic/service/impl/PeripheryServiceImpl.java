@@ -90,9 +90,6 @@ public class PeripheryServiceImpl implements PeripheryService {
             peripheryMapper.insert(peripheryEntity);
             this.saveTags(peripheryModel.getList(), peripheryEntity.getId(), user);
 
-            // 解析富文本中的附件并保存
-            materialService.saveByDom(peripheryEntity.getContent(), peripheryEntity.getId(), user);
-
             return ResponseMessage.defaultResponse().setMsg("保存成功!");
         }
         return responseMessageGetCode;

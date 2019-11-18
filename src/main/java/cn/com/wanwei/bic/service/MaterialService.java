@@ -5,6 +5,7 @@ import cn.com.wanwei.common.model.ResponseMessage;
 import cn.com.wanwei.common.model.User;
 
 import java.util.List;
+import java.util.Map;
 
 public interface MaterialService {
 
@@ -33,4 +34,6 @@ public interface MaterialService {
     ResponseMessage updateByPrimaryKey(String id, MaterialEntity materialEntity, User user);
 
     ResponseMessage updateIdentify(String principalId, String id, Integer identify, User user);
+
+    Map<String, Object> handleMaterial(String principalId);
 }
