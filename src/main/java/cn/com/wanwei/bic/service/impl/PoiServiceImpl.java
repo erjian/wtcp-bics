@@ -289,7 +289,7 @@ public class PoiServiceImpl implements PoiService {
         map.put("poiEntity", poiEntity);
 
         //2、查询poi相关的素材信息
-        map.put("fileList", new MaterialUtils().handleMaterial(id));
+        map.put("fileList", MaterialUtils.getInstance().handleMaterial(id));
         return ResponseMessage.defaultResponse().setData(map);
     }
 

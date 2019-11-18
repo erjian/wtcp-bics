@@ -12,6 +12,15 @@ import java.util.Map;
 
 public class MaterialUtils {
 
+    private static MaterialUtils instance = new MaterialUtils();
+
+    private MaterialUtils() {
+    }
+
+    public static MaterialUtils getInstance() {
+        return instance;
+    }
+
     @Autowired
     private MaterialMapper materialMapper;
 
