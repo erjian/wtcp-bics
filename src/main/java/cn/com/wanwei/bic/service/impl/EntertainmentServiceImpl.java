@@ -8,8 +8,8 @@ import cn.com.wanwei.bic.model.EntertainmentModel;
 import cn.com.wanwei.bic.model.WeightModel;
 import cn.com.wanwei.bic.service.AuditLogService;
 import cn.com.wanwei.bic.service.EntertainmentService;
-import cn.com.wanwei.bic.service.TagsService;
 import cn.com.wanwei.bic.service.MaterialService;
+import cn.com.wanwei.bic.service.TagsService;
 import cn.com.wanwei.bic.utils.PageUtils;
 import cn.com.wanwei.bic.utils.UUIDUtils;
 import cn.com.wanwei.common.model.ResponseMessage;
@@ -20,7 +20,6 @@ import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import io.swagger.annotations.ApiImplicitParams;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -69,7 +68,7 @@ public class EntertainmentServiceImpl implements EntertainmentService {
     private ContactMapper contactMapper;
 
     @Autowired
-    private MaterialMapper materialMapper;
+    private BusinessMapper businessMapper;
 
     @Override
     public ResponseMessage findByPage(Integer page, Integer size, Map<String, Object> filter) {
@@ -246,12 +245,14 @@ public class EntertainmentServiceImpl implements EntertainmentService {
             //企业信息
             EnterpriseEntity enterpriseEntity = enterpriseMapper.selectByPrincipalId(id);
             map.put("enterpriseEntity",enterpriseEntity);
+            //营业信息
+            BusinessEntity businessEntity = businessMapper.selectByPrincipalId(id);
+            map.put("businessEntity", businessEntity);
             //通讯信息
             ContactEntity contactEntity = contactMapper.selectByPrincipalId(id);
             map.put("contactEntity",contactEntity);
             //素材信息
-            List<MaterialEntity> fileList = materialMapper.findByPrincipalId(id);
-            map.put("fileList",fileList);
+            map.put("fileList",materialService.handleMaterial(id));
             return ResponseMessage.defaultResponse().setData(map);
         }else{
             return ResponseMessage.validFailResponse().setMsg("暂无该休闲娱乐信息！");

@@ -7,6 +7,7 @@ import cn.com.wanwei.bic.model.DataBindModel;
 import cn.com.wanwei.bic.model.DestinationModel;
 import cn.com.wanwei.bic.model.WeightModel;
 import cn.com.wanwei.bic.service.DestinationService;
+import cn.com.wanwei.bic.service.MaterialService;
 import cn.com.wanwei.bic.service.TagsService;
 import cn.com.wanwei.bic.utils.PageUtils;
 import cn.com.wanwei.bic.utils.UUIDUtils;
@@ -50,7 +51,7 @@ public class DestinationServiceImpl implements DestinationService {
     private TagsService tagsService;
 
     @Autowired
-    private MaterialMapper materialMapper;
+    private MaterialService materialService;
 
     /**
      * 查询目的地分页列表数据
@@ -254,14 +255,18 @@ public class DestinationServiceImpl implements DestinationService {
     }
 
     @Override
-    public ResponseMessage getDestinationDetail(String region) {
+    public ResponseMessage getDestinationDetail(String region,String id) {
         Map<String,Object>map= Maps.newHashMap();
-        DestinationEntity destinationEntity = destinationMapper.getDestinationDetail(region);
+        DestinationEntity destinationEntity;
+        if(StringUtils.isNotBlank(id)){
+             destinationEntity = destinationMapper.selectByPrimaryKey(id);
+        }else{
+             destinationEntity = destinationMapper.getDestinationDetailByRegion(region);
+        }
         if(destinationEntity!=null){
             map.put("destinationEntity",destinationEntity);
             //素材信息
-            List<MaterialEntity> fileList = materialMapper.findByPrincipalId(destinationEntity.getId());
-            map.put("fileList",fileList);
+            map.put("fileList",materialService.handleMaterial(destinationEntity.getId()));
             return ResponseMessage.defaultResponse().setData(map);
         }else{
             return ResponseMessage.validFailResponse().setMsg("该目的地信息不存在！");
@@ -277,8 +282,7 @@ public class DestinationServiceImpl implements DestinationService {
             Map<String,Object>map= Maps.newHashMap();
             map.put("destinationEntity",destinationEntity);
             //素材信息
-            List<MaterialEntity> fileList = materialMapper.findByPrincipalId(destinationEntity.getId());
-            map.put("fileList",fileList);
+            map.put("fileList",materialService.handleMaterial(destinationEntity.getId()));
             list.add(map);
         }
         PageInfo<Map<String, Object>> pageInfo = new PageInfo<>(list, pageRequest);
