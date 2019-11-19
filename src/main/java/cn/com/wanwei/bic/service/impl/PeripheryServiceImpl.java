@@ -28,9 +28,7 @@ import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 @Slf4j
@@ -89,6 +87,9 @@ public class PeripheryServiceImpl implements PeripheryService {
             peripheryEntity.setCreatedDate(new Date());
             peripheryMapper.insert(peripheryEntity);
             this.saveTags(peripheryModel.getList(), peripheryEntity.getId(), user);
+
+            // 解析富文本中的附件并保存
+            materialService.saveByDom(peripheryEntity.getContent(), peripheryEntity.getId(), user);
 
             return ResponseMessage.defaultResponse().setMsg("保存成功!");
         }
@@ -251,5 +252,18 @@ public class PeripheryServiceImpl implements PeripheryService {
             responseMessage.setStatus(0).setMsg("关联标签失败，请重新关联");
         }
         return responseMessage;
+    }
+
+    @Override
+    public ResponseMessage findById(String id) {
+        PeripheryEntity peripheryEntity = peripheryMapper.selectByPrimaryKey(id);
+        if(peripheryEntity == null){
+            return ResponseMessage.validFailResponse().setMsg("该周边管理信息不存在");
+        }
+        Map<String, Object> map = new HashMap<>();
+        map.put("peripheryEntity", peripheryEntity);
+        //获取素材
+        map.put("fileList", materialService.handleMaterial(id));
+        return ResponseMessage.defaultResponse().setData(map);
     }
 }
