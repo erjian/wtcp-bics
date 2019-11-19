@@ -168,13 +168,13 @@ public class MaterialServiceImpl implements MaterialService {
     public Map<String, Object> handleMaterial(String principalId) {
         List<MaterialEntity> list = materialMapper.findByPrincipalId(principalId);
         Map<String, Object> materialList = Maps.newHashMap();
+        List<MaterialEntity> imageList = Lists.newArrayList();
+        List<MaterialEntity> audioList = Lists.newArrayList();
+        List<MaterialEntity> videoList = Lists.newArrayList();
+        List<MaterialEntity> fileList = Lists.newArrayList();
+        List<MaterialEntity> titleImageList = Lists.newArrayList();
+        List<MaterialEntity> spotImageList = Lists.newArrayList();
         if(CollectionUtils.isNotEmpty(list)){
-            List<MaterialEntity> imageList = Lists.newArrayList();
-            List<MaterialEntity> audioList = Lists.newArrayList();
-            List<MaterialEntity> videoList = Lists.newArrayList();
-            List<MaterialEntity> fileList = Lists.newArrayList();
-            List<MaterialEntity> titleImageList = Lists.newArrayList();
-            List<MaterialEntity> spotImageList = Lists.newArrayList();
             for(MaterialEntity entity:list){
                 if(entity.getFileType().toLowerCase().equals("image")){
                     imageList.add(entity);
@@ -199,13 +199,13 @@ public class MaterialServiceImpl implements MaterialService {
                     spotImageList.add(entity);
                 }
             }
-            materialList.put("image", imageList);
-            materialList.put("audio", audioList);
-            materialList.put("video", videoList);
-            materialList.put("file", fileList);
-            materialList.put("titleImage", titleImageList);
-            materialList.put("spotImage", spotImageList);
         }
+        materialList.put("image", imageList);
+        materialList.put("audio", audioList);
+        materialList.put("video", videoList);
+        materialList.put("file", fileList);
+        materialList.put("titleImage", titleImageList);
+        materialList.put("spotImage", spotImageList);
         return materialList;
     }
 }
