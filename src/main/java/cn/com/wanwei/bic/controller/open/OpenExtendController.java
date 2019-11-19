@@ -26,7 +26,7 @@ public class OpenExtendController extends BaseController {
     @ApiOperation(value = "获取扩展信息列表", notes = "获取扩展信息列表")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "principalId", value = "关联信息ID", required = true),
-            @ApiImplicitParam(name = "type", value = "扩展信息类型（1：营地特色，2：营地设施,3：菜品，4：特色项目）" )
+            @ApiImplicitParam(name = "type", value = "扩展信息类型（不填查所有类型，类型编码从C端数据类型管理相关接口那里获取）" )
     })
     @RequestMapping(value = "/getList", method = RequestMethod.GET)
     public ResponseMessage getList(@RequestParam(value = "principalId") String principalId,@RequestParam(value = "type",required = false) Integer type){
@@ -36,7 +36,7 @@ public class OpenExtendController extends BaseController {
     @ApiOperation(value = "查询扩展信息详情", notes = "根据ID查询扩展信息详情")
     @ApiImplicitParam(name = "id", value = "扩展信息ID", required = true)
     @RequestMapping(value = "/getExtendInfo/{id}", method = RequestMethod.GET)
-    public ResponseMessage getExtendInfo(@PathVariable("id") String id) throws Exception{
-        return extendService.selectByPrimaryKey(id);
+    public ResponseMessage getExtendInfo(@PathVariable("id") String id) {
+        return extendService.getExtendInfo(id);
     }
 }

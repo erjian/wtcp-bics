@@ -102,4 +102,11 @@ public interface ExtendService {
      * @return
      */
     ResponseMessage getList(String principalId, Integer type);
+
+    /**
+     * 查询扩展信息详情
+     * @param id
+     * @return
+     */
+    ResponseMessage getExtendInfo(String id);
 }

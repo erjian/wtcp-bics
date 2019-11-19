@@ -24,6 +24,7 @@ import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -264,6 +265,23 @@ public class DestinationServiceImpl implements DestinationService {
         }else{
             return ResponseMessage.validFailResponse().setMsg("该目的地信息不存在！");
         }
+    }
+
+    @Override
+    public ResponseMessage getDestinationList(Integer page, Integer size, User user, Map<String, Object> filter){
+        MybatisPageRequest pageRequest = PageUtils.getInstance().setPage(page, size, filter, Sort.Direction.DESC, "created_date", "updated_date");
+        List<Map<String, Object>> list = new ArrayList<>();
+        Page<DestinationEntity> DestinationEntities = destinationMapper.findByPage(filter);
+        for(DestinationEntity destinationEntity:DestinationEntities){
+            Map<String,Object>map= Maps.newHashMap();
+            map.put("destinationEntity",destinationEntity);
+            //素材信息
+            List<MaterialEntity> fileList = materialMapper.findByPrincipalId(destinationEntity.getId());
+            map.put("fileList",fileList);
+            list.add(map);
+        }
+        PageInfo<Map<String, Object>> pageInfo = new PageInfo<>(list, pageRequest);
+        return ResponseMessage.defaultResponse().setData(pageInfo);
     }
 
 }

@@ -3,6 +3,7 @@ package cn.com.wanwei.bic.service.impl;
 import cn.com.wanwei.bic.entity.*;
 import cn.com.wanwei.bic.feign.CoderServiceFeign;
 import cn.com.wanwei.bic.mapper.ExtendMapper;
+import cn.com.wanwei.bic.mapper.MaterialMapper;
 import cn.com.wanwei.bic.model.ExtendModel;
 import cn.com.wanwei.bic.service.ExtendService;
 import cn.com.wanwei.bic.service.TagsService;
@@ -15,6 +16,7 @@ import cn.com.wanwei.persistence.mybatis.PageInfo;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +24,7 @@ import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -48,6 +51,9 @@ public class ExtendServiceImpl implements ExtendService {
 
     @Autowired
     private TagsService tagsService;
+
+    @Autowired
+    private MaterialMapper materialMapper;
 
     /**
      * 扩展信息管理分页列表
@@ -255,7 +261,33 @@ public class ExtendServiceImpl implements ExtendService {
 
     @Override
     public ResponseMessage getList(String principalId, Integer type) {
-        List<ExtendEntity>list= extendMapper.getList(principalId,type);
+        List<Map<String, Object>> list = new ArrayList<>();
+        List<ExtendEntity>extendList= extendMapper.getList(principalId,type);
+        if(extendList!=null&&!extendList.isEmpty()){
+            for(ExtendEntity extendEntity:extendList){
+                Map<String,Object>map= Maps.newHashMap();
+                map.put("ExtendEntity",extendEntity);
+                //素材信息
+                List<MaterialEntity> fileList = materialMapper.findByPrincipalId(extendEntity.getId());
+                map.put("fileList",fileList);
+                list.add(map);
+            }
+        }
         return ResponseMessage.defaultResponse().setData(list);
+    }
+
+    @Override
+    public ResponseMessage getExtendInfo(String id) {
+        Map<String,Object>map= Maps.newHashMap();
+        ExtendEntity extendEntity = extendMapper.selectByPrimaryKey(id);
+        if(extendEntity != null){
+            map.put("extendEntity",extendEntity);
+            //素材信息
+            List<MaterialEntity> fileList = materialMapper.findByPrincipalId(id);
+            map.put("fileList",fileList);
+            return ResponseMessage.defaultResponse().setData(map);
+        }else{
+            return ResponseMessage.validFailResponse().setMsg("无扩展信息！");
+        }
     }
 }

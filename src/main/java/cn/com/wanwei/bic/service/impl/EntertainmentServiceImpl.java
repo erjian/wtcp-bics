@@ -247,8 +247,8 @@ public class EntertainmentServiceImpl implements EntertainmentService {
             EnterpriseEntity enterpriseEntity = enterpriseMapper.selectByPrincipalId(id);
             map.put("enterpriseEntity",enterpriseEntity);
             //通讯信息
-            ContactEntity communicateEntity = contactMapper.selectByPrincipalId(id);
-            map.put("communicateEntity",communicateEntity);
+            ContactEntity contactEntity = contactMapper.selectByPrincipalId(id);
+            map.put("contactEntity",contactEntity);
             //素材信息
             List<MaterialEntity> fileList = materialMapper.findByPrincipalId(id);
             map.put("fileList",fileList);

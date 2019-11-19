@@ -107,4 +107,9 @@ public interface DestinationService {
      * @return
      */
     ResponseMessage getDestinationDetail(String areaCode);
+
+    /**
+     * 目的地基础信息管理分页列表
+     */
+    ResponseMessage getDestinationList(Integer page, Integer size, User user, Map<String, Object> filter);
 }

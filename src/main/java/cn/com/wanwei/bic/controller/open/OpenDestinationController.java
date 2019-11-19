@@ -31,7 +31,7 @@ public class OpenDestinationController extends BaseController {
                                       @RequestParam(value = "size", defaultValue = "10") Integer size,
                                       HttpServletRequest request) throws Exception {
         Map<String, Object> filter = RequestUtil.getParameters(request);
-        return destinationService.findByPage(page,size,getCurrentUser(),filter);
+        return destinationService.getDestinationList(page,size,getCurrentUser(),filter);
     }
 
     @ApiOperation(value = "根据areaCode获取目的地详情", notes = "根据areaCode获取目的地详情")
