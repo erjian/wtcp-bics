@@ -145,6 +145,21 @@
             and id != #{id,jdbcType=VARCHAR}
         </if>
     </select>
+
+    <select id="getList" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from t_bic_poi
+        <where>
+            <if test="principalId != null and principalId != ''">
+                and principal_id = #{principalId,jdbcType=VARCHAR}
+            </if>
+            <if test="type != null and type != ''">
+                and `type` = #{type,jdbcType=VARCHAR}
+            </if>
+        </where>
+    </select>
+
     <!-- 批量删除 -->
     <delete id="batchDelete">
         delete from t_bic_poi

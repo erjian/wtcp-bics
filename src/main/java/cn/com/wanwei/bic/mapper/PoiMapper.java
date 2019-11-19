@@ -63,4 +63,12 @@ public interface PoiMapper {
      */
     int dataBind(@Param(value="updatedUser") String updatedUser, @Param(value="updatedDate") Date updatedDate,
                  @Param(value="deptCode") String deptCode, @Param(value="ids") List<String> ids);
+
+    /**
+     * 查询POI信息
+     * @param principalId
+     * @param type
+     * @return
+     */
+    List<PoiEntity> getList(@Param(value = "principalId")String principalId, @Param(value = "type")String type);
 }

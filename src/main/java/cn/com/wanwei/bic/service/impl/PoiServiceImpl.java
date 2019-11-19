@@ -17,7 +17,9 @@ import cn.com.wanwei.persistence.mybatis.MybatisPageRequest;
 import cn.com.wanwei.persistence.mybatis.PageInfo;
 import com.github.pagehelper.Page;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -288,6 +290,21 @@ public class PoiServiceImpl implements PoiService {
         //2、查询poi相关的素材信息
         map.put("fileList", materialService.handleMaterial(id));
         return ResponseMessage.defaultResponse().setData(map);
+    }
+
+    @Override
+    public ResponseMessage getList(String principalId, String type) {
+        List<Map<String, Object>> data = Lists.newArrayList();
+        List<PoiEntity> list = poiMapper.getList(principalId, type);
+        if(CollectionUtils.isNotEmpty(list)){
+            for(PoiEntity entity:list){
+                Map<String, Object> map = Maps.newHashMap();
+                map.put("poiEntity", entity);
+                map.put("fileList", materialService.handleMaterial(entity.getId()));
+                data.add(map);
+            }
+        }
+        return ResponseMessage.defaultResponse().setData(data);
     }
 
 

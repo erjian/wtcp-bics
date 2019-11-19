@@ -107,4 +107,12 @@ public interface PoiService {
      * @return
      */
     ResponseMessage getOne(String id);
+
+    /**
+     * C端根据景区ID和type获取poi信息
+     * @param principalId
+     * @param type
+     * @return
+     */
+    ResponseMessage getList(String principalId, String type);
 }

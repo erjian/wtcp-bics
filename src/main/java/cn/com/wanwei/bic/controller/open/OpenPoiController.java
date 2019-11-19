@@ -11,6 +11,7 @@ import cn.com.wanwei.bic.service.PoiService;
 import cn.com.wanwei.common.model.ResponseMessage;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
@@ -32,33 +33,13 @@ public class OpenPoiController extends BaseController {
 	@Autowired
 	private PoiService poiService;
 
-//	@SuppressWarnings({ "rawtypes", "unchecked" })
-//	@ApiOperation(value = "根据景区ID获取POI列表", notes = "根据景区ID获取POI列表")
-//	@ApiImplicitParam
-//	@ApiImplicitParams({@ApiImplicitParam(name = "id", value = "景区ID", required = true, dataType = "String"),
-//			            @ApiImplicitParam(name = "type", value = "类型", required = false, dataType = "String")})
-//	@RequestMapping(value = "/getList/{id}", method = RequestMethod.GET)
-//	public ResponseMessage getList(@PathVariable("id") Long id, String type) {
-//		List<Map<String, Object>> list = new ArrayList<>();
-//		Query query = new Query();
-//		query.addCriteria(Criteria.where("scenicId").is(id));
-//		if(StrUtil.isNotBlank(type)){
-//			query.addCriteria(Criteria.where("type").is(type));
-//		}
-//		List<PoiEntity> poiList = mongoTemplate.find(query, PoiEntity.class);
-//		for (PoiEntity poiEntity : poiList) {
-//			Map<String, Object> map = new HashMap<>();
-//			map.put("poiEntity", poiEntity);
-//			Query query2 = new Query();
-//			query2.addCriteria(Criteria.where("objectId").is(poiEntity.getId()));
-//			List<FileRelationEntity> fileRelationList = mongoTemplate.find(query2, FileRelationEntity.class);
-//			Map<String, Object> fileList = getFileList(fileRelationList);
-//			map.put("fileList", fileList);
-//			list.add(map);
-//		}
-//		return ResponseMessage.defaultResponse().setData(list);
-//	}
-
+	@ApiOperation(value = "根据景区ID获取POI列表", notes = "根据景区ID获取POI列表")
+	@ApiImplicitParams({@ApiImplicitParam(name = "principalId", value = "景区关联ID", required = true, dataType = "String"),
+			@ApiImplicitParam(name = "type", value = "类型", required = false, dataType = "String")})
+	@RequestMapping(value = "/getList/{id}", method = RequestMethod.GET)
+	public ResponseMessage getList(@PathVariable("id") String principalId,String type) {
+		return poiService.getList(principalId, type);
+	}
 	
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@ApiOperation(value = "C端根据ID获取POI详情", notes = "C端根据ID获取POI详情")
