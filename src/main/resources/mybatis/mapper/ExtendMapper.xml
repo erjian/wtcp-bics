@@ -118,7 +118,7 @@
     select
     <include refid="Base_Column_List" />
     from t_bic_extend
-    where principalId = #{principalId,jdbcType=VARCHAR}
+    where principal_id = #{principalId,jdbcType=VARCHAR}
   </select>
 
   <update id="dataBindExtend">
@@ -131,4 +131,18 @@
       #{item}
     </foreach>
   </update>
+
+<select id="getList" resultMap="BaseResultMap">
+  select
+  <include refid="Base_Column_List" />
+  from t_bic_extend
+  <where>
+    <if test="principalId !=null and principalId !=''">
+      and principal_id = #{principalId,jdbcType=VARCHAR}
+    </if>
+    <if test="type !=null and type !=''">
+     and `type` = #{type,jdbcType=VARCHAR}
+    </if>
+  </where>
+</select>
 </mapper>

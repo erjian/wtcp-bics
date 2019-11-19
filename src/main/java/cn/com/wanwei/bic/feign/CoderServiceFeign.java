@@ -22,6 +22,9 @@ public interface CoderServiceFeign {
     @GetMapping(value = "/dictionary/getByCode")
     ResponseMessage getByCode(@RequestParam(value = "code") String code);
 
+    @GetMapping(value = "/rpc/dict/findByCode")
+    ResponseMessage findByCode(@RequestParam(value = "code") String code);
+
     @Component
     class CoderServiceFeignHystrix implements CoderServiceFeign {
 
@@ -37,6 +40,11 @@ public interface CoderServiceFeign {
 
         @Override
         public ResponseMessage getByCode(String code) {
+            return ResponseMessage.defaultFallBack();
+        }
+
+        @Override
+        public ResponseMessage findByCode(String code) {
             return ResponseMessage.defaultFallBack();
         }
     }

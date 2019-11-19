@@ -16,14 +16,14 @@ public interface PeripheryService {
      * @param page 页
      * @param size 每页数量
      * @param filter 其它
-     * @return
+     * @return 分页
      */
     ResponseMessage findByPage(Integer page, Integer size, Map<String,Object> filter);
 
     /**
      * 根据id获取周边管理信息
      * @param id 周边管理信息id
-     * @return
+     * @return 周边管理信息
      */
     ResponseMessage find(String id);
 
@@ -36,7 +36,7 @@ public interface PeripheryService {
     ResponseMessage save(PeripheryModel peripheryModel, User user, Long ruleId, Integer appCode);
 
     /**
-     * 拜
+     * 编辑周边管理
      * @param id 周边信息id
      * @param peripheryModel 实体
      * @param user 用户信息
@@ -98,4 +98,11 @@ public interface PeripheryService {
      * @return
      */
     ResponseMessage relateTags(Map<String,Object> tags, User currentUser);
+
+    /**
+     * C端 根据id获取详细信息
+     * @param id 周边管理id
+     * @return
+     */
+    ResponseMessage findById(String id);
 }

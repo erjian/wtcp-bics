@@ -18,6 +18,11 @@ public interface PeripheryMapper {
     @DataScope
     PeripheryEntity selectByPrimaryKey(String id);
 
+    /**
+     * 修改
+     * @param record
+     * @return
+     */
     int updateByPrimaryKey(PeripheryEntity record);
 
     /**

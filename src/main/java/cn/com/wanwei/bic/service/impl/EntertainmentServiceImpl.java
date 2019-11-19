@@ -2,8 +2,7 @@ package cn.com.wanwei.bic.service.impl;
 
 import cn.com.wanwei.bic.entity.*;
 import cn.com.wanwei.bic.feign.CoderServiceFeign;
-import cn.com.wanwei.bic.mapper.EntertainmentMapper;
-import cn.com.wanwei.bic.mapper.ExtendMapper;
+import cn.com.wanwei.bic.mapper.*;
 import cn.com.wanwei.bic.model.DataBindModel;
 import cn.com.wanwei.bic.model.EntertainmentModel;
 import cn.com.wanwei.bic.model.WeightModel;
@@ -20,6 +19,8 @@ import cn.com.wanwei.persistence.mybatis.PageInfo;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
+import io.swagger.annotations.ApiImplicitParams;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -61,9 +62,18 @@ public class EntertainmentServiceImpl implements EntertainmentService {
     @Autowired
     private ExtendMapper extendMapper;
 
+    @Autowired
+    private EnterpriseMapper enterpriseMapper;
+
+    @Autowired
+    private ContactMapper contactMapper;
+
+    @Autowired
+    private MaterialMapper materialMapper;
+
     @Override
     public ResponseMessage findByPage(Integer page, Integer size, Map<String, Object> filter) {
-        MybatisPageRequest pageRequest = PageUtils.getInstance().setPage(page, size,filter, Sort.Direction.DESC, "weight", "created_date");
+        MybatisPageRequest pageRequest = PageUtils.getInstance().setPage(page, size,filter, Sort.Direction.DESC,  "created_date", "updated_date");
         PageHelper.startPage(pageRequest.getPage(), pageRequest.getSize(), pageRequest.getOrders());
         Page<EntertainmentEntity> entertainmentEntities = entertainmentMapper.findByPage(filter);
         PageInfo<EntertainmentEntity> pageInfo = new PageInfo<>(entertainmentEntities, pageRequest);
@@ -225,5 +235,26 @@ public class EntertainmentServiceImpl implements EntertainmentService {
     @Override
     public ResponseMessage getEnterList() {
         return ResponseMessage.defaultResponse().setData(entertainmentMapper.getEnterList());
+    }
+
+    @Override
+    public ResponseMessage getEnterInfo(String id) {
+        Map<String,Object>map= Maps.newHashMap();
+        EntertainmentEntity entertainmentEntity = entertainmentMapper.selectByPrimaryKey(id);
+        if (entertainmentEntity != null) {
+            map.put("entertainmentEntity",entertainmentEntity);
+            //企业信息
+            EnterpriseEntity enterpriseEntity = enterpriseMapper.selectByPrincipalId(id);
+            map.put("enterpriseEntity",enterpriseEntity);
+            //通讯信息
+            ContactEntity contactEntity = contactMapper.selectByPrincipalId(id);
+            map.put("contactEntity",contactEntity);
+            //素材信息
+            List<MaterialEntity> fileList = materialMapper.findByPrincipalId(id);
+            map.put("fileList",fileList);
+            return ResponseMessage.defaultResponse().setData(map);
+        }else{
+            return ResponseMessage.validFailResponse().setMsg("暂无该休闲娱乐信息！");
+        }
     }
 }
