@@ -146,14 +146,14 @@ public class MaterialServiceImpl implements MaterialService {
         }else{
             // 先获取当前资源在改标识下的数据
             List<MaterialEntity> oldList = materialMapper.findByPidAndIdentify(principalId, identify);
-            if(null != oldList){
-                for(MaterialEntity item : oldList){
-                    item.setFileIdentify(0);
-                    item.setUpdatedUser(user.getUsername());
-                    item.setUpdatedDate(new Date());
-                    materialMapper.updateByPrimaryKey(item);
-                }
-            }
+//            if(null != oldList){
+//                for(MaterialEntity item : oldList){
+//                    item.setFileIdentify(0);
+//                    item.setUpdatedUser(user.getUsername());
+//                    item.setUpdatedDate(new Date());
+//                    materialMapper.updateByPrimaryKey(item);
+//                }
+//            }
             // 更新数据
             entity.setFileIdentify(identify);
             entity.setUpdatedUser(user.getUsername());
