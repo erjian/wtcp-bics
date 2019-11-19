@@ -44,4 +44,12 @@ public interface ExtendMapper {
      */
     void dataBindExtend(@Param(value="updatedUser") String updatedUser, @Param(value="updatedDate") String updatedDate,
                         @Param(value="deptCode") String deptCode, @Param(value="ids") List<String> ids);
+
+    /**
+     * 获取扩展信息列表
+     * @param principalId
+     * @param type
+     * @return
+     */
+    List<ExtendEntity> getList( @Param(value="principalId")String principalId,@Param(value="type") Integer type);
 }

@@ -93,4 +93,13 @@ public interface ExtendService {
      * @return
      */
     ResponseMessage checkTitle(String id, String title);
+
+    /**
+     * 获取扩展信息列表
+     *
+     * @param principalId
+     * @param type
+     * @return
+     */
+    ResponseMessage getList(String principalId, Integer type);
 }

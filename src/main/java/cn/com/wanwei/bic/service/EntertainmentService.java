@@ -104,4 +104,11 @@ public interface EntertainmentService {
      * @return
      */
     ResponseMessage getEnterList();
+
+    /**
+     * 查询休闲娱乐相关信息（基础信息，企业信息，通讯信息，素材信息）
+     * @param id
+     * @return
+     */
+    ResponseMessage getEnterInfo(String id);
 }

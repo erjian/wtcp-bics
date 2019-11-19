@@ -117,4 +117,11 @@
   <select id="maxWeight" resultType="Integer">
     select weight from t_bic_destination order by weight desc limit 1
   </select>
+
+  <select id="getDestinationDetail" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from t_bic_destination
+    where region = #{region,jdbcType=VARCHAR}
+  </select>
 </mapper>

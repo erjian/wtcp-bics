@@ -252,4 +252,10 @@ public class ExtendServiceImpl implements ExtendService {
         }
         return responseMessage;
     }
+
+    @Override
+    public ResponseMessage getList(String principalId, Integer type) {
+        List<ExtendEntity>list= extendMapper.getList(principalId,type);
+        return ResponseMessage.defaultResponse().setData(list);
+    }
 }

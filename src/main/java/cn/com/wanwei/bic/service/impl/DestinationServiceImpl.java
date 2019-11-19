@@ -2,6 +2,7 @@ package cn.com.wanwei.bic.service.impl;
 
 import cn.com.wanwei.bic.entity.*;
 import cn.com.wanwei.bic.mapper.DestinationMapper;
+import cn.com.wanwei.bic.mapper.MaterialMapper;
 import cn.com.wanwei.bic.model.DataBindModel;
 import cn.com.wanwei.bic.model.DestinationModel;
 import cn.com.wanwei.bic.model.WeightModel;
@@ -15,6 +16,7 @@ import cn.com.wanwei.persistence.mybatis.MybatisPageRequest;
 import cn.com.wanwei.persistence.mybatis.PageInfo;
 import com.github.pagehelper.Page;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,6 +47,9 @@ public class DestinationServiceImpl implements DestinationService {
 
     @Autowired
     private TagsService tagsService;
+
+    @Autowired
+    private MaterialMapper materialMapper;
 
     /**
      * 查询目的地分页列表数据
@@ -244,6 +249,21 @@ public class DestinationServiceImpl implements DestinationService {
             }
         }
         return ResponseMessage.defaultResponse().setMsg("权重修改成功！");
+    }
+
+    @Override
+    public ResponseMessage getDestinationDetail(String region) {
+        Map<String,Object>map= Maps.newHashMap();
+        DestinationEntity destinationEntity = destinationMapper.getDestinationDetail(region);
+        if(destinationEntity!=null){
+            map.put("destinationEntity",destinationEntity);
+            //素材信息
+            List<MaterialEntity> fileList = materialMapper.findByPrincipalId(destinationEntity.getId());
+            map.put("fileList",fileList);
+            return ResponseMessage.defaultResponse().setData(map);
+        }else{
+            return ResponseMessage.validFailResponse().setMsg("该目的地信息不存在！");
+        }
     }
 
 }
