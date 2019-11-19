@@ -62,5 +62,5 @@ public interface DestinationMapper {
      * 根据areaCode获取目的地详情
      * @param region
      */
-    DestinationEntity getDestinationDetail(String region);
+    DestinationEntity getDestinationDetailByRegion(String region);
 }

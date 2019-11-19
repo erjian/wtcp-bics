@@ -102,11 +102,12 @@ public interface DestinationService {
     ResponseMessage changeWeight(WeightModel weightModel, User currentUser);
 
     /**
-     * 根据areaCode获取目的地详情
+     * 根据areaCode或者id获取目的地详情
      * @param areaCode
+     * @param id
      * @return
      */
-    ResponseMessage getDestinationDetail(String areaCode);
+    ResponseMessage getDestinationDetail(String areaCode,String id);
 
     /**
      * 目的地基础信息管理分页列表

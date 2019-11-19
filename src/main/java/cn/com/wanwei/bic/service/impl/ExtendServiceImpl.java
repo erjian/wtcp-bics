@@ -1,11 +1,14 @@
 package cn.com.wanwei.bic.service.impl;
 
-import cn.com.wanwei.bic.entity.*;
+import cn.com.wanwei.bic.entity.AuditLogEntity;
+import cn.com.wanwei.bic.entity.BaseTagsEntity;
+import cn.com.wanwei.bic.entity.ExtendEntity;
+import cn.com.wanwei.bic.entity.ExtendTagsEntity;
 import cn.com.wanwei.bic.feign.CoderServiceFeign;
 import cn.com.wanwei.bic.mapper.ExtendMapper;
-import cn.com.wanwei.bic.mapper.MaterialMapper;
 import cn.com.wanwei.bic.model.ExtendModel;
 import cn.com.wanwei.bic.service.ExtendService;
+import cn.com.wanwei.bic.service.MaterialService;
 import cn.com.wanwei.bic.service.TagsService;
 import cn.com.wanwei.bic.utils.PageUtils;
 import cn.com.wanwei.bic.utils.UUIDUtils;
@@ -53,7 +56,7 @@ public class ExtendServiceImpl implements ExtendService {
     private TagsService tagsService;
 
     @Autowired
-    private MaterialMapper materialMapper;
+    private MaterialService materialService;
 
     /**
      * 扩展信息管理分页列表
@@ -268,8 +271,7 @@ public class ExtendServiceImpl implements ExtendService {
                 Map<String,Object>map= Maps.newHashMap();
                 map.put("ExtendEntity",extendEntity);
                 //素材信息
-                List<MaterialEntity> fileList = materialMapper.findByPrincipalId(extendEntity.getId());
-                map.put("fileList",fileList);
+                map.put("fileList",materialService.handleMaterial(extendEntity.getId()));
                 list.add(map);
             }
         }
@@ -283,8 +285,7 @@ public class ExtendServiceImpl implements ExtendService {
         if(extendEntity != null){
             map.put("extendEntity",extendEntity);
             //素材信息
-            List<MaterialEntity> fileList = materialMapper.findByPrincipalId(id);
-            map.put("fileList",fileList);
+            map.put("fileList",materialService.handleMaterial(id));
             return ResponseMessage.defaultResponse().setData(map);
         }else{
             return ResponseMessage.validFailResponse().setMsg("无扩展信息！");

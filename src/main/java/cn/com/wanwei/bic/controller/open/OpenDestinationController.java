@@ -35,9 +35,16 @@ public class OpenDestinationController extends BaseController {
     }
 
     @ApiOperation(value = "根据areaCode获取目的地详情", notes = "根据areaCode获取目的地详情")
-    @ApiImplicitParam(name = "areaCode", value = "目的地基础信息ID", required = true)
-    @RequestMapping(value = "getDestinationDetail/{areaCode}", method = RequestMethod.GET)
-    public ResponseMessage getDestinationDetail(@PathVariable("areaCode") String areaCode){
-        return destinationService.getDestinationDetail(areaCode);
+    @ApiImplicitParam(name = "areaCode", value = "目的地编码", required = true)
+    @RequestMapping(value = "getDestDetailByAreaCode/{areaCode}", method = RequestMethod.GET)
+    public ResponseMessage getDestinationDetailByAreaCode(@PathVariable("areaCode") String areaCode){
+        return destinationService.getDestinationDetail(areaCode,null);
+    }
+
+    @ApiOperation(value = "根据id获取目的地详情", notes = "根据id获取目的地详情")
+    @ApiImplicitParam(name = "id", value = "目的地基础信息ID", required = true)
+    @RequestMapping(value = "getDestDetailById/{id}", method = RequestMethod.GET)
+    public ResponseMessage getDestinationDetailById(@PathVariable("id") String id){
+        return destinationService.getDestinationDetail(null,id);
     }
 }
