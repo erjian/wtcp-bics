@@ -82,6 +82,7 @@ public class DestinationServiceImpl implements DestinationService {
         destinationEntity.setCreatedUser(user.getUsername());
         destinationEntity.setCreatedDate(new Date());
         destinationEntity.setStatus(1);
+        destinationEntity.setWeight(0);
         destinationEntity.setDeptCode(user.getOrg().getCode());
         destinationMapper.insert(destinationEntity);
         this.saveTags(destinationModel.getList(), destinationEntity.getId(),user);

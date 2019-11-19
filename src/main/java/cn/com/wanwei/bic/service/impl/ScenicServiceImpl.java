@@ -85,6 +85,7 @@ public class ScenicServiceImpl implements ScenicService {
         record.setCreatedUser(user.getUsername());
         record.setCreatedDate(new Date());
         record.setStatus(0);
+        record.setWeight(0);
         scenicMapper.insert(record);
         this.saveTags(scenicModel.getList(), record.getId(), user);
 
