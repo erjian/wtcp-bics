@@ -26,7 +26,7 @@ public class OpenDestinationController extends BaseController {
     private DestinationService destinationService;
 
     @ApiOperation(value = "目的地基础信息管理分页列表", notes = "目的地基础信息管理分页列表")
-    @GetMapping(value = "/getDestinationList")
+    @GetMapping(value = "/getDestList")
     public ResponseMessage getDestinationList(@RequestParam(value = "page", defaultValue = "1") Integer page,
                                       @RequestParam(value = "size", defaultValue = "10") Integer size,
                                       HttpServletRequest request) throws Exception {
@@ -43,7 +43,7 @@ public class OpenDestinationController extends BaseController {
 
     @ApiOperation(value = "根据id获取目的地详情", notes = "根据id获取目的地详情")
     @ApiImplicitParam(name = "id", value = "目的地基础信息ID", required = true)
-    @RequestMapping(value = "getDestDetailById/{id}", method = RequestMethod.GET)
+    @RequestMapping(value = "getOne/{id}", method = RequestMethod.GET)
     public ResponseMessage getDestinationDetailById(@PathVariable("id") String id){
         return destinationService.getDestinationDetail(null,id);
     }

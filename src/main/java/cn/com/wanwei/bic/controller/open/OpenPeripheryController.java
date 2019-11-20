@@ -31,7 +31,7 @@ public class OpenPeripheryController {
 
 
     @ApiOperation(value = "根据周边管理类别查询列表", notes = "根据周边管理类别查询列表")
-    @GetMapping("/getPeripheryByCategory")
+    @GetMapping("/findByPage")
     @ApiImplicitParam(name = "category", value = "周边类别code", dataType = "String", required = true)
     @OperationLog(value = "wtcp-bics/C端周边管理列表", operate = "r", module = "周边管理")
     public ResponseMessage getPeripheryByCategory(@RequestParam(value = "page", defaultValue = "1") Integer page,

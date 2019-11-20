@@ -27,7 +27,7 @@ public class OpenEntertainmentController extends BaseController {
 
     @ApiOperation(value = "查询休闲娱乐相关信息", notes = "查询休闲娱乐相关信息（基础信息，企业信息，通讯信息，素材信息）")
     @ApiImplicitParam(name = "id", value = "休闲娱乐信息ID", required = true)
-    @GetMapping(value = "/getEnterInfo/{id}")
+    @GetMapping(value = "/getOne/{id}")
     public ResponseMessage getEnterInfo(@PathVariable("id") String id) {
         return entertainmentService.getEnterInfo(id);
     }
