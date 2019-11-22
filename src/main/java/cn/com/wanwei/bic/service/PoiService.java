@@ -2,7 +2,8 @@ package cn.com.wanwei.bic.service;
 
 
 import cn.com.wanwei.bic.entity.AuditLogEntity;
-import cn.com.wanwei.bic.model.PoiModel;
+import cn.com.wanwei.bic.entity.PoiEntity;
+import cn.com.wanwei.bic.model.EntityTagsModel;
 import cn.com.wanwei.common.model.ResponseMessage;
 import cn.com.wanwei.common.model.User;
 
@@ -36,7 +37,7 @@ public interface PoiService {
      * @param user
      * @return
      */
-    ResponseMessage create(PoiModel poiModel, User user, Long ruleId, Integer appCode);
+    ResponseMessage create(EntityTagsModel<PoiEntity> poiModel, User user, Long ruleId, Integer appCode);
 
     /**
      * 编辑poi信息
@@ -45,7 +46,7 @@ public interface PoiService {
      * @param user
      * @return
      */
-    ResponseMessage update(String id, PoiModel poiModel, User user);
+    ResponseMessage update(String id, EntityTagsModel<PoiEntity> poiModel, User user);
 
     /**
      * 删除poi信息

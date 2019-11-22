@@ -1,7 +1,8 @@
 package cn.com.wanwei.bic.controller;
 
 import cn.com.wanwei.bic.entity.AuditLogEntity;
-import cn.com.wanwei.bic.model.PoiModel;
+import cn.com.wanwei.bic.entity.PoiEntity;
+import cn.com.wanwei.bic.model.EntityTagsModel;
 import cn.com.wanwei.bic.service.PoiService;
 import cn.com.wanwei.common.log.annotation.OperationLog;
 import cn.com.wanwei.common.model.ResponseMessage;
@@ -52,11 +53,11 @@ public class PoiController extends BaseController {
     }
 
     @ApiOperation(value = "新增poi信息", notes = "新增poi信息")
-    @ApiImplicitParam(name = "poiModel", value = "poi管理model", dataType = "PoiModel", required = true)
+    @ApiImplicitParam(name = "poiModel", value = "poi管理model", dataType = "EntityTagsModel", required = true)
     @PostMapping
     @PreAuthorize("hasAuthority('poi:c')")
     @OperationLog(value = "wtcp-bics/新增poi信息", operate = "c", module = "poi管理")
-    public ResponseMessage create(@RequestBody PoiModel poiModel, BindingResult bindingResult) throws Exception {
+    public ResponseMessage create(@RequestBody EntityTagsModel<PoiEntity> poiModel, BindingResult bindingResult) throws Exception {
         if (bindingResult.hasErrors()) {
             return ResponseMessage.validFailResponse().setMsg(bindingResult.getAllErrors());
         }
@@ -66,12 +67,12 @@ public class PoiController extends BaseController {
     @ApiOperation(value = "编辑poi信息", notes = "编辑poi信息")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "id", value = "poi信息ID", required = true),
-            @ApiImplicitParam(name = "poiModel", value = "poi管理model", dataType = "PoiModel", required = true)
+            @ApiImplicitParam(name = "poiModel", value = "poi管理model", dataType = "EntityTagsModel", required = true)
     })
     @PutMapping(value = "/{id}")
     @PreAuthorize("hasAuthority('poi:u')")
     @OperationLog(value = "wtcp-bics/编辑poi信息", operate = "u", module = "poi管理")
-    public ResponseMessage edit(@PathVariable(value = "id") String id, @RequestBody PoiModel poiModel, BindingResult bindingResult) throws Exception {
+    public ResponseMessage edit(@PathVariable(value = "id") String id, @RequestBody EntityTagsModel<PoiEntity> poiModel, BindingResult bindingResult) throws Exception {
         if (bindingResult.hasErrors()) {
             return ResponseMessage.validFailResponse().setMsg(bindingResult.getAllErrors());
         }

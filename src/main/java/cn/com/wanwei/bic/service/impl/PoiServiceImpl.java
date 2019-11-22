@@ -4,7 +4,7 @@ import cn.com.wanwei.bic.entity.*;
 import cn.com.wanwei.bic.feign.CoderServiceFeign;
 import cn.com.wanwei.bic.mapper.PoiMapper;
 import cn.com.wanwei.bic.mapper.ScenicMapper;
-import cn.com.wanwei.bic.model.PoiModel;
+import cn.com.wanwei.bic.model.EntityTagsModel;
 import cn.com.wanwei.bic.service.AuditLogService;
 import cn.com.wanwei.bic.service.MaterialService;
 import cn.com.wanwei.bic.service.PoiService;
@@ -89,9 +89,9 @@ public class PoiServiceImpl implements PoiService {
     }
 
     @Override
-    public ResponseMessage create(PoiModel poiModel, User user, Long ruleId, Integer appCode) {
+    public ResponseMessage create(EntityTagsModel<PoiEntity> poiModel, User user, Long ruleId, Integer appCode) {
         try {
-            PoiEntity poiEntity = poiModel.getPoiEntity();
+            PoiEntity poiEntity = poiModel.getEntity();
             //获取统一认证生成的code
             String type = poiModel.getType();
             ResponseMessage responseMessageGetCode = coderServiceFeign.buildSerialByCode(ruleId, appCode, type);
@@ -107,7 +107,10 @@ public class PoiServiceImpl implements PoiService {
                     poiEntity.setParentId("0");
                 }
                 poiMapper.insert(poiEntity);
-                this.saveTags(poiModel.getList(), poiEntity.getId(), user);
+                //处理标签
+                if(CollectionUtils.isNotEmpty(poiModel.getTagsList())){
+                    tagsService.batchInsert(poiEntity.getId(), poiModel.getTagsList(),user,PoiTagsEntity.class);
+                }
                 return ResponseMessage.defaultResponse().setMsg("保存成功!");
             }
             return responseMessageGetCode;
@@ -117,27 +120,9 @@ public class PoiServiceImpl implements PoiService {
         }
     }
 
-    /**
-     * 保存标签
-     *
-     * @param tagsList
-     * @param poiId
-     * @param user
-     */
-    private void saveTags(List<Map<String, Object>> tagsList, String poiId, User user) {
-        List<BaseTagsEntity> list = Lists.newArrayList();
-        for(int i=0; i<tagsList.size(); i++){
-            BaseTagsEntity entity = new BaseTagsEntity();
-            entity.setTagCatagory(tagsList.get(i).get("tagCatagory").toString());
-            entity.setTagName(tagsList.get(i).get("tagName").toString());
-            list.add(entity);
-        }
-        tagsService.batchInsert(poiId, list, user, PoiTagsEntity.class);
-    }
-
     @Override
-    public ResponseMessage update(String id, PoiModel poiModel, User user) {
-        PoiEntity poiEntity = poiModel.getPoiEntity();
+    public ResponseMessage update(String id, EntityTagsModel<PoiEntity> poiModel, User user) {
+        PoiEntity poiEntity = poiModel.getEntity();
         PoiEntity pEntity = poiMapper.selectByPrimaryKey(id);
         if (pEntity != null) {
             poiEntity.setId(id);
@@ -147,7 +132,11 @@ public class PoiServiceImpl implements PoiService {
             poiEntity.setUpdatedUser(user.getUsername());
             poiEntity.setUpdatedDate(new Date());
             poiMapper.updateByPrimaryKey(poiEntity);
-            this.saveTags(poiModel.getList(), id, user);
+
+            //处理标签
+            if(CollectionUtils.isNotEmpty(poiModel.getTagsList())){
+                tagsService.batchInsert(poiEntity.getId(), poiModel.getTagsList(),user,PoiTagsEntity.class);
+            }
             return ResponseMessage.defaultResponse().setMsg("更新成功！");
         }
         return ResponseMessage.validFailResponse().setMsg("暂无该poi信息！");
@@ -266,15 +255,12 @@ public class PoiServiceImpl implements PoiService {
     @Override
     public ResponseMessage relateTags(Map<String,Object> tags, User user){
         ResponseMessage responseMessage = ResponseMessage.defaultResponse();
-        List<Map<String, Object>> tagsList = (List<Map<String, Object>>) tags.get("tagsArr");
+        List<BaseTagsEntity> tagsList = (List<BaseTagsEntity>) tags.get("tagsArr");
         String relateId = tags.get("id").toString();
-        if (null != tagsList && !tagsList.isEmpty()) {
-            this.saveTags(tagsList, relateId, user);
-            responseMessage.setMsg("关联标签成功");
-        }else {
-            responseMessage.setStatus(0).setMsg("关联标签失败，请重新关联");
+        if (CollectionUtils.isNotEmpty(tagsList)) {
+            tagsService.batchInsert(tags.get("id").toString(), tagsList, user, PoiTagsEntity.class);
         }
-        return responseMessage;
+        return responseMessage.setMsg("关联标签成功");
     }
 
     @Override
