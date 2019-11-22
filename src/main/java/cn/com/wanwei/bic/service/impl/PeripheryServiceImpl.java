@@ -7,7 +7,7 @@ import cn.com.wanwei.bic.entity.PeripheryTagsEntity;
 import cn.com.wanwei.bic.feign.CoderServiceFeign;
 import cn.com.wanwei.bic.mapper.PeripheryMapper;
 import cn.com.wanwei.bic.model.DataBindModel;
-import cn.com.wanwei.bic.model.PeripheryModel;
+import cn.com.wanwei.bic.model.EntityTagsModel;
 import cn.com.wanwei.bic.model.WeightModel;
 import cn.com.wanwei.bic.service.AuditLogService;
 import cn.com.wanwei.bic.service.MaterialService;
@@ -20,15 +20,18 @@ import cn.com.wanwei.common.model.User;
 import cn.com.wanwei.persistence.mybatis.MybatisPageRequest;
 import cn.com.wanwei.persistence.mybatis.PageInfo;
 import com.github.pagehelper.Page;
-import com.google.common.collect.Lists;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Service
 @Slf4j
@@ -72,8 +75,8 @@ public class PeripheryServiceImpl implements PeripheryService {
     }
 
     @Override
-    public ResponseMessage save(PeripheryModel peripheryModel, User user, Long ruleId, Integer appCode) {
-        PeripheryEntity peripheryEntity = peripheryModel.getPeripheryEntity();
+    public ResponseMessage save(EntityTagsModel<PeripheryEntity> peripheryModel, User user, Long ruleId, Integer appCode) {
+        PeripheryEntity peripheryEntity = peripheryModel.getEntity();
         String type = peripheryModel.getType();
         //获取统一认证生成的code
         ResponseMessage responseMessageGetCode = coderServiceFeign.buildSerialByCode(ruleId, appCode, type);
@@ -86,31 +89,20 @@ public class PeripheryServiceImpl implements PeripheryService {
             peripheryEntity.setCreatedUser(user.getUsername());
             peripheryEntity.setCreatedDate(new Date());
             peripheryMapper.insert(peripheryEntity);
-            this.saveTags(peripheryModel.getList(), peripheryEntity.getId(), user);
 
-            // 解析富文本中的附件并保存
-            materialService.saveByDom(peripheryEntity.getContent(), peripheryEntity.getId(), user);
-
+            //处理标签
+            if(CollectionUtils.isNotEmpty(peripheryModel.getTagsList())){
+                tagsService.batchInsert(peripheryEntity.getId(), peripheryModel.getTagsList(), user, PeripheryTagsEntity.class);
+            }
             return ResponseMessage.defaultResponse().setMsg("保存成功!");
         }
         return responseMessageGetCode;
     }
 
-    private void saveTags(List<Map<String, Object>> tagsList, String peripheryId, User user) {
-        List<BaseTagsEntity> list = Lists.newArrayList();
-        for (int i = 0; i < tagsList.size(); i++) {
-            BaseTagsEntity baseTagsEntity = new BaseTagsEntity();
-            baseTagsEntity.setTagName(tagsList.get(i).get("tagName").toString());
-            baseTagsEntity.setTagCatagory(tagsList.get(i).get("tagCatagory").toString());
-            list.add(baseTagsEntity);
-        }
-        tagsService.batchInsert(peripheryId, list, user, PeripheryTagsEntity.class);
-    }
-
     @Override
-    public ResponseMessage edit(String id, PeripheryModel peripheryModel, User user) {
+    public ResponseMessage edit(String id, EntityTagsModel<PeripheryEntity> peripheryModel, User user) {
         ResponseMessage responseMessage = ResponseMessage.defaultResponse();
-        PeripheryEntity peripheryEntity = peripheryModel.getPeripheryEntity();
+        PeripheryEntity peripheryEntity = peripheryModel.getEntity();
         PeripheryEntity entity = peripheryMapper.selectByPrimaryKey(id);
         if (entity != null) {
             peripheryEntity.setUpdatedUser(user.getUsername());
@@ -119,11 +111,11 @@ public class PeripheryServiceImpl implements PeripheryService {
             peripheryEntity.setStatus(1);
             peripheryEntity.setCode(entity.getCode());
             peripheryMapper.updateByPrimaryKey(peripheryEntity);
-            this.saveTags(peripheryModel.getList(), id, user);
 
-            // 先删除关联的附件再解析富文本中的附件并保存
-            materialService.deleteByPrincipalId(id);
-            materialService.saveByDom(peripheryEntity.getContent(), id, user);
+            //处理标签
+            if(CollectionUtils.isNotEmpty(peripheryModel.getTagsList())){
+                tagsService.batchInsert(peripheryEntity.getId(), peripheryModel.getTagsList(), user, PeripheryTagsEntity.class);
+            }
 
             responseMessage.setMsg("更新成功");
         } else {
@@ -243,15 +235,12 @@ public class PeripheryServiceImpl implements PeripheryService {
     @Override
     public ResponseMessage relateTags(Map<String, Object> tags, User currentUser) {
         ResponseMessage responseMessage = ResponseMessage.defaultResponse();
-        List<Map<String, Object>> tagsList = (List<Map<String, Object>>) tags.get("tagsArr");
+        List<BaseTagsEntity> tagsList = (List<BaseTagsEntity>) tags.get("tagsArr");
         String relateId = tags.get("id").toString();
-        if (null != tagsList && !tagsList.isEmpty()) {
-            this.saveTags(tagsList, relateId, currentUser);
-            responseMessage.setMsg("关联标签成功");
-        } else {
-            responseMessage.setStatus(0).setMsg("关联标签失败，请重新关联");
+        if (CollectionUtils.isNotEmpty(tagsList)) {
+            tagsService.batchInsert(tags.get("id").toString(), tagsList, currentUser, PeripheryTagsEntity.class);
         }
-        return responseMessage;
+        return responseMessage.setMsg("关联标签成功");
     }
 
     @Override
