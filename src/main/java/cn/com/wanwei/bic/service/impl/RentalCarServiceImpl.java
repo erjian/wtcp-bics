@@ -56,16 +56,16 @@ public class RentalCarServiceImpl implements RentalCarService {
 
     @Override
     public ResponseMessage findByPage(Integer page, Integer size, Map<String, Object> filter) {
-        MybatisPageRequest pageRequest = PageUtils.getInstance().setPage(page,size,filter,Sort.Direction.DESC,"created_date","updated_date");
+        MybatisPageRequest pageRequest = PageUtils.getInstance().setPage(page, size, filter, Sort.Direction.DESC, "created_date", "updated_date");
         Page<RentalCarEntity> rentalCarEntityPage = rentalCarMapper.findByPage(filter);
-        PageInfo<RentalCarEntity> pageInfo = new PageInfo<>(rentalCarEntityPage,pageRequest);
+        PageInfo<RentalCarEntity> pageInfo = new PageInfo<>(rentalCarEntityPage, pageRequest);
         return ResponseMessage.defaultResponse().setData(pageInfo);
     }
 
     @Override
     public ResponseMessage detail(String id) {
         RentalCarEntity carEntity = rentalCarMapper.selectByPrimaryKey(id);
-        if(carEntity == null){
+        if (carEntity == null) {
             return ResponseMessage.validFailResponse().setMsg("该数据不存在！");
         }
         return ResponseMessage.defaultResponse().setData(carEntity);
@@ -93,7 +93,9 @@ public class RentalCarServiceImpl implements RentalCarService {
         rentalCarMapper.insert(carEntity);
 
         //处理标签
-        tagsService.batchInsert(carEntity.getId(), rentalCarModel.getTagsList(), user, RentalCarTagsEntity.class);
+        if (CollectionUtils.isNotEmpty(rentalCarModel.getTagsList())) {
+            tagsService.batchInsert(carEntity.getId(), rentalCarModel.getTagsList(), user, RentalCarTagsEntity.class);
+        }
         return ResponseMessage.defaultResponse().setMsg("保存成功").setData(id);
     }
 
@@ -117,17 +119,17 @@ public class RentalCarServiceImpl implements RentalCarService {
         rentalCarMapper.updateByPrimaryKeyWithBLOBs(carEntity);
 
         //处理标签
-        tagsService.batchInsert(carEntity.getId(), rentalCarModel.getTagsList(), user, RentalCarTagsEntity.class);
-
+        if (CollectionUtils.isNotEmpty(rentalCarModel.getTagsList())) {
+            tagsService.batchInsert(carEntity.getId(), rentalCarModel.getTagsList(), user, RentalCarTagsEntity.class);
+        }
         return ResponseMessage.defaultResponse().setMsg("更新成功");
     }
 
     @Override
     public ResponseMessage relateTags(Map<String, Object> tags, User user) {
-        List<Map<String, Object>> tagsList = (List<Map<String, Object>>) tags.get("tagsArr");
-        String relateId = tags.get("id").toString();
+        List<BaseTagsEntity> tagsList = (List<BaseTagsEntity>) tags.get("tagsArr");
         if (null != tagsList && !tagsList.isEmpty()) {
-            this.saveTags(tagsList, relateId, user);
+            tagsService.batchInsert(tags.get("id").toString(), tagsList, user,RentalCarTagsEntity.class);
         }
         return ResponseMessage.defaultResponse().setMsg("标签关联成功");
     }
@@ -215,17 +217,6 @@ public class RentalCarServiceImpl implements RentalCarService {
     public ResponseMessage getRentalCarInfo(String title) {
         List<RentalCarEntity> entities = rentalCarMapper.getRentalCarInfo(title);
         return ResponseMessage.defaultResponse().setData(entities);
-    }
-
-    private void saveTags(List<Map<String, Object>> tagsList, String principalId, User user) {
-        List<BaseTagsEntity> list = Lists.newArrayList();
-        for (int i = 0; i < tagsList.size(); i++) {
-            BaseTagsEntity entity = new BaseTagsEntity();
-            entity.setTagCatagory(tagsList.get(i).get("tagCatagory").toString());
-            entity.setTagName(tagsList.get(i).get("tagName").toString());
-            list.add(entity);
-        }
-        tagsService.batchInsert(principalId, list, user, RentalCarTagsEntity.class);
     }
 
     private int saveAuditLog(int preStatus, int auditStatus, String principalId, String userName, String msg, int type) {
