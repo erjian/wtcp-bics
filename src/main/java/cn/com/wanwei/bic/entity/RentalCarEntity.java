@@ -30,6 +30,9 @@ public class RentalCarEntity extends BaseEntity {
     @ApiModelProperty(value = "名称")
     private String title;
 
+    @ApiModelProperty(value = "编码")
+    private String code;
+
     @ApiModelProperty(value = "简称")
     private String subTitle;
 
@@ -80,7 +83,7 @@ public class RentalCarEntity extends BaseEntity {
     private Integer weight;
 
     @ApiModelProperty(value = "状态")
-    private Boolean status;
+    private Integer status;
 
     @ApiModelProperty(value = "组织机构编码")
     private String deptCode;

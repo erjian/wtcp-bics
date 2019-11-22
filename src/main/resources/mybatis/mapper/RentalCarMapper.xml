@@ -1,85 +1,88 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="cn.com.wanwei.bic.mapper.RentalCarMapper">
-  <resultMap id="BaseResultMap" type="cn.com.wanwei.bic.entity.RentalCarEntity">
-    <id column="id" jdbcType="VARCHAR" property="id" />
-    <result column="created_date" jdbcType="TIMESTAMP" property="createdDate" />
-    <result column="created_user" jdbcType="VARCHAR" property="createdUser" />
-    <result column="updated_date" jdbcType="TIMESTAMP" property="updatedDate" />
-    <result column="updated_user" jdbcType="VARCHAR" property="updatedUser" />
-    <result column="title" jdbcType="VARCHAR" property="title" />
-    <result column="sub_title" jdbcType="VARCHAR" property="subTitle" />
-    <result column="title_qp" jdbcType="VARCHAR" property="titleQp" />
-    <result column="title_jp" jdbcType="VARCHAR" property="titleJp" />
-    <result column="region_full_code" jdbcType="VARCHAR" property="regionFullCode" />
-    <result column="region_full_name" jdbcType="VARCHAR" property="regionFullName" />
-    <result column="address" jdbcType="VARCHAR" property="address" />
-    <result column="region" jdbcType="VARCHAR" property="region" />
-    <result column="longitude" jdbcType="DOUBLE" property="longitude" />
-    <result column="latitude" jdbcType="DOUBLE" property="latitude" />
-    <result column="establish_time" jdbcType="TIMESTAMP" property="establishTime" />
-    <result column="chartered_bus_type" jdbcType="VARCHAR" property="charteredBusType" />
-    <result column="regular_bus_type" jdbcType="VARCHAR" property="regularBusType" />
-    <result column="keyword" jdbcType="VARCHAR" property="keyword" />
-    <result column="slogan" jdbcType="VARCHAR" property="slogan" />
-    <result column="summary" jdbcType="VARCHAR" property="summary" />
-    <result column="weight" jdbcType="INTEGER" property="weight" />
-    <result column="status" jdbcType="BIT" property="status" />
-    <result column="dept_code" jdbcType="VARCHAR" property="deptCode" />
-  </resultMap>
-  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="cn.com.wanwei.bic.entity.RentalCarEntity">
-    <result column="content" jdbcType="LONGVARCHAR" property="content" />
-  </resultMap>
-  <sql id="Base_Column_List">
-    id, created_date, created_user, updated_date, updated_user, title, sub_title, title_qp, 
+    <resultMap id="BaseResultMap" type="cn.com.wanwei.bic.entity.RentalCarEntity">
+        <id column="id" jdbcType="VARCHAR" property="id"/>
+        <result column="created_date" jdbcType="TIMESTAMP" property="createdDate"/>
+        <result column="created_user" jdbcType="VARCHAR" property="createdUser"/>
+        <result column="updated_date" jdbcType="TIMESTAMP" property="updatedDate"/>
+        <result column="updated_user" jdbcType="VARCHAR" property="updatedUser"/>
+        <result column="code" jdbcType="VARCHAR" property="code"/>
+        <result column="title" jdbcType="VARCHAR" property="title"/>
+        <result column="sub_title" jdbcType="VARCHAR" property="subTitle"/>
+        <result column="title_qp" jdbcType="VARCHAR" property="titleQp"/>
+        <result column="title_jp" jdbcType="VARCHAR" property="titleJp"/>
+        <result column="region_full_code" jdbcType="VARCHAR" property="regionFullCode"/>
+        <result column="region_full_name" jdbcType="VARCHAR" property="regionFullName"/>
+        <result column="address" jdbcType="VARCHAR" property="address"/>
+        <result column="region" jdbcType="VARCHAR" property="region"/>
+        <result column="longitude" jdbcType="DOUBLE" property="longitude"/>
+        <result column="latitude" jdbcType="DOUBLE" property="latitude"/>
+        <result column="establish_time" jdbcType="TIMESTAMP" property="establishTime"/>
+        <result column="chartered_bus_type" jdbcType="VARCHAR" property="charteredBusType"/>
+        <result column="regular_bus_type" jdbcType="VARCHAR" property="regularBusType"/>
+        <result column="keyword" jdbcType="VARCHAR" property="keyword"/>
+        <result column="slogan" jdbcType="VARCHAR" property="slogan"/>
+        <result column="summary" jdbcType="VARCHAR" property="summary"/>
+        <result column="weight" jdbcType="INTEGER" property="weight"/>
+        <result column="status" jdbcType="BIT" property="status"/>
+        <result column="dept_code" jdbcType="VARCHAR" property="deptCode"/>
+    </resultMap>
+    <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="cn.com.wanwei.bic.entity.RentalCarEntity">
+        <result column="content" jdbcType="LONGVARCHAR" property="content"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+    id, created_date, created_user, updated_date, updated_user, code,title, sub_title, title_qp,
     title_jp, region_full_code, region_full_name, address, region, longitude, latitude, 
     establish_time, chartered_bus_type, regular_bus_type, keyword, slogan, summary, weight, 
     status, dept_code
   </sql>
-  <sql id="Blob_Column_List">
+    <sql id="Blob_Column_List">
     content
   </sql>
-  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="ResultMapWithBLOBs">
-    select 
-    <include refid="Base_Column_List" />
-    ,
-    <include refid="Blob_Column_List" />
-    from t_bic_rental_car
-    where id = #{id,jdbcType=VARCHAR}
-  </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="ResultMapWithBLOBs">
+        select
+        <include refid="Base_Column_List"/>
+        ,
+        <include refid="Blob_Column_List"/>
+        from t_bic_rental_car
+        where id = #{id,jdbcType=VARCHAR}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
     delete from t_bic_rental_car
     where id = #{id,jdbcType=VARCHAR}
   </delete>
-  <insert id="insert" parameterType="cn.com.wanwei.bic.entity.RentalCarEntity">
-    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.String">
-      SELECT LAST_INSERT_ID()
-    </selectKey>
-    insert into t_bic_rental_car (created_date, created_user, updated_date, 
-      updated_user, title, sub_title, 
-      title_qp, title_jp, region_full_code, 
-      region_full_name, address, region, 
-      longitude, latitude, establish_time, 
-      chartered_bus_type, regular_bus_type, keyword, 
-      slogan, summary, weight, 
-      status, dept_code, content
-      )
-    values (#{createdDate,jdbcType=TIMESTAMP}, #{createdUser,jdbcType=VARCHAR}, #{updatedDate,jdbcType=TIMESTAMP}, 
-      #{updatedUser,jdbcType=VARCHAR}, #{title,jdbcType=VARCHAR}, #{subTitle,jdbcType=VARCHAR}, 
-      #{titleQp,jdbcType=VARCHAR}, #{titleJp,jdbcType=VARCHAR}, #{regionFullCode,jdbcType=VARCHAR}, 
-      #{regionFullName,jdbcType=VARCHAR}, #{address,jdbcType=VARCHAR}, #{region,jdbcType=VARCHAR}, 
-      #{longitude,jdbcType=DOUBLE}, #{latitude,jdbcType=DOUBLE}, #{establishTime,jdbcType=TIMESTAMP}, 
-      #{charteredBusType,jdbcType=VARCHAR}, #{regularBusType,jdbcType=VARCHAR}, #{keyword,jdbcType=VARCHAR}, 
-      #{slogan,jdbcType=VARCHAR}, #{summary,jdbcType=VARCHAR}, #{weight,jdbcType=INTEGER}, 
-      #{status,jdbcType=BIT}, #{deptCode,jdbcType=VARCHAR}, #{content,jdbcType=LONGVARCHAR}
-      )
-  </insert>
-  <update id="updateByPrimaryKeyWithBLOBs" parameterType="cn.com.wanwei.bic.entity.RentalCarEntity">
+    <insert id="insert" parameterType="cn.com.wanwei.bic.entity.RentalCarEntity">
+        <selectKey keyProperty="id" order="AFTER" resultType="java.lang.String">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+        insert into t_bic_rental_car (created_date, created_user, updated_date,
+        updated_user,code, title, sub_title,
+        title_qp, title_jp, region_full_code,
+        region_full_name, address, region,
+        longitude, latitude, establish_time,
+        chartered_bus_type, regular_bus_type, keyword,
+        slogan, summary, weight,
+        status, dept_code, content
+        )
+        values (#{createdDate,jdbcType=TIMESTAMP}, #{createdUser,jdbcType=VARCHAR}, #{updatedDate,jdbcType=TIMESTAMP},
+        #{updatedUser,jdbcType=VARCHAR}, #{code,jdbcType=VARCHAR},#{title,jdbcType=VARCHAR},
+        #{subTitle,jdbcType=VARCHAR},
+        #{titleQp,jdbcType=VARCHAR}, #{titleJp,jdbcType=VARCHAR}, #{regionFullCode,jdbcType=VARCHAR},
+        #{regionFullName,jdbcType=VARCHAR}, #{address,jdbcType=VARCHAR}, #{region,jdbcType=VARCHAR},
+        #{longitude,jdbcType=DOUBLE}, #{latitude,jdbcType=DOUBLE}, #{establishTime,jdbcType=TIMESTAMP},
+        #{charteredBusType,jdbcType=VARCHAR}, #{regularBusType,jdbcType=VARCHAR}, #{keyword,jdbcType=VARCHAR},
+        #{slogan,jdbcType=VARCHAR}, #{summary,jdbcType=VARCHAR}, #{weight,jdbcType=INTEGER},
+        #{status,jdbcType=BIT}, #{deptCode,jdbcType=VARCHAR}, #{content,jdbcType=LONGVARCHAR}
+        )
+    </insert>
+    <update id="updateByPrimaryKeyWithBLOBs" parameterType="cn.com.wanwei.bic.entity.RentalCarEntity">
     update t_bic_rental_car
     set created_date = #{createdDate,jdbcType=TIMESTAMP},
       created_user = #{createdUser,jdbcType=VARCHAR},
       updated_date = #{updatedDate,jdbcType=TIMESTAMP},
       updated_user = #{updatedUser,jdbcType=VARCHAR},
+      code = #{code,jdbcType=VARCHAR},
       title = #{title,jdbcType=VARCHAR},
       sub_title = #{subTitle,jdbcType=VARCHAR},
       title_qp = #{titleQp,jdbcType=VARCHAR},
@@ -102,12 +105,13 @@
       content = #{content,jdbcType=LONGVARCHAR}
     where id = #{id,jdbcType=VARCHAR}
   </update>
-  <update id="updateByPrimaryKey" parameterType="cn.com.wanwei.bic.entity.RentalCarEntity">
+    <update id="updateByPrimaryKey" parameterType="cn.com.wanwei.bic.entity.RentalCarEntity">
     update t_bic_rental_car
     set created_date = #{createdDate,jdbcType=TIMESTAMP},
       created_user = #{createdUser,jdbcType=VARCHAR},
       updated_date = #{updatedDate,jdbcType=TIMESTAMP},
       updated_user = #{updatedUser,jdbcType=VARCHAR},
+      code = #{code,jdbcType=VARCHAR},
       title = #{title,jdbcType=VARCHAR},
       sub_title = #{subTitle,jdbcType=VARCHAR},
       title_qp = #{titleQp,jdbcType=VARCHAR},
@@ -129,38 +133,38 @@
       dept_code = #{deptCode,jdbcType=VARCHAR}
     where id = #{id,jdbcType=VARCHAR}
   </update>
-  <select id="getRentalCarInfo" resultMap="BaseResultMap">
+    <select id="getRentalCarInfo" resultMap="BaseResultMap">
         select
-        <include refid="Base_Column_List" />
+        <include refid="Base_Column_List"/>
         from t_bic_rental_car
         <where>
             <if test="title != null and title !='' ">
-                <bind name="title" value="'%' + title + '%'" ></bind>
+                <bind name="title" value="'%' + title + '%'"></bind>
                 and (title like #{title} or title_qp like #{title} or title_jp like #{title})
             </if>
         </where>
     </select>
-  <select id="findByPage" parameterType="java.util.Map" resultMap="BaseResultMap">
+    <select id="findByPage" parameterType="java.util.Map" resultMap="BaseResultMap">
         select
-        <include refid="Base_Column_List" />
+        <include refid="Base_Column_List"/>
         ,
-        <include refid="Blob_Column_List" />
+        <include refid="Blob_Column_List"/>
         from t_bic_rental_car
         <where>
             <if test="title != null and title!='' ">
-                <bind name="title" value="title + '%'" ></bind>
+                <bind name="title" value="title + '%'"></bind>
                 and (title like #{title} or title_qp like #{title} or title_jp like #{title})
             </if>
             <if test="subTitle != null and subTitle!='' ">
-                <bind name="subTitle" value="subTitle + '%'" ></bind>
+                <bind name="subTitle" value="subTitle + '%'"></bind>
                 and sub_title like #{subTitle}
             </if>
             <if test="areaName != null and areaName!='' ">
-                <bind name="areaName" value="areaName + '%'" ></bind>
+                <bind name="areaName" value="areaName + '%'"></bind>
                 and region_full_name like #{areaName}
             </if>
             <if test="areaCode != null and areaCode!='' ">
-                <bind name="areaCode" value="areaCode + '%'" ></bind>
+                <bind name="areaCode" value="areaCode + '%'"></bind>
                 and region_full_code like #{areaCode}
             </if>
             <if test="examineStatus != null">
@@ -181,7 +185,7 @@
             </if>
         </where>
     </select>
-  <update id="dataBind">
+    <update id="dataBind">
         update t_bic_rental_car
         set updated_date = #{updatedDate,jdbcType=TIMESTAMP},
         updated_user = #{updatedUser,jdbcType=VARCHAR},
@@ -191,23 +195,23 @@
             #{item}
         </foreach>
     </update>
-  <update id="clearWeight">
+    <update id="clearWeight">
     update t_bic_rental_car set weight=0
   </update>
-  <select id="maxWeight" resultType="Integer">
+    <select id="maxWeight" resultType="Integer">
     select weight from t_bic_rental_car order by weight desc limit 1
   </select>
-  <select id="findByTitleAndIdNot" resultMap="BaseResultMap">
-    select
-    <include refid="Base_Column_List"/>
-    from t_bic_rental_car
-    <where>
-        <if test="title != null and title != ''">
-            and title = #{title,jdbcType=VARCHAR}
-        </if>
-        <if test="id != null and id != '-1'.toString()">
-            and id != #{id,jdbcType=BIGINT}
-        </if>
-    </where>
-  </select>
+    <select id="findByTitleAndIdNot" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from t_bic_rental_car
+        <where>
+            <if test="title != null and title != ''">
+                and title = #{title,jdbcType=VARCHAR}
+            </if>
+            <if test="id != null and id != '-1'.toString()">
+                and id != #{id,jdbcType=BIGINT}
+            </if>
+        </where>
+    </select>
 </mapper>
