@@ -4,7 +4,7 @@ import cn.com.wanwei.bic.entity.*;
 import cn.com.wanwei.bic.feign.CoderServiceFeign;
 import cn.com.wanwei.bic.mapper.*;
 import cn.com.wanwei.bic.model.DataBindModel;
-import cn.com.wanwei.bic.model.EntertainmentModel;
+import cn.com.wanwei.bic.model.EntityTagsModel;
 import cn.com.wanwei.bic.model.WeightModel;
 import cn.com.wanwei.bic.service.AuditLogService;
 import cn.com.wanwei.bic.service.EntertainmentService;
@@ -18,9 +18,9 @@ import cn.com.wanwei.persistence.mybatis.MybatisPageRequest;
 import cn.com.wanwei.persistence.mybatis.PageInfo;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
-import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -89,11 +89,11 @@ public class EntertainmentServiceImpl implements EntertainmentService {
     }
 
     @Override
-    public ResponseMessage create(EntertainmentModel entertainmentModel, User user, Long ruleId, Integer appCode) {
+    public ResponseMessage create(EntityTagsModel<EntertainmentEntity> entertainmentModel, User user, Long ruleId, Integer appCode) {
         //获取统一认证生成的code
-        ResponseMessage responseMessageGetCode =coderServiceFeign.buildSerialByCode(ruleId, appCode, entertainmentModel.getJpin());
+        ResponseMessage responseMessageGetCode =coderServiceFeign.buildSerialByCode(ruleId, appCode, entertainmentModel.getType());
         if (responseMessageGetCode.getStatus() == 1 && responseMessageGetCode.getData() != null) {
-            EntertainmentEntity entertainmentEntity= entertainmentModel.getEntertainmentEntity();
+            EntertainmentEntity entertainmentEntity= entertainmentModel.getEntity();
             String id=UUIDUtils.getInstance().getId();
             entertainmentEntity.setId(id);
             entertainmentEntity.setCode(responseMessageGetCode.getData().toString());
@@ -103,17 +103,21 @@ public class EntertainmentServiceImpl implements EntertainmentService {
             entertainmentEntity.setCreatedDate(new Date());
             entertainmentEntity.setDeptCode(user.getOrg().getCode());
             entertainmentMapper.insert(entertainmentEntity);
-            this.saveTags(entertainmentModel.getList(),id,user);
+
+            //处理标签
+            if(CollectionUtils.isNotEmpty(entertainmentModel.getTagsList())){
+                tagsService.batchInsert(id,entertainmentModel.getTagsList(),user, EntertainmentTagsEntity.class);
+            }
             return ResponseMessage.defaultResponse().setMsg("保存成功!").setData(id);
         }
         return responseMessageGetCode;
     }
 
     @Override
-    public ResponseMessage update(String id, EntertainmentModel entertainmentModel, User user) {
+    public ResponseMessage update(String id, EntityTagsModel<EntertainmentEntity> entertainmentModel, User user) {
         EntertainmentEntity eEntity = entertainmentMapper.selectByPrimaryKey(id);
         if (eEntity != null) {
-            EntertainmentEntity entertainmentEntity= entertainmentModel.getEntertainmentEntity();
+            EntertainmentEntity entertainmentEntity= entertainmentModel.getEntity();
             entertainmentEntity.setId(eEntity.getId());
             entertainmentEntity.setCreatedUser(eEntity.getCreatedUser());
             entertainmentEntity.setCreatedDate(eEntity.getCreatedDate());
@@ -122,24 +126,14 @@ public class EntertainmentServiceImpl implements EntertainmentService {
             entertainmentEntity.setUpdatedUser(user.getUsername());
             entertainmentEntity.setUpdatedDate(new Date());
             entertainmentMapper.updateByPrimaryKey(entertainmentEntity);
-            this.saveTags(entertainmentModel.getList(),id,user);
-            // 先删除关联的附件再解析富文本中的附件并保存
-            materialService.deleteByPrincipalId(id);
-            materialService.saveByDom(entertainmentEntity.getContent(), id, user);
+
+            //处理标签
+            if(CollectionUtils.isNotEmpty(entertainmentModel.getTagsList())){
+                tagsService.batchInsert(id,entertainmentModel.getTagsList(),user, EntertainmentTagsEntity.class);
+            }
             return ResponseMessage.defaultResponse().setMsg("更新成功！");
         }
         return ResponseMessage.validFailResponse().setMsg("暂无该休闲娱乐信息！");
-    }
-
-    private void saveTags(List<Map<String, Object>> tagsList, String principalId, User user){
-        List<BaseTagsEntity> list = Lists.newArrayList();
-        for(int i=0; i<tagsList.size(); i++){
-            BaseTagsEntity entity = new BaseTagsEntity();
-            entity.setTagCatagory(tagsList.get(i).get("tagCatagory").toString());
-            entity.setTagName(tagsList.get(i).get("tagName").toString());
-            list.add(entity);
-        }
-        tagsService.batchInsert(principalId,list,user, EntertainmentTagsEntity.class);
     }
 
     @Override
@@ -226,8 +220,10 @@ public class EntertainmentServiceImpl implements EntertainmentService {
     }
 
     @Override
-    public ResponseMessage relateTags(String id, List<Map<String, Object>> list, User user) {
-        this.saveTags(list,id,user);
+    public ResponseMessage relateTags(String id, List<BaseTagsEntity> list, User user) {
+        if(CollectionUtils.isNotEmpty(list)){
+            tagsService.batchInsert(id,list,user, EntertainmentTagsEntity.class);
+        }
         return ResponseMessage.defaultResponse().setMsg("关联成功！");
     }
 

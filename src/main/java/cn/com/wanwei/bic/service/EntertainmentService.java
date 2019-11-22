@@ -1,8 +1,10 @@
 package cn.com.wanwei.bic.service;
 
 import cn.com.wanwei.bic.entity.AuditLogEntity;
+import cn.com.wanwei.bic.entity.BaseTagsEntity;
+import cn.com.wanwei.bic.entity.EntertainmentEntity;
 import cn.com.wanwei.bic.model.DataBindModel;
-import cn.com.wanwei.bic.model.EntertainmentModel;
+import cn.com.wanwei.bic.model.EntityTagsModel;
 import cn.com.wanwei.bic.model.WeightModel;
 import cn.com.wanwei.common.model.ResponseMessage;
 import cn.com.wanwei.common.model.User;
@@ -39,7 +41,7 @@ public interface EntertainmentService {
      * @param appCode
      * @return
      */
-    ResponseMessage create(EntertainmentModel entertainmentModel, User user, Long ruleId, Integer appCode);
+    ResponseMessage create(EntityTagsModel<EntertainmentEntity> entertainmentModel, User user, Long ruleId, Integer appCode);
 
     /**
      * 编辑休闲娱乐信息
@@ -48,7 +50,7 @@ public interface EntertainmentService {
      * @param user
      * @return
      */
-    ResponseMessage update(String id, EntertainmentModel entertainmentModel, User user);
+    ResponseMessage update(String id, EntityTagsModel<EntertainmentEntity> entertainmentModel, User user);
 
     /**
      * 休闲娱乐信息排序
@@ -97,7 +99,7 @@ public interface EntertainmentService {
      * @param user
      * @return
      */
-    ResponseMessage relateTags(String id, List<Map<String, Object>> list, User user);
+    ResponseMessage relateTags(String id, List<BaseTagsEntity> list, User user);
 
     /**
      * 获取休闲娱乐信息
