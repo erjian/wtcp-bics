@@ -8,21 +8,20 @@
 
 package cn.com.wanwei.bic.model;
 
-import cn.com.wanwei.bic.entity.ScenicEntity;
+import cn.com.wanwei.bic.entity.BaseTagsEntity;
 import lombok.Data;
 
 import java.util.List;
-import java.util.Map;
 
 /**
  * wtcp-bics - ScenicModel
  */
 @Data
-public class ScenicModel {
+public class EntityTagsModel<T> {
 
 	private String type;
 
-	private List<Map<String, Object>> list;
+	private List<BaseTagsEntity> tagsList;
 
-	private ScenicEntity scenicEntity;
+	private T entity;
 }

@@ -11,7 +11,7 @@ import cn.com.wanwei.bic.entity.*;
 import cn.com.wanwei.bic.feign.CoderServiceFeign;
 import cn.com.wanwei.bic.mapper.*;
 import cn.com.wanwei.bic.model.DataBindModel;
-import cn.com.wanwei.bic.model.ScenicModel;
+import cn.com.wanwei.bic.model.EntityTagsModel;
 import cn.com.wanwei.bic.model.WeightModel;
 import cn.com.wanwei.bic.service.MaterialService;
 import cn.com.wanwei.bic.service.ScenicService;
@@ -73,8 +73,8 @@ public class ScenicServiceImpl implements ScenicService {
     private MaterialService materialService;
 
     @Override
-    public ResponseMessage save(ScenicModel scenicModel, User user, Long ruleId, Integer appCode) {
-        ScenicEntity record = scenicModel.getScenicEntity();
+    public ResponseMessage save(EntityTagsModel<ScenicEntity> scenicModel, User user, Long ruleId, Integer appCode) {
+        ScenicEntity record = scenicModel.getEntity();
         String type = scenicModel.getType();
         String id=UUIDUtils.getInstance().getId();
         record.setId(id);
@@ -87,7 +87,9 @@ public class ScenicServiceImpl implements ScenicService {
         record.setStatus(0);
         record.setWeight(0);
         scenicMapper.insert(record);
-        this.saveTags(scenicModel.getList(), record.getId(), user);
+
+        //处理标签
+        tagsService.batchInsert(record.getId(), scenicModel.getTagsList(), user, ScenicTagsEntity.class);
 
         return ResponseMessage.defaultResponse().setMsg("保存成功").setData(id);
     }
@@ -104,9 +106,9 @@ public class ScenicServiceImpl implements ScenicService {
     }
 
     @Override
-    public ResponseMessage edit(String id, ScenicModel scenicModel, User user) {
+    public ResponseMessage edit(String id, EntityTagsModel<ScenicEntity> scenicModel, User user) {
         ScenicEntity entity = scenicMapper.selectByPrimaryKey(id);
-        ScenicEntity record = scenicModel.getScenicEntity();
+        ScenicEntity record = scenicModel.getEntity();
         if (null == entity) {
             return ResponseMessage.validFailResponse().setMsg("不存在该景区");
         }
@@ -121,7 +123,9 @@ public class ScenicServiceImpl implements ScenicService {
         record.setUpdatedDate(new Date());
         record.setUpdatedUser(user.getUsername());
         scenicMapper.updateByPrimaryKeyWithBLOBs(record);
-        this.saveTags(scenicModel.getList(), id, user);
+
+        //处理标签
+        tagsService.batchInsert(record.getId(), scenicModel.getTagsList(), user, ScenicTagsEntity.class);
 
         return ResponseMessage.defaultResponse().setMsg("更新成功");
     }

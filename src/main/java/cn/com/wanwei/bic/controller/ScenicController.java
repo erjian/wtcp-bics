@@ -2,7 +2,7 @@ package cn.com.wanwei.bic.controller;
 
 import cn.com.wanwei.bic.entity.ScenicEntity;
 import cn.com.wanwei.bic.model.DataBindModel;
-import cn.com.wanwei.bic.model.ScenicModel;
+import cn.com.wanwei.bic.model.EntityTagsModel;
 import cn.com.wanwei.bic.model.WeightModel;
 import cn.com.wanwei.bic.service.ScenicService;
 import cn.com.wanwei.common.log.annotation.OperationLog;
@@ -71,7 +71,7 @@ public class ScenicController extends BaseController {
     @PostMapping(value = "/save")
     @PreAuthorize("hasAuthority('scenic:c')")
     @OperationLog(value = "wtcp-bics/景区新增", operate = "c", module = "景区管理")
-    public ResponseMessage save(@RequestBody ScenicModel scenicModel, BindingResult bindingResult) throws Exception {
+    public ResponseMessage save(@RequestBody EntityTagsModel<ScenicEntity> scenicModel, BindingResult bindingResult) throws Exception {
         if (bindingResult.hasErrors()) {
             return ResponseMessage.validFailResponse().setMsg(bindingResult.getAllErrors());
         }
@@ -83,7 +83,7 @@ public class ScenicController extends BaseController {
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
     @PreAuthorize("hasAuthority('scenic:u')")
     @OperationLog(value = "wtcp-bics/景区编辑", operate = "u", module = "景区管理")
-    public ResponseMessage edit(@PathVariable("id") String id, @RequestBody ScenicModel scenicModel, BindingResult bindingResult) throws Exception {
+    public ResponseMessage edit(@PathVariable("id") String id, @RequestBody EntityTagsModel<ScenicEntity> scenicModel, BindingResult bindingResult) throws Exception {
         if (bindingResult.hasErrors()) {
             return ResponseMessage.validFailResponse().setMsg(bindingResult.getAllErrors());
         }

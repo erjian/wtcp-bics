@@ -8,7 +8,7 @@ package cn.com.wanwei.bic.service;
 
 import cn.com.wanwei.bic.entity.ScenicEntity;
 import cn.com.wanwei.bic.model.DataBindModel;
-import cn.com.wanwei.bic.model.ScenicModel;
+import cn.com.wanwei.bic.model.EntityTagsModel;
 import cn.com.wanwei.bic.model.WeightModel;
 import cn.com.wanwei.common.model.ResponseMessage;
 import cn.com.wanwei.common.model.User;
@@ -26,7 +26,7 @@ public interface ScenicService {
 	 * @param scenicModel
 	 * @return
 	 */
-	ResponseMessage save(ScenicModel scenicModel, User user, Long ruleId, Integer appCode) throws Exception;
+	ResponseMessage save(EntityTagsModel<ScenicEntity> scenicModel, User user, Long ruleId, Integer appCode) throws Exception;
 
 	/**
 	 * 根据Id删除一条记录
@@ -51,7 +51,7 @@ public interface ScenicService {
 	 * @param scenicModel
 	 * @return
 	 */
-	ResponseMessage edit(String id, ScenicModel scenicModel, User user) throws Exception;
+	ResponseMessage edit(String id, EntityTagsModel<ScenicEntity> scenicModel, User user) throws Exception;
 
 	/**
 	 * 获取分页列表
