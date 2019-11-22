@@ -1,10 +1,12 @@
 package cn.com.wanwei.bic.service.impl;
 
-import cn.com.wanwei.bic.entity.*;
+import cn.com.wanwei.bic.entity.AuditLogEntity;
+import cn.com.wanwei.bic.entity.BaseTagsEntity;
+import cn.com.wanwei.bic.entity.DestinationEntity;
+import cn.com.wanwei.bic.entity.DestinationTagsEntity;
 import cn.com.wanwei.bic.mapper.DestinationMapper;
-import cn.com.wanwei.bic.mapper.MaterialMapper;
 import cn.com.wanwei.bic.model.DataBindModel;
-import cn.com.wanwei.bic.model.DestinationModel;
+import cn.com.wanwei.bic.model.EntityTagsModel;
 import cn.com.wanwei.bic.model.WeightModel;
 import cn.com.wanwei.bic.service.DestinationService;
 import cn.com.wanwei.bic.service.MaterialService;
@@ -19,6 +21,7 @@ import com.github.pagehelper.Page;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
@@ -77,8 +80,8 @@ public class DestinationServiceImpl implements DestinationService {
      * @return
      */
     @Override
-    public ResponseMessage save(DestinationModel destinationModel, User user) throws Exception{
-        DestinationEntity destinationEntity = destinationModel.getDestinationEntity();
+    public ResponseMessage save(EntityTagsModel<DestinationEntity> destinationModel, User user) throws Exception{
+        DestinationEntity destinationEntity = destinationModel.getEntity();
         destinationEntity.setId(UUIDUtils.getInstance().getId());
         destinationEntity.setCreatedUser(user.getUsername());
         destinationEntity.setCreatedDate(new Date());
@@ -86,7 +89,11 @@ public class DestinationServiceImpl implements DestinationService {
         destinationEntity.setWeight(0);
         destinationEntity.setDeptCode(user.getOrg().getCode());
         destinationMapper.insert(destinationEntity);
-        this.saveTags(destinationModel.getList(), destinationEntity.getId(),user);
+
+        //处理标签
+        if(CollectionUtils.isNotEmpty(destinationModel.getTagsList())){
+            tagsService.batchInsert(destinationEntity.getId(),destinationModel.getTagsList(),user, DestinationTagsEntity.class);
+        }
         return ResponseMessage.defaultResponse().setMsg("保存成功!");
     }
 
@@ -109,12 +116,12 @@ public class DestinationServiceImpl implements DestinationService {
      * @return
      */
     @Override
-    public ResponseMessage edit(String id, DestinationModel destinationModel, User user)throws Exception {
+    public ResponseMessage edit(String id, EntityTagsModel<DestinationEntity> destinationModel, User user)throws Exception {
         DestinationEntity entity = destinationMapper.selectByPrimaryKey(id);
         if(null == entity){
             return ResponseMessage.validFailResponse().setMsg("不存在该目的地！");
         }
-        DestinationEntity destinationEntity = destinationModel.getDestinationEntity();
+        DestinationEntity destinationEntity = destinationModel.getEntity();
         destinationEntity.setId(id);
         destinationEntity.setCreatedDate(entity.getCreatedDate());
         destinationEntity.setCreatedUser(entity.getCreatedUser());
@@ -122,7 +129,11 @@ public class DestinationServiceImpl implements DestinationService {
         destinationEntity.setUpdatedDate(new Date());
         destinationEntity.setUpdatedUser(user.getUsername());
         destinationMapper.updateByPrimaryKey(destinationEntity);
-        this.saveTags(destinationModel.getList(), destinationEntity.getId(),user);
+
+        //处理标签
+        if(CollectionUtils.isNotEmpty(destinationModel.getTagsList())){
+            tagsService.batchInsert(destinationEntity.getId(),destinationModel.getTagsList(),user, DestinationTagsEntity.class);
+        }
         return ResponseMessage.defaultResponse().setMsg("更新成功!");
     }
 

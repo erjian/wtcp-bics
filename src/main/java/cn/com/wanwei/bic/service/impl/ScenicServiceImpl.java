@@ -89,7 +89,9 @@ public class ScenicServiceImpl implements ScenicService {
         scenicMapper.insert(record);
 
         //处理标签
-        tagsService.batchInsert(record.getId(), scenicModel.getTagsList(), user, ScenicTagsEntity.class);
+        if(CollectionUtils.isNotEmpty(scenicModel.getTagsList())){
+            tagsService.batchInsert(record.getId(), scenicModel.getTagsList(), user, ScenicTagsEntity.class);
+        }
 
         return ResponseMessage.defaultResponse().setMsg("保存成功").setData(id);
     }
@@ -125,7 +127,9 @@ public class ScenicServiceImpl implements ScenicService {
         scenicMapper.updateByPrimaryKeyWithBLOBs(record);
 
         //处理标签
-        tagsService.batchInsert(record.getId(), scenicModel.getTagsList(), user, ScenicTagsEntity.class);
+        if(CollectionUtils.isNotEmpty(scenicModel.getTagsList())){
+            tagsService.batchInsert(record.getId(), scenicModel.getTagsList(), user, ScenicTagsEntity.class);
+        }
 
         return ResponseMessage.defaultResponse().setMsg("更新成功");
     }

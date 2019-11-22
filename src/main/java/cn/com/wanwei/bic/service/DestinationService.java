@@ -1,7 +1,8 @@
 package cn.com.wanwei.bic.service;
 
+import cn.com.wanwei.bic.entity.DestinationEntity;
 import cn.com.wanwei.bic.model.DataBindModel;
-import cn.com.wanwei.bic.model.DestinationModel;
+import cn.com.wanwei.bic.model.EntityTagsModel;
 import cn.com.wanwei.bic.model.WeightModel;
 import cn.com.wanwei.common.model.ResponseMessage;
 import cn.com.wanwei.common.model.User;
@@ -33,7 +34,7 @@ public interface DestinationService {
      * @param user
      * @return
      */
-    ResponseMessage save(DestinationModel destinationModel, User user) throws Exception;
+    ResponseMessage save(EntityTagsModel<DestinationEntity> destinationModel, User user) throws Exception;
 
     /**
      * 目的地基础信息编辑
@@ -42,7 +43,7 @@ public interface DestinationService {
      * @param user
      * @return
      */
-    ResponseMessage edit(String id, DestinationModel destinationModel, User user) throws Exception;
+    ResponseMessage edit(String id, EntityTagsModel<DestinationEntity> destinationModel, User user) throws Exception;
 
     /**
      * 根据目的地id查询目的地信息

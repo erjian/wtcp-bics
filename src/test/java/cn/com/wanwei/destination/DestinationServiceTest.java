@@ -1,9 +1,11 @@
 package cn.com.wanwei.destination;
 
 import cn.com.wanwei.bic.BicApplication;
+import cn.com.wanwei.bic.entity.BaseTagsEntity;
 import cn.com.wanwei.bic.entity.DestinationEntity;
-import cn.com.wanwei.bic.model.DestinationModel;
+import cn.com.wanwei.bic.model.EntityTagsModel;
 import cn.com.wanwei.bic.service.DestinationService;
+import cn.com.wanwei.common.model.Org;
 import cn.com.wanwei.common.model.ResponseMessage;
 import cn.com.wanwei.common.model.User;
 import com.google.common.collect.Maps;
@@ -38,13 +40,13 @@ public class DestinationServiceTest {
     private DestinationService destinationService;
 
     private DestinationEntity destinationEntity;
-    private DestinationModel destinationModel;
+    private EntityTagsModel<DestinationEntity> destinationModel;
     private User user;
 
     @Before
     public void before() {
         System.out.println("---------------- 目的地管理接口单元测试开始 ---------------------");
-        List<Map<String,Object>> list = new ArrayList<Map<String,Object>>();
+        List<BaseTagsEntity> list = new ArrayList();
         destinationEntity = new DestinationEntity();
         destinationEntity.setId("TEST_1001");
         destinationEntity.setDeptCode("1001");
@@ -62,8 +64,16 @@ public class DestinationServiceTest {
         destinationEntity.setCreatedUser("zhanglei");
         destinationEntity.setCreatedDate(new Date());
         destinationEntity.setWeight(4);
-        destinationModel.setDestinationEntity(destinationEntity);
-        destinationModel.setList(list);
+        destinationModel = new EntityTagsModel();
+        destinationModel.setEntity(destinationEntity);
+        destinationModel.setTagsList(list);
+
+        //user填充数据
+        user=new User();
+        user.setUsername("ceshi");
+        Org org=new Org();
+        org.setCode("111");
+        user.setOrg(org);
     }
     @After
     public void after(){

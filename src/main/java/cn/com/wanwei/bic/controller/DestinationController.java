@@ -1,7 +1,8 @@
 package cn.com.wanwei.bic.controller;
 
+import cn.com.wanwei.bic.entity.DestinationEntity;
 import cn.com.wanwei.bic.model.DataBindModel;
-import cn.com.wanwei.bic.model.DestinationModel;
+import cn.com.wanwei.bic.model.EntityTagsModel;
 import cn.com.wanwei.bic.model.WeightModel;
 import cn.com.wanwei.bic.service.DestinationService;
 import cn.com.wanwei.common.log.annotation.OperationLog;
@@ -50,11 +51,11 @@ public class DestinationController extends BaseController {
     }
 
     @ApiOperation(value = "目的地基础信息新增", notes = "目的地基础信息新增")
-    @ApiImplicitParam(name = "destinationModel", value = "目的地基础信息", required = true, dataType = "DestinationModel")
+    @ApiImplicitParam(name = "destinationModel", value = "目的地基础信息", required = true, dataType = "EntityTagsModel")
     @PostMapping(value = "/save")
     @PreAuthorize("hasAuthority('destination:c')")
     @OperationLog(value = "wtcp-bics/目的地基础信息新增", operate = "c", module = "目的地基础信息管理")
-    public ResponseMessage save(@RequestBody DestinationModel destinationModel, BindingResult bindingResult) throws Exception {
+    public ResponseMessage save(@RequestBody EntityTagsModel<DestinationEntity> destinationModel, BindingResult bindingResult) throws Exception {
         if (bindingResult.hasErrors()) {
             return ResponseMessage.validFailResponse().setMsg(bindingResult.getAllErrors());
         }
@@ -62,11 +63,11 @@ public class DestinationController extends BaseController {
     }
 
     @ApiOperation(value = "目的地基础信息编辑", notes = "目的地基础信息编辑")
-    @ApiImplicitParam(name = "destinationModel", value = "目的地基础信息", required = true, dataType = "DestinationModel")
+    @ApiImplicitParam(name = "destinationModel", value = "目的地基础信息", required = true, dataType = "EntityTagsModel")
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
     @PreAuthorize("hasAuthority('destination:u')")
     @OperationLog(value = "wtcp-bics/目的地基础信息编辑", operate = "u", module = "目的地基础信息管理")
-    public ResponseMessage edit(@PathVariable("id") String id, @RequestBody DestinationModel destinationModel, BindingResult bindingResult) throws Exception {
+    public ResponseMessage edit(@PathVariable("id") String id, @RequestBody EntityTagsModel<DestinationEntity> destinationModel, BindingResult bindingResult) throws Exception {
         if (bindingResult.hasErrors()) {
             return ResponseMessage.validFailResponse().setMsg(bindingResult.getAllErrors());
         }

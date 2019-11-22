@@ -67,7 +67,7 @@ public class ScenicController extends BaseController {
     }
 
     @ApiOperation(value = "景区新增", notes = "景区新增")
-    @ApiImplicitParam(name = "scenicModel", value = "景区model", required = true, dataType = "ScenicModel")
+    @ApiImplicitParam(name = "scenicModel", value = "景区model", required = true, dataType = "EntityTagsModel")
     @PostMapping(value = "/save")
     @PreAuthorize("hasAuthority('scenic:c')")
     @OperationLog(value = "wtcp-bics/景区新增", operate = "c", module = "景区管理")
@@ -79,7 +79,7 @@ public class ScenicController extends BaseController {
     }
 
     @ApiOperation(value = "景区编辑", notes = "景区编辑")
-    @ApiImplicitParam(name = "scenicModel", value = "景区", required = true, dataType = "ScenicModel")
+    @ApiImplicitParam(name = "scenicModel", value = "景区", required = true, dataType = "EntityTagsModel")
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
     @PreAuthorize("hasAuthority('scenic:u')")
     @OperationLog(value = "wtcp-bics/景区编辑", operate = "u", module = "景区管理")
