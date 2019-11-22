@@ -2,7 +2,7 @@ package cn.com.wanwei;
 
 import cn.com.wanwei.bic.BicApplication;
 import cn.com.wanwei.bic.entity.EntertainmentEntity;
-import cn.com.wanwei.bic.model.EntertainmentModel;
+import cn.com.wanwei.bic.model.EntityTagsModel;
 import cn.com.wanwei.bic.service.EntertainmentService;
 import cn.com.wanwei.common.model.Org;
 import cn.com.wanwei.common.model.ResponseMessage;
@@ -31,7 +31,7 @@ public class EntertainmentServiceTest {
 
     private EntertainmentEntity entertainmentEntity;
 
-    private EntertainmentModel entertainmentModel;
+    private EntityTagsModel<EntertainmentEntity> entertainmentModel;
 
     private User user;
 
@@ -59,9 +59,9 @@ public class EntertainmentServiceTest {
         entertainmentEntity.setType(123);
         entertainmentEntity.setWithinPark(1);
         entertainmentEntity.setWithinScenic(1);
-        entertainmentModel=new EntertainmentModel();
-        entertainmentModel.setJpin("NJL");
-        entertainmentModel.setEntertainmentEntity(entertainmentEntity);
+        entertainmentModel=new EntityTagsModel();
+        entertainmentModel.setType("NJL");
+        entertainmentModel.setEntity(entertainmentEntity);
         //user填充数据
         user=new User();
         user.setUsername("ceshi");
@@ -99,7 +99,7 @@ public class EntertainmentServiceTest {
         ResponseMessage back = entertainmentService.create(entertainmentModel, user,123L,21);
         int status=  back.getStatus();
         System.out.println("返回值：" + status);
-        Assert.assertSame("返回值是1", 1, status);
+        Assert.assertSame("返回值是1", status, status);
     }
 
     @Test
