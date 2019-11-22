@@ -231,4 +231,19 @@
       </if>
     </where>
   </select>
+
+  <!-- 以下是统一处理权重所用的方法 -->
+  <select id="commonMaxWeight" resultType="Integer">
+    select weight from ${tableName} order by weight desc limit 1
+  </select>
+  <update id="commonClearWeight">
+    update ${tableName} set weight=0
+  </update>
+  <update id="commonUpdateWeight">
+    update ${tableName}
+    set weight = #{weight,jdbcType=INTEGER},
+      updated_user = #{updatedUser,jdbcType=VARCHAR},
+      updated_date = #{updatedDate,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
 </mapper>

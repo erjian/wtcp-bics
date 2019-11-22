@@ -1,5 +1,5 @@
 /**
- * 该源代码文件 ScenicModel.java 是工程“wtcp-bics”的一部分。
+ * 该源代码文件 EntityTagsModel.java 是工程“wtcp-bics”的一部分。
  * 
  * @project wtcp-bics
  * @author linjw

@@ -67,4 +67,29 @@ public interface ScenicMapper {
      * @return
      */
     List<ScenicEntity> findByTitleAndIdNot(@Param(value="title")String title, @Param(value="id")String id);
+
+    /**
+     * 统一查询最大权重
+     * @param tableName
+     * @return
+     */
+    Integer commonMaxWeight(@Param(value = "tableName") String tableName);
+
+    /**
+     * 统一重置权重值
+     * @param tableName
+     * @return
+     */
+    int commonClearWeight(@Param(value = "tableName") String tableName);
+
+    /**
+     *
+     * @param id
+     * @param weight
+     * @param updatedUser
+     * @param updatedDate
+     * @param tableName
+     * @return
+     */
+    int commonUpdateWeight(@Param(value = "id") String id, @Param(value = "weight") int weight, @Param(value = "updatedUser") String updatedUser, @Param(value = "updatedDate") Date updatedDate, @Param(value = "tableName") String tableName);
 }
