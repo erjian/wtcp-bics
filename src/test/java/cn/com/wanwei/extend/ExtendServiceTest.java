@@ -2,10 +2,8 @@ package cn.com.wanwei.extend;
 
 import cn.com.wanwei.bic.BicApplication;
 import cn.com.wanwei.bic.entity.BaseTagsEntity;
-import cn.com.wanwei.bic.entity.EntertainmentEntity;
 import cn.com.wanwei.bic.entity.ExtendEntity;
 import cn.com.wanwei.bic.model.EntityTagsModel;
-import cn.com.wanwei.bic.model.ExtendModel;
 import cn.com.wanwei.bic.service.ExtendService;
 import cn.com.wanwei.common.model.Org;
 import cn.com.wanwei.common.model.ResponseMessage;
@@ -23,7 +21,6 @@ import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
