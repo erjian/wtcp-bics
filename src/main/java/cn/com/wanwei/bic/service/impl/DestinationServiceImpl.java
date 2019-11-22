@@ -97,17 +97,6 @@ public class DestinationServiceImpl implements DestinationService {
         return ResponseMessage.defaultResponse().setMsg("保存成功!");
     }
 
-    private void saveTags(List<Map<String, Object>> tagsList, String principalId, User user){
-        List<BaseTagsEntity> list = Lists.newArrayList();
-        for(int i=0; i<tagsList.size(); i++){
-            BaseTagsEntity entity = new BaseTagsEntity();
-            entity.setTagCatagory(tagsList.get(i).get("tagCatagory").toString());
-            entity.setTagName(tagsList.get(i).get("tagName").toString());
-            list.add(entity);
-        }
-        tagsService.batchInsert(principalId,list,user, DestinationTagsEntity.class);
-    }
-
     /**
      *
      * @param id  主键ID
@@ -227,10 +216,9 @@ public class DestinationServiceImpl implements DestinationService {
 
     @Override
     public ResponseMessage relateTags(Map<String, Object> tags, User user) {
-        List<Map<String, Object>> tagsList = (List<Map<String, Object>>) tags.get("tagsArr");
-        String relateId = tags.get("id").toString();
-        if (null != tagsList && !tagsList.isEmpty()) {
-            this.saveTags(tagsList, relateId, user);
+        List<BaseTagsEntity> tagsList = (List<BaseTagsEntity>) tags.get("tagsArr");
+        if (CollectionUtils.isNotEmpty(tagsList)) {
+            tagsService.batchInsert(tags.get("id").toString(),tagsList,user, DestinationTagsEntity.class);
         }
         return ResponseMessage.defaultResponse().setMsg("标签关联成功");
     }

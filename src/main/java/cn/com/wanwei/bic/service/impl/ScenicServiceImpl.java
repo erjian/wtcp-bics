@@ -134,17 +134,6 @@ public class ScenicServiceImpl implements ScenicService {
         return ResponseMessage.defaultResponse().setMsg("更新成功");
     }
 
-    private void saveTags(List<Map<String, Object>> tagsList, String principalId, User user) {
-        List<BaseTagsEntity> list = Lists.newArrayList();
-        for (int i = 0; i < tagsList.size(); i++) {
-            BaseTagsEntity entity = new BaseTagsEntity();
-            entity.setTagCatagory(tagsList.get(i).get("tagCatagory").toString());
-            entity.setTagName(tagsList.get(i).get("tagName").toString());
-            list.add(entity);
-        }
-        tagsService.batchInsert(principalId, list, user, ScenicTagsEntity.class);
-    }
-
     @Override
     public ResponseMessage findByPage(Integer page, Integer size, User user1, Map<String, Object> filter) {
         MybatisPageRequest pageRequest = PageUtils.getInstance().setPage(page, size, filter, Sort.Direction.DESC, "created_date", "updated_date");
@@ -226,10 +215,9 @@ public class ScenicServiceImpl implements ScenicService {
 
     @Override
     public ResponseMessage relateTags(Map<String, Object> tags, User user) {
-        List<Map<String, Object>> tagsList = (List<Map<String, Object>>) tags.get("tagsArr");
-        String relateId = tags.get("id").toString();
-        if (null != tagsList && !tagsList.isEmpty()) {
-            this.saveTags(tagsList, relateId, user);
+        List<BaseTagsEntity> tagsList = (List<BaseTagsEntity>) tags.get("tagsArr");
+        if (CollectionUtils.isNotEmpty(tagsList)) {
+            tagsService.batchInsert(tags.get("id").toString(), tagsList, user, ScenicTagsEntity.class);
         }
         return ResponseMessage.defaultResponse().setMsg("标签关联成功");
     }
