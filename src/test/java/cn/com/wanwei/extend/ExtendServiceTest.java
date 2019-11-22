@@ -1,11 +1,16 @@
 package cn.com.wanwei.extend;
 
 import cn.com.wanwei.bic.BicApplication;
+import cn.com.wanwei.bic.entity.BaseTagsEntity;
+import cn.com.wanwei.bic.entity.EntertainmentEntity;
 import cn.com.wanwei.bic.entity.ExtendEntity;
+import cn.com.wanwei.bic.model.EntityTagsModel;
 import cn.com.wanwei.bic.model.ExtendModel;
 import cn.com.wanwei.bic.service.ExtendService;
+import cn.com.wanwei.common.model.Org;
 import cn.com.wanwei.common.model.ResponseMessage;
 import cn.com.wanwei.common.model.User;
+import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import org.junit.After;
 import org.junit.Assert;
@@ -38,16 +43,16 @@ public class ExtendServiceTest {
     private ExtendService extendService;
 
     private ExtendEntity extendEntity;
-    private ExtendModel extendModel;
+    private EntityTagsModel<ExtendEntity> extendModel;
     private User user;
 
     @Before
     public void before() {
-        List<Map<String,Object>> list = new ArrayList<Map<String,Object>>();
+        List<BaseTagsEntity> list = Lists.newArrayList();
         System.out.println("---------------- 扩展信息管理接口单元测试开始 ---------------------");
         extendEntity = new ExtendEntity();
         extendEntity.setId("TEST_1001");
-        extendEntity.setCode("1001");
+        extendEntity.setCode("YDTS");
         extendEntity.setStatus(0);
         extendEntity.setPrincipalId("0eab670e70344f54b9e1246b31507c36");
         extendEntity.setContent("testetsdgsuygfsofoda");
@@ -62,8 +67,16 @@ public class ExtendServiceTest {
         extendEntity.setCreatedUser("zhanglei");
         extendEntity.setCreatedDate(new Date());
         extendEntity.setWeight(Float.valueOf("4.00"));
-        extendModel.setExtendEntity(extendEntity);
-        extendModel.setList(list);
+        extendModel=new EntityTagsModel();
+        extendModel.setEntity(extendEntity);
+        extendModel.setTagsList(list);
+
+        //user填充数据
+        user=new User();
+        user.setUsername("ceshi");
+        Org org=new Org();
+        org.setCode("111");
+        user.setOrg(org);
     }
     @After
     public void after(){
@@ -83,7 +96,7 @@ public class ExtendServiceTest {
     @Rollback
     public void createTest() throws Exception{
         System.out.println("---------------新增扩展信息---------------");
-        ResponseMessage back = extendService.save(extendModel,user, Long.valueOf("1001"), 1002);
+        ResponseMessage back = extendService.save(extendModel,user, 45L, 66);
         int status=  back.getStatus();
         System.out.println("返回值：" + status);
         Assert.assertSame("返回值是1", 1, status);

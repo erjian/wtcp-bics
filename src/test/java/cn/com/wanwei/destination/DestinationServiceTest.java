@@ -8,6 +8,7 @@ import cn.com.wanwei.bic.service.DestinationService;
 import cn.com.wanwei.common.model.Org;
 import cn.com.wanwei.common.model.ResponseMessage;
 import cn.com.wanwei.common.model.User;
+import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import org.junit.After;
 import org.junit.Assert;
@@ -46,7 +47,7 @@ public class DestinationServiceTest {
     @Before
     public void before() {
         System.out.println("---------------- 目的地管理接口单元测试开始 ---------------------");
-        List<BaseTagsEntity> list = new ArrayList();
+        List<BaseTagsEntity> list = Lists.newArrayList();
         destinationEntity = new DestinationEntity();
         destinationEntity.setId("TEST_1001");
         destinationEntity.setDeptCode("1001");
