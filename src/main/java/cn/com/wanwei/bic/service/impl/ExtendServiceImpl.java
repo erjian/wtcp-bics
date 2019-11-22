@@ -6,7 +6,7 @@ import cn.com.wanwei.bic.entity.ExtendEntity;
 import cn.com.wanwei.bic.entity.ExtendTagsEntity;
 import cn.com.wanwei.bic.feign.CoderServiceFeign;
 import cn.com.wanwei.bic.mapper.ExtendMapper;
-import cn.com.wanwei.bic.model.ExtendModel;
+import cn.com.wanwei.bic.model.EntityTagsModel;
 import cn.com.wanwei.bic.service.ExtendService;
 import cn.com.wanwei.bic.service.MaterialService;
 import cn.com.wanwei.bic.service.TagsService;
@@ -18,9 +18,9 @@ import cn.com.wanwei.persistence.mybatis.MybatisPageRequest;
 import cn.com.wanwei.persistence.mybatis.PageInfo;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
-import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
@@ -86,8 +86,8 @@ public class ExtendServiceImpl implements ExtendService {
      * @throws Exception
      */
     @Override
-    public ResponseMessage save(ExtendModel extendModel,User user,  Long ruleId, Integer appCode) throws Exception{
-        ExtendEntity extendEntity = extendModel.getExtendEntity();
+    public ResponseMessage save(EntityTagsModel<ExtendEntity> extendModel, User user, Long ruleId, Integer appCode) throws Exception{
+        ExtendEntity extendEntity = extendModel.getEntity();
         ResponseMessage responseMessage = coderServiceFeign.buildSerialByCode(ruleId,appCode,extendEntity.getCode());
         extendEntity.setId(UUIDUtils.getInstance().getId());
         extendEntity.setCreatedUser(user.getUsername());
@@ -96,26 +96,12 @@ public class ExtendServiceImpl implements ExtendService {
         extendEntity.setStatus(0);
         extendEntity.setCode(responseMessage.getData().toString());
         extendMapper.insert(extendEntity);
-        //保存标签
-        this.saveTags(extendModel.getList(),extendEntity.getId(),user);
-        return ResponseMessage.defaultResponse().setMsg("新增成功!");
-    }
 
-    /**
-     * 标签保存
-     * @param tagsList
-     * @param principalId
-     * @param user
-     */
-    private void saveTags(List<Map<String, Object>> tagsList, String principalId, User user){
-        List<BaseTagsEntity> list = Lists.newArrayList();
-        for(int i=0; i<tagsList.size(); i++){
-            BaseTagsEntity entity = new BaseTagsEntity();
-            entity.setTagCatagory(tagsList.get(i).get("tagCatagory").toString());
-            entity.setTagName(tagsList.get(i).get("tagName").toString());
-            list.add(entity);
+        //保存标签
+        if(CollectionUtils.isNotEmpty(extendModel.getTagsList())){
+            tagsService.batchInsert(extendEntity.getId(),extendModel.getTagsList(),user,ExtendTagsEntity.class);
         }
-        tagsService.batchInsert(principalId,list,user, ExtendTagsEntity.class);
+        return ResponseMessage.defaultResponse().setMsg("新增成功!");
     }
 
     /**
@@ -127,9 +113,9 @@ public class ExtendServiceImpl implements ExtendService {
      * @throws Exception
      */
     @Override
-    public ResponseMessage edit(String id, ExtendModel extendModel, User user) throws Exception{
+    public ResponseMessage edit(String id, EntityTagsModel<ExtendEntity> extendModel, User user) throws Exception{
         ExtendEntity entity = extendMapper.selectByPrimaryKey(id);
-        ExtendEntity extendEntity = extendModel.getExtendEntity();
+        ExtendEntity extendEntity = extendModel.getEntity();
         if(null == entity){
             return ResponseMessage.validFailResponse().setMsg("不存在扩展信息");
         }
@@ -141,7 +127,9 @@ public class ExtendServiceImpl implements ExtendService {
         extendEntity.setUpdatedUser(user.getUsername());
         extendMapper.updateByPrimaryKey(extendEntity);
         //更新标签
-        this.saveTags(extendModel.getList(),id,user);
+        if(CollectionUtils.isNotEmpty(extendModel.getTagsList())){
+            tagsService.batchInsert(extendEntity.getId(),extendModel.getTagsList(),user,ExtendTagsEntity.class);
+        }
         return ResponseMessage.defaultResponse().setMsg("更新成功!");
     }
 
@@ -240,10 +228,9 @@ public class ExtendServiceImpl implements ExtendService {
      */
     @Override
     public ResponseMessage relateTags(Map<String, Object> tags, User user) throws Exception{
-        List<Map<String, Object>> tagsList = (List<Map<String, Object>>) tags.get("tagsArr");
-        String relateId = tags.get("id").toString();
-        if(null != tagsList && !tagsList.isEmpty()){
-            this.saveTags(tagsList,relateId,user);
+        List<BaseTagsEntity> tagsList = (List<BaseTagsEntity>) tags.get("tagsArr");
+        if(CollectionUtils.isNotEmpty(tagsList)){
+            tagsService.batchInsert(tags.get("id").toString(),tagsList,user,ExtendTagsEntity.class);
         }
         return ResponseMessage.defaultResponse().setMsg("标签关联成功");
     }

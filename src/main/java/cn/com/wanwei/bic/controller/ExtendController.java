@@ -1,7 +1,8 @@
 package cn.com.wanwei.bic.controller;
 
 import cn.com.wanwei.bic.entity.AuditLogEntity;
-import cn.com.wanwei.bic.model.ExtendModel;
+import cn.com.wanwei.bic.entity.ExtendEntity;
+import cn.com.wanwei.bic.model.EntityTagsModel;
 import cn.com.wanwei.bic.service.ExtendService;
 import cn.com.wanwei.common.log.annotation.OperationLog;
 import cn.com.wanwei.common.model.ResponseMessage;
@@ -48,11 +49,11 @@ public class ExtendController extends BaseController{
     }
 
     @ApiOperation(value = "扩展信息新增", notes = "扩展信息新增")
-    @ApiImplicitParam(name = "extendModel", value = "扩展信息model", required = true, dataType = "ExtendModel")
+    @ApiImplicitParam(name = "extendModel", value = "扩展信息model", required = true, dataType = "EntityTagsModel")
     @PostMapping(value = "/save")
     @PreAuthorize("hasAuthority('extend:c')")
     @OperationLog(value = "wtcp-bics/扩展信息新增", operate = "c", module = "扩展信息管理")
-    public ResponseMessage save(@RequestBody ExtendModel extendModel, BindingResult bindingResult) throws Exception {
+    public ResponseMessage save(@RequestBody EntityTagsModel<ExtendEntity> extendModel, BindingResult bindingResult) throws Exception {
         if (bindingResult.hasErrors()) {
             return ResponseMessage.validFailResponse().setMsg(bindingResult.getAllErrors());
         }
@@ -60,11 +61,11 @@ public class ExtendController extends BaseController{
     }
 
     @ApiOperation(value = "扩展信息编辑", notes = "扩展信息编辑")
-    @ApiImplicitParam(name = "extendModel", value = "扩展信息model", required = true, dataType = "ExtendModel")
+    @ApiImplicitParam(name = "extendModel", value = "扩展信息model", required = true, dataType = "EntityTagsModel")
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
     @PreAuthorize("hasAuthority('extend:u')")
     @OperationLog(value = "wtcp-bics/扩展信息编辑", operate = "u", module = "扩展信息管理")
-    public ResponseMessage edit(@PathVariable("id") String id, @RequestBody ExtendModel extendModel, BindingResult bindingResult) throws Exception {
+    public ResponseMessage edit(@PathVariable("id") String id, @RequestBody EntityTagsModel<ExtendEntity> extendModel, BindingResult bindingResult) throws Exception {
         if (bindingResult.hasErrors()) {
             return ResponseMessage.validFailResponse().setMsg(bindingResult.getAllErrors());
         }
