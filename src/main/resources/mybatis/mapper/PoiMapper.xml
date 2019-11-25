@@ -103,7 +103,7 @@
         from t_bic_poi
         <where>
             <if test="title != null and title!='' ">
-                <bind name="title" value="title + '%'" ></bind>
+                <bind name="title" value="'%' + title + '%'" ></bind>
                 and title like #{title}
             </if>
             <if test="principalId != null and principalId!='' ">
