@@ -117,4 +117,12 @@ public class TagsController extends BaseController {
         return kbServiceFeign.getTagsByKind(kind);
     }
 
+    @ApiOperation(value = "根据关联ID获取旅行社标签信息", notes = "根据关联ID获取旅行社标签信息")
+    @ApiImplicitParam(name = "principalId", value = "关联的旅行社ID", required = true)
+    @OperationLog(value = "wtcp-bic/根据关联ID获取旅行社标签信息", operate = "r", module = "标签管理")
+    @RequestMapping(value = "/findTravelAgentByPid", method = RequestMethod.GET)
+    public ResponseMessage findTravelAgentByPid(@RequestParam String principalId) {
+        return tagsService.findByPrincipalId(principalId, TravelAgentTagsEntity.class);
+    }
+
 }

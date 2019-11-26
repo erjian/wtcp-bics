@@ -29,7 +29,6 @@
     <result column="from_city" jdbcType="VARCHAR" property="fromCity" />
     <result column="level" jdbcType="VARCHAR" property="level" />
     <result column="level_time" jdbcType="VARCHAR" property="levelTime" />
-    <result column="recommend" jdbcType="TINYINT" property="recommend" />
     <result column="start_time" jdbcType="VARCHAR" property="startTime" />
     <result column="team_type" jdbcType="VARCHAR" property="teamType" />
     <result column="tour_type" jdbcType="VARCHAR" property="tourType" />
@@ -41,7 +40,7 @@
     id, title, sub_title, code, slogan, summary, description, weight, longitude, latitude, 
     region_full_name, region_full_code, region, address, created_date, created_user, 
     updated_date, updated_user, simple_spell, full_spell, keyword, business_scope,
-    business_type, destination_city, from_city, level, level_time, recommend, start_time, 
+    business_type, destination_city, from_city, level, level_time, start_time,
     team_type, tour_type, dept_code, status,content
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
@@ -63,8 +62,7 @@
       updated_date, updated_user,
       simple_spell, full_spell, keyword, 
       business_scope, business_type, destination_city, 
-      from_city, level, level_time, 
-      recommend, start_time, team_type, 
+      from_city, level, level_time, start_time, team_type,
       tour_type, dept_code, status, 
       content)
     values (#{id,jdbcType=VARCHAR},#{title,jdbcType=VARCHAR}, #{subTitle,jdbcType=VARCHAR}, #{code,jdbcType=VARCHAR},
@@ -76,7 +74,7 @@
       #{simpleSpell,jdbcType=VARCHAR}, #{fullSpell,jdbcType=VARCHAR}, #{keyword,jdbcType=VARCHAR}, 
       #{businessScope,jdbcType=VARCHAR}, #{businessType,jdbcType=VARCHAR}, #{destinationCity,jdbcType=VARCHAR}, 
       #{fromCity,jdbcType=VARCHAR}, #{level,jdbcType=VARCHAR}, #{levelTime,jdbcType=VARCHAR}, 
-      #{recommend,jdbcType=TINYINT}, #{startTime,jdbcType=VARCHAR}, #{teamType,jdbcType=VARCHAR}, 
+      #{startTime,jdbcType=VARCHAR}, #{teamType,jdbcType=VARCHAR},
       #{tourType,jdbcType=VARCHAR}, #{deptCode,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER}, 
       #{content,jdbcType=LONGVARCHAR})
   </insert>
@@ -108,7 +106,6 @@
       from_city = #{fromCity,jdbcType=VARCHAR},
       level = #{level,jdbcType=VARCHAR},
       level_time = #{levelTime,jdbcType=VARCHAR},
-      recommend = #{recommend,jdbcType=TINYINT},
       start_time = #{startTime,jdbcType=VARCHAR},
       team_type = #{teamType,jdbcType=VARCHAR},
       tour_type = #{tourType,jdbcType=VARCHAR},
