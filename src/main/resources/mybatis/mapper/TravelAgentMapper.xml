@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.com.wanwei.bic.mapper.TravelAgentMapper">
+  <resultMap id="BaseResultMap" type="cn.com.wanwei.bic.entity.TravelAgentEntity">
+    <id column="id" jdbcType="VARCHAR" property="id" />
+    <result column="title" jdbcType="VARCHAR" property="title" />
+    <result column="sub_title" jdbcType="VARCHAR" property="subTitle" />
+    <result column="code" jdbcType="VARCHAR" property="code" />
+    <result column="slogan" jdbcType="VARCHAR" property="slogan" />
+    <result column="summary" jdbcType="VARCHAR" property="summary" />
+    <result column="description" jdbcType="VARCHAR" property="description" />
+    <result column="weight" jdbcType="INTEGER" property="weight" />
+    <result column="longitude" jdbcType="DOUBLE" property="longitude" />
+    <result column="latitude" jdbcType="DOUBLE" property="latitude" />
+    <result column="region_full_name" jdbcType="VARCHAR" property="regionFullName" />
+    <result column="region_full_code" jdbcType="VARCHAR" property="regionFullCode" />
+    <result column="region" jdbcType="VARCHAR" property="region" />
+    <result column="address" jdbcType="VARCHAR" property="address" />
+    <result column="created_date" jdbcType="TIMESTAMP" property="createdDate" />
+    <result column="created_user" jdbcType="VARCHAR" property="createdUser" />
+    <result column="updated_date" jdbcType="TIMESTAMP" property="updatedDate" />
+    <result column="updated_user" jdbcType="VARCHAR" property="updatedUser" />
+    <result column="contact_phone" jdbcType="VARCHAR" property="contactPhone" />
+    <result column="simple_spell" jdbcType="VARCHAR" property="simpleSpell" />
+    <result column="full_spell" jdbcType="VARCHAR" property="fullSpell" />
+    <result column="keyword" jdbcType="VARCHAR" property="keyword" />
+    <result column="business_scope" jdbcType="VARCHAR" property="businessScope" />
+    <result column="business_type" jdbcType="VARCHAR" property="businessType" />
+    <result column="destination_city" jdbcType="VARCHAR" property="destinationCity" />
+    <result column="from_city" jdbcType="VARCHAR" property="fromCity" />
+    <result column="level" jdbcType="VARCHAR" property="level" />
+    <result column="level_time" jdbcType="VARCHAR" property="levelTime" />
+    <result column="recommend" jdbcType="TINYINT" property="recommend" />
+    <result column="start_time" jdbcType="VARCHAR" property="startTime" />
+    <result column="team_type" jdbcType="VARCHAR" property="teamType" />
+    <result column="tour_type" jdbcType="VARCHAR" property="tourType" />
+    <result column="dept_code" jdbcType="VARCHAR" property="deptCode" />
+    <result column="status" jdbcType="INTEGER" property="status" />
+    <result column="content" jdbcType="LONGVARCHAR" property="content" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, title, sub_title, code, slogan, summary, description, weight, longitude, latitude, 
+    region_full_name, region_full_code, region, address, created_date, created_user, 
+    updated_date, updated_user, contact_phone, simple_spell, full_spell, keyword, business_scope, 
+    business_type, destination_city, from_city, level, level_time, recommend, start_time, 
+    team_type, tour_type, dept_code, status,content
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_bic_travel_agent
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from t_bic_travel_agent
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="cn.com.wanwei.bic.entity.TravelAgentEntity">
+    insert into t_bic_travel_agent (id,title, sub_title, code,
+      slogan, summary, description, 
+      weight, longitude, latitude, 
+      region_full_name, region_full_code, region, 
+      address, created_date, created_user, 
+      updated_date, updated_user, contact_phone, 
+      simple_spell, full_spell, keyword, 
+      business_scope, business_type, destination_city, 
+      from_city, level, level_time, 
+      recommend, start_time, team_type, 
+      tour_type, dept_code, status, 
+      content)
+    values (#{id,jdbcType=VARCHAR},#{title,jdbcType=VARCHAR}, #{subTitle,jdbcType=VARCHAR}, #{code,jdbcType=VARCHAR},
+      #{slogan,jdbcType=VARCHAR}, #{summary,jdbcType=VARCHAR}, #{description,jdbcType=VARCHAR}, 
+      #{weight,jdbcType=INTEGER}, #{longitude,jdbcType=DOUBLE}, #{latitude,jdbcType=DOUBLE}, 
+      #{regionFullName,jdbcType=VARCHAR}, #{regionFullCode,jdbcType=VARCHAR}, #{region,jdbcType=VARCHAR}, 
+      #{address,jdbcType=VARCHAR}, #{createdDate,jdbcType=TIMESTAMP}, #{createdUser,jdbcType=VARCHAR},
+      #{updatedDate,jdbcType=TIMESTAMP}, #{updatedUser,jdbcType=VARCHAR}, #{contactPhone,jdbcType=VARCHAR},
+      #{simpleSpell,jdbcType=VARCHAR}, #{fullSpell,jdbcType=VARCHAR}, #{keyword,jdbcType=VARCHAR}, 
+      #{businessScope,jdbcType=VARCHAR}, #{businessType,jdbcType=VARCHAR}, #{destinationCity,jdbcType=VARCHAR}, 
+      #{fromCity,jdbcType=VARCHAR}, #{level,jdbcType=VARCHAR}, #{levelTime,jdbcType=VARCHAR}, 
+      #{recommend,jdbcType=TINYINT}, #{startTime,jdbcType=VARCHAR}, #{teamType,jdbcType=VARCHAR}, 
+      #{tourType,jdbcType=VARCHAR}, #{deptCode,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER}, 
+      #{content,jdbcType=LONGVARCHAR})
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="cn.com.wanwei.bic.entity.TravelAgentEntity">
+    update t_bic_travel_agent
+    set title = #{title,jdbcType=VARCHAR},
+      sub_title = #{subTitle,jdbcType=VARCHAR},
+      code = #{code,jdbcType=VARCHAR},
+      slogan = #{slogan,jdbcType=VARCHAR},
+      summary = #{summary,jdbcType=VARCHAR},
+      description = #{description,jdbcType=VARCHAR},
+      weight = #{weight,jdbcType=INTEGER},
+      longitude = #{longitude,jdbcType=DOUBLE},
+      latitude = #{latitude,jdbcType=DOUBLE},
+      region_full_name = #{regionFullName,jdbcType=VARCHAR},
+      region_full_code = #{regionFullCode,jdbcType=VARCHAR},
+      region = #{region,jdbcType=VARCHAR},
+      address = #{address,jdbcType=VARCHAR},
+      created_date = #{createdDate,jdbcType=TIMESTAMP},
+      created_user = #{createdUser,jdbcType=VARCHAR},
+      updated_date = #{updatedDate,jdbcType=TIMESTAMP},
+      updated_user = #{updatedUser,jdbcType=VARCHAR},
+      contact_phone = #{contactPhone,jdbcType=VARCHAR},
+      simple_spell = #{simpleSpell,jdbcType=VARCHAR},
+      full_spell = #{fullSpell,jdbcType=VARCHAR},
+      keyword = #{keyword,jdbcType=VARCHAR},
+      business_scope = #{businessScope,jdbcType=VARCHAR},
+      business_type = #{businessType,jdbcType=VARCHAR},
+      destination_city = #{destinationCity,jdbcType=VARCHAR},
+      from_city = #{fromCity,jdbcType=VARCHAR},
+      level = #{level,jdbcType=VARCHAR},
+      level_time = #{levelTime,jdbcType=VARCHAR},
+      recommend = #{recommend,jdbcType=TINYINT},
+      start_time = #{startTime,jdbcType=VARCHAR},
+      team_type = #{teamType,jdbcType=VARCHAR},
+      tour_type = #{tourType,jdbcType=VARCHAR},
+      dept_code = #{deptCode,jdbcType=VARCHAR},
+      status = #{status,jdbcType=INTEGER},
+      content = #{content,jdbcType=LONGVARCHAR}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <select id="findByPage" parameterType="java.util.Map" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from t_bic_travel_agent
+    <where>
+      <if test="title!=null and title!='' ">
+        <bind name="title" value="'%'+title + '%'" ></bind>
+        and title like #{title}
+      </if>
+      <if test="subTitle != null and subTitle!='' ">
+        <bind name="subTitle" value="'%'+subTitle + '%'" ></bind>
+        and sub_title like #{subTitle}
+      </if>
+      <if test="regionFullCode != null and regionFullCode!='' ">
+        <bind name="regionFullCode" value="'%'+regionFullCode + '%'" ></bind>
+        and region_full_code like #{regionFullCode}
+      </if>
+      <if test="status != null">
+        <if test="status == 0 or status == 2">
+          and status = #{status,jdbcType=INTEGER}
+        </if>
+        <if test="status == 1">
+          and (status = 1 or status = 9)
+        </if>
+      </if>
+      <if test="onlineStatus != null">
+        <if test="onlineStatus == 9">
+          and status = #{onlineStatus,jdbcType=INTEGER}
+        </if>
+        <if test="onlineStatus == 1">
+          and 9 > status
+        </if>
+      </if>
+    </where>
+  </select>
+  <select id="checkTitle"  parameterType="java.lang.String" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from t_bic_travel_agent
+    where title = #{title,jdbcType=VARCHAR}
+  </select>
+
+  <update id="dataBind">
+    update t_bic_travel_agent
+    set updated_date = #{updatedDate,jdbcType=VARCHAR},
+    updated_user = #{updatedUser,jdbcType=VARCHAR},
+    dept_code = #{deptCode,jdbcType=VARCHAR}
+    where id in
+    <foreach collection="ids" item="item" index="index" open="(" separator="," close=")">
+      #{item}
+    </foreach>
+  </update>
+
+  <update id="clearWeight">
+    update t_bic_travel_agent set weight=0
+  </update>
+  <select id="maxWeight" resultType="Integer">
+    select weight from t_bic_travel_agent order by weight desc limit 1
+  </select>
+  <select id="getTravelAgentList" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from t_bic_travel_agent
+  </select>
+</mapper>
