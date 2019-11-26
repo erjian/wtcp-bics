@@ -132,6 +132,9 @@
         <bind name="subTitle" value="'%'+subTitle + '%'" ></bind>
         and sub_title like #{subTitle}
       </if>
+      <if test="level!=null and level!='' ">
+        and  `level` = #{level,jdbcType=INTEGER}
+      </if>
       <if test="regionFullCode != null and regionFullCode!='' ">
         <bind name="regionFullCode" value="'%'+regionFullCode + '%'" ></bind>
         and region_full_code like #{regionFullCode}
