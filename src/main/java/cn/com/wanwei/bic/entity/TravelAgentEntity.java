@@ -19,9 +19,6 @@ import javax.persistence.Table;
 @ToString(callSuper = true)
 public class TravelAgentEntity extends commonEntity{
 
-    @ApiModelProperty(value = "联系电话",required = true)
-    private String contactPhone;
-
     @ApiModelProperty(value = "简拼",readOnly = true)
     private String simpleSpell;
 

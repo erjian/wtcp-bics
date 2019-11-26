@@ -20,7 +20,6 @@
     <result column="created_user" jdbcType="VARCHAR" property="createdUser" />
     <result column="updated_date" jdbcType="TIMESTAMP" property="updatedDate" />
     <result column="updated_user" jdbcType="VARCHAR" property="updatedUser" />
-    <result column="contact_phone" jdbcType="VARCHAR" property="contactPhone" />
     <result column="simple_spell" jdbcType="VARCHAR" property="simpleSpell" />
     <result column="full_spell" jdbcType="VARCHAR" property="fullSpell" />
     <result column="keyword" jdbcType="VARCHAR" property="keyword" />
@@ -41,7 +40,7 @@
   <sql id="Base_Column_List">
     id, title, sub_title, code, slogan, summary, description, weight, longitude, latitude, 
     region_full_name, region_full_code, region, address, created_date, created_user, 
-    updated_date, updated_user, contact_phone, simple_spell, full_spell, keyword, business_scope, 
+    updated_date, updated_user, simple_spell, full_spell, keyword, business_scope,
     business_type, destination_city, from_city, level, level_time, recommend, start_time, 
     team_type, tour_type, dept_code, status,content
   </sql>
@@ -61,7 +60,7 @@
       weight, longitude, latitude, 
       region_full_name, region_full_code, region, 
       address, created_date, created_user, 
-      updated_date, updated_user, contact_phone, 
+      updated_date, updated_user,
       simple_spell, full_spell, keyword, 
       business_scope, business_type, destination_city, 
       from_city, level, level_time, 
@@ -73,7 +72,7 @@
       #{weight,jdbcType=INTEGER}, #{longitude,jdbcType=DOUBLE}, #{latitude,jdbcType=DOUBLE}, 
       #{regionFullName,jdbcType=VARCHAR}, #{regionFullCode,jdbcType=VARCHAR}, #{region,jdbcType=VARCHAR}, 
       #{address,jdbcType=VARCHAR}, #{createdDate,jdbcType=TIMESTAMP}, #{createdUser,jdbcType=VARCHAR},
-      #{updatedDate,jdbcType=TIMESTAMP}, #{updatedUser,jdbcType=VARCHAR}, #{contactPhone,jdbcType=VARCHAR},
+      #{updatedDate,jdbcType=TIMESTAMP}, #{updatedUser,jdbcType=VARCHAR},
       #{simpleSpell,jdbcType=VARCHAR}, #{fullSpell,jdbcType=VARCHAR}, #{keyword,jdbcType=VARCHAR}, 
       #{businessScope,jdbcType=VARCHAR}, #{businessType,jdbcType=VARCHAR}, #{destinationCity,jdbcType=VARCHAR}, 
       #{fromCity,jdbcType=VARCHAR}, #{level,jdbcType=VARCHAR}, #{levelTime,jdbcType=VARCHAR}, 
@@ -100,7 +99,6 @@
       created_user = #{createdUser,jdbcType=VARCHAR},
       updated_date = #{updatedDate,jdbcType=TIMESTAMP},
       updated_user = #{updatedUser,jdbcType=VARCHAR},
-      contact_phone = #{contactPhone,jdbcType=VARCHAR},
       simple_spell = #{simpleSpell,jdbcType=VARCHAR},
       full_spell = #{fullSpell,jdbcType=VARCHAR},
       keyword = #{keyword,jdbcType=VARCHAR},
