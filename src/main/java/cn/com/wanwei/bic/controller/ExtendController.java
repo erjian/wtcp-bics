@@ -7,6 +7,7 @@ import cn.com.wanwei.bic.service.ExtendService;
 import cn.com.wanwei.common.log.annotation.OperationLog;
 import cn.com.wanwei.common.model.ResponseMessage;
 import cn.com.wanwei.common.utils.RequestUtil;
+import cn.com.wanwei.persistence.mybatis.utils.EscapeCharUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
@@ -45,6 +46,7 @@ public class ExtendController extends BaseController{
                                       @RequestParam(value = "size", defaultValue = "10") Integer size,
                                       HttpServletRequest request) throws Exception {
         Map<String, Object> filter = RequestUtil.getParameters(request);
+        EscapeCharUtils.escape(filter, "title");
         return extendService.findByPage(page,size,getCurrentUser(),filter);
     }
 

@@ -10,6 +10,7 @@ import cn.com.wanwei.bic.service.EntertainmentService;
 import cn.com.wanwei.common.log.annotation.OperationLog;
 import cn.com.wanwei.common.model.ResponseMessage;
 import cn.com.wanwei.common.utils.RequestUtil;
+import cn.com.wanwei.persistence.mybatis.utils.EscapeCharUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
@@ -46,6 +47,7 @@ public class EntertainmentController extends BaseController{
                                       @RequestParam(value = "size", defaultValue = "10") Integer size,
                                       HttpServletRequest request){
         Map<String, Object> filter = RequestUtil.getParameters(request);
+        EscapeCharUtils.escape(filter, "title", "subTitle");
         return entertainmentService.findByPage(page,size,filter);
     }
 

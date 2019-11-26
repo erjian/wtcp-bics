@@ -1,6 +1,7 @@
 package cn.com.wanwei.bic.mapper;
 
 import cn.com.wanwei.bic.entity.TravelAgentEntity;
+import cn.com.wanwei.common.annotation.DataScope;
 import com.github.pagehelper.Page;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -23,6 +24,7 @@ public interface TravelAgentMapper {
      * @param filter
      * @return
      */
+    @DataScope
     Page<TravelAgentEntity> findByPage(Map<String, Object> filter);
 
     /**
