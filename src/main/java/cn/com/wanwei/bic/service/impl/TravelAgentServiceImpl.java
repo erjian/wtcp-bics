@@ -21,6 +21,7 @@ import cn.com.wanwei.common.model.ResponseMessage;
 import cn.com.wanwei.common.model.User;
 import cn.com.wanwei.persistence.mybatis.MybatisPageRequest;
 import cn.com.wanwei.persistence.mybatis.PageInfo;
+import cn.com.wanwei.persistence.mybatis.utils.EscapeCharUtils;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.google.common.collect.Lists;
@@ -68,6 +69,7 @@ public class TravelAgentServiceImpl implements TravelAgentService {
 
     @Override
     public ResponseMessage findByPage(Integer page, Integer size, Map<String, Object> filter) {
+        EscapeCharUtils.escape(filter, "title", "subTitle");
         MybatisPageRequest pageRequest = PageUtils.getInstance().setPage(page, size,filter, Sort.Direction.DESC,  "created_date", "updated_date");
         PageHelper.startPage(pageRequest.getPage(), pageRequest.getSize(), pageRequest.getOrders());
         Page<TravelAgentEntity> travelAgentEntities = tarvaAgentMapper.findByPage(filter);

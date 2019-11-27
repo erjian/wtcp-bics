@@ -48,7 +48,6 @@ public class TravelAgentConToller extends BaseController {
                                       @RequestParam(value = "size", defaultValue = "10") Integer size,
                                       HttpServletRequest request){
         Map<String, Object> filter = RequestUtil.getParameters(request);
-        EscapeCharUtils.escape(filter, "title", "subTitle");
         return travelAgentService.findByPage(page,size,filter);
     }
 

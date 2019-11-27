@@ -19,6 +19,7 @@ import cn.com.wanwei.common.model.ResponseMessage;
 import cn.com.wanwei.common.model.User;
 import cn.com.wanwei.persistence.mybatis.MybatisPageRequest;
 import cn.com.wanwei.persistence.mybatis.PageInfo;
+import cn.com.wanwei.persistence.mybatis.utils.EscapeCharUtils;
 import com.github.pagehelper.Page;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections.CollectionUtils;
@@ -56,6 +57,7 @@ public class PeripheryServiceImpl implements PeripheryService {
 
     @Override
     public ResponseMessage findByPage(Integer page, Integer size, Map<String, Object> filter) {
+        EscapeCharUtils.escape(filter, "title", "category");
         MybatisPageRequest pageRequest = PageUtils.getInstance().setPage(page, size, filter, Sort.Direction.DESC,  "created_date", "updated_date");
         Page<PeripheryEntity> peripheryEntities = peripheryMapper.findByPage(filter);
         PageInfo<PeripheryEntity> pageInfo = new PageInfo<>(peripheryEntities, pageRequest);

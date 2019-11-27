@@ -23,6 +23,7 @@ import cn.com.wanwei.common.model.User;
 import cn.com.wanwei.common.utils.PinyinUtils;
 import cn.com.wanwei.persistence.mybatis.MybatisPageRequest;
 import cn.com.wanwei.persistence.mybatis.PageInfo;
+import cn.com.wanwei.persistence.mybatis.utils.EscapeCharUtils;
 import com.github.pagehelper.Page;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
@@ -137,6 +138,7 @@ public class ScenicServiceImpl implements ScenicService {
 
     @Override
     public ResponseMessage findByPage(Integer page, Integer size, User user1, Map<String, Object> filter) {
+        EscapeCharUtils.escape(filter, "title", "subTitle", "areaName");
         MybatisPageRequest pageRequest = PageUtils.getInstance().setPage(page, size, filter, Sort.Direction.DESC, "created_date", "updated_date");
         Page<ScenicEntity> scenicEntities = scenicMapper.findByPage(filter);
         PageInfo<ScenicEntity> pageInfo = new PageInfo<>(scenicEntities, pageRequest);

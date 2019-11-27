@@ -14,6 +14,7 @@ import cn.com.wanwei.common.model.ResponseMessage;
 import cn.com.wanwei.common.model.User;
 import cn.com.wanwei.persistence.mybatis.MybatisPageRequest;
 import cn.com.wanwei.persistence.mybatis.PageInfo;
+import cn.com.wanwei.persistence.mybatis.utils.EscapeCharUtils;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.google.common.collect.Maps;
@@ -69,6 +70,7 @@ public class ExtendServiceImpl implements ExtendService {
      */
     @Override
     public ResponseMessage findByPage(Integer page, Integer size, User currentUser, Map<String, Object> filter) throws Exception{
+        EscapeCharUtils.escape(filter, "title");
         MybatisPageRequest pageRequest = PageUtils.getInstance().setPage(page, size,filter, Sort.Direction.DESC,  "created_date");
         PageHelper.startPage(pageRequest.getPage(), pageRequest.getSize(), pageRequest.getOrders());
         //查询扩展信息列表数据

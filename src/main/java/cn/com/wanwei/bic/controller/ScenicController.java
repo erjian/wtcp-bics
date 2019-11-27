@@ -42,7 +42,6 @@ public class ScenicController extends BaseController {
                                       @RequestParam(value = "size", defaultValue = "10") Integer size,
                                       HttpServletRequest request) throws Exception {
         Map<String, Object> filter = RequestUtil.getParameters(request);
-        EscapeCharUtils.escape(filter, "title", "subTitle", "areaName");
         return scenicService.findByPage(page,size,getCurrentUser(),filter);
     }
 
