@@ -15,6 +15,7 @@ import cn.com.wanwei.common.model.ResponseMessage;
 import cn.com.wanwei.common.model.User;
 import cn.com.wanwei.persistence.mybatis.MybatisPageRequest;
 import cn.com.wanwei.persistence.mybatis.PageInfo;
+import cn.com.wanwei.persistence.mybatis.utils.EscapeCharUtils;
 import com.github.pagehelper.Page;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
@@ -64,6 +65,7 @@ public class PoiServiceImpl implements PoiService {
 
     @Override
     public ResponseMessage findByPage(Integer page, Integer size, Map<String, Object> filter) {
+        EscapeCharUtils.escape(filter, "title");
         MybatisPageRequest pageRequest = PageUtils.getInstance().setPage(page, size, filter, Sort.Direction.DESC, "weight", "created_date");
         Page<PoiEntity> poiEntities = poiMapper.findByPage(filter);
         PageInfo<PoiEntity> pageInfo = new PageInfo<>(poiEntities, pageRequest);

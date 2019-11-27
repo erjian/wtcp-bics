@@ -47,7 +47,6 @@ public class EntertainmentController extends BaseController{
                                       @RequestParam(value = "size", defaultValue = "10") Integer size,
                                       HttpServletRequest request){
         Map<String, Object> filter = RequestUtil.getParameters(request);
-        EscapeCharUtils.escape(filter, "title", "subTitle");
         return entertainmentService.findByPage(page,size,filter);
     }
 
