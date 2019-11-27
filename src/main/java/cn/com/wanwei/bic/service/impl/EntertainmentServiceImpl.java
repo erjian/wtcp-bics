@@ -123,6 +123,7 @@ public class EntertainmentServiceImpl implements EntertainmentService {
             entertainmentEntity.setCreatedDate(eEntity.getCreatedDate());
             entertainmentEntity.setStatus(0);
             entertainmentEntity.setCode(eEntity.getCode());
+            entertainmentEntity.setDeptCode(eEntity.getDeptCode());
             entertainmentEntity.setUpdatedUser(user.getUsername());
             entertainmentEntity.setUpdatedDate(new Date());
             entertainmentMapper.updateByPrimaryKey(entertainmentEntity);

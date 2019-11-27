@@ -108,6 +108,7 @@ public class PeripheryServiceImpl implements PeripheryService {
             peripheryEntity.setUpdatedUser(user.getUsername());
             peripheryEntity.setUpdatedDate(new Date());
             peripheryEntity.setId(entity.getId());
+            peripheryEntity.setDeptCode(entity.getDeptCode());
             peripheryEntity.setStatus(1);
             peripheryEntity.setCode(entity.getCode());
             peripheryMapper.updateByPrimaryKey(peripheryEntity);

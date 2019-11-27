@@ -112,6 +112,7 @@ public class DestinationServiceImpl implements DestinationService {
         }
         DestinationEntity destinationEntity = destinationModel.getEntity();
         destinationEntity.setId(id);
+        destinationEntity.setDeptCode(entity.getDeptCode());
         destinationEntity.setCreatedDate(entity.getCreatedDate());
         destinationEntity.setCreatedUser(entity.getCreatedUser());
         destinationEntity.setStatus(1);  //编辑修改状态为--> 1: 下线

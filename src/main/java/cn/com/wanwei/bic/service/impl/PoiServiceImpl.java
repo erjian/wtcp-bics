@@ -102,7 +102,8 @@ public class PoiServiceImpl implements PoiService {
                 poiEntity.setWeight(0);
                 poiEntity.setCreatedUser(user.getUsername());
                 poiEntity.setCreatedDate(new Date());
-                poiEntity.setDeptCode(user.getOrg().getCode());
+                ScenicEntity entity = scenicMapper.selectByPrimaryKey(poiEntity.getPrincipalId());
+                poiEntity.setDeptCode(entity.getDeptCode());
                 if (poiEntity.getParentId().length() == 0 && ("112005").equals(poiEntity.getType())) {
                     poiEntity.setParentId("0");
                 }
@@ -124,11 +125,12 @@ public class PoiServiceImpl implements PoiService {
     public ResponseMessage update(String id, EntityTagsModel<PoiEntity> poiModel, User user) {
         PoiEntity poiEntity = poiModel.getEntity();
         PoiEntity pEntity = poiMapper.selectByPrimaryKey(id);
+        ScenicEntity scenicEntity = scenicMapper.selectByPrimaryKey(poiEntity.getPrincipalId());
         if (pEntity != null) {
             poiEntity.setId(id);
             poiEntity.setStatus(1);
             poiEntity.setCode(pEntity.getCode());
-            poiEntity.setDeptCode(user.getOrg().getCode());
+            poiEntity.setDeptCode(scenicEntity.getDeptCode());
             poiEntity.setUpdatedUser(user.getUsername());
             poiEntity.setUpdatedDate(new Date());
             poiMapper.updateByPrimaryKey(poiEntity);
