@@ -16,6 +16,7 @@ import cn.com.wanwei.common.model.User;
 import cn.com.wanwei.persistence.mybatis.MybatisPageRequest;
 import cn.com.wanwei.persistence.mybatis.PageInfo;
 import com.github.pagehelper.Page;
+import com.github.pagehelper.util.StringUtil;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import lombok.extern.slf4j.Slf4j;
@@ -104,7 +105,7 @@ public class PoiServiceImpl implements PoiService {
                 poiEntity.setCreatedDate(new Date());
                 ScenicEntity entity = scenicMapper.selectByPrimaryKey(poiEntity.getPrincipalId());
                 poiEntity.setDeptCode(entity.getDeptCode());
-                if (poiEntity.getParentId().length() == 0 && ("112005").equals(poiEntity.getType())) {
+                if (StringUtil.isEmpty(poiEntity.getParentId()) && ("112005").equals(poiEntity.getType())) {
                     poiEntity.setParentId("0");
                 }
                 poiMapper.insert(poiEntity);
