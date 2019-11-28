@@ -218,9 +218,17 @@ public class ScenicServiceImpl implements ScenicService {
 
     @Override
     public ResponseMessage relateTags(Map<String, Object> tags, User user) {
-        List<BaseTagsEntity> tagsList = (List<BaseTagsEntity>) tags.get("tagsArr");
+        List<Map<String, Object>> tagsList = (List<Map<String, Object>>) tags.get("tagsArr");
+        List<BaseTagsEntity> bList = Lists.newArrayList();
         if (CollectionUtils.isNotEmpty(tagsList)) {
-            tagsService.batchInsert(tags.get("id").toString(), tagsList, user, ScenicTagsEntity.class);
+            for(Map<String, Object> m:tagsList){
+                BaseTagsEntity entity = new BaseTagsEntity();
+                entity.setPrincipalId(String.valueOf(m.get("principalId")));
+                entity.setTagName(String.valueOf(m.get("tagName")));
+                entity.setTagCatagory(String.valueOf(m.get("tagCatagory")));
+                bList.add(entity);
+            }
+            tagsService.batchInsert(tags.get("id").toString(), bList, user, ScenicTagsEntity.class);
         }
         return ResponseMessage.defaultResponse().setMsg("标签关联成功");
     }
