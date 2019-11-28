@@ -90,4 +90,8 @@ public class RentalCarEntity extends BaseEntity {
 
     @ApiModelProperty(value = "内容")
     private String content;
+
+    public Integer getOnlineStatus() {
+        return this.status == 9 ? this.status : 1;
+    }
 }

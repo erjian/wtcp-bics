@@ -21,9 +21,10 @@ import cn.com.wanwei.persistence.mybatis.MybatisPageRequest;
 import cn.com.wanwei.persistence.mybatis.PageInfo;
 import cn.com.wanwei.persistence.mybatis.utils.EscapeCharUtils;
 import com.github.pagehelper.Page;
-import com.google.common.collect.Lists;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections.CollectionUtils;
+import org.codehaus.jackson.map.ObjectMapper;
+import org.codehaus.jackson.type.TypeReference;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.data.domain.Sort;
@@ -90,6 +91,7 @@ public class RentalCarServiceImpl implements RentalCarService {
         carEntity.setTitleQp(PinyinUtils.getPingYin(carEntity.getTitle()).toLowerCase());
         carEntity.setCreatedUser(user.getUsername());
         carEntity.setCreatedDate(new Date());
+        carEntity.setDeptCode(user.getOrg().getCode());
         carEntity.setStatus(0);
         carEntity.setWeight(0);
         rentalCarMapper.insert(carEntity);
@@ -129,7 +131,9 @@ public class RentalCarServiceImpl implements RentalCarService {
 
     @Override
     public ResponseMessage relateTags(Map<String, Object> tags, User user) {
-        List<BaseTagsEntity> tagsList = (List<BaseTagsEntity>) tags.get("tagsArr");
+        List<BaseTagsEntity> list = (List<BaseTagsEntity>) tags.get("tagsArr");
+        ObjectMapper mapper = new ObjectMapper();
+        List<BaseTagsEntity> tagsList = mapper.convertValue(list, new TypeReference<List<BaseTagsEntity>>() { });
         if (null != tagsList && !tagsList.isEmpty()) {
             tagsService.batchInsert(tags.get("id").toString(), tagsList, user,RentalCarTagsEntity.class);
         }
@@ -178,7 +182,7 @@ public class RentalCarServiceImpl implements RentalCarService {
     }
 
     @Override
-    public ResponseMessage examineScenic(String id, int auditStatus, String msg, User user) {
+    public ResponseMessage examineRental(String id, int auditStatus, String msg, User user) {
         RentalCarEntity rentalCarEntity = rentalCarMapper.selectByPrimaryKey(id);
         if (rentalCarEntity != null) {
             // 添加审核记录

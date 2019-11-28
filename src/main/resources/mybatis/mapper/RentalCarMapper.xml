@@ -56,7 +56,7 @@
         <selectKey keyProperty="id" order="AFTER" resultType="java.lang.String">
             SELECT LAST_INSERT_ID()
         </selectKey>
-        insert into t_bic_rental_car (created_date, created_user, updated_date,
+        insert into t_bic_rental_car (id,created_date, created_user, updated_date,
         updated_user,code, title, sub_title,
         title_qp, title_jp, region_full_code,
         region_full_name, address, region,
@@ -65,7 +65,7 @@
         slogan, summary, weight,
         status, dept_code, content
         )
-        values (#{createdDate,jdbcType=TIMESTAMP}, #{createdUser,jdbcType=VARCHAR}, #{updatedDate,jdbcType=TIMESTAMP},
+        values (#{id,jdbcType=VARCHAR},#{createdDate,jdbcType=TIMESTAMP}, #{createdUser,jdbcType=VARCHAR}, #{updatedDate,jdbcType=TIMESTAMP},
         #{updatedUser,jdbcType=VARCHAR}, #{code,jdbcType=VARCHAR},#{title,jdbcType=VARCHAR},
         #{subTitle,jdbcType=VARCHAR},
         #{titleQp,jdbcType=VARCHAR}, #{titleJp,jdbcType=VARCHAR}, #{regionFullCode,jdbcType=VARCHAR},

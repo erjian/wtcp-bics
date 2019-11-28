@@ -138,7 +138,7 @@ public class RentalCarController extends BaseController{
     })
     @RequestMapping(value = "/audit", method = RequestMethod.GET)
     public ResponseMessage audit(@RequestParam String id, @RequestParam int auditStatus, String msg) throws Exception {
-        return rentalCarService.examineScenic(id, auditStatus, msg, getCurrentUser());
+        return rentalCarService.examineRental(id, auditStatus, msg, getCurrentUser());
     }
 
     @PreAuthorize("hasAuthority('rental:b')")

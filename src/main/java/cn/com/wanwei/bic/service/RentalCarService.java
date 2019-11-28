@@ -90,7 +90,7 @@ public interface RentalCarService{
      * @param user 用户信息
      * @return
      */
-    ResponseMessage examineScenic(String id, int auditStatus, String msg, User user);
+    ResponseMessage examineRental(String id, int auditStatus, String msg, User user);
 
     /**
      * 关联机构

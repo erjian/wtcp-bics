@@ -21,6 +21,8 @@ import com.google.common.collect.Maps;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.codehaus.jackson.map.ObjectMapper;
+import org.codehaus.jackson.type.TypeReference;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.data.domain.Sort;
@@ -234,7 +236,9 @@ public class ExtendServiceImpl implements ExtendService {
      */
     @Override
     public ResponseMessage relateTags(Map<String, Object> tags, User user) throws Exception{
-        List<BaseTagsEntity> tagsList = (List<BaseTagsEntity>) tags.get("tagsArr");
+        List<BaseTagsEntity> list = (List<BaseTagsEntity>) tags.get("tagsArr");
+        ObjectMapper mapper = new ObjectMapper();
+        List<BaseTagsEntity> tagsList = mapper.convertValue(list, new TypeReference<List<BaseTagsEntity>>() { });
         if(CollectionUtils.isNotEmpty(tagsList)){
             tagsService.batchInsert(tags.get("id").toString(),tagsList,user,ExtendTagsEntity.class);
         }
