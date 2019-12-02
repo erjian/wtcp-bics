@@ -1,15 +1,12 @@
 package cn.com.wanwei.bic.service.impl;
 
-import cn.com.wanwei.bic.entity.AuditLogEntity;
-import cn.com.wanwei.bic.entity.BaseTagsEntity;
-import cn.com.wanwei.bic.entity.RentalCarEntity;
-import cn.com.wanwei.bic.entity.RentalCarTagsEntity;
+import cn.com.wanwei.bic.entity.*;
 import cn.com.wanwei.bic.feign.CoderServiceFeign;
-import cn.com.wanwei.bic.mapper.AuditLogMapper;
-import cn.com.wanwei.bic.mapper.RentalCarMapper;
+import cn.com.wanwei.bic.mapper.*;
 import cn.com.wanwei.bic.model.DataBindModel;
 import cn.com.wanwei.bic.model.EntityTagsModel;
 import cn.com.wanwei.bic.model.WeightModel;
+import cn.com.wanwei.bic.service.MaterialService;
 import cn.com.wanwei.bic.service.RentalCarService;
 import cn.com.wanwei.bic.service.TagsService;
 import cn.com.wanwei.bic.utils.PageUtils;
@@ -21,6 +18,7 @@ import cn.com.wanwei.persistence.mybatis.MybatisPageRequest;
 import cn.com.wanwei.persistence.mybatis.PageInfo;
 import cn.com.wanwei.persistence.mybatis.utils.EscapeCharUtils;
 import com.github.pagehelper.Page;
+import com.google.common.collect.Maps;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections.CollectionUtils;
 import org.codehaus.jackson.map.ObjectMapper;
@@ -53,6 +51,18 @@ public class RentalCarServiceImpl implements RentalCarService {
 
     @Autowired
     private AuditLogMapper auditLogMapper;
+
+    @Autowired
+    private EnterpriseMapper enterpriseMapper;
+
+    @Autowired
+    private ContactMapper contactMapper;
+
+    @Autowired
+    private BusinessMapper businessMapper;
+
+    @Autowired
+    private MaterialService materialService;
 
     private static final String TYPE = "ZC";
 
@@ -223,6 +233,29 @@ public class RentalCarServiceImpl implements RentalCarService {
     public ResponseMessage getRentalCarInfo(String title) {
         List<RentalCarEntity> entities = rentalCarMapper.getRentalCarInfo(title);
         return ResponseMessage.defaultResponse().setData(entities);
+    }
+
+    @Override
+    public ResponseMessage getRentalInfo(String id) {
+        Map<String,Object>map= Maps.newHashMap();
+        RentalCarEntity rentalCarEntity = rentalCarMapper.selectByPrimaryKey(id);
+        if(rentalCarEntity != null){
+            map.put("rentalCarEntity",rentalCarEntity);
+            //企业信息
+            EnterpriseEntity enterpriseEntity = enterpriseMapper.selectByPrincipalId(id);
+            map.put("enterpriseEntity",enterpriseEntity);
+            //营业信息
+            BusinessEntity businessEntity = businessMapper.selectByPrincipalId(id);
+            map.put("businessEntity", businessEntity);
+            //通讯信息
+            ContactEntity contactEntity = contactMapper.selectByPrincipalId(id);
+            map.put("contactEntity",contactEntity);
+            //素材信息
+            map.put("fileList",materialService.handleMaterial(id));
+            return ResponseMessage.defaultResponse().setData(map);
+        }else {
+            return ResponseMessage.validFailResponse().setMsg("暂无该租车信息");
+        }
     }
 
     private int saveAuditLog(int preStatus, int auditStatus, String principalId, String userName, String msg, int type) {

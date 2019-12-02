@@ -114,4 +114,11 @@ public interface RentalCarService{
      * @return
      */
     ResponseMessage getRentalCarInfo(String title);
+
+    /**
+     * C端  查询租车相关信息（旅行社信息，企业信息，通讯信息，素材信息）
+     * @param id 租车id
+     * @return
+     */
+    ResponseMessage getRentalInfo(String id);
 }
