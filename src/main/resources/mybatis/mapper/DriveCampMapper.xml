@@ -110,7 +110,7 @@
         and sub_title like #{subTitle}
       </if>
       <if test="regionFullCode != null and regionFullCode!='' ">
-        <bind name="regionFullCode" value="'%'+regionFullCode + '%'" ></bind>
+        <bind name="regionFullCode" value="regionFullCode + '%'" ></bind>
         and region_full_code like #{regionFullCode}
       </if>
       <if test="status != null">
