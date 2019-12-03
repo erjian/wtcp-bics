@@ -158,15 +158,15 @@
     from t_bic_scenic
     <where>
       <if test="title != null and title!='' ">
-        <bind name="title" value="title + '%'" ></bind>
+        <bind name="title" value="'%'+title + '%'" ></bind>
         and (title like #{title} or title_qp like #{title} or title_jp like #{title})
       </if>
       <if test="subTitle != null and subTitle!='' ">
-        <bind name="subTitle" value="subTitle + '%'" ></bind>
+        <bind name="subTitle" value="'%'+subTitle + '%'" ></bind>
         and sub_title like #{subTitle}
       </if>
       <if test="areaName != null and areaName!='' ">
-        <bind name="areaName" value="areaName + '%'" ></bind>
+        <bind name="areaName" value="'%'+areaName + '%'" ></bind>
         and region_full_name like #{areaName}
       </if>
       <if test="level != null">

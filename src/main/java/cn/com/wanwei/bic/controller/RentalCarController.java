@@ -5,6 +5,7 @@ import cn.com.wanwei.bic.entity.RentalCarEntity;
 import cn.com.wanwei.bic.model.DataBindModel;
 import cn.com.wanwei.bic.model.EntityTagsModel;
 import cn.com.wanwei.bic.model.WeightModel;
+import cn.com.wanwei.bic.service.CommonService;
 import cn.com.wanwei.bic.service.RentalCarService;
 import cn.com.wanwei.common.log.annotation.OperationLog;
 import cn.com.wanwei.common.model.ResponseMessage;
@@ -36,6 +37,9 @@ public class RentalCarController extends BaseController{
 
     @Autowired
     private RentalCarService rentalCarService;
+
+    @Autowired
+    private CommonService commonService;
 
     @GetMapping("/page")
     @ApiOperation(value = "汽车租赁分页列表",notes = "汽车租赁分页列表")
@@ -115,7 +119,7 @@ public class RentalCarController extends BaseController{
         if(bindingResult.hasErrors()){
             return ResponseMessage.validFailResponse().setMsg(bindingResult.getAllErrors());
         }
-        return rentalCarService.changeWeight(weightModel,getCurrentUser());
+        return commonService.changeWeight(weightModel,getCurrentUser(),RentalCarEntity.class);
     }
 
     @PreAuthorize("hasAuthority('rental:o')")

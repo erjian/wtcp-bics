@@ -5,6 +5,7 @@ import cn.com.wanwei.bic.entity.PeripheryEntity;
 import cn.com.wanwei.bic.model.DataBindModel;
 import cn.com.wanwei.bic.model.EntityTagsModel;
 import cn.com.wanwei.bic.model.WeightModel;
+import cn.com.wanwei.bic.service.CommonService;
 import cn.com.wanwei.bic.service.PeripheryService;
 import cn.com.wanwei.common.log.annotation.OperationLog;
 import cn.com.wanwei.common.model.ResponseMessage;
@@ -36,6 +37,9 @@ import java.util.Map;
 public class PeripheryController extends BaseController {
     @Autowired
     private PeripheryService peripheryService;
+
+    @Autowired
+    private CommonService commonService;
 
     @ApiOperation(value = "周边管理分页列表",notes = "周边管理分页列表")
     @GetMapping("/page")
@@ -166,7 +170,7 @@ public class PeripheryController extends BaseController {
         if(bindingResult.hasErrors()){
             return ResponseMessage.validFailResponse().setMsg(bindingResult.getAllErrors());
         }
-        return peripheryService.goWeight(weightModel,getCurrentUser());
+        return commonService.changeWeight(weightModel,getCurrentUser(),PeripheryEntity.class);
     }
 
 

@@ -4,6 +4,7 @@ import cn.com.wanwei.bic.entity.DestinationEntity;
 import cn.com.wanwei.bic.model.DataBindModel;
 import cn.com.wanwei.bic.model.EntityTagsModel;
 import cn.com.wanwei.bic.model.WeightModel;
+import cn.com.wanwei.bic.service.CommonService;
 import cn.com.wanwei.bic.service.DestinationService;
 import cn.com.wanwei.common.log.annotation.OperationLog;
 import cn.com.wanwei.common.model.ResponseMessage;
@@ -39,6 +40,9 @@ public class DestinationController extends BaseController {
 
     @Autowired
     private DestinationService destinationService;
+
+    @Autowired
+    private CommonService commonService;
 
     @ApiOperation(value = "目的地基础信息管理分页列表", notes = "目的地基础信息管理分页列表")
     @GetMapping(value = "/page")
@@ -158,6 +162,6 @@ public class DestinationController extends BaseController {
         if(bindingResult.hasErrors()){
             return ResponseMessage.validFailResponse().setMsg(bindingResult.getAllErrors());
         }
-        return destinationService.changeWeight(weightModel,getCurrentUser());
+        return commonService.changeWeight(weightModel,getCurrentUser(),DestinationEntity.class);
     }
 }

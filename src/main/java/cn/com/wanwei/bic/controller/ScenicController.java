@@ -4,6 +4,7 @@ import cn.com.wanwei.bic.entity.ScenicEntity;
 import cn.com.wanwei.bic.model.DataBindModel;
 import cn.com.wanwei.bic.model.EntityTagsModel;
 import cn.com.wanwei.bic.model.WeightModel;
+import cn.com.wanwei.bic.service.CommonService;
 import cn.com.wanwei.bic.service.ScenicService;
 import cn.com.wanwei.common.log.annotation.OperationLog;
 import cn.com.wanwei.common.model.ResponseMessage;
@@ -33,6 +34,9 @@ public class ScenicController extends BaseController {
 
     @Autowired
     private ScenicService scenicService;
+
+    @Autowired
+    private CommonService commonService;
 
     @ApiOperation(value = "景区管理分页列表", notes = "景区管理分页列表")
     @GetMapping(value = "/page")
@@ -113,7 +117,7 @@ public class ScenicController extends BaseController {
         if(bindingResult.hasErrors()){
             return ResponseMessage.validFailResponse().setMsg(bindingResult.getAllErrors());
         }
-        return scenicService.changeWeight(weightModel,getCurrentUser());
+        return commonService.changeWeight(weightModel,getCurrentUser(),ScenicEntity.class);
     }
 
     @PreAuthorize("hasAuthority('scenic:o')")
