@@ -4,15 +4,15 @@ import cn.com.wanwei.bic.entity.*;
 import cn.com.wanwei.bic.feign.CoderServiceFeign;
 import cn.com.wanwei.bic.mapper.BusinessMapper;
 import cn.com.wanwei.bic.mapper.ContactMapper;
+import cn.com.wanwei.bic.mapper.DriveCampMapper;
 import cn.com.wanwei.bic.mapper.EnterpriseMapper;
-import cn.com.wanwei.bic.mapper.TravelAgentMapper;
 import cn.com.wanwei.bic.model.DataBindModel;
 import cn.com.wanwei.bic.model.EntityTagsModel;
 import cn.com.wanwei.bic.model.WeightModel;
 import cn.com.wanwei.bic.service.AuditLogService;
+import cn.com.wanwei.bic.service.DriveCampService;
 import cn.com.wanwei.bic.service.MaterialService;
 import cn.com.wanwei.bic.service.TagsService;
-import cn.com.wanwei.bic.service.TravelAgentService;
 import cn.com.wanwei.bic.utils.PageUtils;
 import cn.com.wanwei.bic.utils.PinyinUtil;
 import cn.com.wanwei.bic.utils.UUIDUtils;
@@ -39,10 +39,10 @@ import java.util.Map;
 @Service
 @Slf4j
 @RefreshScope
-public class TravelAgentServiceImpl implements TravelAgentService {
+public class DriveCampServiceImpl implements DriveCampService {
 
     @Autowired
-    private TravelAgentMapper tarvaAgentMapper;
+    private DriveCampMapper driveCampMapper;
 
     @Autowired
     private CoderServiceFeign coderServiceFeign;
@@ -70,40 +70,40 @@ public class TravelAgentServiceImpl implements TravelAgentService {
         EscapeCharUtils.escape(filter, "title", "subTitle");
         MybatisPageRequest pageRequest = PageUtils.getInstance().setPage(page, size,filter, Sort.Direction.DESC,  "created_date", "updated_date");
         PageHelper.startPage(pageRequest.getPage(), pageRequest.getSize(), pageRequest.getOrders());
-        Page<TravelAgentEntity> travelAgentEntities = tarvaAgentMapper.findByPage(filter);
-        PageInfo<TravelAgentEntity> pageInfo = new PageInfo<>(travelAgentEntities, pageRequest);
+        Page<DriveCampEntity> driveCampEntities = driveCampMapper.findByPage(filter);
+        PageInfo<DriveCampEntity> pageInfo = new PageInfo<>(driveCampEntities, pageRequest);
         return ResponseMessage.defaultResponse().setData(pageInfo);
     }
 
     @Override
     public ResponseMessage find(String id) {
-        TravelAgentEntity travelAgentEntity = tarvaAgentMapper.selectByPrimaryKey(id);
-        if (travelAgentEntity == null) {
-            return ResponseMessage.validFailResponse().setMsg("暂无该旅行社信息！");
+        DriveCampEntity driveCampEntity = driveCampMapper.selectByPrimaryKey(id);
+        if (driveCampEntity == null) {
+            return ResponseMessage.validFailResponse().setMsg("暂无该自驾营地信息！");
         }
-        return ResponseMessage.defaultResponse().setData(travelAgentEntity);
+        return ResponseMessage.defaultResponse().setData(driveCampEntity);
     }
 
     @Override
-    public ResponseMessage create(EntityTagsModel<TravelAgentEntity> travelAgentModel, User user, Long ruleId, Integer appCode) {
+    public ResponseMessage create(EntityTagsModel<DriveCampEntity> driveCampModel, User user, Long ruleId, Integer appCode) {
         //获取统一认证生成的code
-        ResponseMessage responseMessageGetCode =coderServiceFeign.buildSerialByCode(ruleId, appCode, travelAgentModel.getType());
+        ResponseMessage responseMessageGetCode =coderServiceFeign.buildSerialByCode(ruleId, appCode, driveCampModel.getType());
         if (responseMessageGetCode.getStatus() == 1 && responseMessageGetCode.getData() != null) {
-            TravelAgentEntity travelAgentEntity = travelAgentModel.getEntity();
+            DriveCampEntity driveCampEntity  = driveCampModel.getEntity();
             String id= UUIDUtils.getInstance().getId();
-            travelAgentEntity.setId(id);
-            travelAgentEntity.setFullSpell(PinyinUtil.getPingYin(travelAgentEntity.getTitle()));
-            travelAgentEntity.setSimpleSpell(PinyinUtil.getPinYinHeadChar(travelAgentEntity.getTitle()));
-            travelAgentEntity.setCode(responseMessageGetCode.getData().toString());
-            travelAgentEntity.setStatus(0);
-            travelAgentEntity.setWeight(0);
-            travelAgentEntity.setCreatedUser(user.getUsername());
-            travelAgentEntity.setCreatedDate(new Date());
-            travelAgentEntity.setDeptCode(user.getOrg().getCode());
-            tarvaAgentMapper.insert(travelAgentEntity);
+            driveCampEntity.setId(id);
+            driveCampEntity.setFullSpell(PinyinUtil.getPingYin(driveCampEntity.getTitle()));
+            driveCampEntity.setSimpleSpell(PinyinUtil.getPinYinHeadChar(driveCampEntity.getTitle()));
+            driveCampEntity.setCode(responseMessageGetCode.getData().toString());
+            driveCampEntity.setStatus(0);
+            driveCampEntity.setWeight(0);
+            driveCampEntity.setCreatedUser(user.getUsername());
+            driveCampEntity.setCreatedDate(new Date());
+            driveCampEntity.setDeptCode(user.getOrg().getCode());
+            driveCampMapper.insert(driveCampEntity);
             //处理标签
-            if(CollectionUtils.isNotEmpty(travelAgentModel.getTagsList())){
-                tagsService.batchInsert(id,travelAgentModel.getTagsList(),user, TravelAgentTagsEntity.class);
+            if(CollectionUtils.isNotEmpty(driveCampModel.getTagsList())){
+                tagsService.batchInsert(id,driveCampModel.getTagsList(),user, DriveCampEntity.class);
             }
             return ResponseMessage.defaultResponse().setMsg("保存成功!").setData(id);
         }
@@ -111,55 +111,55 @@ public class TravelAgentServiceImpl implements TravelAgentService {
     }
 
     @Override
-    public ResponseMessage update(String id, EntityTagsModel<TravelAgentEntity> travelAgentModel, User user) {
-        TravelAgentEntity tEntity = tarvaAgentMapper.selectByPrimaryKey(id);
-        if (tEntity != null) {
-            TravelAgentEntity travelAgentEntity = travelAgentModel.getEntity();
-            travelAgentEntity.setId(tEntity.getId());
-            travelAgentEntity.setFullSpell(PinyinUtil.getPingYin(travelAgentEntity.getTitle()));
-            travelAgentEntity.setSimpleSpell(PinyinUtil.getPinYinHeadChar(travelAgentEntity.getTitle()));
-            travelAgentEntity.setCreatedUser(tEntity.getCreatedUser());
-            travelAgentEntity.setCreatedDate(tEntity.getCreatedDate());
-            travelAgentEntity.setStatus(0);
-            travelAgentEntity.setCode(tEntity.getCode());
-            travelAgentEntity.setUpdatedUser(user.getUsername());
-            travelAgentEntity.setUpdatedDate(new Date());
-            tarvaAgentMapper.updateByPrimaryKey(travelAgentEntity);
+    public ResponseMessage update(String id, EntityTagsModel<DriveCampEntity> driveCampModel, User user) {
+        DriveCampEntity dCampEntity = driveCampMapper.selectByPrimaryKey(id);
+        if (dCampEntity != null) {
+            DriveCampEntity  driveCampEntity = driveCampModel.getEntity();
+            driveCampEntity.setId(dCampEntity.getId());
+            driveCampEntity.setFullSpell(PinyinUtil.getPingYin(driveCampEntity.getTitle()));
+            driveCampEntity.setSimpleSpell(PinyinUtil.getPinYinHeadChar(driveCampEntity.getTitle()));
+            driveCampEntity.setCreatedUser(dCampEntity.getCreatedUser());
+            driveCampEntity.setCreatedDate(dCampEntity.getCreatedDate());
+            driveCampEntity.setStatus(0);
+            driveCampEntity.setCode(dCampEntity.getCode());
+            driveCampEntity.setUpdatedUser(user.getUsername());
+            driveCampEntity.setUpdatedDate(new Date());
+            driveCampMapper.updateByPrimaryKey(driveCampEntity);
             //处理标签
-            if(CollectionUtils.isNotEmpty(travelAgentModel.getTagsList())){
-                tagsService.batchInsert(id,travelAgentModel.getTagsList(),user, TravelAgentTagsEntity.class);
+            if(CollectionUtils.isNotEmpty(driveCampModel.getTagsList())){
+                tagsService.batchInsert(id,driveCampModel.getTagsList(),user, DriveCampEntity.class);
             }
             // 先删除关联的附件再解析富文本中的附件并保存
             materialService.deleteByPrincipalId(id);
-            materialService.saveByDom(travelAgentEntity.getContent(), id, user);
+            materialService.saveByDom(driveCampEntity.getContent(), id, user);
             return ResponseMessage.defaultResponse().setMsg("更新成功！");
         }
-        return ResponseMessage.validFailResponse().setMsg("暂无该旅行社信息！");
+        return ResponseMessage.validFailResponse().setMsg("暂无该自驾营地信息！");
     }
 
     @Override
     public ResponseMessage delete(String id) {
-        tarvaAgentMapper.deleteByPrimaryKey(id);
+        driveCampMapper.deleteByPrimaryKey(id);
         return ResponseMessage.defaultResponse().setMsg("删除成功！");
     }
 
     @Override
     public ResponseMessage goWeight(WeightModel weightModel, User user) {
         //查出最大权重
-        Integer maxNum= tarvaAgentMapper.maxWeight();
+        Integer maxNum= driveCampMapper.maxWeight();
         List<String>ids =weightModel.getIds();
         if(ids!=null&&!ids.isEmpty()){
             //判断为重新排序或者最大权重与排序大于999时所有数据权重清0
             if(weightModel.isFlag()||(maxNum+ids.size())>Integer.MAX_VALUE){
-                tarvaAgentMapper.clearWeight();
+                driveCampMapper.clearWeight();
                 maxNum=0;
             }
             for(int i=0;i<ids.size();i++){
-                TravelAgentEntity travelAgentEntity= tarvaAgentMapper.selectByPrimaryKey(ids.get(i));
-                travelAgentEntity.setWeight(maxNum+ids.size()-i);
-                travelAgentEntity.setUpdatedUser(user.getUsername());
-                travelAgentEntity.setUpdatedDate(new Date());
-                tarvaAgentMapper.updateByPrimaryKey(travelAgentEntity);
+                DriveCampEntity driveCampEntity= driveCampMapper.selectByPrimaryKey(ids.get(i));
+                driveCampEntity.setWeight(maxNum+ids.size()-i);
+                driveCampEntity.setUpdatedUser(user.getUsername());
+                driveCampEntity.setUpdatedDate(new Date());
+                driveCampMapper.updateByPrimaryKey(driveCampEntity);
             }
         }
         return ResponseMessage.defaultResponse().setMsg("权重修改成功！");
@@ -169,9 +169,9 @@ public class TravelAgentServiceImpl implements TravelAgentService {
     public ResponseMessage checkTitle(String id, String title) {
         ResponseMessage responseMessage = ResponseMessage.defaultResponse();
         if (StringUtils.isNotBlank(title)) {
-            TravelAgentEntity travelAgentEntity = tarvaAgentMapper.checkTitle(title);
-            if (travelAgentEntity != null) {
-                if (!travelAgentEntity.getId().equals(id)) {
+            DriveCampEntity driveCampEntity = driveCampMapper.checkTitle(title);
+            if (driveCampEntity != null) {
+                if (!driveCampEntity.getId().equals(id)) {
                     return responseMessage.setStatus(ResponseMessage.FAILED).setMsg("标题名称重复！");
                 }
             }
@@ -181,9 +181,9 @@ public class TravelAgentServiceImpl implements TravelAgentService {
 
     @Override
     public ResponseMessage auditOrIssue(AuditLogEntity auditLogEntity, User user, int type) {
-        TravelAgentEntity tEntity = tarvaAgentMapper.selectByPrimaryKey(auditLogEntity.getPrincipalId());
-        if (tEntity == null) {
-            return ResponseMessage.validFailResponse().setMsg("暂无该旅行社信息！");
+        DriveCampEntity dCampEntity = driveCampMapper.selectByPrimaryKey(auditLogEntity.getPrincipalId());
+        if (dCampEntity == null) {
+            return ResponseMessage.validFailResponse().setMsg("暂无该自驾营地信息！");
         }
         String msg="审核成功！";
         if(type==1){
@@ -203,10 +203,10 @@ public class TravelAgentServiceImpl implements TravelAgentService {
                 return ResponseMessage.validFailResponse().setMsg("审核状态错误！");
             }
         }
-        tEntity.setStatus(auditLogEntity.getStatus());
-        tEntity.setUpdatedUser(user.getUsername());
-        tEntity.setUpdatedDate(new Date());
-        tarvaAgentMapper.updateByPrimaryKey(tEntity);
+        dCampEntity.setStatus(auditLogEntity.getStatus());
+        dCampEntity.setUpdatedUser(user.getUsername());
+        dCampEntity.setUpdatedDate(new Date());
+        driveCampMapper.updateByPrimaryKey(dCampEntity);
         auditLogEntity.setType(type);
         auditLogService.create(auditLogEntity,user.getUsername());
         return ResponseMessage.defaultResponse().setMsg(msg);
@@ -216,28 +216,28 @@ public class TravelAgentServiceImpl implements TravelAgentService {
     public void dataBind(String updatedUser, String updatedDate, DataBindModel model) {
         String deptCode = model.getDeptCode();
         List<String> ids = model.getIds();
-        tarvaAgentMapper.dataBind(updatedUser, updatedDate, deptCode, ids);
+        driveCampMapper.dataBind(updatedUser, updatedDate, deptCode, ids);
     }
 
     @Override
     public ResponseMessage relateTags(String id, List<BaseTagsEntity> list, User user) {
         if(CollectionUtils.isNotEmpty(list)){
-            tagsService.batchInsert(id,list,user, TravelAgentTagsEntity.class);
+            tagsService.batchInsert(id,list,user, DriveCampEntity.class);
         }
         return ResponseMessage.defaultResponse().setMsg("关联成功！");
     }
 
     @Override
-    public ResponseMessage getTravelAgentList() {
-        return ResponseMessage.defaultResponse().setData(tarvaAgentMapper.getTravelAgentList());
+    public ResponseMessage getDriveCampList() {
+        return ResponseMessage.defaultResponse().setData(driveCampMapper.getDriveCampList());
     }
 
     @Override
-    public ResponseMessage getTravelAgentInfo(String id) {
+    public ResponseMessage getDriveCampInfo(String id) {
         Map<String,Object>map= Maps.newHashMap();
-        TravelAgentEntity travelAgentEntity = tarvaAgentMapper.selectByPrimaryKey(id);
-        if (travelAgentEntity != null) {
-            map.put("travelAgentEntity",travelAgentEntity);
+        DriveCampEntity driveCampEntity = driveCampMapper.selectByPrimaryKey(id);
+        if (driveCampEntity != null) {
+            map.put("driveCampEntity",driveCampEntity);
             //企业信息
             EnterpriseEntity enterpriseEntity = enterpriseMapper.selectByPrincipalId(id);
             map.put("enterpriseEntity",enterpriseEntity);
@@ -251,7 +251,7 @@ public class TravelAgentServiceImpl implements TravelAgentService {
             map.put("fileList",materialService.handleMaterial(id));
             return ResponseMessage.defaultResponse().setData(map);
         }else{
-            return ResponseMessage.validFailResponse().setMsg("暂无该旅行社信息！");
+            return ResponseMessage.validFailResponse().setMsg("暂无该自驾营地信息！");
         }
     }
 }

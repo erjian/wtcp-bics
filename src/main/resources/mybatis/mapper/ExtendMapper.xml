@@ -123,7 +123,7 @@
 
   <update id="dataBindExtend">
     update t_bic_extend
-    set updated_date = #{updatedDate,jdbcType=VARCHAR},
+    set updated_date = #{updatedDate,jdbcType=TIMESTAMP},
     updated_user = #{updatedUser,jdbcType=VARCHAR},
     dept_code = #{deptCode,jdbcType=VARCHAR}
     where principal_id in

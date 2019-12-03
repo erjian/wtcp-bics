@@ -141,7 +141,7 @@
 
   <update id="dataBind">
     update t_bic_entertainment
-    set updated_date = #{updatedDate,jdbcType=VARCHAR},
+    set updated_date = #{updatedDate,jdbcType=TIMESTAMP},
     updated_user = #{updatedUser,jdbcType=VARCHAR},
     dept_code = #{deptCode,jdbcType=VARCHAR}
     where id in

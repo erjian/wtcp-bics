@@ -3,11 +3,11 @@ package cn.com.wanwei.bic.controller;
 
 import cn.com.wanwei.bic.entity.AuditLogEntity;
 import cn.com.wanwei.bic.entity.BaseTagsEntity;
-import cn.com.wanwei.bic.entity.TravelAgentEntity;
+import cn.com.wanwei.bic.entity.DriveCampEntity;
 import cn.com.wanwei.bic.model.DataBindModel;
 import cn.com.wanwei.bic.model.EntityTagsModel;
 import cn.com.wanwei.bic.model.WeightModel;
-import cn.com.wanwei.bic.service.TravelAgentService;
+import cn.com.wanwei.bic.service.DriveCampService;
 import cn.com.wanwei.common.log.annotation.OperationLog;
 import cn.com.wanwei.common.model.ResponseMessage;
 import cn.com.wanwei.common.utils.RequestUtil;
@@ -22,7 +22,6 @@ import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.Date;
@@ -32,67 +31,67 @@ import java.util.Map;
 @Slf4j
 @RestController
 @RefreshScope
-@RequestMapping("/travelAgent")
-@Api(value = "旅行社管理", tags = "旅行社管理")
-public class TravelAgentConToller extends BaseController {
+@RequestMapping("/driveCamp")
+@Api(value = "自驾营地管理", tags = "自驾营地管理")
+public class DriveCampController extends BaseController{
 
     @Autowired
-    private TravelAgentService  travelAgentService;
+    private DriveCampService driveCampService;
 
-    @ApiOperation(value = "旅行社管理分页列表",notes = "旅行社管理分页列表")
+    @ApiOperation(value = "自驾营地管理分页列表",notes = "自驾营地管理分页列表")
     @GetMapping(value = "/page")
-    @PreAuthorize("hasAuthority('travelAgent:r')")
-    @OperationLog(value = "wtcp-bics/旅行社管理分页列表", operate = "r", module = "旅行社管理")
+    @PreAuthorize("hasAuthority('driveCamp:r')")
+    @OperationLog(value = "wtcp-bics/自驾营地管理分页列表", operate = "r", module = "自驾营地管理")
     public ResponseMessage findByPage(@RequestParam(value = "page", defaultValue = "1") Integer page,
                                       @RequestParam(value = "size", defaultValue = "10") Integer size,
                                       HttpServletRequest request){
         Map<String, Object> filter = RequestUtil.getParameters(request);
-        return travelAgentService.findByPage(page,size,filter);
+        return driveCampService.findByPage(page,size,filter);
     }
 
-    @ApiOperation(value = "查询旅行社信息", notes = "查询旅行社信息")
-    @ApiImplicitParam(name = "id", value = "旅行社信息ID", required = true)
+    @ApiOperation(value = "查询自驾营地信息", notes = "查询自驾营地信息")
+    @ApiImplicitParam(name = "id", value = "自驾营地信息ID", required = true)
     @GetMapping(value = "/{id}")
-    @PreAuthorize("hasAuthority('travelAgent:r')")
-    @OperationLog(value = "wtcp-bics/查询旅行社信息", operate = "r", module = "旅行社管理")
+    @PreAuthorize("hasAuthority('driveCamp:r')")
+    @OperationLog(value = "wtcp-bics/查询自驾营地信息", operate = "r", module = "自驾营地管理")
     public ResponseMessage find(@PathVariable("id") String id) {
-        return travelAgentService.find(id);
+        return driveCampService.find(id);
     }
 
-    @ApiOperation(value = "新增旅行社信息", notes = "新增旅行社信息")
-    @ApiImplicitParam(name = "travelAgentModel", value = "旅行社实体",dataType="EntityTagsModel", required = true)
+    @ApiOperation(value = "新增自驾营地信息", notes = "新增自驾营地信息")
+    @ApiImplicitParam(name = "driveCampModel", value = "自驾营地实体",dataType="EntityTagsModel", required = true)
     @PostMapping
-    @PreAuthorize("hasAuthority('travelAgent:c')")
-    @OperationLog(value = "wtcp-bics/新增旅行社信息", operate = "c", module = "旅行社管理")
-    public ResponseMessage create(@RequestBody EntityTagsModel<TravelAgentEntity> travelAgentModel, BindingResult bindingResult) throws Exception {
+    @PreAuthorize("hasAuthority('driveCamp:c')")
+    @OperationLog(value = "wtcp-bics/新增自驾营地信息", operate = "c", module = "自驾营地管理")
+    public ResponseMessage create(@RequestBody EntityTagsModel<DriveCampEntity> driveCampModel, BindingResult bindingResult) throws Exception {
         if(bindingResult.hasErrors()){
             return ResponseMessage.validFailResponse().setMsg(bindingResult.getAllErrors());
         }
-        return travelAgentService.create(travelAgentModel,getCurrentUser(), ruleId, appCode);
+        return driveCampService.create(driveCampModel,getCurrentUser(), ruleId, appCode);
     }
 
-    @ApiOperation(value = "编辑旅行社信息", notes = "编辑旅行社信息")
+    @ApiOperation(value = "编辑自驾营地信息", notes = "编辑自驾营地信息")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "id", value = "旅行社信息ID", required = true),
-            @ApiImplicitParam(name = "travelAgentModel", value = "旅行社实体",dataType="EntityTagsModel", required = true)
+            @ApiImplicitParam(name = "id", value = "自驾营地信息ID", required = true),
+            @ApiImplicitParam(name = "driveCampModel", value = "自驾营地实体",dataType="EntityTagsModel", required = true)
     })
     @PutMapping(value = "/{id}")
-    @PreAuthorize("hasAuthority('travelAgent:u')")
-    @OperationLog(value = "wtcp-bics/编辑旅行社信息", operate = "u", module = "旅行社管理")
-    public ResponseMessage edit(@PathVariable(value = "id") String id, @RequestBody EntityTagsModel<TravelAgentEntity> travelAgentModel, BindingResult bindingResult) throws Exception {
+    @PreAuthorize("hasAuthority('driveCamp:u')")
+    @OperationLog(value = "wtcp-bics/编辑自驾营地信息", operate = "u", module = "自驾营地管理")
+    public ResponseMessage edit(@PathVariable(value = "id") String id, @RequestBody EntityTagsModel<DriveCampEntity> driveCampModel, BindingResult bindingResult) throws Exception {
         if(bindingResult.hasErrors()){
             return ResponseMessage.validFailResponse().setMsg(bindingResult.getAllErrors());
         }
-        return travelAgentService.update(id,travelAgentModel,getCurrentUser());
+        return driveCampService.update(id,driveCampModel,getCurrentUser());
     }
 
-    @ApiOperation(value = "删除旅行社信息", notes = "删除旅行社信息")
-    @ApiImplicitParam(name = "id", value = "旅行社信息ID", required = true)
+    @ApiOperation(value = "删除自驾营地信息", notes = "删除自驾营地信息")
+    @ApiImplicitParam(name = "id", value = "自驾营地信息ID", required = true)
     @DeleteMapping(value = "/{id}")
-    @PreAuthorize("hasAuthority('travelAgent:d')")
-    @OperationLog(value = "wtcp-bics/删除旅行社信息", operate = "d", module = "旅行社管理")
+    @PreAuthorize("hasAuthority('driveCamp:d')")
+    @OperationLog(value = "wtcp-bics/删除自驾营地信息", operate = "d", module = "自驾营地管理")
     public ResponseMessage delete(@PathVariable(value = "id") String id){
-        return travelAgentService.delete(id);
+        return driveCampService.delete(id);
     }
 
     @ApiOperation(value = "权重更改", notes = "权重更改")
@@ -100,51 +99,51 @@ public class TravelAgentConToller extends BaseController {
             @ApiImplicitParam(name = "weightModel", value = "排序model", required = true, dataType = "WeightModel")
     })
     @PutMapping(value = "/weight")
-    @PreAuthorize("hasAuthority('travelAgent:w')")
-    @OperationLog(value = "wtcp-bics/权重更改", operate = "u", module = "旅行社管理")
+    @PreAuthorize("hasAuthority('driveCamp:w')")
+    @OperationLog(value = "wtcp-bics/权重更改", operate = "u", module = "自驾营地管理")
     public ResponseMessage goWeight(@RequestBody @Valid WeightModel weightModel, BindingResult bindingResult) throws Exception {
         if(bindingResult.hasErrors()){
             return ResponseMessage.validFailResponse().setMsg(bindingResult.getAllErrors());
         }
-        return travelAgentService.goWeight(weightModel,getCurrentUser());
+        return driveCampService.goWeight(weightModel,getCurrentUser());
     }
 
     @ApiOperation(value = "标题重名校验", notes = "标题重名校验")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "id", value = "旅行社信息ID"),
+            @ApiImplicitParam(name = "id", value = "自驾营地信息ID"),
             @ApiImplicitParam(name = "title", value = "标题")
     })
     @GetMapping(value = "/checkTitle")
     public ResponseMessage checkTitle(@RequestParam(value = "id",required = false) String id,
                                       @RequestParam(value = "title",required = false) String title){
-        return travelAgentService.checkTitle(id,title);
+        return driveCampService.checkTitle(id,title);
     }
 
-    @ApiOperation(value = "旅行社信息审核", notes = "旅行社信息审核")
+    @ApiOperation(value = "自驾营地信息审核", notes = "自驾营地信息审核")
     @ApiImplicitParam(name = "auditLogEntity", value = "审核记录实体",required = true,dataType = "AuditLogEntity")
     @PutMapping(value = "/audit")
-    @PreAuthorize("hasAuthority('travelAgent:a')")
-    @OperationLog(value = "wtcp-bics/旅行社信息审核", operate = "a", module = "旅行社管理")
+    @PreAuthorize("hasAuthority('driveCamp:a')")
+    @OperationLog(value = "wtcp-bics/自驾营地信息审核", operate = "a", module = "自驾营地管理")
     public ResponseMessage audit(@RequestBody AuditLogEntity auditLogEntity , BindingResult bindingResult) throws Exception {
         if(bindingResult.hasErrors()){
             return ResponseMessage.validFailResponse().setMsg(bindingResult.getAllErrors());
         }
-        return travelAgentService.auditOrIssue(auditLogEntity,getCurrentUser(),0);
+        return driveCampService.auditOrIssue(auditLogEntity,getCurrentUser(),0);
     }
 
-    @ApiOperation(value = "旅行社信息上下线", notes = "旅行社信息上下线")
+    @ApiOperation(value = "自驾营地信息上下线", notes = "自驾营地信息上下线")
     @ApiImplicitParam(name = "auditLogEntity", value = "审核记录实体",required = true,dataType = "AuditLogEntity")
     @PutMapping(value = "/issue")
-    @PreAuthorize("hasAuthority('travelAgent:s')")
-    @OperationLog(value = "wtcp-bics/旅行社信息上下线", operate = "u", module = "旅行社管理")
+    @PreAuthorize("hasAuthority('driveCamp:s')")
+    @OperationLog(value = "wtcp-bics/自驾营地信息上下线", operate = "u", module = "自驾营地管理")
     public ResponseMessage issue(@RequestBody AuditLogEntity auditLogEntity ,BindingResult bindingResult) throws Exception {
         if(bindingResult.hasErrors()){
             return ResponseMessage.validFailResponse().setMsg(bindingResult.getAllErrors());
         }
-        return travelAgentService.auditOrIssue(auditLogEntity,getCurrentUser(),1);
+        return driveCampService.auditOrIssue(auditLogEntity,getCurrentUser(),1);
     }
 
-    @PreAuthorize("hasAuthority('travelAgent:g')")
+    @PreAuthorize("hasAuthority('driveCamp:g')")
     @ApiOperation(value = "数据绑定", notes = "数据绑定")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "model", value = "数据绑定实体", required = true, dataType = "DataBindModel")
@@ -156,30 +155,30 @@ public class TravelAgentConToller extends BaseController {
         }
         String updatedUser = getCurrentUser().getUsername();
         String updatedDate = DateFormatUtils.format(new Date(), "yyyy-MM-dd HH:mm:ss");
-        travelAgentService.dataBind(updatedUser,updatedDate,model);
+        driveCampService.dataBind(updatedUser,updatedDate,model);
 
         return ResponseMessage.defaultResponse().setMsg("数据绑定成功");
     }
 
-    @ApiOperation(value = "旅行社信息标签关联", notes = "旅行社信息标签关联")
+    @ApiOperation(value = "自驾营地信息标签关联", notes = "自驾营地信息标签关联")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "id", value = "旅行社信息ID", required = true)
+            @ApiImplicitParam(name = "id", value = "自驾营地信息ID", required = true)
     })
     @PutMapping(value = "relateTags/{id}")
-    @PreAuthorize("hasAuthority('travelAgent:u')")
-    @OperationLog(value = "wtcp-bics/旅行社信息标签关联", operate = "u", module = "旅行社管理")
+    @PreAuthorize("hasAuthority('driveCamp:u')")
+    @OperationLog(value = "wtcp-bics/自驾营地信息标签关联", operate = "u", module = "自驾营地管理")
     public ResponseMessage relateTags(@PathVariable(value = "id") String id, @RequestBody List<BaseTagsEntity> list , BindingResult bindingResult) throws Exception {
         if(bindingResult.hasErrors()){
             return ResponseMessage.validFailResponse().setMsg(bindingResult.getAllErrors());
         }
-        return travelAgentService.relateTags(id,list,getCurrentUser());
+        return driveCampService.relateTags(id,list,getCurrentUser());
     }
 
-    @ApiOperation(value = "获取旅行社信息", notes = "获取旅行社信息")
-    @GetMapping(value = "/getTravelAgentList")
-    @PreAuthorize("hasAuthority('travelAgent:r')")
-    @OperationLog(value = "wtcp-bics/获取旅行社信息", operate = "r", module = "旅行社管理")
-    public ResponseMessage getTravelAgentList() {
-        return travelAgentService.getTravelAgentList();
+    @ApiOperation(value = "获取自驾营地信息", notes = "获取自驾营地信息")
+    @GetMapping(value = "/getDriveCampList")
+    @PreAuthorize("hasAuthority('driveCamp:r')")
+    @OperationLog(value = "wtcp-bics/获取自驾营地信息", operate = "r", module = "自驾营地管理")
+    public ResponseMessage getDriveCampList() {
+        return driveCampService.getDriveCampList();
     }
 }

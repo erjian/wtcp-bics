@@ -58,8 +58,9 @@ public interface TravelAgentMapper {
                  @Param(value="deptCode") String deptCode, @Param(value="ids") List<String> ids);
 
     /**
-     * 获取休闲娱乐信息
+     * 获取旅行社信息
      * @return
      */
+    @DataScope
     List<TravelAgentEntity> getTravelAgentList();
 }
