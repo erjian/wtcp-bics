@@ -133,4 +133,12 @@ public class TagsController extends BaseController {
         return tagsService.findByPrincipalId(principalId, RentalCarTagsEntity.class);
     }
 
+    @ApiOperation(value = "根据关联ID获取自驾营地标签信息", notes = "根据关联ID获取自驾营地标签信息")
+    @ApiImplicitParam(name = "principalId", value = "关联的自驾营地ID", required = true)
+    @OperationLog(value = "wtcp-bic/根据关联ID获取自驾营地标签信息", operate = "r", module = "标签管理")
+    @RequestMapping(value = "/findTravelAgentByPid", method = RequestMethod.GET)
+    public ResponseMessage findDriveCampByPid(@RequestParam String principalId) {
+        return tagsService.findByPrincipalId(principalId, DriveCampTagsEntity.class);
+    }
+
 }
