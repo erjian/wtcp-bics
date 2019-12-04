@@ -10,6 +10,7 @@ import lombok.ToString;
 
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import java.util.Date;
 
 @Data
 @EqualsAndHashCode(callSuper=false)
@@ -56,7 +57,7 @@ public class TravelAgentEntity extends commonEntity{
     private String startTime;
 
     @ApiModelProperty(value = "接团类型")
-    private String teamType;
+    private Date teamType;
 
     @ApiModelProperty(value = "特种旅游类型")
     private String tourType;

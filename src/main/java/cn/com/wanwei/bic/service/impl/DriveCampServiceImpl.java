@@ -103,7 +103,7 @@ public class DriveCampServiceImpl implements DriveCampService {
             driveCampMapper.insert(driveCampEntity);
             //处理标签
             if(CollectionUtils.isNotEmpty(driveCampModel.getTagsList())){
-                tagsService.batchInsert(id,driveCampModel.getTagsList(),user, DriveCampEntity.class);
+                tagsService.batchInsert(id,driveCampModel.getTagsList(),user, DriveCampTagsEntity.class);
             }
             return ResponseMessage.defaultResponse().setMsg("保存成功!").setData(id);
         }
@@ -127,7 +127,7 @@ public class DriveCampServiceImpl implements DriveCampService {
             driveCampMapper.updateByPrimaryKey(driveCampEntity);
             //处理标签
             if(CollectionUtils.isNotEmpty(driveCampModel.getTagsList())){
-                tagsService.batchInsert(id,driveCampModel.getTagsList(),user, DriveCampEntity.class);
+                tagsService.batchInsert(id,driveCampModel.getTagsList(),user, DriveCampTagsEntity.class);
             }
             // 先删除关联的附件再解析富文本中的附件并保存
             materialService.deleteByPrincipalId(id);
@@ -222,7 +222,7 @@ public class DriveCampServiceImpl implements DriveCampService {
     @Override
     public ResponseMessage relateTags(String id, List<BaseTagsEntity> list, User user) {
         if(CollectionUtils.isNotEmpty(list)){
-            tagsService.batchInsert(id,list,user, DriveCampEntity.class);
+            tagsService.batchInsert(id,list,user, DriveCampTagsEntity.class);
         }
         return ResponseMessage.defaultResponse().setMsg("关联成功！");
     }

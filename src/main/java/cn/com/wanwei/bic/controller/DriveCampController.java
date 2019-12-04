@@ -7,6 +7,7 @@ import cn.com.wanwei.bic.entity.DriveCampEntity;
 import cn.com.wanwei.bic.model.DataBindModel;
 import cn.com.wanwei.bic.model.EntityTagsModel;
 import cn.com.wanwei.bic.model.WeightModel;
+import cn.com.wanwei.bic.service.CommonService;
 import cn.com.wanwei.bic.service.DriveCampService;
 import cn.com.wanwei.common.log.annotation.OperationLog;
 import cn.com.wanwei.common.model.ResponseMessage;
@@ -22,6 +23,7 @@ import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.Date;
@@ -37,6 +39,9 @@ public class DriveCampController extends BaseController{
 
     @Autowired
     private DriveCampService driveCampService;
+
+    @Autowired
+    private CommonService commonService;
 
     @ApiOperation(value = "自驾营地管理分页列表",notes = "自驾营地管理分页列表")
     @GetMapping(value = "/page")
@@ -105,7 +110,7 @@ public class DriveCampController extends BaseController{
         if(bindingResult.hasErrors()){
             return ResponseMessage.validFailResponse().setMsg(bindingResult.getAllErrors());
         }
-        return driveCampService.goWeight(weightModel,getCurrentUser());
+        return commonService.changeWeight(weightModel,getCurrentUser(), DriveCampEntity.class);
     }
 
     @ApiOperation(value = "标题重名校验", notes = "标题重名校验")

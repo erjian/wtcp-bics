@@ -7,6 +7,7 @@ import cn.com.wanwei.bic.entity.TravelAgentEntity;
 import cn.com.wanwei.bic.model.DataBindModel;
 import cn.com.wanwei.bic.model.EntityTagsModel;
 import cn.com.wanwei.bic.model.WeightModel;
+import cn.com.wanwei.bic.service.CommonService;
 import cn.com.wanwei.bic.service.TravelAgentService;
 import cn.com.wanwei.common.log.annotation.OperationLog;
 import cn.com.wanwei.common.model.ResponseMessage;
@@ -38,6 +39,9 @@ public class TravelAgentConToller extends BaseController {
 
     @Autowired
     private TravelAgentService  travelAgentService;
+
+    @Autowired
+    private CommonService commonService;
 
     @ApiOperation(value = "旅行社管理分页列表",notes = "旅行社管理分页列表")
     @GetMapping(value = "/page")
@@ -106,7 +110,7 @@ public class TravelAgentConToller extends BaseController {
         if(bindingResult.hasErrors()){
             return ResponseMessage.validFailResponse().setMsg(bindingResult.getAllErrors());
         }
-        return travelAgentService.goWeight(weightModel,getCurrentUser());
+        return commonService.changeWeight(weightModel,getCurrentUser(), TravelAgentEntity.class);
     }
 
     @ApiOperation(value = "标题重名校验", notes = "标题重名校验")

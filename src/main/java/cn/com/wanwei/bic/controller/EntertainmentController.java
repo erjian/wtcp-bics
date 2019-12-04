@@ -6,11 +6,11 @@ import cn.com.wanwei.bic.entity.EntertainmentEntity;
 import cn.com.wanwei.bic.model.DataBindModel;
 import cn.com.wanwei.bic.model.EntityTagsModel;
 import cn.com.wanwei.bic.model.WeightModel;
+import cn.com.wanwei.bic.service.CommonService;
 import cn.com.wanwei.bic.service.EntertainmentService;
 import cn.com.wanwei.common.log.annotation.OperationLog;
 import cn.com.wanwei.common.model.ResponseMessage;
 import cn.com.wanwei.common.utils.RequestUtil;
-import cn.com.wanwei.persistence.mybatis.utils.EscapeCharUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
@@ -38,6 +38,9 @@ public class EntertainmentController extends BaseController{
 
     @Autowired
     private EntertainmentService entertainmentService;
+
+    @Autowired
+    private CommonService commonService;
 
     @ApiOperation(value = "休闲娱乐管理分页列表",notes = "休闲娱乐管理分页列表")
     @GetMapping(value = "/page")
@@ -106,7 +109,7 @@ public class EntertainmentController extends BaseController{
         if(bindingResult.hasErrors()){
             return ResponseMessage.validFailResponse().setMsg(bindingResult.getAllErrors());
         }
-        return entertainmentService.goWeight(weightModel,getCurrentUser());
+        return commonService.changeWeight(weightModel,getCurrentUser(), EntertainmentEntity.class);
     }
 
     @ApiOperation(value = "标题重名校验", notes = "标题重名校验")
