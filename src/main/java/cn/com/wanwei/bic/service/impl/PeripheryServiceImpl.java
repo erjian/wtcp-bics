@@ -31,10 +31,7 @@ import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 @Slf4j
@@ -57,10 +54,13 @@ public class PeripheryServiceImpl implements PeripheryService {
     @Autowired
     private MaterialService materialService;
 
+    private static final String FOOD_TYPE = "3005";            //  餐饮
+    private static final String SHOPPING_TYPE = "3007";     // 购物
+
     @Override
     public ResponseMessage findByPage(Integer page, Integer size, Map<String, Object> filter) {
         EscapeCharUtils.escape(filter, "title", "category");
-        MybatisPageRequest pageRequest = PageUtils.getInstance().setPage(page, size, filter, Sort.Direction.DESC,  "created_date", "updated_date");
+        MybatisPageRequest pageRequest = PageUtils.getInstance().setPage(page, size, filter, Sort.Direction.DESC, "created_date", "updated_date");
         Page<PeripheryEntity> peripheryEntities = peripheryMapper.findByPage(filter);
         PageInfo<PeripheryEntity> pageInfo = new PageInfo<>(peripheryEntities, pageRequest);
         return ResponseMessage.defaultResponse().setData(pageInfo);
@@ -95,7 +95,7 @@ public class PeripheryServiceImpl implements PeripheryService {
             peripheryMapper.insert(peripheryEntity);
 
             //处理标签
-            if(CollectionUtils.isNotEmpty(peripheryModel.getTagsList())){
+            if (CollectionUtils.isNotEmpty(peripheryModel.getTagsList())) {
                 tagsService.batchInsert(peripheryEntity.getId(), peripheryModel.getTagsList(), user, PeripheryTagsEntity.class);
             }
             return ResponseMessage.defaultResponse().setMsg("保存成功!");
@@ -118,7 +118,7 @@ public class PeripheryServiceImpl implements PeripheryService {
             peripheryMapper.updateByPrimaryKey(peripheryEntity);
 
             //处理标签
-            if(CollectionUtils.isNotEmpty(peripheryModel.getTagsList())){
+            if (CollectionUtils.isNotEmpty(peripheryModel.getTagsList())) {
                 tagsService.batchInsert(peripheryEntity.getId(), peripheryModel.getTagsList(), user, PeripheryTagsEntity.class);
             }
 
@@ -242,7 +242,8 @@ public class PeripheryServiceImpl implements PeripheryService {
         ResponseMessage responseMessage = ResponseMessage.defaultResponse();
         List<BaseTagsEntity> list = (List<BaseTagsEntity>) tags.get("tagsArr");
         ObjectMapper mapper = new ObjectMapper();
-        List<BaseTagsEntity> tagsList = mapper.convertValue(list, new TypeReference<List<BaseTagsEntity>>() { });
+        List<BaseTagsEntity> tagsList = mapper.convertValue(list, new TypeReference<List<BaseTagsEntity>>() {
+        });
         if (CollectionUtils.isNotEmpty(tagsList)) {
             tagsService.batchInsert(tags.get("id").toString(), tagsList, currentUser, PeripheryTagsEntity.class);
         }
@@ -252,7 +253,7 @@ public class PeripheryServiceImpl implements PeripheryService {
     @Override
     public ResponseMessage findById(String id) {
         PeripheryEntity peripheryEntity = peripheryMapper.selectByPrimaryKey(id);
-        if(peripheryEntity == null){
+        if (peripheryEntity == null) {
             return ResponseMessage.validFailResponse().setMsg("该周边管理信息不存在");
         }
         Map<String, Object> map = new HashMap<>();
@@ -260,5 +261,32 @@ public class PeripheryServiceImpl implements PeripheryService {
         //获取素材
         map.put("fileList", materialService.handleMaterial(id));
         return ResponseMessage.defaultResponse().setData(map);
+    }
+
+    @Override
+    public ResponseMessage findBySearchValue(String type, String searchValue) {
+        ResponseMessage responseMessage = ResponseMessage.defaultResponse();
+        List<PeripheryEntity> list = null;
+        if (FOOD_TYPE.equals(type)) {
+            list = peripheryMapper.findBySearchValue("113002", searchValue);
+        } else if (SHOPPING_TYPE.equals(type)) {
+            list = peripheryMapper.findBySearchValue("113004", searchValue);
+        }
+        List<Map<String, Object>> data = new ArrayList<>();
+        if (list != null && !list.isEmpty()) {
+            for (PeripheryEntity entity : list) {
+                Map<String, Object> map = new HashMap<>();
+                map.put("id", entity.getId());
+                map.put("name", entity.getTitle());
+                map.put("pinyin", null);
+                map.put("pinyinqp", null);
+                map.put("onlyCode", entity.getCode());
+                data.add(map);
+            }
+            responseMessage.setData(data);
+        } else {
+            responseMessage.setData("暂无数据");
+        }
+        return responseMessage;
     }
 }

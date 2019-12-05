@@ -106,4 +106,12 @@ public interface PeripheryService {
      * @return
      */
     ResponseMessage findById(String id);
+
+    /**
+     * 获取购物或者餐饮列表
+     * @param type 类型
+     * @param searchValue  搜索条件
+     * @return
+     */
+    ResponseMessage findBySearchValue(String type, String searchValue);
 }

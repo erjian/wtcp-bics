@@ -66,4 +66,12 @@ public interface PeripheryMapper {
      * 清空排序
      */
     void clearWeight();
+
+    /**
+     * 根据类型搜索购物或者餐饮列表
+     * @param type code
+     * @param searchValue 条件
+     * @return
+     */
+    List<PeripheryEntity> findBySearchValue(@Param("type")String type, @Param("searchValue")String searchValue);
 }

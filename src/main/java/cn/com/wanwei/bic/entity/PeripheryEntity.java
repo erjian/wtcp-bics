@@ -44,7 +44,9 @@ public class PeripheryEntity extends commonEntity{
     @ApiModelProperty(value = "组织机构编码")
     private String deptCode;
 
-    //冗余字段
+    /**
+     * 冗余字段
+     */
     @ApiModelProperty(value = "简拼")
     @Transient
     private String jSpell;

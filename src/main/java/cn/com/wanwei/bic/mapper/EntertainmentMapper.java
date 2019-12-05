@@ -61,4 +61,11 @@ public interface EntertainmentMapper {
      * @return
      */
     List<EntertainmentEntity> getEnterList();
+
+    /**
+     * 农家乐列表
+     * @param searchValue 条件
+     * @return
+     */
+    List<EntertainmentEntity> findBySearchValue(String searchValue);
 }

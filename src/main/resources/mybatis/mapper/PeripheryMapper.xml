@@ -159,4 +159,17 @@
     <select id="maxWeight" resultType="Integer">
     select weight from t_bic_periphery order by weight desc limit 1
   </select>
+    <!--餐饮 or 购物列表-->
+    <select id="findBySearchValue" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from t_bic_periphery
+        <where>
+            category = #{type,jdbcType=VARCHAR}
+            <if test="searchValue != null and searchValue !='' ">
+                <bind name="searchValue" value="'%' + searchValue + '%'"></bind>
+                and title like #{searchValue}
+            </if>
+        </where>
+    </select>
 </mapper>

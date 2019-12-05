@@ -43,7 +43,7 @@ public interface RentalCarMapper {
 
     /**
      * 查询租车信息
-     * @param title
+     * @param title 搜索条件
      * @return
      */
     List<RentalCarEntity> getRentalCarInfo(@Param(value="title") String title);

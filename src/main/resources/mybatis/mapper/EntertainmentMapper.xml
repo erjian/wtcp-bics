@@ -161,4 +161,16 @@
       <include refid="Base_Column_List" />
       from t_bic_entertainment
   </select>
+  <!--农家乐-->
+  <select id="findBySearchValue" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from t_bic_entertainment
+    <where>
+      <if test="searchValue != null and searchValue != ''">
+        <bind name="searchValue" value="'%'+ searchValue + '%'"></bind>
+        and title like #{searchValue}
+      </if>
+    </where>
+  </select>
 </mapper>

@@ -109,4 +109,11 @@ public interface TravelAgentService {
      * @return
      */
     ResponseMessage getTravelAgentInfo(String id);
+
+    /**
+     * 查询旅行社列表
+     * @param searchValue 搜索条件
+     * @return
+     */
+    ResponseMessage findBySearchValue(String searchValue);
 }

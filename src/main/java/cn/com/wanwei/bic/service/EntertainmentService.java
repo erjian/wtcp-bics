@@ -113,4 +113,12 @@ public interface EntertainmentService {
      * @return
      */
     ResponseMessage getEnterInfo(String id);
+
+    /**
+     * 农家乐列表
+     * @param type code
+     * @param searchValue 条件
+     * @return
+     */
+    ResponseMessage findBySearchValue(String type, String searchValue);
 }

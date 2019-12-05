@@ -34,9 +34,7 @@ import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * wtcp-bics - ScenicServiceImpl 景区基础信息管理接口实现类
@@ -77,7 +75,7 @@ public class ScenicServiceImpl implements ScenicService {
     public ResponseMessage save(EntityTagsModel<ScenicEntity> scenicModel, User user, Long ruleId, Integer appCode) {
         ScenicEntity record = scenicModel.getEntity();
         String type = scenicModel.getType();
-        String id=UUIDUtils.getInstance().getId();
+        String id = UUIDUtils.getInstance().getId();
         record.setId(id);
         ResponseMessage result = coderServiceFeign.buildSerialByCode(ruleId, appCode, type);
         record.setCode(result.getData().toString());
@@ -91,7 +89,7 @@ public class ScenicServiceImpl implements ScenicService {
         scenicMapper.insert(record);
 
         //处理标签
-        if(CollectionUtils.isNotEmpty(scenicModel.getTagsList())){
+        if (CollectionUtils.isNotEmpty(scenicModel.getTagsList())) {
             tagsService.batchInsert(record.getId(), scenicModel.getTagsList(), user, ScenicTagsEntity.class);
         }
 
@@ -129,7 +127,7 @@ public class ScenicServiceImpl implements ScenicService {
         scenicMapper.updateByPrimaryKeyWithBLOBs(record);
 
         //处理标签
-        if(CollectionUtils.isNotEmpty(scenicModel.getTagsList())){
+        if (CollectionUtils.isNotEmpty(scenicModel.getTagsList())) {
             tagsService.batchInsert(record.getId(), scenicModel.getTagsList(), user, ScenicTagsEntity.class);
         }
 
@@ -221,7 +219,7 @@ public class ScenicServiceImpl implements ScenicService {
         List<Map<String, Object>> tagsList = (List<Map<String, Object>>) tags.get("tagsArr");
         List<BaseTagsEntity> bList = Lists.newArrayList();
         if (CollectionUtils.isNotEmpty(tagsList)) {
-            for(Map<String, Object> m:tagsList){
+            for (Map<String, Object> m : tagsList) {
                 BaseTagsEntity entity = new BaseTagsEntity();
                 entity.setPrincipalId(String.valueOf(m.get("principalId")));
                 entity.setTagName(String.valueOf(m.get("tagName")));
@@ -272,6 +270,28 @@ public class ScenicServiceImpl implements ScenicService {
         } catch (Exception e) {
             log.error(e.getMessage());
             responseMessage.setStatus(ResponseMessage.FAILED).setMsg(e.getMessage());
+        }
+        return responseMessage;
+    }
+
+    @Override
+    public ResponseMessage findBySearchValue(String searchValue) {
+        ResponseMessage responseMessage = ResponseMessage.defaultResponse();
+        List<Map<String, Object>> data = new ArrayList<>();
+        List<ScenicEntity> list = scenicMapper.getScenicInfo(searchValue);
+        if (!list.isEmpty()) {
+            for (ScenicEntity entity : list) {
+                Map<String, Object> map = new HashMap<>();
+                map.put("id", entity.getId());
+                map.put("name", entity.getTitle());
+                map.put("pinyin", entity.getTitleJp());
+                map.put("pinyinqp", entity.getTitleQp());
+                map.put("onlyCode", entity.getCode());
+                data.add(map);
+            }
+            responseMessage.setData(data);
+        }else {
+            responseMessage.setData("暂无数据");
         }
         return responseMessage;
     }

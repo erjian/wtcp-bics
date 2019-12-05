@@ -121,4 +121,11 @@ public interface RentalCarService{
      * @return
      */
     ResponseMessage getRentalInfo(String id);
+
+    /**
+     * 租车列表
+     * @param searchValue 条件
+     * @return
+     */
+    ResponseMessage findBySearchValue(String searchValue);
 }

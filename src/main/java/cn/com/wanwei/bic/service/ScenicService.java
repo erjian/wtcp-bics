@@ -129,4 +129,11 @@ public interface ScenicService {
 	ResponseMessage getOne(String id) throws Exception;
 
     ResponseMessage findByTitleAndIdNot(String title, String s);
+
+	/**
+	 * 获取景区列表
+	 * @param searchValue 搜索条件
+	 * @return
+	 */
+	ResponseMessage findBySearchValue(String searchValue);
 }

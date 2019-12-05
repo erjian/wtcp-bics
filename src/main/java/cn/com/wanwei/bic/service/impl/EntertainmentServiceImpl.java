@@ -29,9 +29,7 @@ import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * wtcp-bics - EntertainmentServiceImpl 休闲娱乐管理接口实现类
@@ -256,5 +254,27 @@ public class EntertainmentServiceImpl implements EntertainmentService {
         }else{
             return ResponseMessage.validFailResponse().setMsg("暂无该休闲娱乐信息！");
         }
+    }
+
+    @Override
+    public ResponseMessage findBySearchValue(String type, String searchValue) {
+        ResponseMessage responseMessage = ResponseMessage.defaultResponse();
+        List<EntertainmentEntity> list = entertainmentMapper.findBySearchValue(searchValue);
+        List<Map<String, Object>> data = new ArrayList<>();
+        if (list != null && !list.isEmpty()) {
+            for (EntertainmentEntity entity : list) {
+                Map<String, Object> map = new HashMap<>();
+                map.put("id", entity.getId());
+                map.put("name", entity.getTitle());
+                map.put("pinyin",null);
+                map.put("pinyinqp", null);
+                map.put("onlyCode", entity.getCode());
+                data.add(map);
+            }
+            responseMessage.setData(data);
+        } else {
+            responseMessage.setData("暂无数据");
+        }
+        return responseMessage;
     }
 }
