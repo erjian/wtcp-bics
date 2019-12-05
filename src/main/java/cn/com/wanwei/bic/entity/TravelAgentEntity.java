@@ -46,18 +46,15 @@ public class TravelAgentEntity extends commonEntity{
     private String level;
 
     @ApiModelProperty(value = "等级评定时间")
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
-    private String levelTime;
-
-    @ApiModelProperty(value = "推荐状态（1：推荐，0：不推荐）")
-    private Byte recommend;
+    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
+    private Date levelTime;
 
     @ApiModelProperty(value = "成立时间")
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
-    private String startTime;
+    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
+    private Date startTime;
 
     @ApiModelProperty(value = "接团类型")
-    private Date teamType;
+    private String teamType;
 
     @ApiModelProperty(value = "特种旅游类型")
     private String tourType;

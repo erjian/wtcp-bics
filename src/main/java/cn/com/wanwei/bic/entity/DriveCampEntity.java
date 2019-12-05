@@ -34,8 +34,8 @@ public class DriveCampEntity extends commonEntity{
     private String openTime;
 
     @ApiModelProperty(value = "开业时间")
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
-    private String startTime;
+    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
+    private Date startTime;
 
     @ApiModelProperty(value = "组织机构编码")
     private String deptCode;
@@ -52,4 +52,5 @@ public class DriveCampEntity extends commonEntity{
     public Integer getOnlineStatus() {
         return this.status == 9 ? this.status : 1;
     }
+
 }

@@ -94,11 +94,9 @@ public class ExtendServiceImpl implements ExtendService {
     public ResponseMessage save(EntityTagsModel<ExtendEntity> extendModel, User user, Long ruleId, Integer appCode) throws Exception{
         ExtendEntity extendEntity = extendModel.getEntity();
         ResponseMessage responseMessage = coderServiceFeign.buildSerialByCode(ruleId,appCode,extendEntity.getCode());
-        EntertainmentEntity entertainmentEntity = entertainmentMapper.selectByPrimaryKey(extendEntity.getPrincipalId());
         extendEntity.setId(UUIDUtils.getInstance().getId());
         extendEntity.setCreatedUser(user.getUsername());
         extendEntity.setCreatedDate(new Date());
-        extendEntity.setDeptCode(entertainmentEntity.getDeptCode());
         extendEntity.setStatus(0);
         extendEntity.setCode(responseMessage.getData().toString());
         extendMapper.insert(extendEntity);
@@ -122,14 +120,12 @@ public class ExtendServiceImpl implements ExtendService {
     public ResponseMessage edit(String id, EntityTagsModel<ExtendEntity> extendModel, User user) throws Exception{
         ExtendEntity entity = extendMapper.selectByPrimaryKey(id);
         ExtendEntity extendEntity = extendModel.getEntity();
-        EntertainmentEntity entertainmentEntity = entertainmentMapper.selectByPrimaryKey(extendEntity.getPrincipalId());
         if(null == entity){
             return ResponseMessage.validFailResponse().setMsg("不存在扩展信息");
         }
         extendEntity.setId(id);
         extendEntity.setCreatedDate(entity.getCreatedDate());
         extendEntity.setCreatedUser(entity.getCreatedUser());
-        extendEntity.setDeptCode(entertainmentEntity.getDeptCode());
         extendEntity.setStatus(0);  //编辑修改状态为--> 0: 待审
         extendEntity.setUpdatedDate(new Date());
         extendEntity.setUpdatedUser(user.getUsername());
