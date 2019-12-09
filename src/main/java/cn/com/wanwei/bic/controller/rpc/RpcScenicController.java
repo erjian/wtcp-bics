@@ -35,7 +35,7 @@ public class RpcScenicController extends BaseController {
         return scenicService.getScenicInfo(title.trim().toLowerCase());
     }
 
-    @ApiOperation(value = "获取景区列表", notes = "根据区域获取景区列表")
+    @ApiOperation(value = "获取景区列表", notes = "根据区域获取景区列表(ids != null时，为不包含ids的信息)")
     @GetMapping(value = "/pageNew")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "page", value = "页号", defaultValue = "1"),
@@ -45,9 +45,8 @@ public class RpcScenicController extends BaseController {
     @OperationLog(value = "wtcp-bics/获取景区列表", operate = "r", module = "景区管理")
     public ResponseMessage agritainmentsPageNew(@RequestParam(value = "page", defaultValue = "1") Integer page,
                                                 @RequestParam(value = "size", defaultValue = "10") Integer size,
-                                                @RequestParam String regionFullCode, HttpServletRequest request) throws Exception{
+                                                HttpServletRequest request) throws Exception{
         Map<String, Object> filter = RequestUtil.getParameters(request);
-        filter.put("regionFullCode", regionFullCode);
         return scenicService.scenicPageNew(page, size, filter);
     }
 

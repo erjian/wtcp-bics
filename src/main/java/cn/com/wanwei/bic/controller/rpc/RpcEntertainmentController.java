@@ -30,7 +30,7 @@ public class RpcEntertainmentController {
     private EntertainmentService entertainmentService;
 
 
-    @ApiOperation(value = "获取农家乐列表", notes = "根据区域获取农家乐列表")
+    @ApiOperation(value = "获取农家乐列表", notes = "根据区域获取农家乐列表（ids != null时，为不包含ids的信息）")
     @GetMapping(value = "/pageNew")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "page", value = "页号", defaultValue = "1"),
