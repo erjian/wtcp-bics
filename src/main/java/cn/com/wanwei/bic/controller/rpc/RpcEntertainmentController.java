@@ -35,14 +35,12 @@ public class RpcEntertainmentController {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "page", value = "页号", defaultValue = "1"),
             @ApiImplicitParam(name = "size", value = "每页数量", defaultValue = "10"),
-            @ApiImplicitParam(name = "regionFullCode", value = "区域编码", required = true, dataType = "String")
     })
     @OperationLog(value = "wtcp-bics/获取农家乐列表", operate = "r", module = "休闲娱乐管理")
     public ResponseMessage agritainmentsPageNew(@RequestParam(value = "page", defaultValue = "1") Integer page,
                                                 @RequestParam(value = "size", defaultValue = "10") Integer size,
-                                                @RequestParam String regionFullCode, HttpServletRequest request) throws Exception{
+                                                HttpServletRequest request) throws Exception {
         Map<String, Object> filter = RequestUtil.getParameters(request);
-        filter.put("regionFullCode", regionFullCode);
         return entertainmentService.agritainmentsPageNew(page, size, filter);
     }
 
@@ -53,8 +51,8 @@ public class RpcEntertainmentController {
     })
     @GetMapping("/pageByIds")
     public ResponseMessage findPageByIds(@RequestParam String ids,
-                                         @RequestParam(value = "status", required = false) String status) throws Exception{
-        return entertainmentService.findPageIds(ids,status);
+                                         @RequestParam(value = "status", required = false) String status) throws Exception {
+        return entertainmentService.findPageIds(ids, status);
     }
 
 }

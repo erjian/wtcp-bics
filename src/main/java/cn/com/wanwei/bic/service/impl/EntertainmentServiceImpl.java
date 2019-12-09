@@ -281,8 +281,10 @@ public class EntertainmentServiceImpl implements EntertainmentService {
     @Override
     public ResponseMessage agritainmentsPageNew(Integer page, Integer size, Map<String, Object> filter) {
         EscapeCharUtils.escape(filter, "title", "subTitle");
-        List<String> ids = Arrays.asList(filter.get("ids").toString().split(","));
-        filter.put("ids",ids);
+        if(filter.get("ids") != null){
+            List<String> ids = Arrays.asList(filter.get("ids").toString().split(","));
+            filter.put("ids",ids);
+        }
         MybatisPageRequest pageRequest = PageUtils.getInstance().setPage(page, size, filter, Sort.Direction.DESC, "weight");
         PageHelper.startPage(pageRequest.getPage(), pageRequest.getSize(), pageRequest.getOrders());
         Page<EntertainmentEntity> entertainmentEntities = entertainmentMapper.agritainmentsPageNew(filter);
