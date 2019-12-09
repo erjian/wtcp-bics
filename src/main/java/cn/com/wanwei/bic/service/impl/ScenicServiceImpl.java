@@ -291,7 +291,7 @@ public class ScenicServiceImpl implements ScenicService {
                 data.add(map);
             }
             responseMessage.setData(data);
-        }else {
+        } else {
             responseMessage.setData("暂无数据");
         }
         return responseMessage;
@@ -299,10 +299,12 @@ public class ScenicServiceImpl implements ScenicService {
 
     @Override
     public ResponseMessage scenicPageNew(Integer page, Integer size, Map<String, Object> filter) {
-        EscapeCharUtils.escape(filter, "title","subTitle");
-        List<String> ids = Arrays.asList(filter.get("ids").toString().split(","));
-        filter.put("ids",ids);
-        MybatisPageRequest pageRequest = PageUtils.getInstance().setPage(page, size,filter, Sort.Direction.DESC,"weight");
+        EscapeCharUtils.escape(filter, "title", "subTitle");
+        if (filter.get("ids") != null) {
+            List<String> ids = Arrays.asList(filter.get("ids").toString().split(","));
+            filter.put("ids", ids);
+        }
+        MybatisPageRequest pageRequest = PageUtils.getInstance().setPage(page, size, filter, Sort.Direction.DESC, "weight");
         PageHelper.startPage(pageRequest.getPage(), pageRequest.getSize(), pageRequest.getOrders());
         Page<ScenicEntity> scenicEntities = scenicMapper.scenicPageNew(filter);
         PageInfo<ScenicEntity> pageInfo = new PageInfo<>(scenicEntities, pageRequest);
