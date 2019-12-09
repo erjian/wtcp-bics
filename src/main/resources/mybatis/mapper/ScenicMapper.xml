@@ -1,73 +1,73 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="cn.com.wanwei.bic.mapper.ScenicMapper">
-  <resultMap id="BaseResultMap" type="cn.com.wanwei.bic.entity.ScenicEntity">
-    <id column="id" jdbcType="VARCHAR" property="id" />
-    <result column="code" jdbcType="VARCHAR" property="code" />
-    <result column="title" jdbcType="VARCHAR" property="title" />
-    <result column="title_qp" jdbcType="VARCHAR" property="titleQp" />
-    <result column="title_jp" jdbcType="VARCHAR" property="titleJp" />
-    <result column="sub_title" jdbcType="VARCHAR" property="subTitle" />
-    <result column="slogan" jdbcType="VARCHAR" property="slogan" />
-    <result column="summary" jdbcType="VARCHAR" property="summary" />
-    <result column="description" jdbcType="VARCHAR" property="description" />
-    <result column="weight" jdbcType="INTEGER" property="weight" />
-    <result column="longitude" jdbcType="DOUBLE" property="longitude" />
-    <result column="latitude" jdbcType="DOUBLE" property="latitude" />
-    <result column="region_full_name" jdbcType="VARCHAR" property="regionFullName" />
-    <result column="region_full_code" jdbcType="VARCHAR" property="regionFullCode" />
-    <result column="region" jdbcType="VARCHAR" property="region" />
-    <result column="address" jdbcType="VARCHAR" property="address" />
-    <result column="level" jdbcType="INTEGER" property="level" />
-    <result column="area" jdbcType="DOUBLE" property="area" />
-    <result column="category" jdbcType="INTEGER" property="category" />
-    <result column="panoramic_url" jdbcType="VARCHAR" property="panoramicUrl" />
-    <result column="status" jdbcType="BIT" property="status" />
-    <result column="playtime" jdbcType="REAL" property="playtime" />
-    <result column="score" jdbcType="REAL" property="score" />
-    <result column="dept_code" jdbcType="VARCHAR" property="deptCode" />
-    <result column="created_user" jdbcType="VARCHAR" property="createdUser" />
-    <result column="created_date" jdbcType="TIMESTAMP" property="createdDate" />
-    <result column="updated_user" jdbcType="VARCHAR" property="updatedUser" />
-    <result column="updated_date" jdbcType="TIMESTAMP" property="updatedDate" />
-  </resultMap>
-  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="cn.com.wanwei.bic.entity.ScenicEntity">
-    <result column="content" jdbcType="LONGVARCHAR" property="content" />
-  </resultMap>
-  <sql id="Base_Column_List">
+    <resultMap id="BaseResultMap" type="cn.com.wanwei.bic.entity.ScenicEntity">
+        <id column="id" jdbcType="VARCHAR" property="id"/>
+        <result column="code" jdbcType="VARCHAR" property="code"/>
+        <result column="title" jdbcType="VARCHAR" property="title"/>
+        <result column="title_qp" jdbcType="VARCHAR" property="titleQp"/>
+        <result column="title_jp" jdbcType="VARCHAR" property="titleJp"/>
+        <result column="sub_title" jdbcType="VARCHAR" property="subTitle"/>
+        <result column="slogan" jdbcType="VARCHAR" property="slogan"/>
+        <result column="summary" jdbcType="VARCHAR" property="summary"/>
+        <result column="description" jdbcType="VARCHAR" property="description"/>
+        <result column="weight" jdbcType="INTEGER" property="weight"/>
+        <result column="longitude" jdbcType="DOUBLE" property="longitude"/>
+        <result column="latitude" jdbcType="DOUBLE" property="latitude"/>
+        <result column="region_full_name" jdbcType="VARCHAR" property="regionFullName"/>
+        <result column="region_full_code" jdbcType="VARCHAR" property="regionFullCode"/>
+        <result column="region" jdbcType="VARCHAR" property="region"/>
+        <result column="address" jdbcType="VARCHAR" property="address"/>
+        <result column="level" jdbcType="INTEGER" property="level"/>
+        <result column="area" jdbcType="DOUBLE" property="area"/>
+        <result column="category" jdbcType="INTEGER" property="category"/>
+        <result column="panoramic_url" jdbcType="VARCHAR" property="panoramicUrl"/>
+        <result column="status" jdbcType="BIT" property="status"/>
+        <result column="playtime" jdbcType="REAL" property="playtime"/>
+        <result column="score" jdbcType="REAL" property="score"/>
+        <result column="dept_code" jdbcType="VARCHAR" property="deptCode"/>
+        <result column="created_user" jdbcType="VARCHAR" property="createdUser"/>
+        <result column="created_date" jdbcType="TIMESTAMP" property="createdDate"/>
+        <result column="updated_user" jdbcType="VARCHAR" property="updatedUser"/>
+        <result column="updated_date" jdbcType="TIMESTAMP" property="updatedDate"/>
+    </resultMap>
+    <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="cn.com.wanwei.bic.entity.ScenicEntity">
+        <result column="content" jdbcType="LONGVARCHAR" property="content"/>
+    </resultMap>
+    <sql id="Base_Column_List">
     id, code, title, title_qp, title_jp, sub_title, slogan, summary, description, weight, longitude, latitude,
     region_full_name, region_full_code, region, address, level, area, category, panoramic_url, 
     status, playtime, score, dept_code, created_user, created_date, updated_user, updated_date
   </sql>
-  <sql id="Blob_Column_List">
+    <sql id="Blob_Column_List">
     content
   </sql>
-  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="ResultMapWithBLOBs">
-    select 
-    <include refid="Base_Column_List" />
-    ,
-    <include refid="Blob_Column_List" />
-    from t_bic_scenic
-    where id = #{id,jdbcType=VARCHAR}
-  </select>
+    <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="ResultMapWithBLOBs">
+        select
+        <include refid="Base_Column_List"/>
+        ,
+        <include refid="Blob_Column_List"/>
+        from t_bic_scenic
+        where id = #{id,jdbcType=VARCHAR}
+    </select>
 
-  <select id="getScenicInfo" resultMap="BaseResultMap">
-    select
-    <include refid="Base_Column_List" />
-    from t_bic_scenic
-    <where>
-      <if test="title != null and title !='' ">
-        <bind name="title" value="'%' + title + '%'" ></bind>
-        and (title like #{title} or title_qp like #{title} or title_jp like #{title})
-      </if>
-    </where>
-  </select>
+    <select id="getScenicInfo" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from t_bic_scenic
+        <where>
+            <if test="title != null and title !='' ">
+                <bind name="title" value="'%' + title + '%'"></bind>
+                and (title like #{title} or title_qp like #{title} or title_jp like #{title})
+            </if>
+        </where>
+    </select>
 
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
     delete from t_bic_scenic
     where id = #{id,jdbcType=VARCHAR}
   </delete>
-  <insert id="insert" parameterType="cn.com.wanwei.bic.entity.ScenicEntity">
+    <insert id="insert" parameterType="cn.com.wanwei.bic.entity.ScenicEntity">
     insert into t_bic_scenic (id, code, title, title_qp, title_jp, sub_title,
       slogan, summary, description, 
       weight, longitude, latitude, 
@@ -87,7 +87,7 @@
       #{createdUser,jdbcType=VARCHAR}, #{createdDate,jdbcType=TIMESTAMP}, #{updatedUser,jdbcType=VARCHAR}, 
       #{updatedDate,jdbcType=TIMESTAMP}, #{content,jdbcType=LONGVARCHAR})
   </insert>
-  <update id="updateByPrimaryKeyWithBLOBs" parameterType="cn.com.wanwei.bic.entity.ScenicEntity">
+    <update id="updateByPrimaryKeyWithBLOBs" parameterType="cn.com.wanwei.bic.entity.ScenicEntity">
     update t_bic_scenic
     set code = #{code,jdbcType=VARCHAR},
       title = #{title,jdbcType=VARCHAR},
@@ -119,7 +119,7 @@
       content = #{content,jdbcType=LONGVARCHAR}
     where id = #{id,jdbcType=VARCHAR}
   </update>
-  <update id="updateByPrimaryKey" parameterType="cn.com.wanwei.bic.entity.ScenicEntity">
+    <update id="updateByPrimaryKey" parameterType="cn.com.wanwei.bic.entity.ScenicEntity">
     update t_bic_scenic
     set code = #{code,jdbcType=VARCHAR},
       title = #{title,jdbcType=VARCHAR},
@@ -150,100 +150,158 @@
       updated_date = #{updatedDate,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=VARCHAR}
   </update>
-  <select id="findByPage" parameterType="java.util.Map" resultMap="BaseResultMap">
-    select
-    <include refid="Base_Column_List" />
-    ,
-    <include refid="Blob_Column_List" />
-    from t_bic_scenic
-    <where>
-      <if test="title != null and title!='' ">
-        <bind name="title" value="'%'+title + '%'" ></bind>
-        and (title like #{title} or title_qp like #{title} or title_jp like #{title})
-      </if>
-      <if test="subTitle != null and subTitle!='' ">
-        <bind name="subTitle" value="'%'+subTitle + '%'" ></bind>
-        and sub_title like #{subTitle}
-      </if>
-      <if test="areaName != null and areaName!='' ">
-        <bind name="areaName" value="'%'+areaName + '%'" ></bind>
-        and region_full_name like #{areaName}
-      </if>
-      <if test="level != null">
-        and level = #{level,jdbcType=INTEGER}
-      </if>
-      <if test="category != null">
-        and category = #{category,jdbcType=INTEGER}
-      </if>
-      <if test="areaCode != null and areaCode!='' ">
-        <bind name="areaCode" value="areaCode + '%'" ></bind>
-        and region_full_code like #{areaCode}
-      </if>
-      <if test="examineStatus != null">
-        <if test="examineStatus == 0 or examineStatus == 2">
-          and status = #{examineStatus,jdbcType=INTEGER}
-        </if>
-        <if test="examineStatus == 1">
-          and (status = 1 or status = 9)
-        </if>
-      </if>
-      <if test="onlineStatus != null">
-        <if test="onlineStatus == 9">
-          and status = #{onlineStatus,jdbcType=INTEGER}
-        </if>
-        <if test="onlineStatus == 1">
-          and 9 > status
-        </if>
-      </if>
-    </where>
-  </select>
+    <select id="findByPage" parameterType="java.util.Map" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        ,
+        <include refid="Blob_Column_List"/>
+        from t_bic_scenic
+        <where>
+            <if test="title != null and title!='' ">
+                <bind name="title" value="'%'+title + '%'"></bind>
+                and (title like #{title} or title_qp like #{title} or title_jp like #{title})
+            </if>
+            <if test="subTitle != null and subTitle!='' ">
+                <bind name="subTitle" value="'%'+subTitle + '%'"></bind>
+                and sub_title like #{subTitle}
+            </if>
+            <if test="areaName != null and areaName!='' ">
+                <bind name="areaName" value="'%'+areaName + '%'"></bind>
+                and region_full_name like #{areaName}
+            </if>
+            <if test="level != null">
+                and level = #{level,jdbcType=INTEGER}
+            </if>
+            <if test="category != null">
+                and category = #{category,jdbcType=INTEGER}
+            </if>
+            <if test="areaCode != null and areaCode!='' ">
+                <bind name="areaCode" value="areaCode + '%'"></bind>
+                and region_full_code like #{areaCode}
+            </if>
+            <if test="examineStatus != null">
+                <if test="examineStatus == 0 or examineStatus == 2">
+                    and status = #{examineStatus,jdbcType=INTEGER}
+                </if>
+                <if test="examineStatus == 1">
+                    and (status = 1 or status = 9)
+                </if>
+            </if>
+            <if test="onlineStatus != null">
+                <if test="onlineStatus == 9">
+                    and status = #{onlineStatus,jdbcType=INTEGER}
+                </if>
+                <if test="onlineStatus == 1">
+                    and 9 > status
+                </if>
+            </if>
+        </where>
+    </select>
 
-  <update id="dataBind">
-    update t_bic_scenic
-    set updated_date = #{updatedDate,jdbcType=TIMESTAMP},
-    updated_user = #{updatedUser,jdbcType=VARCHAR},
-    dept_code = #{deptCode,jdbcType=VARCHAR}
-    where id in
-    <foreach collection="ids" item="item" index="index" open="(" separator="," close=")">
-      #{item}
-    </foreach>
-  </update>
+    <update id="dataBind">
+        update t_bic_scenic
+        set updated_date = #{updatedDate,jdbcType=TIMESTAMP},
+        updated_user = #{updatedUser,jdbcType=VARCHAR},
+        dept_code = #{deptCode,jdbcType=VARCHAR}
+        where id in
+        <foreach collection="ids" item="item" index="index" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </update>
 
-  <update id="clearWeight">
+    <update id="clearWeight">
     update t_bic_scenic set weight=0
   </update>
 
-  <select id="maxWeight" resultType="Integer">
+    <select id="maxWeight" resultType="Integer">
     select weight from t_bic_scenic order by weight desc limit 1
   </select>
 
-  <!-- 组织机构名称验重 蔺健武 2019年7月3日16:41:14 -->
-  <select id="findByTitleAndIdNot" resultMap="BaseResultMap">
-    select
-    <include refid="Base_Column_List"/>
-    from t_bic_scenic
-    <where>
-      <if test="title != null">
-        and title = #{title,jdbcType=VARCHAR}
-      </if>
-      <if test="id != null and id != '-1'.toString()">
-        and id != #{id,jdbcType=BIGINT}
-      </if>
-    </where>
-  </select>
+    <!-- 组织机构名称验重 蔺健武 2019年7月3日16:41:14 -->
+    <select id="findByTitleAndIdNot" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from t_bic_scenic
+        <where>
+            <if test="title != null">
+                and title = #{title,jdbcType=VARCHAR}
+            </if>
+            <if test="id != null and id != '-1'.toString()">
+                and id != #{id,jdbcType=BIGINT}
+            </if>
+        </where>
+    </select>
 
-  <!-- 以下是统一处理权重所用的方法 -->
-  <select id="commonMaxWeight" resultType="Integer">
+    <!-- 以下是统一处理权重所用的方法 -->
+    <select id="commonMaxWeight" resultType="Integer">
     select weight from ${tableName} order by weight desc limit 1
   </select>
-  <update id="commonClearWeight">
+    <update id="commonClearWeight">
     update ${tableName} set weight=0
   </update>
-  <update id="commonUpdateWeight">
+    <update id="commonUpdateWeight">
     update ${tableName}
     set weight = #{weight,jdbcType=INTEGER},
       updated_user = #{updatedUser,jdbcType=VARCHAR},
       updated_date = #{updatedDate,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=VARCHAR}
   </update>
+    <!--根据区域获取景区列表-->
+    <select id="scenicPageNew" parameterType="java.util.Map" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        ,
+        <include refid="Blob_Column_List"/>
+        from t_bic_scenic
+        <where>
+            <if test="title != null and title!='' ">
+                <bind name="title" value="'%'+title + '%'"></bind>
+                and (title like #{title} or title_qp like #{title} or title_jp like #{title})
+            </if>
+            <if test="subTitle != null and subTitle!='' ">
+                <bind name="subTitle" value="'%'+subTitle + '%'"></bind>
+                and sub_title like #{subTitle}
+            </if>
+            <if test="regionFullCode != null and regionFullCode!='' ">
+                <bind name="regionFullCode" value="regionFullCode + '%'"></bind>
+                and region_full_code like #{regionFullCode}
+            </if>
+            <if test="status != null">
+                <if test="status == 9">
+                    and status = #{status,jdbcType=INTEGER}
+                </if>
+                <if test="status == 1">
+                    and 9 > status
+                </if>
+            </if>
+            <if test="ids!=null and ids != ''">
+                and id not in
+                <foreach collection="ids" item="item" index="index" open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+        </where>
+    </select>
+    <!--根据ids获取景区列表-->
+    <select id="findPageIds" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        ,
+        <include refid="Blob_Column_List"/>
+        from t_bic_scenic
+        <where>
+            id in
+            <foreach collection="ids" item="item" index="index" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+            <if test="status != null">
+                <if test="status == 9">
+                    and status = #{status,jdbcType=INTEGER}
+                </if>
+                <if test="status == 1">
+                    and (status = 1 or status = 0)
+                </if>
+            </if>
+        </where>
+    </select>
 </mapper>

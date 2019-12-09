@@ -173,5 +173,33 @@ public class ScenicController extends BaseController {
     public ResponseMessage existByTitle(@RequestParam String title, String id) {
         return scenicService.findByTitleAndIdNot(title, id != null ? id : "-1");
     }
+
+    @ApiOperation(value = "获取景区列表", notes = "根据区域获取景区列表")
+    @GetMapping(value = "/pageNew")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "page", value = "页号", defaultValue = "1"),
+            @ApiImplicitParam(name = "size", value = "每页数量", defaultValue = "10"),
+            @ApiImplicitParam(name = "regionFullCode", value = "区域编码", required = true, dataType = "String")
+    })
+    @OperationLog(value = "wtcp-bics/获取景区列表", operate = "r", module = "景区管理")
+    public ResponseMessage agritainmentsPageNew(@RequestParam(value = "page", defaultValue = "1") Integer page,
+                                                @RequestParam(value = "size", defaultValue = "10") Integer size,
+                                                @RequestParam String regionFullCode, HttpServletRequest request) throws Exception{
+        Map<String, Object> filter = RequestUtil.getParameters(request);
+        filter.put("regionFullCode", regionFullCode);
+        return scenicService.scenicPageNew(page, size, filter);
+    }
+
+    @ApiOperation(value = "根据ids串获取景区列表", notes = "根据ids串获取景区列表")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "ids", value = "ids字符串", required = true),
+            @ApiImplicitParam(name = "status", value = "是否上线（1下线  9 上线）")
+    })
+    @GetMapping("/pageByIds")
+    public ResponseMessage findPageByIds(@RequestParam String ids,
+                                         @RequestParam(value = "status", required = false) String status) throws Exception{
+        return scenicService.findPageIds(ids,status);
+    }
+
 }
 

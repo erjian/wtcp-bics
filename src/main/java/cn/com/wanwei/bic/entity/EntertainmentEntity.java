@@ -9,6 +9,8 @@ import lombok.ToString;
 
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import javax.persistence.Transient;
+import java.util.List;
 
 @Data
 @EqualsAndHashCode(callSuper=false)
@@ -46,5 +48,13 @@ public class EntertainmentEntity extends commonEntity{
     public Integer getOnlineStatus() {
         return this.status == 9 ? this.status : 1;
     }
+
+
+    /**
+     * 用于存储农家乐-标签表
+     */
+    @Transient
+    @ApiModelProperty(value = "标签")
+    public List<EntertainmentTagsEntity> tagsEntities;
 
 }

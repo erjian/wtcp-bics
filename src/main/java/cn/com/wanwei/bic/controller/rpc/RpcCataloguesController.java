@@ -58,7 +58,7 @@ public class RpcCataloguesController {
             @ApiImplicitParam(name = "searchValue", value = "检索条件", dataType = "String")
     })
     @GetMapping("/getDataByType")
-    public  ResponseMessage getDataByType(@RequestParam String type, String searchValue){
+    public ResponseMessage getDataByType(@RequestParam String type, String searchValue) throws Exception {
         switch (type) {
             case SCENIC_TYPE:
                 return scenicService.findBySearchValue(searchValue);

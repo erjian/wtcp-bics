@@ -34,7 +34,7 @@ import java.util.Map;
 @RefreshScope
 @RequestMapping("/entertainment")
 @Api(value = "休闲娱乐管理", tags = "休闲娱乐管理")
-public class EntertainmentController extends BaseController{
+public class EntertainmentController extends BaseController {
 
     @Autowired
     private EntertainmentService entertainmentService;
@@ -42,15 +42,15 @@ public class EntertainmentController extends BaseController{
     @Autowired
     private CommonService commonService;
 
-    @ApiOperation(value = "休闲娱乐管理分页列表",notes = "休闲娱乐管理分页列表")
+    @ApiOperation(value = "休闲娱乐管理分页列表", notes = "休闲娱乐管理分页列表")
     @GetMapping(value = "/page")
     @PreAuthorize("hasAuthority('entertainment:r')")
     @OperationLog(value = "wtcp-bics/休闲娱乐管理分页列表", operate = "r", module = "休闲娱乐管理")
     public ResponseMessage findByPage(@RequestParam(value = "page", defaultValue = "1") Integer page,
                                       @RequestParam(value = "size", defaultValue = "10") Integer size,
-                                      HttpServletRequest request){
+                                      HttpServletRequest request) {
         Map<String, Object> filter = RequestUtil.getParameters(request);
-        return entertainmentService.findByPage(page,size,filter);
+        return entertainmentService.findByPage(page, size, filter);
     }
 
     @ApiOperation(value = "查询休闲娱乐信息", notes = "查询休闲娱乐信息")
@@ -63,30 +63,30 @@ public class EntertainmentController extends BaseController{
     }
 
     @ApiOperation(value = "新增休闲娱乐信息", notes = "新增休闲娱乐信息")
-    @ApiImplicitParam(name = "entertainmentModel", value = "休闲娱乐实体",dataType="EntityTagsModel", required = true)
+    @ApiImplicitParam(name = "entertainmentModel", value = "休闲娱乐实体", dataType = "EntityTagsModel", required = true)
     @PostMapping
     @PreAuthorize("hasAuthority('entertainment:c')")
     @OperationLog(value = "wtcp-bics/新增休闲娱乐信息", operate = "c", module = "休闲娱乐管理")
     public ResponseMessage create(@RequestBody EntityTagsModel<EntertainmentEntity> entertainmentModel, BindingResult bindingResult) throws Exception {
-        if(bindingResult.hasErrors()){
+        if (bindingResult.hasErrors()) {
             return ResponseMessage.validFailResponse().setMsg(bindingResult.getAllErrors());
         }
-        return entertainmentService.create(entertainmentModel,getCurrentUser(), ruleId, appCode);
+        return entertainmentService.create(entertainmentModel, getCurrentUser(), ruleId, appCode);
     }
 
     @ApiOperation(value = "编辑休闲娱乐信息", notes = "编辑休闲娱乐信息")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "id", value = "休闲娱乐信息ID", required = true),
-            @ApiImplicitParam(name = "entertainmentModel", value = "休闲娱乐实体",dataType="EntityTagsModel", required = true)
+            @ApiImplicitParam(name = "entertainmentModel", value = "休闲娱乐实体", dataType = "EntityTagsModel", required = true)
     })
     @PutMapping(value = "/{id}")
     @PreAuthorize("hasAuthority('entertainment:u')")
     @OperationLog(value = "wtcp-bics/编辑休闲娱乐信息", operate = "u", module = "休闲娱乐管理")
     public ResponseMessage edit(@PathVariable(value = "id") String id, @RequestBody EntityTagsModel<EntertainmentEntity> entertainmentModel, BindingResult bindingResult) throws Exception {
-        if(bindingResult.hasErrors()){
+        if (bindingResult.hasErrors()) {
             return ResponseMessage.validFailResponse().setMsg(bindingResult.getAllErrors());
         }
-        return entertainmentService.update(id,entertainmentModel,getCurrentUser());
+        return entertainmentService.update(id, entertainmentModel, getCurrentUser());
     }
 
     @ApiOperation(value = "删除休闲娱乐信息", notes = "删除休闲娱乐信息")
@@ -94,7 +94,7 @@ public class EntertainmentController extends BaseController{
     @DeleteMapping(value = "/{id}")
     @PreAuthorize("hasAuthority('entertainment:d')")
     @OperationLog(value = "wtcp-bics/删除休闲娱乐信息", operate = "d", module = "休闲娱乐管理")
-    public ResponseMessage delete(@PathVariable(value = "id") String id){
+    public ResponseMessage delete(@PathVariable(value = "id") String id) {
         return entertainmentService.delete(id);
     }
 
@@ -105,11 +105,11 @@ public class EntertainmentController extends BaseController{
     @PutMapping(value = "/weight")
     @PreAuthorize("hasAuthority('entertainment:w')")
     @OperationLog(value = "wtcp-bics/权重更改", operate = "u", module = "休闲娱乐管理")
-    public ResponseMessage goWeight(@RequestBody @Valid WeightModel weightModel,BindingResult bindingResult) throws Exception {
-        if(bindingResult.hasErrors()){
+    public ResponseMessage goWeight(@RequestBody @Valid WeightModel weightModel, BindingResult bindingResult) throws Exception {
+        if (bindingResult.hasErrors()) {
             return ResponseMessage.validFailResponse().setMsg(bindingResult.getAllErrors());
         }
-        return commonService.changeWeight(weightModel,getCurrentUser(), EntertainmentEntity.class);
+        return commonService.changeWeight(weightModel, getCurrentUser(), EntertainmentEntity.class);
     }
 
     @ApiOperation(value = "标题重名校验", notes = "标题重名校验")
@@ -118,33 +118,33 @@ public class EntertainmentController extends BaseController{
             @ApiImplicitParam(name = "title", value = "标题")
     })
     @GetMapping(value = "/checkTitle")
-    public ResponseMessage checkTitle(@RequestParam(value = "id",required = false) String id,
-                                      @RequestParam(value = "title",required = false) String title){
-        return entertainmentService.checkTitle(id,title);
+    public ResponseMessage checkTitle(@RequestParam(value = "id", required = false) String id,
+                                      @RequestParam(value = "title", required = false) String title) {
+        return entertainmentService.checkTitle(id, title);
     }
 
     @ApiOperation(value = "休闲娱乐信息审核", notes = "休闲娱乐信息审核")
-    @ApiImplicitParam(name = "auditLogEntity", value = "审核记录实体",required = true,dataType = "AuditLogEntity")
+    @ApiImplicitParam(name = "auditLogEntity", value = "审核记录实体", required = true, dataType = "AuditLogEntity")
     @PutMapping(value = "/audit")
     @PreAuthorize("hasAuthority('entertainment:a')")
     @OperationLog(value = "wtcp-bics/休闲娱乐信息审核", operate = "a", module = "休闲娱乐管理")
-    public ResponseMessage audit(@RequestBody AuditLogEntity auditLogEntity , BindingResult bindingResult) throws Exception {
-        if(bindingResult.hasErrors()){
+    public ResponseMessage audit(@RequestBody AuditLogEntity auditLogEntity, BindingResult bindingResult) throws Exception {
+        if (bindingResult.hasErrors()) {
             return ResponseMessage.validFailResponse().setMsg(bindingResult.getAllErrors());
         }
-        return entertainmentService.auditOrIssue(auditLogEntity,getCurrentUser(),0);
+        return entertainmentService.auditOrIssue(auditLogEntity, getCurrentUser(), 0);
     }
 
     @ApiOperation(value = "休闲娱乐信息上下线", notes = "休闲娱乐信息上下线")
-    @ApiImplicitParam(name = "auditLogEntity", value = "审核记录实体",required = true,dataType = "AuditLogEntity")
+    @ApiImplicitParam(name = "auditLogEntity", value = "审核记录实体", required = true, dataType = "AuditLogEntity")
     @PutMapping(value = "/issue")
     @PreAuthorize("hasAuthority('entertainment:s')")
     @OperationLog(value = "wtcp-bics/休闲娱乐信息上下线", operate = "u", module = "休闲娱乐管理")
-    public ResponseMessage issue(@RequestBody AuditLogEntity auditLogEntity ,BindingResult bindingResult) throws Exception {
-        if(bindingResult.hasErrors()){
+    public ResponseMessage issue(@RequestBody AuditLogEntity auditLogEntity, BindingResult bindingResult) throws Exception {
+        if (bindingResult.hasErrors()) {
             return ResponseMessage.validFailResponse().setMsg(bindingResult.getAllErrors());
         }
-        return entertainmentService.auditOrIssue(auditLogEntity,getCurrentUser(),1);
+        return entertainmentService.auditOrIssue(auditLogEntity, getCurrentUser(), 1);
     }
 
     @PreAuthorize("hasAuthority('entertainment:g')")
@@ -159,7 +159,7 @@ public class EntertainmentController extends BaseController{
         }
         String updatedUser = getCurrentUser().getUsername();
         String updatedDate = DateFormatUtils.format(new Date(), "yyyy-MM-dd HH:mm:ss");
-        entertainmentService.dataBind(updatedUser,updatedDate,model);
+        entertainmentService.dataBind(updatedUser, updatedDate, model);
 
         return ResponseMessage.defaultResponse().setMsg("数据绑定成功");
     }
@@ -171,11 +171,11 @@ public class EntertainmentController extends BaseController{
     @PutMapping(value = "relateTags/{id}")
     @PreAuthorize("hasAuthority('entertainment:u')")
     @OperationLog(value = "wtcp-bics/休闲娱乐信息标签关联", operate = "u", module = "休闲娱乐管理")
-    public ResponseMessage relateTags(@PathVariable(value = "id") String id, @RequestBody List<BaseTagsEntity> list , BindingResult bindingResult) throws Exception {
-        if(bindingResult.hasErrors()){
+    public ResponseMessage relateTags(@PathVariable(value = "id") String id, @RequestBody List<BaseTagsEntity> list, BindingResult bindingResult) throws Exception {
+        if (bindingResult.hasErrors()) {
             return ResponseMessage.validFailResponse().setMsg(bindingResult.getAllErrors());
         }
-        return entertainmentService.relateTags(id,list,getCurrentUser());
+        return entertainmentService.relateTags(id, list, getCurrentUser());
     }
 
     @ApiOperation(value = "获取休闲娱乐信息", notes = "获取休闲娱乐信息")
@@ -184,6 +184,34 @@ public class EntertainmentController extends BaseController{
     @OperationLog(value = "wtcp-bics/获取休闲娱乐信息", operate = "r", module = "休闲娱乐管理")
     public ResponseMessage getEnterList() {
         return entertainmentService.getEnterList();
+    }
+
+
+    @ApiOperation(value = "获取农家乐列表", notes = "根据区域获取农家乐列表")
+    @GetMapping(value = "/pageNew")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "page", value = "页号", defaultValue = "1"),
+            @ApiImplicitParam(name = "size", value = "每页数量", defaultValue = "10"),
+            @ApiImplicitParam(name = "regionFullCode", value = "区域编码", required = true, dataType = "String")
+    })
+    @OperationLog(value = "wtcp-bics/获取农家乐列表", operate = "r", module = "休闲娱乐管理")
+    public ResponseMessage agritainmentsPageNew(@RequestParam(value = "page", defaultValue = "1") Integer page,
+                                                @RequestParam(value = "size", defaultValue = "10") Integer size,
+                                                @RequestParam String regionFullCode, HttpServletRequest request) throws Exception{
+        Map<String, Object> filter = RequestUtil.getParameters(request);
+        filter.put("regionFullCode", regionFullCode);
+        return entertainmentService.agritainmentsPageNew(page, size, filter);
+    }
+
+    @ApiOperation(value = "根据ids串获取农家乐分页列表", notes = "根据ids串获取农家乐分页列表")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "ids", value = "ids字符串", required = true),
+            @ApiImplicitParam(name = "status", value = "用户是否可见（0不可见，1可见）")
+    })
+    @GetMapping("/pageByIds")
+    public ResponseMessage findPageByIds(@RequestParam String ids,
+                                         @RequestParam(value = "status", required = false) String status) throws Exception{
+        return entertainmentService.findPageIds(ids,status);
     }
 
 }

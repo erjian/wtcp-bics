@@ -121,4 +121,21 @@ public interface EntertainmentService {
      * @return
      */
     ResponseMessage findBySearchValue(String type, String searchValue);
+
+    /**
+     * 根据区域编码查询农家乐列表
+     * @param page 页号
+     * @param size 每页数量
+     * @param filter  参数
+     * @return 农家乐列表
+     */
+    ResponseMessage agritainmentsPageNew(Integer page, Integer size, Map<String,Object> filter);
+
+    /**
+     * 根据id串查询农家乐列表
+     * @param ids id
+     * @param status 上下线
+     * @return 农家乐列表
+     */
+    ResponseMessage findPageIds(String ids, String status);
 }

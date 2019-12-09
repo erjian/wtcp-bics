@@ -99,4 +99,19 @@ public interface ScenicMapper {
      * @return
      */
     List<Map<String,Object>> findBySearchValue(String searchValue);
+
+    /**
+     * 根据区域获取景区列表
+     * @param filter 参数
+     * @return 景区列表
+     */
+    Page<ScenicEntity> scenicPageNew(Map<String,Object> filter);
+
+    /**
+     * 根据ids查询景区列表
+     * @param idsList id
+     * @param status 上下线
+     * @return
+     */
+    List<ScenicEntity> findPageIds(List<String> idsList, String status);
 }

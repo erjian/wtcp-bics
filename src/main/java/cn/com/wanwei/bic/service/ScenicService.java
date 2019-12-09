@@ -136,4 +136,21 @@ public interface ScenicService {
 	 * @return
 	 */
 	ResponseMessage findBySearchValue(String searchValue);
+
+	/**
+	 * 根据区域编码获取景区列表
+	 * @param page 页数
+	 * @param size 每页数量
+	 * @param filter  参数
+	 * @return 景区列表
+	 */
+    ResponseMessage scenicPageNew(Integer page, Integer size, Map<String,Object> filter);
+
+	/**
+	 * 根据ids获取景区列表
+	 * @param ids ids
+	 * @param status 上下线
+	 * @return 景区列表
+	 */
+	ResponseMessage findPageIds(String ids, String status);
 }

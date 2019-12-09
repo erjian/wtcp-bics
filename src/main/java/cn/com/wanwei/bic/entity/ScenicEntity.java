@@ -17,6 +17,8 @@ import lombok.ToString;
 
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import javax.persistence.Transient;
+import java.util.List;
 
 @Data
 @EqualsAndHashCode(callSuper=false)
@@ -105,4 +107,12 @@ public class ScenicEntity extends BaseEntity{
     public Integer getOnlineStatus() {
         return this.status == 9 ? this.status : 1;
     }
+
+    /**
+     * 用于存储景区-标签
+     */
+    @Transient
+    @ApiModelProperty(value = "标签")
+    public List<ScenicTagsEntity> tagsEntities;
+
 }

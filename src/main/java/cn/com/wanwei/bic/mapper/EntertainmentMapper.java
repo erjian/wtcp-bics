@@ -68,4 +68,19 @@ public interface EntertainmentMapper {
      * @return
      */
     List<EntertainmentEntity> findBySearchValue(String searchValue);
+
+    /**
+     * 根据区域获取农家乐列表
+     * @param filter 参数
+     * @return 农家乐列表
+     */
+    Page<EntertainmentEntity> agritainmentsPageNew(Map<String,Object> filter);
+
+    /**
+     * 根据ids获取列表
+     * @param ids ids
+     * @param status 上下线
+     * @return
+     */
+    List<EntertainmentEntity> findPageIds(@Param("ids")List<String> ids, @Param("status")String status);
 }

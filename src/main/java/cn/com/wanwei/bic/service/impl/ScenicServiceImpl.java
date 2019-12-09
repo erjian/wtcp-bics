@@ -25,6 +25,7 @@ import cn.com.wanwei.persistence.mybatis.MybatisPageRequest;
 import cn.com.wanwei.persistence.mybatis.PageInfo;
 import cn.com.wanwei.persistence.mybatis.utils.EscapeCharUtils;
 import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import lombok.extern.slf4j.Slf4j;
@@ -294,6 +295,30 @@ public class ScenicServiceImpl implements ScenicService {
             responseMessage.setData("暂无数据");
         }
         return responseMessage;
+    }
+
+    @Override
+    public ResponseMessage scenicPageNew(Integer page, Integer size, Map<String, Object> filter) {
+        EscapeCharUtils.escape(filter, "title","subTitle");
+        List<String> ids = Arrays.asList(filter.get("ids").toString().split(","));
+        filter.put("ids",ids);
+        MybatisPageRequest pageRequest = PageUtils.getInstance().setPage(page, size,filter, Sort.Direction.DESC,"weight");
+        PageHelper.startPage(pageRequest.getPage(), pageRequest.getSize(), pageRequest.getOrders());
+        Page<ScenicEntity> scenicEntities = scenicMapper.scenicPageNew(filter);
+        PageInfo<ScenicEntity> pageInfo = new PageInfo<>(scenicEntities, pageRequest);
+        return ResponseMessage.defaultResponse().setData(pageInfo);
+    }
+
+    @Override
+    public ResponseMessage findPageIds(String ids, String status) {
+        List<String> idsList = Arrays.asList(ids.split(","));
+        List<ScenicEntity> entitiesList = scenicMapper.findPageIds(idsList, status);
+        for (ScenicEntity scenicEntity : entitiesList) {
+            ResponseMessage responseMessage = tagsService.findByPrincipalId(scenicEntity.getId(), EntertainmentTagsEntity.class);
+            List<ScenicTagsEntity> tagsEntityList = (List<ScenicTagsEntity>) responseMessage.getData();
+            scenicEntity.setTagsEntities(tagsEntityList);
+        }
+        return ResponseMessage.defaultResponse().setData(entitiesList);
     }
 
     private int saveAuditLog(int preStatus, int auditStatus, String principalId, String userName, String msg, int type) {
