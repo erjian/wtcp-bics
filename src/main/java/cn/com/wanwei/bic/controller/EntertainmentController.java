@@ -186,32 +186,4 @@ public class EntertainmentController extends BaseController {
         return entertainmentService.getEnterList();
     }
 
-
-    @ApiOperation(value = "获取农家乐列表", notes = "根据区域获取农家乐列表")
-    @GetMapping(value = "/pageNew")
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "page", value = "页号", defaultValue = "1"),
-            @ApiImplicitParam(name = "size", value = "每页数量", defaultValue = "10"),
-            @ApiImplicitParam(name = "regionFullCode", value = "区域编码", required = true, dataType = "String")
-    })
-    @OperationLog(value = "wtcp-bics/获取农家乐列表", operate = "r", module = "休闲娱乐管理")
-    public ResponseMessage agritainmentsPageNew(@RequestParam(value = "page", defaultValue = "1") Integer page,
-                                                @RequestParam(value = "size", defaultValue = "10") Integer size,
-                                                @RequestParam String regionFullCode, HttpServletRequest request) throws Exception{
-        Map<String, Object> filter = RequestUtil.getParameters(request);
-        filter.put("regionFullCode", regionFullCode);
-        return entertainmentService.agritainmentsPageNew(page, size, filter);
-    }
-
-    @ApiOperation(value = "根据ids串获取农家乐分页列表", notes = "根据ids串获取农家乐分页列表")
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "ids", value = "ids字符串", required = true),
-            @ApiImplicitParam(name = "status", value = "用户是否可见（0不可见，1可见）")
-    })
-    @GetMapping("/pageByIds")
-    public ResponseMessage findPageByIds(@RequestParam String ids,
-                                         @RequestParam(value = "status", required = false) String status) throws Exception{
-        return entertainmentService.findPageIds(ids,status);
-    }
-
 }
