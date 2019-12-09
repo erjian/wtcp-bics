@@ -23,7 +23,7 @@ import java.util.Map;
 @RestController
 @RefreshScope
 @RequestMapping("/rpc/entertainment")
-@Api(value = "休闲娱乐feign接口", tags = "休闲娱乐相关feign接口")
+@Api(value = "feign休闲娱乐接口", tags = "feign休闲娱乐相关接口")
 public class RpcEntertainmentController {
 
     @Autowired
