@@ -274,7 +274,7 @@
                     and 9 > status
                 </if>
             </if>
-            <if test="ids!=null and ids != ''">
+            <if test="ids!=null">
                 and id not in
                 <foreach collection="ids" item="item" index="index" open="(" separator="," close=")">
                     #{item}
