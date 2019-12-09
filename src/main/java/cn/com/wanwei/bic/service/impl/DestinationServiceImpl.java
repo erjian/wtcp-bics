@@ -293,4 +293,23 @@ public class DestinationServiceImpl implements DestinationService {
         return ResponseMessage.defaultResponse().setData(pageInfo);
     }
 
+    @Override
+    public ResponseMessage getDestinationInfo(String areaCodes, String areaName, String ids) {
+        ResponseMessage responseMessage = ResponseMessage.defaultResponse();
+        if(StringUtils.isBlank(areaCodes) && StringUtils.isBlank(areaName) && StringUtils.isBlank(ids)){
+            return responseMessage.validFailResponse().setMsg("查询失败,参数不能都为空，且区域编码、目的地名称、目的地ids串只能传其中一个");
+        }
+        if (StringUtils.isNotBlank(areaCodes)) {
+            List<DestinationEntity> appEntities = destinationMapper.getDestinationByAreaCode(areaCodes.split(","));
+            responseMessage.setData(appEntities);
+        }else if(StringUtils.isNotBlank(areaName)){
+            List<DestinationEntity> appEntities = destinationMapper.getDestinationByAreaName(areaName);
+            responseMessage.setData(appEntities);
+        }else if(StringUtils.isNotBlank(ids)) {
+            List<DestinationEntity> appEntities = destinationMapper.getDestinationByIds(ids.split(","));
+            responseMessage.setData(appEntities);
+        }
+        return responseMessage;
+    }
+
 }

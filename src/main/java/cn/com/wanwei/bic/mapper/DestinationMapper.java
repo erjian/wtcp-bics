@@ -63,4 +63,25 @@ public interface DestinationMapper {
      * @param region
      */
     DestinationEntity getDestinationDetailByRegion(String region);
+
+    /**
+     * 根据目的地编码串查询目的地信息(可为多个编码，编码之间用逗号隔开)
+     * @param areaCodes
+     * @return
+     */
+    List<DestinationEntity> getDestinationByAreaCode(@Param(value = "areaCodes") String[] areaCodes);
+
+    /**
+     * 根据目的地名称查询目的地信息
+     * @param areaName
+     * @return
+     */
+    List<DestinationEntity> getDestinationByAreaName(@Param(value = "areaName") String areaName);
+
+    /**
+     * 根据目的地ids串查询目的地信息(可为多个id，id之间用逗号隔开)
+     * @param ids
+     * @return
+     */
+    List<DestinationEntity> getDestinationByIds(@Param(value = "ids") String[] ids);
 }

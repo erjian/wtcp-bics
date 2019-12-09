@@ -124,4 +124,33 @@
     from t_bic_destination
     where region = #{region,jdbcType=VARCHAR}
   </select>
+
+  <select id="getDestinationByAreaCode"  resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from t_bic_destination
+    where region in
+    <foreach item="item" index="index" collection="areaCodes" open="(" separator="," close=")">
+      #{item}
+    </foreach>
+  </select>
+
+  <select id="getDestinationByAreaName"  resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from t_bic_destination
+    where
+    <bind name="areaName" value="'%'+areaName + '%'" ></bind>
+     region_full_name like #{areaName}
+  </select>
+
+  <select id="getDestinationByIds" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from t_bic_destination
+    where id in
+    <foreach item="item" index="index" collection="ids" open="(" separator="," close=")">
+      #{item}
+    </foreach>
+  </select>
 </mapper>
