@@ -10,6 +10,8 @@ import cn.com.wanwei.common.model.User;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
+import org.bouncycastle.util.Strings;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -59,6 +61,11 @@ public class MaterialServiceImpl implements MaterialService {
         materialEntity.setId(UUIDUtils.getInstance().getId());
         materialEntity.setCreatedUser(user.getUsername());
         materialEntity.setCreatedDate(new Date());
+        if(StringUtils.isNotEmpty(materialEntity.getFileName()) && materialEntity.getFileName().length() > 100){
+            String[] nameArray = materialEntity.getFileName().split(",");
+            String fileName = nameArray[0].substring(0, 20) + nameArray[1];
+            materialEntity.setFileName(fileName);
+        }
         materialMapper.insert(materialEntity);
         return ResponseMessage.defaultResponse().setMsg("添加成功");
     }
@@ -81,6 +88,11 @@ public class MaterialServiceImpl implements MaterialService {
             item.setCreatedUser(user.getUsername());
             item.setCreatedDate(new Date());
             item.setPrincipalId(principalId);
+            if(StringUtils.isNotEmpty(item.getFileName()) && item.getFileName().length() > 100){
+                String[] nameArray = item.getFileName().split(",");
+                String fileName = nameArray[0].substring(0, 20) + nameArray[1];
+                item.setFileName(fileName);
+            }
         }
         materialMapper.batchInsert(materialList);
         return ResponseMessage.defaultResponse().setMsg("添加成功");
