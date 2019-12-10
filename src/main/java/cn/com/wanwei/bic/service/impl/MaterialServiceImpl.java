@@ -61,11 +61,7 @@ public class MaterialServiceImpl implements MaterialService {
         materialEntity.setId(UUIDUtils.getInstance().getId());
         materialEntity.setCreatedUser(user.getUsername());
         materialEntity.setCreatedDate(new Date());
-        if(StringUtils.isNotEmpty(materialEntity.getFileName()) && materialEntity.getFileName().length() > 100){
-            String[] nameArray = materialEntity.getFileName().split(",");
-            String fileName = nameArray[0].substring(0, 20) + nameArray[1];
-            materialEntity.setFileName(fileName);
-        }
+        materialEntity.setFileName(dealFileName(materialEntity.getFileName()));
         materialMapper.insert(materialEntity);
         return ResponseMessage.defaultResponse().setMsg("添加成功");
     }
@@ -73,8 +69,8 @@ public class MaterialServiceImpl implements MaterialService {
     @Override
     public ResponseMessage saveByDom(String content, String principalId, User user) {
         ResponseMessage responseMessage = ResponseMessage.defaultResponse();
-        List<MaterialEntity> fileList = ParseContentUtils.getInstance().parse(content,principalId, user);
-        if(null != fileList && CollectionUtils.isNotEmpty(fileList)){
+        List<MaterialEntity> fileList = ParseContentUtils.getInstance().parse(content, principalId, user);
+        if (null != fileList && CollectionUtils.isNotEmpty(fileList)) {
             materialMapper.batchInsert(fileList);
             responseMessage.setMsg("保存成功");
         }
@@ -83,19 +79,25 @@ public class MaterialServiceImpl implements MaterialService {
 
     @Override
     public ResponseMessage batchInsert(String principalId, List<MaterialEntity> materialList, User user) {
-        for(MaterialEntity item : materialList){
+        for (MaterialEntity item : materialList) {
             item.setId(UUIDUtils.getInstance().getId());
             item.setCreatedUser(user.getUsername());
             item.setCreatedDate(new Date());
             item.setPrincipalId(principalId);
-            if(StringUtils.isNotEmpty(item.getFileName()) && item.getFileName().length() > 100){
-                String[] nameArray = item.getFileName().split(",");
-                String fileName = nameArray[0].substring(0, 20) + nameArray[1];
-                item.setFileName(fileName);
-            }
+            item.setFileName(dealFileName(item.getFileName()));
         }
         materialMapper.batchInsert(materialList);
         return ResponseMessage.defaultResponse().setMsg("添加成功");
+    }
+
+    private String dealFileName(String fileName){
+        if (StringUtils.isNotEmpty(fileName) && fileName.length() > 100) {
+            String[] nameArray = fileName.split("[.]");
+            if (nameArray.length == 2 && nameArray[0].length() >= 20) {
+                return nameArray[0].substring(0, 20) + "." + nameArray[1];
+            }
+        }
+        return fileName;
     }
 
     @Override
@@ -114,7 +116,7 @@ public class MaterialServiceImpl implements MaterialService {
     public ResponseMessage findByPrincipalId(String principalId) {
         ResponseMessage responseMessage = ResponseMessage.defaultResponse();
         List<MaterialEntity> backList = materialMapper.findByPrincipalId(principalId);
-        if(backList.size() > 0){
+        if (backList.size() > 0) {
             responseMessage.setData(backList);
         }
         return responseMessage;
@@ -124,7 +126,7 @@ public class MaterialServiceImpl implements MaterialService {
     public ResponseMessage findByPidAndType(String principalId, String type) {
         ResponseMessage responseMessage = ResponseMessage.defaultResponse();
         List<MaterialEntity> backList = materialMapper.findByPidAndType(principalId, type);
-        if(backList.size() > 0){
+        if (backList.size() > 0) {
             responseMessage.setData(backList);
         }
         return responseMessage;
@@ -134,7 +136,7 @@ public class MaterialServiceImpl implements MaterialService {
     public ResponseMessage findByPidAndIdentify(String principalId, Integer fileIdentify) {
         ResponseMessage responseMessage = ResponseMessage.defaultResponse();
         List<MaterialEntity> backList = materialMapper.findByPidAndIdentify(principalId, fileIdentify);
-        if(backList.size() > 0){
+        if (backList.size() > 0) {
             responseMessage.setData(backList);
         }
         return responseMessage;
@@ -153,9 +155,9 @@ public class MaterialServiceImpl implements MaterialService {
         ResponseMessage responseMessage = ResponseMessage.defaultResponse();
         // 查询数据是否存在
         MaterialEntity entity = materialMapper.findByIdAndPid(id, principalId);
-        if(null == entity){
+        if (null == entity) {
             responseMessage.setStatus(ResponseMessage.FAILED).setMsg("资源不存在");
-        }else{
+        } else {
             // 先获取当前资源在改标识下的数据
             List<MaterialEntity> oldList = materialMapper.findByPidAndIdentify(principalId, identify);
 //            if(null != oldList){
@@ -186,27 +188,27 @@ public class MaterialServiceImpl implements MaterialService {
         List<MaterialEntity> fileList = Lists.newArrayList();
         List<MaterialEntity> titleImageList = Lists.newArrayList();
         List<MaterialEntity> spotImageList = Lists.newArrayList();
-        if(CollectionUtils.isNotEmpty(list)){
-            for(MaterialEntity entity:list){
-                if(entity.getFileType().toLowerCase().equals("image")){
+        if (CollectionUtils.isNotEmpty(list)) {
+            for (MaterialEntity entity : list) {
+                if (entity.getFileType().toLowerCase().equals("image")) {
                     imageList.add(entity);
                 }
-                if(entity.getFileType().toLowerCase().equals("audio")){
+                if (entity.getFileType().toLowerCase().equals("audio")) {
                     audioList.add(entity);
                 }
-                if(entity.getFileType().toLowerCase().equals("video")){
+                if (entity.getFileType().toLowerCase().equals("video")) {
                     videoList.add(entity);
                 }
-                if(entity.getFileType().toLowerCase().equals("file")){
+                if (entity.getFileType().toLowerCase().equals("file")) {
                     fileList.add(entity);
                 }
-                if(null != entity.getFileIdentify() && entity.getFileIdentify() == 1){
+                if (null != entity.getFileIdentify() && entity.getFileIdentify() == 1) {
                     titleImageList.add(entity);
                 }
-                if(null != entity.getFileIdentify() && entity.getFileIdentify() == 2){
+                if (null != entity.getFileIdentify() && entity.getFileIdentify() == 2) {
                     spotImageList.add(entity);
                 }
-                if(null != entity.getFileIdentify() && entity.getFileIdentify() == 3){
+                if (null != entity.getFileIdentify() && entity.getFileIdentify() == 3) {
                     titleImageList.add(entity);
                     spotImageList.add(entity);
                 }
