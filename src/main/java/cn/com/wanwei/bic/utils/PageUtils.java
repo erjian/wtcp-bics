@@ -1,5 +1,6 @@
 package cn.com.wanwei.bic.utils;
 
+import cn.com.wanwei.common.utils.RequestUtil;
 import cn.com.wanwei.persistence.mybatis.MybatisPageRequest;
 import com.github.pagehelper.PageHelper;
 import com.google.common.collect.Lists;
@@ -19,6 +20,8 @@ public class PageUtils {
     public static PageUtils getInstance() {
         return instance;
     }
+
+    public static final String TOKEN_KEY = "access_token";
 
     public MybatisPageRequest setPage(Integer page, Integer size, Map<String, Object> filter, Sort.Direction orderBy, String... sortFields){
         List<Sort.Order> sortList = Lists.newArrayList();
@@ -41,6 +44,12 @@ public class PageUtils {
         PageHelper.startPage(pageRequest.getPage(), pageRequest.getSize());
         PageHelper.orderBy(pageRequest.getOrders());
         return pageRequest;
+    }
+
+    public void setToken(Map<String, Object> filter){
+        if (filter.containsKey(TOKEN_KEY) && StringUtils.isNotEmpty(TOKEN_KEY)) {
+            RequestUtil.getRequest().setAttribute(TOKEN_KEY, filter.get(TOKEN_KEY));
+        }
     }
 
 }
