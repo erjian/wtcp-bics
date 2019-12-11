@@ -150,7 +150,7 @@ public class TrafficAgentController extends BaseController{
     }
 
     @ApiOperation(value = "获取交通枢纽信息", notes = "获取交通枢纽信息")
-    @GetMapping(value = "/getEnterList")
+    @GetMapping(value = "/getTrafficAgentList")
     @PreAuthorize("hasAuthority('trafficAgent:r')")
     @OperationLog(value = "wtcp-bics/获取交通枢纽信息", operate = "r", module = "交通枢纽管理")
     public ResponseMessage getTrafficAgentList() {

@@ -1,6 +1,4 @@
 package cn.com.wanwei.bic.mapper;
-
-import cn.com.wanwei.bic.entity.EntertainmentEntity;
 import cn.com.wanwei.bic.entity.TrafficAgentEntity;
 import cn.com.wanwei.common.annotation.DataScope;
 import com.github.pagehelper.Page;
@@ -26,14 +24,14 @@ public interface TrafficAgentMapper {
      * @return
      */
     @DataScope
-    Page<EntertainmentEntity> findByPage(Map<String, Object> filter);
+    Page<TrafficAgentEntity> findByPage(Map<String, Object> filter);
 
     /**
      * 标题重名校验
      * @param title
      * @return
      */
-    EntertainmentEntity checkTitle(String title);
+    TrafficAgentEntity checkTitle(String title);
 
     /**
      * 数据绑定
@@ -49,7 +47,7 @@ public interface TrafficAgentMapper {
      * @return
      */
     @DataScope
-    List<EntertainmentEntity> getTrafficAgentList();
+    List<TrafficAgentEntity> getTrafficAgentList();
 
     /**
      * 重置数据所有排序

@@ -1,7 +1,6 @@
 package cn.com.wanwei.bic.service.impl;
 
 import cn.com.wanwei.bic.entity.AuditLogEntity;
-import cn.com.wanwei.bic.entity.EntertainmentEntity;
 import cn.com.wanwei.bic.entity.TrafficAgentEntity;
 import cn.com.wanwei.bic.feign.CoderServiceFeign;
 import cn.com.wanwei.bic.mapper.TrafficAgentMapper;
@@ -47,8 +46,8 @@ public class TrafficAgentServiceImpl implements TrafficAgentService {
         EscapeCharUtils.escape(filter, "title");
         MybatisPageRequest pageRequest = PageUtils.getInstance().setPage(page, size, filter, Sort.Direction.DESC, "created_date", "updated_date");
         PageHelper.startPage(pageRequest.getPage(), pageRequest.getSize(), pageRequest.getOrders());
-        Page<EntertainmentEntity> entertainmentEntities = trafficAgentMapper.findByPage(filter);
-        PageInfo<EntertainmentEntity> pageInfo = new PageInfo<>(entertainmentEntities, pageRequest);
+        Page<TrafficAgentEntity> trafficAgentEntities = trafficAgentMapper.findByPage(filter);
+        PageInfo<TrafficAgentEntity> pageInfo = new PageInfo<>(trafficAgentEntities, pageRequest);
         return ResponseMessage.defaultResponse().setData(pageInfo);
     }
 
@@ -108,9 +107,9 @@ public class TrafficAgentServiceImpl implements TrafficAgentService {
     public ResponseMessage checkTitle(String id, String title) {
         ResponseMessage responseMessage = ResponseMessage.defaultResponse();
         if (StringUtils.isNotBlank(title)) {
-            EntertainmentEntity entertainmentEntity = trafficAgentMapper.checkTitle(title);
-            if (entertainmentEntity != null) {
-                if (!entertainmentEntity.getId().equals(id)) {
+            TrafficAgentEntity tEntity = trafficAgentMapper.checkTitle(title);
+            if (tEntity != null) {
+                if (!tEntity.getId().equals(id)) {
                     return responseMessage.setStatus(ResponseMessage.FAILED).setMsg("标题名称重复！");
                 }
             }
