@@ -10,6 +10,7 @@ import lombok.ToString;
 
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 
 @Data
@@ -67,6 +68,7 @@ public class TrafficAgentEntity extends BaseEntity{
     private Integer status;
 
     //冗余字段获取简拼
+    @Transient
     private String Jpin;
 
 }
