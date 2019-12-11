@@ -1,4 +1,4 @@
-package cn.com.wanwei.bic.controller.open;
+package cn.com.wanwei.bic.controller.internal;
 
 import cn.com.wanwei.bic.controller.BaseController;
 import cn.com.wanwei.bic.service.ScenicService;
@@ -29,8 +29,7 @@ public class OpenScenicController extends BaseController {
     @ApiOperation(value = "C端查询景区详情", notes = "C端根据ID查询景区详情")
     @ApiImplicitParam(name = "id", value = "景区ID", required = true)
     @RequestMapping(value = "/getOne/{id}", method = RequestMethod.GET)
-    @PreAuthorize("hasAuthority('scenic:v')")
-    @OperationLog(value = "wtcp-bics/根据id查询景区详情", operate = "v", module = "景区管理")
+    @OperationLog(value = "wtcp-bics/根据id查询景区详情", operate = "r", module = "景区管理")
     public ResponseMessage getOne(@PathVariable("id") String id) throws Exception {
         return scenicService.getOne(id);
     }

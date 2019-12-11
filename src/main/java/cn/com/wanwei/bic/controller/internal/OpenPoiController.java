@@ -4,7 +4,7 @@
  * @author 蔺健武
  * @date 2019年11月18日15:15:52
  */
-package cn.com.wanwei.bic.controller.open;
+package cn.com.wanwei.bic.controller.internal;
 
 import cn.com.wanwei.bic.controller.BaseController;
 import cn.com.wanwei.bic.service.PoiService;
@@ -40,8 +40,7 @@ public class OpenPoiController extends BaseController {
 	public ResponseMessage getList(@PathVariable("id") String principalId,String type) {
 		return poiService.getList(principalId, type);
 	}
-	
-	@SuppressWarnings({ "rawtypes", "unchecked" })
+
 	@ApiOperation(value = "C端根据ID获取POI详情", notes = "C端根据ID获取POI详情")
     @ApiImplicitParam(name = "id", value = "POI信息ID", required = true, dataType = "String")
 	@RequestMapping(value = "/getOne/{id}", method = RequestMethod.GET)

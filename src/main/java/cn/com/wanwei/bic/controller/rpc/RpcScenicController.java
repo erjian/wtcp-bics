@@ -10,6 +10,7 @@ import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.web.bind.annotation.*;
@@ -35,6 +36,8 @@ public class RpcScenicController extends BaseController {
         return scenicService.getScenicInfo(title.trim().toLowerCase());
     }
 
+    // ----------------------------------以下接口为自驾游提供-----------------------------------------
+
     @ApiOperation(value = "获取景区列表", notes = "根据区域获取景区列表(ids != null时，为不包含ids的信息)")
     @GetMapping(value = "/pageNew")
     @ApiImplicitParams({
@@ -45,7 +48,7 @@ public class RpcScenicController extends BaseController {
     @OperationLog(value = "wtcp-bics/获取景区列表", operate = "r", module = "景区管理")
     public ResponseMessage agritainmentsPageNew(@RequestParam(value = "page", defaultValue = "1") Integer page,
                                                 @RequestParam(value = "size", defaultValue = "10") Integer size,
-                                                HttpServletRequest request) throws Exception{
+                                                HttpServletRequest request) throws Exception {
         Map<String, Object> filter = RequestUtil.getParameters(request);
         return scenicService.scenicPageNew(page, size, filter);
     }
@@ -57,9 +60,41 @@ public class RpcScenicController extends BaseController {
     })
     @GetMapping("/pageByIds")
     public ResponseMessage findPageByIds(@RequestParam String ids,
-                                         @RequestParam(value = "status", required = false) String status) throws Exception{
-        return scenicService.findPageIds(ids,status);
+                                         @RequestParam(value = "status", required = false) String status) throws Exception {
+        return scenicService.findPageIds(ids, status);
     }
+
+
+    // ----------------------------------以下接口为导游导览提供-----------------------------------------
+
+    @ApiOperation(value = "获取景区分页列表", notes = "获取景区分页列表，排序方式及字段可指定，数据会根据用户数据权限过滤，调用时请将access_token作为参数传入")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "page", value = "页号", defaultValue = "0"),
+            @ApiImplicitParam(name = "size", value = "每页数量", defaultValue = "10")
+    })
+    @OperationLog(value = "wtcp-bic/获取景区分页列表", operate = "获取景区分页列表", module = "景区管理")
+    @GetMapping(value = "/page")
+    public ResponseMessage findByPage(@RequestParam(value = "page", defaultValue = "0") Integer page,
+                                      @RequestParam(value = "size", defaultValue = "10") Integer size,
+                                      HttpServletRequest request) throws Exception {
+        Map<String, Object> filter = RequestUtil.getParameters(request);
+        String tokenKey = "access_token";
+        if (filter.containsKey(tokenKey) && StringUtils.isNotEmpty(tokenKey)) {
+            request.setAttribute(tokenKey, filter.get(tokenKey));
+        }
+        // 只返回上线的数据
+        filter.put("status", 9);
+        return scenicService.findByPage(page, size, getCurrentUser(), filter);
+    }
+
+    @ApiOperation(value = "获取景区详细信息", notes = "获取景区详细信息")
+    @ApiImplicitParam(name = "id", value = "景区主键", required = true)
+    @OperationLog(value = "wtcp-bic/获取景区详细信息", operate = "详情", module = "景区管理")
+    @GetMapping(value = "/{id}")
+    public ResponseMessage detail(@PathVariable("id") String id) throws Exception {
+        return scenicService.getOne(id);
+    }
+
 
 }
 

@@ -1,4 +1,4 @@
-package cn.com.wanwei.bic.controller.open;
+package cn.com.wanwei.bic.controller.internal;
 
 import cn.com.wanwei.bic.controller.BaseController;
 import cn.com.wanwei.bic.service.DestinationService;
