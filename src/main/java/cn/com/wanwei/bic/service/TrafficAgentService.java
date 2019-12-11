@@ -5,7 +5,6 @@ import cn.com.wanwei.bic.entity.TrafficAgentEntity;
 import cn.com.wanwei.bic.model.DataBindModel;
 import cn.com.wanwei.common.model.ResponseMessage;
 import cn.com.wanwei.common.model.User;
-import org.springframework.stereotype.Service;
 
 import java.util.Map;
 

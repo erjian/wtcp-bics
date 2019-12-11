@@ -2,7 +2,6 @@ package cn.com.wanwei.bic.service.impl;
 
 import cn.com.wanwei.bic.entity.AuditLogEntity;
 import cn.com.wanwei.bic.entity.EntertainmentEntity;
-import cn.com.wanwei.bic.entity.EntertainmentTagsEntity;
 import cn.com.wanwei.bic.entity.TrafficAgentEntity;
 import cn.com.wanwei.bic.feign.CoderServiceFeign;
 import cn.com.wanwei.bic.mapper.TrafficAgentMapper;
@@ -19,7 +18,6 @@ import cn.com.wanwei.persistence.mybatis.utils.EscapeCharUtils;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
