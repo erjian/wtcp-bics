@@ -60,6 +60,7 @@ public interface EntertainmentMapper {
      * 获取休闲娱乐信息
      * @return
      */
+    @DataScope
     List<EntertainmentEntity> getEnterList();
 
     /**

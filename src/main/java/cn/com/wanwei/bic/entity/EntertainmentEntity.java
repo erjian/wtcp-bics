@@ -19,7 +19,7 @@ import java.util.List;
 @Table(name="t_bic_entertainment")
 @ApiModel(description="休闲娱乐管理")
 @ToString(callSuper = true)
-public class EntertainmentEntity extends commonEntity{
+public class EntertainmentEntity extends CommonEntity {
 
     @ApiModelProperty(value = "类型",required = true)
     private Integer type;

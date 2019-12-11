@@ -1,25 +1,31 @@
 package cn.com.wanwei.bic.entity;
 
+
+import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
 
-import javax.persistence.MappedSuperclass;
+import javax.persistence.Entity;
+import javax.persistence.Table;
+
 
 @Data
-@MappedSuperclass
-public class commonEntity extends BaseEntity{
+@EqualsAndHashCode(callSuper=false)
+@NoArgsConstructor
+@Entity
+@Table(name="t_bic_traffic_agent")
+@ApiModel(description="交通枢纽管理")
+@ToString(callSuper = true)
+public class TrafficAgentEntity extends BaseEntity{
 
     @ApiModelProperty(value = "编码" ,required = true)
     private String code;
 
     @ApiModelProperty(value = "标题" ,required = true)
     private String title;
-
-    @ApiModelProperty(value = "子标题" ,required = true)
-    private String subTitle;
-
-    @ApiModelProperty(value = "宣传语（二级标题）" )
-    private String slogan;
 
     @ApiModelProperty(value = "摘要" )
     private String summary;
@@ -50,4 +56,17 @@ public class commonEntity extends BaseEntity{
 
     @ApiModelProperty(value = "详细地址" ,required = true)
     private String address;
+
+    @ApiModelProperty(value = "交通类型" ,required = true)
+    private String type;
+
+    @ApiModelProperty(value = "组织机构编码")
+    private String deptCode;
+
+    @ApiModelProperty(value = "审核状态（0：待审，1：通过，9：上线）")
+    private Integer status;
+
+    //冗余字段获取简拼
+    private String Jpin;
+
 }

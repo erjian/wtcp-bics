@@ -69,5 +69,6 @@ public interface TravelAgentMapper {
      * @param searchValue 搜索参数
      * @return
      */
+    @DataScope
     List<TravelAgentEntity> findBySearchValue(String searchValue);
 }

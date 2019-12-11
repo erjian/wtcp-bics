@@ -59,5 +59,6 @@ public interface DriveCampMapper {
      *获取自驾营地信息
      * @return
      */
+    @DataScope
     List<DriveCampEntity> getDriveCampList();
 }

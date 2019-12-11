@@ -19,7 +19,7 @@ import java.util.Date;
 @Table(name="t_bic_drive_camp")
 @ApiModel(description="自驾营地管理")
 @ToString(callSuper = true)
-public class DriveCampEntity extends commonEntity{
+public class DriveCampEntity extends CommonEntity {
 
     @ApiModelProperty(value = "简拼",readOnly = true)
     private String simpleSpell;

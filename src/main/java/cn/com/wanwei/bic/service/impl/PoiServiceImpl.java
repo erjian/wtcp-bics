@@ -109,9 +109,6 @@ public class PoiServiceImpl implements PoiService {
                 poiEntity.setCreatedDate(new Date());
                 ScenicEntity entity = scenicMapper.selectByPrimaryKey(poiEntity.getPrincipalId());
                 poiEntity.setDeptCode(entity.getDeptCode());
-                if (StringUtil.isEmpty(poiEntity.getParentId()) && ("112005").equals(poiEntity.getType())) {
-                    poiEntity.setParentId("0");
-                }
                 poiMapper.insert(poiEntity);
                 //处理标签
                 if(CollectionUtils.isNotEmpty(poiModel.getTagsList())){

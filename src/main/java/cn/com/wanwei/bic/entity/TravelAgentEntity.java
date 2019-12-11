@@ -19,7 +19,7 @@ import java.util.Date;
 @Table(name="t_bic_travel_agent")
 @ApiModel(description="旅行社管理")
 @ToString(callSuper = true)
-public class TravelAgentEntity extends commonEntity{
+public class TravelAgentEntity extends CommonEntity {
 
     @ApiModelProperty(value = "简拼",readOnly = true)
     private String simpleSpell;

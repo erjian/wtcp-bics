@@ -17,7 +17,7 @@ import javax.persistence.Table;
 @Table(name="t_bic_poi")
 @ApiModel(description="poi管理")
 @ToString(callSuper = true)
-public class PoiEntity extends commonEntity {
+public class PoiEntity extends CommonEntity {
 
     @ApiModelProperty(value = "父ID（第一级poi时值为0）" ,required = true)
     private String parentId;

@@ -18,7 +18,7 @@ import javax.persistence.Transient;
 @Table(name="t_bic_periphery")
 @ApiModel(description="周边信息管理")
 @ToString(callSuper = true)
-public class PeripheryEntity extends commonEntity{
+public class PeripheryEntity extends CommonEntity {
 
     @ApiModelProperty(value = "类别（1：特色小吃，2：餐饮服务，3：小吃街，4：购物场所，5：特产）")
     private String category;
