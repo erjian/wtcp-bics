@@ -85,7 +85,7 @@ public class DestinationServiceTest {
     public void findByPageTest() throws Exception{
         System.out.println("---------------目的地信息分页列表---------------");
         Map<String,Object> filter = Maps.newHashMap();
-        ResponseMessage back = destinationService.findByPage(1,10,user,filter);
+        ResponseMessage back = destinationService.findByPage(1,10,filter);
         System.out.println("返回值：" +back.getData() );
         Assert.assertSame("返回值是1", true, back.getData()!=null?true:false);
     }

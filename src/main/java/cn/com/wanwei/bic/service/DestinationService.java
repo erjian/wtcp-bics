@@ -19,17 +19,18 @@ public interface DestinationService {
 
     /**
      * 获取目的地分页列表
-     * @param page  页数
-     * @param size  条数
-     * @param user  用户信息
-     * @param filter   查询参数
+     *
+     * @param page   页数
+     * @param size   条数
+     * @param filter 查询参数
      * @return
      * @throws Exception
      */
-    ResponseMessage findByPage(Integer page, Integer size, User user, Map<String, Object> filter) throws Exception;
+    ResponseMessage findByPage(Integer page, Integer size, Map<String, Object> filter) throws Exception;
 
     /**
      * 目的地基础信息新增
+     *
      * @param destinationModel
      * @param user
      * @return
@@ -38,7 +39,8 @@ public interface DestinationService {
 
     /**
      * 目的地基础信息编辑
-     * @param id  主键id
+     *
+     * @param id               主键id
      * @param destinationModel
      * @param user
      * @return
@@ -47,6 +49,7 @@ public interface DestinationService {
 
     /**
      * 根据目的地id查询目的地信息
+     *
      * @param id
      * @return
      */
@@ -54,6 +57,7 @@ public interface DestinationService {
 
     /**
      * 删除目的地信息
+     *
      * @param id
      * @return
      * @throws Exception
@@ -62,16 +66,18 @@ public interface DestinationService {
 
     /**
      * 目的地信息记录审核
+     *
      * @param id
      * @param username
      * @param type
      * @return
      * @throws Exception
      */
-    ResponseMessage changeStatus(String id,String username, int type) throws Exception;
+    ResponseMessage changeStatus(String id, String username, int type) throws Exception;
 
     /**
      * 校验目的地名称唯一性
+     *
      * @param id
      * @param regionFullCode
      * @return
@@ -80,6 +86,7 @@ public interface DestinationService {
 
     /**
      * 关联标签
+     *
      * @param tags
      * @param user
      * @return
@@ -88,6 +95,7 @@ public interface DestinationService {
 
     /**
      * 数据绑定
+     *
      * @param username
      * @param model
      * @return
@@ -96,6 +104,7 @@ public interface DestinationService {
 
     /**
      * 权重修改
+     *
      * @param weightModel
      * @param currentUser
      * @return
@@ -104,11 +113,12 @@ public interface DestinationService {
 
     /**
      * 根据areaCode或者id获取目的地详情
+     *
      * @param areaCode
      * @param id
      * @return
      */
-    ResponseMessage getDestinationDetail(String areaCode,String id);
+    ResponseMessage getDestinationDetail(String areaCode, String id);
 
     /**
      * 目的地基础信息管理分页列表

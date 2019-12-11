@@ -17,6 +17,7 @@ import cn.com.wanwei.common.model.ResponseMessage;
 import cn.com.wanwei.common.model.User;
 import cn.com.wanwei.persistence.mybatis.MybatisPageRequest;
 import cn.com.wanwei.persistence.mybatis.PageInfo;
+import cn.com.wanwei.persistence.mybatis.utils.EscapeCharUtils;
 import com.github.pagehelper.Page;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
@@ -62,13 +63,13 @@ public class DestinationServiceImpl implements DestinationService {
      * 查询目的地分页列表数据
      * @param page  页数
      * @param size  条数
-     * @param user  用户信息
      * @param filter   查询参数
      * @return
      * @throws Exception
      */
     @Override
-    public ResponseMessage findByPage(Integer page, Integer size, User user, Map<String, Object> filter) throws Exception {
+    public ResponseMessage findByPage(Integer page, Integer size, Map<String, Object> filter) throws Exception {
+        EscapeCharUtils.escape(filter, "regionFullName");
         MybatisPageRequest pageRequest = PageUtils.getInstance().setPage(page, size, filter, Sort.Direction.DESC, "created_date", "updated_date");
         Page<DestinationEntity> DestinationEntities = destinationMapper.findByPage(filter);
         PageInfo<DestinationEntity> pageInfo = new PageInfo<>(DestinationEntities, pageRequest);

@@ -52,8 +52,7 @@ public class DestinationController extends BaseController {
                                       @RequestParam(value = "size", defaultValue = "10") Integer size,
                                       HttpServletRequest request) throws Exception {
         Map<String, Object> filter = RequestUtil.getParameters(request);
-        EscapeCharUtils.escape(filter, "regionFullName");
-        return destinationService.findByPage(page,size,getCurrentUser(),filter);
+        return destinationService.findByPage(page, size, filter);
     }
 
     @ApiOperation(value = "目的地基础信息新增", notes = "目的地基础信息新增")
@@ -65,7 +64,7 @@ public class DestinationController extends BaseController {
         if (bindingResult.hasErrors()) {
             return ResponseMessage.validFailResponse().setMsg(bindingResult.getAllErrors());
         }
-        return destinationService.save(destinationModel,getCurrentUser());
+        return destinationService.save(destinationModel, getCurrentUser());
     }
 
     @ApiOperation(value = "目的地基础信息编辑", notes = "目的地基础信息编辑")
@@ -77,7 +76,7 @@ public class DestinationController extends BaseController {
         if (bindingResult.hasErrors()) {
             return ResponseMessage.validFailResponse().setMsg(bindingResult.getAllErrors());
         }
-        return destinationService.edit(id,destinationModel,getCurrentUser());
+        return destinationService.edit(id, destinationModel, getCurrentUser());
     }
 
     @ApiOperation(value = "查询目的地基础信息详情", notes = "根据ID查询目的地基础信息详情")
@@ -85,7 +84,7 @@ public class DestinationController extends BaseController {
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     @PreAuthorize("hasAuthority('destination:v')")
     @OperationLog(value = "wtcp-bics/根据id查询目的地基础信息详情", operate = "v", module = "目的地基础信息管理")
-    public ResponseMessage detail(@PathVariable("id") String id) throws Exception{
+    public ResponseMessage detail(@PathVariable("id") String id) throws Exception {
         return destinationService.selectByPrimaryKey(id);
     }
 
@@ -105,7 +104,7 @@ public class DestinationController extends BaseController {
     @RequestMapping(value = "/changeStatus/{id}", method = RequestMethod.PUT)
     @PreAuthorize("hasAuthority('destination:a')")
     public ResponseMessage changeStatus(@PathVariable("id") String id) throws Exception {
-        return destinationService.changeStatus(id,getCurrentUser().getUsername(),0);
+        return destinationService.changeStatus(id, getCurrentUser().getUsername(), 0);
     }
 
     @ApiOperation(value = "目的地信息上线", notes = "目的地信息上线")
@@ -115,7 +114,7 @@ public class DestinationController extends BaseController {
     @RequestMapping(value = "/changeIssue/{id}", method = RequestMethod.PUT)
     @PreAuthorize("hasAuthority('destination:s')")
     public ResponseMessage changeIssue(@PathVariable("id") String id) throws Exception {
-        return destinationService.changeStatus(id,getCurrentUser().getUsername(),1);
+        return destinationService.changeStatus(id, getCurrentUser().getUsername(), 1);
     }
 
     @ApiOperation(value = "目的地名称重名校验", notes = "目的地名称重名校验")
@@ -124,9 +123,9 @@ public class DestinationController extends BaseController {
             @ApiImplicitParam(name = "regionFullName", value = "目的地名称")
     })
     @GetMapping(value = "/checkRegionFullName")
-    public ResponseMessage checkRegionFullName(@RequestParam(value = "id",required = false) String id,
-                                      @RequestParam(value = "regionFullCode",required = false) String regionFullCode){
-        return destinationService.checkRegionFullName(id,regionFullCode);
+    public ResponseMessage checkRegionFullName(@RequestParam(value = "id", required = false) String id,
+                                               @RequestParam(value = "regionFullCode", required = false) String regionFullCode) {
+        return destinationService.checkRegionFullName(id, regionFullCode);
     }
 
     @ApiOperation(value = "目的地管理关联标签", notes = "目的地管理关联标签")
@@ -138,7 +137,7 @@ public class DestinationController extends BaseController {
         if (bindingResult.hasErrors()) {
             return ResponseMessage.validFailResponse().setMsg(bindingResult.getAllErrors());
         }
-        return destinationService.relateTags(tags,getCurrentUser());
+        return destinationService.relateTags(tags, getCurrentUser());
     }
 
     @PreAuthorize("hasAuthority('destination:b')")
@@ -149,7 +148,7 @@ public class DestinationController extends BaseController {
         if (bindingResult.hasErrors()) {
             return ResponseMessage.validFailResponse().setMsg(bindingResult.getAllErrors());
         }
-        return destinationService.dataBind(getCurrentUser().getUsername(),model);
+        return destinationService.dataBind(getCurrentUser().getUsername(), model);
     }
 
     @PreAuthorize("hasAuthority('destination:w')")
@@ -159,9 +158,9 @@ public class DestinationController extends BaseController {
     @PutMapping(value = "/weight")
     @OperationLog(value = "wtcp-bics/权重更改", operate = "u", module = "目的地管理")
     public ResponseMessage changeWeight(@RequestBody @Valid WeightModel weightModel, BindingResult bindingResult) throws Exception {
-        if(bindingResult.hasErrors()){
+        if (bindingResult.hasErrors()) {
             return ResponseMessage.validFailResponse().setMsg(bindingResult.getAllErrors());
         }
-        return commonService.changeWeight(weightModel,getCurrentUser(),DestinationEntity.class);
+        return commonService.changeWeight(weightModel, getCurrentUser(), DestinationEntity.class);
     }
 }
