@@ -1,6 +1,7 @@
 package cn.com.wanwei.bic.controller.rpc;
 
 import cn.com.wanwei.bic.service.PoiService;
+import cn.com.wanwei.bic.utils.PageUtils;
 import cn.com.wanwei.common.log.annotation.OperationLog;
 import cn.com.wanwei.common.model.ResponseMessage;
 import cn.com.wanwei.common.utils.RequestUtil;
@@ -32,10 +33,7 @@ public class RpcPoiController {
                                       @RequestParam(value = "size", defaultValue = "10") Integer size,
                                       HttpServletRequest request) throws Exception {
         Map<String, Object> filter = RequestUtil.getParameters(request);
-        String tokenKey = "access_token";
-        if (filter.containsKey(tokenKey) && StringUtils.isNotEmpty(tokenKey)) {
-            request.setAttribute(tokenKey, filter.get(tokenKey));
-        }
+        PageUtils.getInstance().setToken(filter);
         // 只返回上线的数据
         filter.put("status", 9);
         return poiService.findByPage(page, size, filter);
