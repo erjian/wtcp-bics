@@ -133,4 +133,5 @@
     <include refid="Base_Column_List"/>
     from t_bic_traffic_agent
   </select>
+
 </mapper>

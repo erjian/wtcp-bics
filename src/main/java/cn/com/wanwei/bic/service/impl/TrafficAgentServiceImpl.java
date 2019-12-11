@@ -157,4 +157,5 @@ public class TrafficAgentServiceImpl implements TrafficAgentService {
     public ResponseMessage getTrafficAgentList() {
         return ResponseMessage.defaultResponse().setData(trafficAgentMapper.getTrafficAgentList());
     }
+
 }
