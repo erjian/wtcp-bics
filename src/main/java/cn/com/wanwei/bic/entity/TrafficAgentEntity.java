@@ -69,6 +69,6 @@ public class TrafficAgentEntity extends BaseEntity{
 
     //冗余字段获取简拼
     @Transient
-    private String Jpin;
+    private String jpin;
 
 }
