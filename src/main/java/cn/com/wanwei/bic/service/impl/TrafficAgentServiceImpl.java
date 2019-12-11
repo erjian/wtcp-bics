@@ -69,7 +69,7 @@ public class TrafficAgentServiceImpl implements TrafficAgentService {
             String id = UUIDUtils.getInstance().getId();
             trafficAgentEntity.setId(id);
             trafficAgentEntity.setCode(responseMessageGetCode.getData().toString());
-            trafficAgentEntity.setStatus(0);
+            trafficAgentEntity.setStatus(1);
             trafficAgentEntity.setWeight(0);
             trafficAgentEntity.setCreatedUser(user.getUsername());
             trafficAgentEntity.setCreatedDate(new Date());
@@ -87,7 +87,7 @@ public class TrafficAgentServiceImpl implements TrafficAgentService {
             trafficAgentEntity.setId(tEntity.getId());
             trafficAgentEntity.setCreatedUser(tEntity.getCreatedUser());
             trafficAgentEntity.setCreatedDate(tEntity.getCreatedDate());
-            trafficAgentEntity.setStatus(0);
+            trafficAgentEntity.setStatus(1);
             trafficAgentEntity.setCode(tEntity.getCode());
             trafficAgentEntity.setDeptCode(tEntity.getDeptCode());
             trafficAgentEntity.setUpdatedUser(user.getUsername());
