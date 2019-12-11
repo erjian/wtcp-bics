@@ -133,5 +133,16 @@
     <include refid="Base_Column_List"/>
     from t_bic_traffic_agent
   </select>
-
+<!--交通枢纽列表-->
+  <select id="findBySearchValue" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from t_bic_traffic_agent
+    <where>
+      <if test="searchValue != null and searchValue !='' ">
+        <bind name="searchValue" value="'%' + searchValue + '%'" ></bind>
+        and (title like #{searchValue} or full_spell like #{searchValue} or simple_spell like #{searchValue})
+      </if>
+    </where>
+  </select>
 </mapper>

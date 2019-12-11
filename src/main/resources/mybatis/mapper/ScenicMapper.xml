@@ -304,4 +304,18 @@
             </if>
         </where>
     </select>
+    <select id="findBySearchValue" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        ,
+        <include refid="Blob_Column_List"/>
+        from t_bic_scenic
+        <where>
+            category = #{type,jdbcType=VARCHAR}
+            <if test="searchValue != null and searchValue != ''">
+                <bind name="searchValue" value="'%'+searchValue+'%'"></bind>
+                and (title like #{searchValue} or title_qp like #{searchValue} or title_jp like #{searchValue})
+            </if>
+        </where>
+    </select>
 </mapper>

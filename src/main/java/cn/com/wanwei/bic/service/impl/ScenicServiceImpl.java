@@ -276,10 +276,10 @@ public class ScenicServiceImpl implements ScenicService {
     }
 
     @Override
-    public ResponseMessage findBySearchValue(String searchValue) {
+    public ResponseMessage findBySearchValue(String type,String searchValue) {
         ResponseMessage responseMessage = ResponseMessage.defaultResponse();
         List<Map<String, Object>> data = new ArrayList<>();
-        List<ScenicEntity> list = scenicMapper.getScenicInfo(searchValue);
+        List<ScenicEntity> list = scenicMapper.findBySearchValue(type,searchValue);
         if (!list.isEmpty()) {
             for (ScenicEntity entity : list) {
                 Map<String, Object> map = new HashMap<>();

@@ -59,4 +59,11 @@ public interface TrafficAgentMapper {
      * 获取最大的权重
      */
     Integer maxWeight();
+
+    /**
+     * 交通枢纽列表
+     * @param searchValue 搜索条件（标题  or 全拼  or 简拼）
+     * @return
+     */
+    List<TrafficAgentEntity> findBySearchValue(String searchValue);
 }

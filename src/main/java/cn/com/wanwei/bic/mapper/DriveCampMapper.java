@@ -61,4 +61,11 @@ public interface DriveCampMapper {
      */
     @DataScope
     List<DriveCampEntity> getDriveCampList();
+
+    /**
+     * 获取自驾营地列表
+     * @param searchValue 搜索条件
+     * @return
+     */
+    List<DriveCampEntity> findBySearchValue(String searchValue);
 }

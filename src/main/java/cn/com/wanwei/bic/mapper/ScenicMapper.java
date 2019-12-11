@@ -94,13 +94,6 @@ public interface ScenicMapper {
     int commonUpdateWeight(@Param(value = "id") String id, @Param(value = "weight") int weight, @Param(value = "updatedUser") String updatedUser, @Param(value = "updatedDate") Date updatedDate, @Param(value = "tableName") String tableName);
 
     /**
-     * 景区列表
-     * @param searchValue 搜索条件
-     * @return
-     */
-    List<Map<String,Object>> findBySearchValue(String searchValue);
-
-    /**
      * 根据区域获取景区列表
      * @param filter 参数
      * @return 景区列表
@@ -114,4 +107,12 @@ public interface ScenicMapper {
      * @return
      */
     List<ScenicEntity> findPageIds(List<String> idsList, String status);
+
+    /**
+     * 景区列表
+     * @param type code
+     * @param searchValue 搜索条件（标题 or 全拼  or 简拼）
+     * @return 普通景区  or 旅游示范村
+     */
+    List<ScenicEntity> findBySearchValue(@Param("type")String type, @Param("searchValue")String searchValue);
 }

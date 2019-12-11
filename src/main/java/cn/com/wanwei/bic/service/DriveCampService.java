@@ -110,4 +110,11 @@ public interface DriveCampService {
      * @return
      */
     ResponseMessage getDriveCampInfo(String id);
+
+    /**
+     * 自驾营地列表
+     * @param searchValue 搜索条件（标题 or 简拼 or 全拼）
+     * @return
+     */
+    ResponseMessage findBySearchValue(String searchValue);
 }

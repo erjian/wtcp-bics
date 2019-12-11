@@ -54,8 +54,8 @@ public class PeripheryServiceImpl implements PeripheryService {
     @Autowired
     private MaterialService materialService;
 
-    private static final String FOOD_TYPE = "3005";            //  餐饮
-    private static final String SHOPPING_TYPE = "3007";     // 购物
+    private static final String FOOD_TYPE = "125006002";            //  餐饮
+    private static final String SHOPPING_TYPE = "125006004";     // 购物
 
     @Override
     public ResponseMessage findByPage(Integer page, Integer size, Map<String, Object> filter) {
@@ -266,12 +266,7 @@ public class PeripheryServiceImpl implements PeripheryService {
     @Override
     public ResponseMessage findBySearchValue(String type, String searchValue) {
         ResponseMessage responseMessage = ResponseMessage.defaultResponse();
-        List<PeripheryEntity> list = null;
-        if (FOOD_TYPE.equals(type)) {
-            list = peripheryMapper.findBySearchValue("113002", searchValue);
-        } else if (SHOPPING_TYPE.equals(type)) {
-            list = peripheryMapper.findBySearchValue("113004", searchValue);
-        }
+        List<PeripheryEntity> list = peripheryMapper.findBySearchValue(type,searchValue);
         List<Map<String, Object>> data = new ArrayList<>();
         if (list != null && !list.isEmpty()) {
             for (PeripheryEntity entity : list) {

@@ -82,4 +82,11 @@ public interface TrafficAgentService {
      * @return
      */
     ResponseMessage getTrafficAgentList();
+
+    /**
+     * 交通枢纽列表
+     * @param searchValue 搜索条件（标题  or 全拼  or 简拼）
+     * @return
+     */
+    ResponseMessage findBySearchValue(String searchValue);
 }

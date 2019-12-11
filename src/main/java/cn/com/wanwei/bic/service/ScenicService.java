@@ -132,10 +132,11 @@ public interface ScenicService {
 
 	/**
 	 * 获取景区列表
+	 * @param type code
 	 * @param searchValue 搜索条件
 	 * @return
 	 */
-	ResponseMessage findBySearchValue(String searchValue);
+	ResponseMessage findBySearchValue(String type,String searchValue);
 
 	/**
 	 * 根据区域编码获取景区列表
