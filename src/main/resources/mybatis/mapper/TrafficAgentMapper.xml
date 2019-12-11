@@ -46,7 +46,7 @@
       latitude, region_full_name, region_full_code, 
       region, address, created_date, 
       created_user, updated_date, updated_user, 
-      dept_code, status, content,type,content,simple_spell,full_spell
+      dept_code, status, content,type,simple_spell,full_spell
       )
     values (#{id,jdbcType=VARCHAR},#{title,jdbcType=VARCHAR}, #{code,jdbcType=VARCHAR}, #{summary,jdbcType=VARCHAR},
       #{description,jdbcType=VARCHAR}, #{weight,jdbcType=INTEGER}, #{longitude,jdbcType=DOUBLE}, 
