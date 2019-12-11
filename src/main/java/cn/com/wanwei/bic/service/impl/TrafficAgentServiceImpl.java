@@ -8,6 +8,7 @@ import cn.com.wanwei.bic.model.DataBindModel;
 import cn.com.wanwei.bic.service.AuditLogService;
 import cn.com.wanwei.bic.service.TrafficAgentService;
 import cn.com.wanwei.bic.utils.PageUtils;
+import cn.com.wanwei.bic.utils.PinyinUtil;
 import cn.com.wanwei.bic.utils.UUIDUtils;
 import cn.com.wanwei.common.model.ResponseMessage;
 import cn.com.wanwei.common.model.User;
@@ -67,6 +68,8 @@ public class TrafficAgentServiceImpl implements TrafficAgentService {
         if (responseMessageGetCode.getStatus() == 1 && responseMessageGetCode.getData() != null) {
             String id = UUIDUtils.getInstance().getId();
             trafficAgentEntity.setId(id);
+            trafficAgentEntity.setFullSpell(PinyinUtil.getPingYin(trafficAgentEntity.getTitle()));
+            trafficAgentEntity.setSimpleSpell(PinyinUtil.getPinYinHeadChar(trafficAgentEntity.getTitle()));
             trafficAgentEntity.setCode(responseMessageGetCode.getData().toString());
             trafficAgentEntity.setStatus(1);
             trafficAgentEntity.setWeight(0);
@@ -84,6 +87,8 @@ public class TrafficAgentServiceImpl implements TrafficAgentService {
         TrafficAgentEntity tEntity = trafficAgentMapper.selectByPrimaryKey(id);
         if (tEntity != null) {
             trafficAgentEntity.setId(tEntity.getId());
+            trafficAgentEntity.setFullSpell(PinyinUtil.getPingYin(trafficAgentEntity.getTitle()));
+            trafficAgentEntity.setSimpleSpell(PinyinUtil.getPinYinHeadChar(trafficAgentEntity.getTitle()));
             trafficAgentEntity.setCreatedUser(tEntity.getCreatedUser());
             trafficAgentEntity.setCreatedDate(tEntity.getCreatedDate());
             trafficAgentEntity.setStatus(1);

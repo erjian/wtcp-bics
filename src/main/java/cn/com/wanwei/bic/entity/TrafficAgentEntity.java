@@ -67,7 +67,13 @@ public class TrafficAgentEntity extends BaseEntity{
     @ApiModelProperty(value = "审核状态（0：待审，1：通过，9：上线）")
     private Integer status;
 
-    //冗余字段获取简拼
+    @ApiModelProperty(value = "简拼",readOnly = true)
+    private String simpleSpell;
+
+    @ApiModelProperty(value = "全拼",readOnly = true)
+    private String fullSpell;
+
+    //冗余字段获取简拼（用来生成code）
     @Transient
     private String jpin;
 
