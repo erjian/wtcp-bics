@@ -34,6 +34,9 @@ public class PoiEntity extends CommonEntity {
     @ApiModelProperty(value = "类型（1：厕所，2：停车场，3：出入口，4：游客中心，5：景点）" ,required = true)
     private String type;
 
+    @ApiModelProperty(value = "数量")
+    private Integer num;
+
     @ApiModelProperty(value = "景区名称")
     private String scenicName;
 
