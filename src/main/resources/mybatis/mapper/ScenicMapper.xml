@@ -81,8 +81,8 @@
       #{slogan,jdbcType=VARCHAR}, #{summary,jdbcType=VARCHAR}, #{description,jdbcType=VARCHAR}, 
       #{weight,jdbcType=REAL}, #{longitude,jdbcType=DOUBLE}, #{latitude,jdbcType=DOUBLE}, 
       #{regionFullName,jdbcType=VARCHAR}, #{regionFullCode,jdbcType=VARCHAR}, #{region,jdbcType=VARCHAR}, 
-      #{address,jdbcType=VARCHAR}, #{level,jdbcType=INTEGER}, #{area,jdbcType=DOUBLE}, 
-      #{category,jdbcType=INTEGER}, #{panoramicUrl,jdbcType=VARCHAR}, #{status,jdbcType=BIT}, 
+      #{address,jdbcType=VARCHAR}, #{level,jdbcType=VARCHAR}, #{area,jdbcType=DOUBLE},
+      #{category,jdbcType=VARCHAR}, #{panoramicUrl,jdbcType=VARCHAR}, #{status,jdbcType=BIT},
       #{playtime,jdbcType=REAL}, #{score,jdbcType=REAL}, #{deptCode,jdbcType=VARCHAR}, 
       #{createdUser,jdbcType=VARCHAR}, #{createdDate,jdbcType=TIMESTAMP}, #{updatedUser,jdbcType=VARCHAR}, 
       #{updatedDate,jdbcType=TIMESTAMP}, #{content,jdbcType=LONGVARCHAR})
@@ -104,9 +104,9 @@
       region_full_code = #{regionFullCode,jdbcType=VARCHAR},
       region = #{region,jdbcType=VARCHAR},
       address = #{address,jdbcType=VARCHAR},
-      level = #{level,jdbcType=INTEGER},
+      level = #{level,jdbcType=VARCHAR},
       area = #{area,jdbcType=DOUBLE},
-      category = #{category,jdbcType=INTEGER},
+      category = #{category,jdbcType=VARCHAR},
       panoramic_url = #{panoramicUrl,jdbcType=VARCHAR},
       status = #{status,jdbcType=BIT},
       playtime = #{playtime,jdbcType=REAL},
@@ -136,9 +136,9 @@
       region_full_code = #{regionFullCode,jdbcType=VARCHAR},
       region = #{region,jdbcType=VARCHAR},
       address = #{address,jdbcType=VARCHAR},
-      level = #{level,jdbcType=INTEGER},
+      level = #{level,jdbcType=VARCHAR},
       area = #{area,jdbcType=DOUBLE},
-      category = #{category,jdbcType=INTEGER},
+      category = #{category,jdbcType=VARCHAR},
       panoramic_url = #{panoramicUrl,jdbcType=VARCHAR},
       status = #{status,jdbcType=BIT},
       playtime = #{playtime,jdbcType=REAL},
@@ -170,10 +170,10 @@
                 and region_full_name like #{areaName}
             </if>
             <if test="level != null">
-                and level = #{level,jdbcType=INTEGER}
+                and level = #{level,jdbcType=VARCHAR}
             </if>
             <if test="category != null">
-                and category = #{category,jdbcType=INTEGER}
+                and category = #{category,jdbcType=VARCHAR}
             </if>
             <if test="areaCode != null and areaCode!='' ">
                 <bind name="areaCode" value="areaCode + '%'"></bind>

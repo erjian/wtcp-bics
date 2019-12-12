@@ -51,7 +51,7 @@ public class ExtendEntity extends BaseEntity{
     private Float weight;
 
     @ApiModelProperty(value = "类型")
-    private Integer type;
+    private String type;
 
     @ApiModelProperty(value = "审核状态")
     private Integer status;

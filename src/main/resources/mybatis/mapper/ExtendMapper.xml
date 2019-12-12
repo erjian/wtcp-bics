@@ -11,7 +11,7 @@
     <result column="summary" jdbcType="VARCHAR" property="summary" />
     <result column="description" jdbcType="VARCHAR" property="description" />
     <result column="weight" jdbcType="REAL" property="weight" />
-    <result column="type" jdbcType="INTEGER" property="type" />
+    <result column="type" jdbcType="VARCHAR" property="type" />
     <result column="status" jdbcType="INTEGER" property="status" />
     <result column="price" jdbcType="REAL" property="price" />
     <result column="created_user" jdbcType="VARCHAR" property="createdUser" />
@@ -44,7 +44,7 @@
       content,dept_code)
     values (#{id,jdbcType=VARCHAR}, #{principalId,jdbcType=VARCHAR}, #{code,jdbcType=VARCHAR}, #{title,jdbcType=VARCHAR},
       #{subTitle,jdbcType=VARCHAR}, #{slogan,jdbcType=VARCHAR}, #{summary,jdbcType=VARCHAR}, 
-      #{description,jdbcType=VARCHAR}, #{weight,jdbcType=REAL}, #{type,jdbcType=INTEGER}, 
+      #{description,jdbcType=VARCHAR}, #{weight,jdbcType=REAL}, #{type,jdbcType=VARCHAR},
       #{status,jdbcType=INTEGER}, #{price,jdbcType=REAL}, #{createdUser,jdbcType=VARCHAR}, 
       #{createdDate,jdbcType=TIMESTAMP}, #{updatedUser,jdbcType=VARCHAR}, #{updatedDate,jdbcType=TIMESTAMP}, 
       #{content,jdbcType=LONGVARCHAR},#{deptCode,jdbcType=VARCHAR})
@@ -59,7 +59,7 @@
       summary = #{summary,jdbcType=VARCHAR},
       description = #{description,jdbcType=VARCHAR},
       weight = #{weight,jdbcType=REAL},
-      type = #{type,jdbcType=INTEGER},
+      type = #{type,jdbcType=VARCHAR},
       status = #{status,jdbcType=INTEGER},
       price = #{price,jdbcType=REAL},
       created_user = #{createdUser,jdbcType=VARCHAR},

@@ -59,7 +59,7 @@ public class ExtendServiceTest {
         extendEntity.setSubTitle("sdgfisoadfiosda");
         extendEntity.setSummary("hdshgfapsdfpuia");
         extendEntity.setTitle("title");
-        extendEntity.setType(1);
+        extendEntity.setType("1");
         extendEntity.setWeight(Float.valueOf("4.00"));
         extendEntity.setCreatedUser("zhanglei");
         extendEntity.setCreatedDate(new Date());

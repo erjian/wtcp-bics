@@ -3,7 +3,7 @@
 <mapper namespace="cn.com.wanwei.bic.mapper.EntertainmentMapper">
     <resultMap id="BaseResultMap" type="cn.com.wanwei.bic.entity.EntertainmentEntity">
         <id column="id" jdbcType="VARCHAR" property="id"/>
-        <result column="type" jdbcType="INTEGER" property="type"/>
+        <result column="type" jdbcType="VARCHAR" property="type"/>
         <result column="code" jdbcType="VARCHAR" property="code"/>
         <result column="title" jdbcType="VARCHAR" property="title"/>
         <result column="sub_title" jdbcType="VARCHAR" property="subTitle"/>
@@ -55,7 +55,7 @@
       num, dept_code, created_user, 
       created_date, updated_user, updated_date, 
       content)
-    values (#{id,jdbcType=VARCHAR},#{type,jdbcType=INTEGER}, #{code,jdbcType=VARCHAR}, #{title,jdbcType=VARCHAR},
+    values (#{id,jdbcType=VARCHAR},#{type,jdbcType=VARCHAR}, #{code,jdbcType=VARCHAR}, #{title,jdbcType=VARCHAR},
       #{subTitle,jdbcType=VARCHAR}, #{slogan,jdbcType=VARCHAR}, #{summary,jdbcType=VARCHAR}, 
       #{description,jdbcType=VARCHAR}, #{weight,jdbcType=INTEGER}, #{longitude,jdbcType=DOUBLE},
       #{latitude,jdbcType=DOUBLE}, #{regionFullName,jdbcType=VARCHAR}, #{regionFullCode,jdbcType=VARCHAR}, 
@@ -67,7 +67,7 @@
   </insert>
     <update id="updateByPrimaryKey" parameterType="cn.com.wanwei.bic.entity.EntertainmentEntity">
     update t_bic_entertainment
-    set `type` = #{type,jdbcType=INTEGER},
+    set `type` = #{type,jdbcType=VARCHAR},
       code = #{code,jdbcType=VARCHAR},
       title = #{title,jdbcType=VARCHAR},
       sub_title = #{subTitle,jdbcType=VARCHAR},
@@ -100,7 +100,7 @@
         from t_bic_entertainment
         <where>
             <if test="type!=null and type!='' ">
-                and `type` = #{type,jdbcType=INTEGER}
+                and `type` = #{type,jdbcType=VARCHAR}
             </if>
             <if test="title!=null and title!='' ">
                 <bind name="title" value="'%'+title + '%'"></bind>

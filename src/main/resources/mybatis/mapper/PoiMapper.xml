@@ -58,7 +58,7 @@
       #{regionFullCode,jdbcType=VARCHAR}, #{region,jdbcType=VARCHAR}, #{address,jdbcType=VARCHAR}, 
       #{status,jdbcType=INTEGER}, #{deptCode,jdbcType=VARCHAR}, #{createdUser,jdbcType=VARCHAR},
       #{createdDate,jdbcType=TIMESTAMP}, #{updatedUser,jdbcType=VARCHAR}, #{updatedDate,jdbcType=TIMESTAMP}, 
-      #{content,jdbcType=LONGVARCHAR},#{type,jdbcType=INTEGER})
+      #{content,jdbcType=LONGVARCHAR},#{type,jdbcType=VARCHAR})
   </insert>
     <update id="updateByPrimaryKey" parameterType="cn.com.wanwei.bic.entity.PoiEntity">
     update t_bic_poi
@@ -84,7 +84,7 @@
       updated_user = #{updatedUser,jdbcType=VARCHAR},
       updated_date = #{updatedDate,jdbcType=TIMESTAMP},
       content = #{content,jdbcType=LONGVARCHAR},
-      `type`=#{type,jdbcType=INTEGER}
+      `type`=#{type,jdbcType=VARCHAR}
     where id = #{id,jdbcType=VARCHAR}
   </update>
     <update id="dataBind">
