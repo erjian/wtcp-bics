@@ -3,7 +3,6 @@
 <mapper namespace="cn.com.wanwei.bic.mapper.EntertainmentMapper">
     <resultMap id="BaseResultMap" type="cn.com.wanwei.bic.entity.EntertainmentEntity">
         <id column="id" jdbcType="VARCHAR" property="id"/>
-        <result column="type" jdbcType="VARCHAR" property="type"/>
         <result column="code" jdbcType="VARCHAR" property="code"/>
         <result column="title" jdbcType="VARCHAR" property="title"/>
         <result column="sub_title" jdbcType="VARCHAR" property="subTitle"/>
@@ -30,7 +29,7 @@
         <result column="content" jdbcType="LONGVARCHAR" property="content"/>
     </resultMap>
     <sql id="Base_Column_List">
-    id, `type`, code, title, sub_title, slogan, summary, description, weight, longitude,
+    id, code, title, sub_title, slogan, summary, description, weight, longitude,
     latitude, region_full_name, region_full_code, region, address, status, scenic_id, 
     within_scenic, within_park, num, dept_code, created_user, created_date, updated_user, 
     updated_date,content
@@ -46,7 +45,7 @@
     where id = #{id,jdbcType=VARCHAR}
   </delete>
     <insert id="insert" parameterType="cn.com.wanwei.bic.entity.EntertainmentEntity">
-    insert into t_bic_entertainment (id,`type`, code, title,
+    insert into t_bic_entertainment (id, code, title,
       sub_title, slogan, summary, 
       description, weight, longitude, 
       latitude, region_full_name, region_full_code, 
@@ -55,7 +54,7 @@
       num, dept_code, created_user, 
       created_date, updated_user, updated_date, 
       content)
-    values (#{id,jdbcType=VARCHAR},#{type,jdbcType=VARCHAR}, #{code,jdbcType=VARCHAR}, #{title,jdbcType=VARCHAR},
+    values (#{id,jdbcType=VARCHAR}, #{code,jdbcType=VARCHAR}, #{title,jdbcType=VARCHAR},
       #{subTitle,jdbcType=VARCHAR}, #{slogan,jdbcType=VARCHAR}, #{summary,jdbcType=VARCHAR}, 
       #{description,jdbcType=VARCHAR}, #{weight,jdbcType=INTEGER}, #{longitude,jdbcType=DOUBLE},
       #{latitude,jdbcType=DOUBLE}, #{regionFullName,jdbcType=VARCHAR}, #{regionFullCode,jdbcType=VARCHAR}, 
@@ -67,7 +66,7 @@
   </insert>
     <update id="updateByPrimaryKey" parameterType="cn.com.wanwei.bic.entity.EntertainmentEntity">
     update t_bic_entertainment
-    set `type` = #{type,jdbcType=VARCHAR},
+    set
       code = #{code,jdbcType=VARCHAR},
       title = #{title,jdbcType=VARCHAR},
       sub_title = #{subTitle,jdbcType=VARCHAR},
@@ -99,9 +98,6 @@
         <include refid="Base_Column_List"/>
         from t_bic_entertainment
         <where>
-            <if test="type!=null and type!='' ">
-                and `type` = #{type,jdbcType=VARCHAR}
-            </if>
             <if test="title!=null and title!='' ">
                 <bind name="title" value="'%'+title + '%'"></bind>
                 and title like #{title}

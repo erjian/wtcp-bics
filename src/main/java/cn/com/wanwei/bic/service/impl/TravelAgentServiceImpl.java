@@ -2,10 +2,7 @@ package cn.com.wanwei.bic.service.impl;
 
 import cn.com.wanwei.bic.entity.*;
 import cn.com.wanwei.bic.feign.CoderServiceFeign;
-import cn.com.wanwei.bic.mapper.BusinessMapper;
-import cn.com.wanwei.bic.mapper.ContactMapper;
-import cn.com.wanwei.bic.mapper.EnterpriseMapper;
-import cn.com.wanwei.bic.mapper.TravelAgentMapper;
+import cn.com.wanwei.bic.mapper.*;
 import cn.com.wanwei.bic.model.DataBindModel;
 import cn.com.wanwei.bic.model.EntityTagsModel;
 import cn.com.wanwei.bic.model.WeightModel;
@@ -62,6 +59,9 @@ public class TravelAgentServiceImpl implements TravelAgentService {
 
     @Autowired
     private BusinessMapper businessMapper;
+    @Autowired
+    private MaterialMapper materialMapper;
+
 
     @Override
     public ResponseMessage findByPage(Integer page, Integer size, Map<String, Object> filter) {
@@ -103,6 +103,9 @@ public class TravelAgentServiceImpl implements TravelAgentService {
             if(CollectionUtils.isNotEmpty(travelAgentModel.getTagsList())){
                 tagsService.batchInsert(id,travelAgentModel.getTagsList(),user, TravelAgentTagsEntity.class);
             }
+
+            //处理编辑页面新增素材
+            materialMapper.batchUpdateByPrincipalId(id,travelAgentEntity.getPrincipalId());
             return ResponseMessage.defaultResponse().setMsg("保存成功!").setData(id);
         }
         return responseMessageGetCode;

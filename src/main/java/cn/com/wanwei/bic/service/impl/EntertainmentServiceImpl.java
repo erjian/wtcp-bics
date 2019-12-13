@@ -108,6 +108,8 @@ public class EntertainmentServiceImpl implements EntertainmentService {
             if (CollectionUtils.isNotEmpty(entertainmentModel.getTagsList())) {
                 tagsService.batchInsert(id, entertainmentModel.getTagsList(), user, EntertainmentTagsEntity.class);
             }
+
+
             return ResponseMessage.defaultResponse().setMsg("保存成功!").setData(id);
         }
         return responseMessageGetCode;

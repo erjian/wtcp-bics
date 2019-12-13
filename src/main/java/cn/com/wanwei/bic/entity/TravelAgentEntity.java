@@ -10,6 +10,7 @@ import lombok.ToString;
 
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import java.util.Date;
 
 @Data
@@ -71,5 +72,10 @@ public class TravelAgentEntity extends CommonEntity {
     public Integer getOnlineStatus() {
         return this.status == 9 ? this.status : 1;
     }
+
+
+    //冗余字段，关联素材的id（用来生成code）
+    @Transient
+    private String principalId;
 
 }

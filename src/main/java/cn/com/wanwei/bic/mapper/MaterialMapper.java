@@ -32,4 +32,6 @@ public interface MaterialMapper {
     MaterialEntity findByIdAndPid(@Param("id")String id, @Param("principalId")String principalId);
 
     int deleteByPrincipalId(String principalId);
+
+    int batchUpdateByPrincipalId(@Param("principalId") String principalId,@Param("timeId") String timeId);
 }

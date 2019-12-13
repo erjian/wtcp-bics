@@ -56,7 +56,6 @@ public class EntertainmentServiceTest {
         entertainmentEntity.setSubTitle("1233");
         entertainmentEntity.setSummary("123123");
         entertainmentEntity.setTitle("qeq23");
-        entertainmentEntity.setType("123");
         entertainmentEntity.setWithinPark(1);
         entertainmentEntity.setWithinScenic(1);
         entertainmentModel=new EntityTagsModel();

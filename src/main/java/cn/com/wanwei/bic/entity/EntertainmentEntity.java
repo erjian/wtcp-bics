@@ -21,9 +21,6 @@ import java.util.List;
 @ToString(callSuper = true)
 public class EntertainmentEntity extends CommonEntity {
 
-    @ApiModelProperty(value = "类型",required = true)
-    private String type;
-
     @ApiModelProperty(value = "审核状态（0：待审，1：通过，2：退回，9：上线）",required = true)
     private Integer status;
 
