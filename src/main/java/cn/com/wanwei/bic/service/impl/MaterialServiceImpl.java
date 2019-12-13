@@ -15,9 +15,7 @@ import org.bouncycastle.util.Strings;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 public class MaterialServiceImpl implements MaterialService {
@@ -222,4 +220,30 @@ public class MaterialServiceImpl implements MaterialService {
         materialList.put("spotImage", spotImageList);
         return materialList;
     }
+
+    @Override
+    public ResponseMessage findByIds(String ids,Integer parameter) {
+        ResponseMessage responseMessage = ResponseMessage.defaultResponse();
+        List<String> idsList = Arrays.asList(ids.split(","));
+        if(parameter == 1){
+            List<MaterialEntity> list = materialMapper.findByIds(idsList);
+            responseMessage.setData(list);
+        }else if (parameter == 2){
+            Map<String,Object> map = this.findByIdsEach(idsList);
+            responseMessage.setData(map);
+        }else {
+            responseMessage.setData("暂无数据");
+        }
+        return responseMessage;
+    }
+
+    public Map<String,Object> findByIdsEach(List<String> ids){
+        Map<String,Object> map = new HashMap<>();
+        for (String id :ids){
+            List<MaterialEntity> list = materialMapper.findByPrincipalId(id);
+            map.put(id,list);
+        }
+        return map;
+    }
+
 }
