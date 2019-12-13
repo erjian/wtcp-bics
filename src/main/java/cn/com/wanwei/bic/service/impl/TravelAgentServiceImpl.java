@@ -130,8 +130,6 @@ public class TravelAgentServiceImpl implements TravelAgentService {
             if(CollectionUtils.isNotEmpty(travelAgentModel.getTagsList())){
                 tagsService.batchInsert(id,travelAgentModel.getTagsList(),user, TravelAgentTagsEntity.class);
             }
-            // 先删除关联的附件再解析富文本中的附件并保存
-            materialService.deleteByPrincipalId(id);
             materialService.saveByDom(travelAgentEntity.getContent(), id, user);
             return ResponseMessage.defaultResponse().setMsg("更新成功！");
         }

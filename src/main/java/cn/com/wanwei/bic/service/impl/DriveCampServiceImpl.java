@@ -127,8 +127,6 @@ public class DriveCampServiceImpl implements DriveCampService {
             if(CollectionUtils.isNotEmpty(driveCampModel.getTagsList())){
                 tagsService.batchInsert(id,driveCampModel.getTagsList(),user, DriveCampTagsEntity.class);
             }
-            // 先删除关联的附件再解析富文本中的附件并保存
-            materialService.deleteByPrincipalId(id);
             materialService.saveByDom(driveCampEntity.getContent(), id, user);
             return ResponseMessage.defaultResponse().setMsg("更新成功！");
         }
