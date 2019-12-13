@@ -36,4 +36,12 @@ public interface MaterialService {
     ResponseMessage updateIdentify(String principalId, String id, Integer identify, User user);
 
     Map<String, Object> handleMaterial(String principalId);
+
+    /**
+     * 根据ids获取素材
+     * @param ids ids
+     * @param parameter 参数
+     * @return
+     */
+    ResponseMessage findByIds(String ids,Integer parameter);
 }

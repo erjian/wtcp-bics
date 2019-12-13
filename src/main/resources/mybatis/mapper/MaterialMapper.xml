@@ -131,4 +131,14 @@
         set principal_id = #{principalId,jdbcType=VARCHAR}
         where principal_id = #{timeId,jdbcType=VARCHAR}
     </update>
+    <!--ids获取素材列表-->
+    <select id="findByIds" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from t_bic_material
+        where principal_id in
+        <foreach collection="ids" item="item" index="index" open="(" separator="," close=")">
+        #{item}
+    </foreach>
+    </select>
 </mapper>
