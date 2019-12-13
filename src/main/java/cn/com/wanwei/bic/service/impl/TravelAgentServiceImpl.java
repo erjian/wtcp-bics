@@ -105,7 +105,7 @@ public class TravelAgentServiceImpl implements TravelAgentService {
             }
 
             //处理编辑页面新增素材
-            materialMapper.batchUpdateByPrincipalId(id,travelAgentEntity.getPrincipalId());
+            materialMapper.batchUpdateByPrincipalId(id,travelAgentEntity.getTimeId());
             return ResponseMessage.defaultResponse().setMsg("保存成功!").setData(id);
         }
         return responseMessageGetCode;
@@ -130,7 +130,6 @@ public class TravelAgentServiceImpl implements TravelAgentService {
             if(CollectionUtils.isNotEmpty(travelAgentModel.getTagsList())){
                 tagsService.batchInsert(id,travelAgentModel.getTagsList(),user, TravelAgentTagsEntity.class);
             }
-            materialService.saveByDom(travelAgentEntity.getContent(), id, user);
             return ResponseMessage.defaultResponse().setMsg("更新成功！");
         }
         return ResponseMessage.validFailResponse().setMsg("暂无该旅行社信息！");

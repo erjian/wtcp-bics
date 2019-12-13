@@ -76,4 +76,8 @@ public class TrafficAgentEntity extends BaseEntity{
     //冗余字段获取简拼（用来生成code）
     @Transient
     private String jpin;
+
+    //冗余字段，关联素材的id
+    @Transient
+    private String timeId;
 }

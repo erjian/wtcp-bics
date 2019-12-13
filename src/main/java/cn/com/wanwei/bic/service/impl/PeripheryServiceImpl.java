@@ -5,6 +5,7 @@ import cn.com.wanwei.bic.entity.BaseTagsEntity;
 import cn.com.wanwei.bic.entity.PeripheryEntity;
 import cn.com.wanwei.bic.entity.PeripheryTagsEntity;
 import cn.com.wanwei.bic.feign.CoderServiceFeign;
+import cn.com.wanwei.bic.mapper.MaterialMapper;
 import cn.com.wanwei.bic.mapper.PeripheryMapper;
 import cn.com.wanwei.bic.model.DataBindModel;
 import cn.com.wanwei.bic.model.EntityTagsModel;
@@ -54,6 +55,9 @@ public class PeripheryServiceImpl implements PeripheryService {
     @Autowired
     private MaterialService materialService;
 
+    @Autowired
+    private MaterialMapper materialMapper;
+
     private static final String FOOD_TYPE = "125006002";            //  餐饮
     private static final String SHOPPING_TYPE = "125006004";     // 购物
 
@@ -98,6 +102,8 @@ public class PeripheryServiceImpl implements PeripheryService {
             if (CollectionUtils.isNotEmpty(peripheryModel.getTagsList())) {
                 tagsService.batchInsert(peripheryEntity.getId(), peripheryModel.getTagsList(), user, PeripheryTagsEntity.class);
             }
+            //处理编辑页面新增素材
+            materialMapper.batchUpdateByPrincipalId(peripheryEntity.getId(),peripheryEntity.getTimeId());
             return ResponseMessage.defaultResponse().setMsg("保存成功!");
         }
         return responseMessageGetCode;

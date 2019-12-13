@@ -4,6 +4,7 @@ import cn.com.wanwei.bic.entity.*;
 import cn.com.wanwei.bic.feign.CoderServiceFeign;
 import cn.com.wanwei.bic.mapper.EntertainmentMapper;
 import cn.com.wanwei.bic.mapper.ExtendMapper;
+import cn.com.wanwei.bic.mapper.MaterialMapper;
 import cn.com.wanwei.bic.model.EntityTagsModel;
 import cn.com.wanwei.bic.service.ExtendService;
 import cn.com.wanwei.bic.service.MaterialService;
@@ -62,6 +63,10 @@ public class ExtendServiceImpl implements ExtendService {
     @Autowired
     private MaterialService materialService;
 
+    @Autowired
+    private MaterialMapper materialMapper;
+
+
     /**
      * 扩展信息管理分页列表
      * @param page
@@ -105,6 +110,9 @@ public class ExtendServiceImpl implements ExtendService {
         if(CollectionUtils.isNotEmpty(extendModel.getTagsList())){
             tagsService.batchInsert(extendEntity.getId(),extendModel.getTagsList(),user,ExtendTagsEntity.class);
         }
+
+        //处理编辑页面新增素材
+        materialMapper.batchUpdateByPrincipalId(extendEntity.getId(),extendEntity.getTimeId());
         return ResponseMessage.defaultResponse().setMsg("新增成功!");
     }
 

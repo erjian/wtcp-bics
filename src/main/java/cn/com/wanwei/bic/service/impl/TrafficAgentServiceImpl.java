@@ -3,6 +3,7 @@ package cn.com.wanwei.bic.service.impl;
 import cn.com.wanwei.bic.entity.AuditLogEntity;
 import cn.com.wanwei.bic.entity.TrafficAgentEntity;
 import cn.com.wanwei.bic.feign.CoderServiceFeign;
+import cn.com.wanwei.bic.mapper.MaterialMapper;
 import cn.com.wanwei.bic.mapper.TrafficAgentMapper;
 import cn.com.wanwei.bic.model.DataBindModel;
 import cn.com.wanwei.bic.service.AuditLogService;
@@ -40,6 +41,9 @@ public class TrafficAgentServiceImpl implements TrafficAgentService {
     @Autowired
     private AuditLogService auditLogService;
 
+    @Autowired
+    private MaterialMapper materialMapper;
+
     @Override
     public ResponseMessage findByPage(Integer page, Integer size, Map<String, Object> filter) {
         EscapeCharUtils.escape(filter, "title");
@@ -75,6 +79,8 @@ public class TrafficAgentServiceImpl implements TrafficAgentService {
             trafficAgentEntity.setCreatedDate(new Date());
             trafficAgentEntity.setDeptCode(user.getOrg().getCode());
             trafficAgentMapper.insert(trafficAgentEntity);
+            //处理编辑页面新增素材
+            materialMapper.batchUpdateByPrincipalId(id,trafficAgentEntity.getTimeId());
             return ResponseMessage.defaultResponse().setMsg("保存成功!").setData(id);
         }
         return responseMessageGetCode;

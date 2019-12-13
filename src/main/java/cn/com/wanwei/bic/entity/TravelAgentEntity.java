@@ -74,8 +74,8 @@ public class TravelAgentEntity extends CommonEntity {
     }
 
 
-    //冗余字段，关联素材的id（用来生成code）
+    //冗余字段，关联素材的id
     @Transient
-    private String principalId;
+    private String timeId;
 
 }

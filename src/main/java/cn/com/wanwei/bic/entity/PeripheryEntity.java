@@ -50,4 +50,8 @@ public class PeripheryEntity extends CommonEntity {
     @ApiModelProperty(value = "简拼")
     @Transient
     private String jSpell;
+
+    //冗余字段，关联素材的id
+    @Transient
+    private String timeId;
 }

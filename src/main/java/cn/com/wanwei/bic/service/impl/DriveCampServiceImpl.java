@@ -2,10 +2,7 @@ package cn.com.wanwei.bic.service.impl;
 
 import cn.com.wanwei.bic.entity.*;
 import cn.com.wanwei.bic.feign.CoderServiceFeign;
-import cn.com.wanwei.bic.mapper.BusinessMapper;
-import cn.com.wanwei.bic.mapper.ContactMapper;
-import cn.com.wanwei.bic.mapper.DriveCampMapper;
-import cn.com.wanwei.bic.mapper.EnterpriseMapper;
+import cn.com.wanwei.bic.mapper.*;
 import cn.com.wanwei.bic.model.DataBindModel;
 import cn.com.wanwei.bic.model.EntityTagsModel;
 import cn.com.wanwei.bic.model.WeightModel;
@@ -63,6 +60,9 @@ public class DriveCampServiceImpl implements DriveCampService {
     @Autowired
     private BusinessMapper businessMapper;
 
+    @Autowired
+    private MaterialMapper materialMapper;
+
     @Override
     public ResponseMessage findByPage(Integer page, Integer size, Map<String, Object> filter) {
         EscapeCharUtils.escape(filter, "title", "subTitle");
@@ -103,6 +103,8 @@ public class DriveCampServiceImpl implements DriveCampService {
             if(CollectionUtils.isNotEmpty(driveCampModel.getTagsList())){
                 tagsService.batchInsert(id,driveCampModel.getTagsList(),user, DriveCampTagsEntity.class);
             }
+            //处理编辑页面新增素材
+            materialMapper.batchUpdateByPrincipalId(id,driveCampEntity.getTimeId());
             return ResponseMessage.defaultResponse().setMsg("保存成功!").setData(id);
         }
         return responseMessageGetCode;
@@ -127,7 +129,6 @@ public class DriveCampServiceImpl implements DriveCampService {
             if(CollectionUtils.isNotEmpty(driveCampModel.getTagsList())){
                 tagsService.batchInsert(id,driveCampModel.getTagsList(),user, DriveCampTagsEntity.class);
             }
-            materialService.saveByDom(driveCampEntity.getContent(), id, user);
             return ResponseMessage.defaultResponse().setMsg("更新成功！");
         }
         return ResponseMessage.validFailResponse().setMsg("暂无该自驾营地信息！");

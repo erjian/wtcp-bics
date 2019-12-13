@@ -115,4 +115,8 @@ public class ScenicEntity extends BaseEntity{
     @ApiModelProperty(value = "标签")
     public List<ScenicTagsEntity> tagsEntities;
 
+    //冗余字段，关联素材的id
+    @Transient
+    private String timeId;
+
 }

@@ -54,4 +54,8 @@ public class EntertainmentEntity extends CommonEntity {
     @ApiModelProperty(value = "标签")
     public List<EntertainmentTagsEntity> tagsEntities;
 
+    //冗余字段，关联素材的id
+    @Transient
+    private String timeId;
+
 }

@@ -72,6 +72,9 @@ public class ScenicServiceImpl implements ScenicService {
     @Autowired
     private MaterialService materialService;
 
+    @Autowired
+    private MaterialMapper materialMapper;
+
     @Override
     public ResponseMessage save(EntityTagsModel<ScenicEntity> scenicModel, User user, Long ruleId, Integer appCode) {
         ScenicEntity record = scenicModel.getEntity();
@@ -93,6 +96,8 @@ public class ScenicServiceImpl implements ScenicService {
         if (CollectionUtils.isNotEmpty(scenicModel.getTagsList())) {
             tagsService.batchInsert(record.getId(), scenicModel.getTagsList(), user, ScenicTagsEntity.class);
         }
+        //处理编辑页面新增素材
+        materialMapper.batchUpdateByPrincipalId(id,record.getTimeId());
 
         return ResponseMessage.defaultResponse().setMsg("保存成功").setData(id);
     }

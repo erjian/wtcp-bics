@@ -65,6 +65,10 @@ public class RentalCarServiceImpl implements RentalCarService {
 
     private static final String TYPE = "ZC";
 
+    @Autowired
+    private MaterialMapper materialMapper;
+
+
     @Override
     public ResponseMessage findByPage(Integer page, Integer size, Map<String, Object> filter) {
         EscapeCharUtils.escape(filter, "title", "subTitle", "areaName");
@@ -103,6 +107,8 @@ public class RentalCarServiceImpl implements RentalCarService {
         carEntity.setDeptCode(user.getOrg().getCode());
         carEntity.setStatus(0);
         carEntity.setWeight(0);
+        //处理编辑页面新增素材
+        materialMapper.batchUpdateByPrincipalId(id,carEntity.getTimeId());
         rentalCarMapper.insert(carEntity);
 
         //处理标签

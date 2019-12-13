@@ -16,6 +16,7 @@ import lombok.ToString;
 
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 @Data
 @EqualsAndHashCode(callSuper=false)
@@ -63,4 +64,8 @@ public class DestinationEntity extends BaseEntity{
 
     @ApiModelProperty(value = "组织机构编码")
     private String deptCode;
+
+    //冗余字段，关联素材的id
+    @Transient
+    private String timeId;
 }

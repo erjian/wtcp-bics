@@ -69,6 +69,9 @@ public class EntertainmentServiceImpl implements EntertainmentService {
     @Autowired
     private BusinessMapper businessMapper;
 
+    @Autowired
+    private MaterialMapper materialMapper;
+
     @Override
     public ResponseMessage findByPage(Integer page, Integer size, Map<String, Object> filter) {
         EscapeCharUtils.escape(filter, "title", "subTitle");
@@ -108,7 +111,8 @@ public class EntertainmentServiceImpl implements EntertainmentService {
             if (CollectionUtils.isNotEmpty(entertainmentModel.getTagsList())) {
                 tagsService.batchInsert(id, entertainmentModel.getTagsList(), user, EntertainmentTagsEntity.class);
             }
-
+            //处理编辑页面新增素材
+            materialMapper.batchUpdateByPrincipalId(entertainmentEntity.getId(),entertainmentEntity.getTimeId());
 
             return ResponseMessage.defaultResponse().setMsg("保存成功!").setData(id);
         }

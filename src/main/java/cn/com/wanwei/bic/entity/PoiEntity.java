@@ -9,6 +9,7 @@ import lombok.ToString;
 
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 @Data
 @EqualsAndHashCode(callSuper=false)
@@ -39,5 +40,9 @@ public class PoiEntity extends CommonEntity {
 
     @ApiModelProperty(value = "景区名称")
     private String scenicName;
+
+    //冗余字段，关联素材的id
+    @Transient
+    private String timeId;
 
 }

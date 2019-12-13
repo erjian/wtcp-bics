@@ -5,6 +5,7 @@ import cn.com.wanwei.bic.entity.BaseTagsEntity;
 import cn.com.wanwei.bic.entity.DestinationEntity;
 import cn.com.wanwei.bic.entity.DestinationTagsEntity;
 import cn.com.wanwei.bic.mapper.DestinationMapper;
+import cn.com.wanwei.bic.mapper.MaterialMapper;
 import cn.com.wanwei.bic.model.DataBindModel;
 import cn.com.wanwei.bic.model.EntityTagsModel;
 import cn.com.wanwei.bic.model.WeightModel;
@@ -59,6 +60,9 @@ public class DestinationServiceImpl implements DestinationService {
     @Autowired
     private MaterialService materialService;
 
+    @Autowired
+    private MaterialMapper materialMapper;
+
     /**
      * 查询目的地分页列表数据
      * @param page  页数
@@ -97,6 +101,8 @@ public class DestinationServiceImpl implements DestinationService {
         if(CollectionUtils.isNotEmpty(destinationModel.getTagsList())){
             tagsService.batchInsert(destinationEntity.getId(),destinationModel.getTagsList(),user, DestinationTagsEntity.class);
         }
+        //处理编辑页面新增素材
+        materialMapper.batchUpdateByPrincipalId(destinationEntity.getId(),destinationEntity.getTimeId());
         return ResponseMessage.defaultResponse().setMsg("保存成功!");
     }
 

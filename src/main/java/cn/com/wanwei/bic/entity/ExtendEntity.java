@@ -16,6 +16,7 @@ import lombok.ToString;
 
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 @Data
 @EqualsAndHashCode(callSuper=false)
@@ -71,5 +72,9 @@ public class ExtendEntity extends BaseEntity{
     public Integer getOnlineStatus() {
         return this.status == 9 ? this.status : 1;
     }
+
+    //冗余字段，关联素材的id
+    @Transient
+    private String timeId;
 
 }

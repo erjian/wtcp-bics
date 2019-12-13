@@ -2,6 +2,7 @@ package cn.com.wanwei.bic.service.impl;
 
 import cn.com.wanwei.bic.entity.*;
 import cn.com.wanwei.bic.feign.CoderServiceFeign;
+import cn.com.wanwei.bic.mapper.MaterialMapper;
 import cn.com.wanwei.bic.mapper.PoiMapper;
 import cn.com.wanwei.bic.mapper.ScenicMapper;
 import cn.com.wanwei.bic.model.EntityTagsModel;
@@ -66,6 +67,9 @@ public class PoiServiceImpl implements PoiService {
     @Value("${wtcp.bic.appCode}")
     protected Integer appId;
 
+    @Autowired
+    private MaterialMapper materialMapper;
+
     @Override
     public ResponseMessage findByPage(Integer page, Integer size, Map<String, Object> filter) {
         EscapeCharUtils.escape(filter, "title");
@@ -114,6 +118,8 @@ public class PoiServiceImpl implements PoiService {
                 if(CollectionUtils.isNotEmpty(poiModel.getTagsList())){
                     tagsService.batchInsert(poiEntity.getId(), poiModel.getTagsList(),user,PoiTagsEntity.class);
                 }
+                //处理编辑页面新增素材
+                materialMapper.batchUpdateByPrincipalId(poiEntity.getId(),poiEntity.getTimeId());
                 return ResponseMessage.defaultResponse().setMsg("保存成功!");
             }
             return responseMessageGetCode;
