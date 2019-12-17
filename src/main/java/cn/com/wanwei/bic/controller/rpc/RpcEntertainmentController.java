@@ -31,13 +31,13 @@ public class RpcEntertainmentController {
 
 
     @ApiOperation(value = "获取农家乐列表", notes = "根据区域获取农家乐列表（ids != null时，为不包含ids的信息）")
-    @GetMapping(value = "/pageNew")
+    @GetMapping(value = "/findByPage")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "page", value = "页号", defaultValue = "1"),
             @ApiImplicitParam(name = "size", value = "每页数量", defaultValue = "10"),
     })
     @OperationLog(value = "wtcp-bics/获取农家乐列表", operate = "r", module = "休闲娱乐管理")
-    public ResponseMessage agritainmentPage(@RequestParam(value = "page", defaultValue = "1") Integer page,
+    public ResponseMessage findByPage(@RequestParam(value = "page", defaultValue = "1") Integer page,
                                                 @RequestParam(value = "size", defaultValue = "10") Integer size,
                                                 HttpServletRequest request) throws Exception {
         Map<String, Object> filter = RequestUtil.getParameters(request);

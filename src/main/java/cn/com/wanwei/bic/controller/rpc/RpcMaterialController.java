@@ -27,7 +27,7 @@ public class RpcMaterialController {
     @GetMapping(value = "/findByIds")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "ids", value = "ids",required = true,dataType = "String"),
-            @ApiImplicitParam(name = "parameter", value = "参数", defaultValue = "1",dataType = "Integer"),
+            @ApiImplicitParam(name = "parameter", value = "参数(1:全部返回，2：按照每个id返回)", defaultValue = "1",dataType = "Integer"),
     })
     @OperationLog(value = "wtcp-bics/获取素材列表", operate = "r", module = "素材管理")
     public ResponseMessage findByIds(@RequestParam("ids")String ids,

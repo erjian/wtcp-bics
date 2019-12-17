@@ -40,14 +40,14 @@ public class RpcScenicController extends BaseController {
     // ----------------------------------以下接口为自驾游提供-----------------------------------------
 
     @ApiOperation(value = "获取景区列表", notes = "根据区域获取景区列表(ids != null时，为不包含ids的信息)")
-    @GetMapping(value = "/pageNew")
+    @GetMapping(value = "/findByAreaCode")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "page", value = "页号", defaultValue = "1"),
             @ApiImplicitParam(name = "size", value = "每页数量", defaultValue = "10"),
             @ApiImplicitParam(name = "regionFullCode", value = "区域编码", required = true, dataType = "String")
     })
     @OperationLog(value = "wtcp-bics/获取景区列表", operate = "r", module = "景区管理")
-    public ResponseMessage agritainmentsPageNew(@RequestParam(value = "page", defaultValue = "1") Integer page,
+    public ResponseMessage findByAreaCode(@RequestParam(value = "page", defaultValue = "1") Integer page,
                                                 @RequestParam(value = "size", defaultValue = "10") Integer size,
                                                 HttpServletRequest request) throws Exception {
         Map<String, Object> filter = RequestUtil.getParameters(request);
