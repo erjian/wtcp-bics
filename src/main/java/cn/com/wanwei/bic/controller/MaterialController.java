@@ -1,6 +1,7 @@
 package cn.com.wanwei.bic.controller;
 
 import cn.com.wanwei.bic.entity.MaterialEntity;
+import cn.com.wanwei.bic.model.MaterialModel;
 import cn.com.wanwei.bic.service.MaterialService;
 import cn.com.wanwei.common.log.annotation.OperationLog;
 import cn.com.wanwei.common.model.ResponseMessage;
@@ -14,7 +15,9 @@ import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Slf4j
 @RefreshScope
@@ -25,6 +28,9 @@ public class MaterialController extends BaseController {
 
     @Autowired
     private MaterialService materialService;
+
+    @Autowired
+    private MaterialModel materialModel;
 
     @ApiOperation(value = "根据主键获取素材信息", notes = "根据主键获取素材信息")
     @ApiImplicitParam(name = "id", value = "素材主键", required = true)
@@ -103,6 +109,19 @@ public class MaterialController extends BaseController {
     @OperationLog(value = "batchInsert/根据关联ID保存素材", operate = "批量保存素材", module = "素材管理")
     public ResponseMessage batchInsert(@RequestParam String principalId, @RequestBody List<MaterialEntity> materialList) throws Exception {
         return ResponseMessage.defaultResponse().setData(materialService.batchInsert(principalId, materialList, getCurrentUser()));
+    }
+
+
+    @ApiOperation(value = "素材类型", notes = "素材类型")
+    @GetMapping(value = "/getMaterialType")
+    @OperationLog(value = "wtcp-bics/素材类型", operate = "r", module = "素材类型")
+    public ResponseMessage getMaterialType(){
+        Map<String,Object> map = new HashMap<>();
+        map.put("image",materialModel.getImage().get("info-type"));
+        map.put("video",materialModel.getVideo().get("info-type"));
+        map.put("audio",materialModel.getAudio().get("info-type"));
+        map.put("file",materialModel.getFile().get("info-type"));
+        return ResponseMessage.defaultResponse().setData(map);
     }
 
 }
