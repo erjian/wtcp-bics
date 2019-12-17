@@ -42,12 +42,12 @@ public class RpcScenicController extends BaseController {
     @ApiOperation(value = "获取景区列表", notes = "根据区域获取景区列表(ids != null时，为不包含ids的信息)")
     @GetMapping(value = "/findByAreaCode")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "page", value = "页号", defaultValue = "1"),
+            @ApiImplicitParam(name = "page", value = "页号", defaultValue = "0"),
             @ApiImplicitParam(name = "size", value = "每页数量", defaultValue = "10"),
             @ApiImplicitParam(name = "regionFullCode", value = "区域编码", required = true, dataType = "String")
     })
     @OperationLog(value = "wtcp-bics/获取景区列表", operate = "r", module = "景区管理")
-    public ResponseMessage findByAreaCode(@RequestParam(value = "page", defaultValue = "1") Integer page,
+    public ResponseMessage findByAreaCode(@RequestParam(value = "page", defaultValue = "0") Integer page,
                                                 @RequestParam(value = "size", defaultValue = "10") Integer size,
                                                 HttpServletRequest request) throws Exception {
         Map<String, Object> filter = RequestUtil.getParameters(request);
@@ -67,7 +67,10 @@ public class RpcScenicController extends BaseController {
     @ApiOperation(value = "获取景区分页列表", notes = "获取景区分页列表，排序方式及字段可指定，数据会根据用户数据权限过滤，调用时请将access_token作为参数传入")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "page", value = "页号", defaultValue = "0"),
-            @ApiImplicitParam(name = "size", value = "每页数量", defaultValue = "10")
+            @ApiImplicitParam(name = "size", value = "每页数量", defaultValue = "10"),
+            @ApiImplicitParam(name = "category",value = "类型",dataType = "String"),
+            @ApiImplicitParam(name = "level",value = "级别",dataType = "String"),
+            @ApiImplicitParam(name = "title",value =  "景区名称",dataType = "String")
     })
     @OperationLog(value = "wtcp-bic/获取景区分页列表", operate = "获取景区分页列表", module = "景区管理")
     @GetMapping(value = "/page")

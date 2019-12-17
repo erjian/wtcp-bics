@@ -7,6 +7,7 @@ import cn.com.wanwei.common.model.ResponseMessage;
 import cn.com.wanwei.common.utils.RequestUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,8 +27,14 @@ public class RpcPoiController {
     @Autowired
     private PoiService poiService;
 
-    @ApiOperation(value = "获取POI分页列表", notes = "获取POI分页列表")
+    @ApiOperation(value = "获取POI分页列表", notes = "获取POI分页列表（只返回上线的数据）")
     @GetMapping(value = "/page")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "page", value = "页号", defaultValue = "0"),
+            @ApiImplicitParam(name = "size", value = "每页数量", defaultValue = "10"),
+            @ApiImplicitParam(name = "type",value = "类型",dataType = "String"),
+            @ApiImplicitParam(name = "title",value =  "名称",dataType = "String")
+    })
     @OperationLog(value = "wtcp-bics/获取POI分页列表", operate = "r", module = "poi管理")
     public ResponseMessage findByPage(@RequestParam(value = "page", defaultValue = "0") Integer page,
                                       @RequestParam(value = "size", defaultValue = "10") Integer size,
