@@ -317,9 +317,9 @@ public class ScenicServiceImpl implements ScenicService {
     }
 
     @Override
-    public ResponseMessage findPageIds(String ids, String status) {
-        List<String> idsList = Arrays.asList(ids.split(","));
-        List<ScenicEntity> entitiesList = scenicMapper.findPageIds(idsList, status);
+    public ResponseMessage findListByIds(String ids) {
+        List<String> idList = Arrays.asList(ids.split(","));
+        List<ScenicEntity> entitiesList = scenicMapper.findListByIds(idList);
         for (ScenicEntity scenicEntity : entitiesList) {
             ResponseMessage responseMessage = tagsService.findByPrincipalId(scenicEntity.getId(), EntertainmentTagsEntity.class);
             List<ScenicTagsEntity> tagsEntityList = (List<ScenicTagsEntity>) responseMessage.getData();

@@ -150,8 +150,7 @@ public interface ScenicService {
 	/**
 	 * 根据ids获取景区列表
 	 * @param ids ids
-	 * @param status 上下线
 	 * @return 景区列表
 	 */
-	ResponseMessage findPageIds(String ids, String status);
+	ResponseMessage findListByIds(String ids);
 }

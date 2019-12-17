@@ -102,11 +102,10 @@ public interface ScenicMapper {
 
     /**
      * 根据ids查询景区列表
-     * @param idsList id
-     * @param status 上下线
+     * @param ids id集合
      * @return
      */
-    List<ScenicEntity> findPageIds(List<String> idsList, String status);
+    List<ScenicEntity> findListByIds(@Param("ids") List<String> ids);
 
     /**
      * 景区列表

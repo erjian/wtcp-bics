@@ -283,26 +283,17 @@
         </where>
     </select>
     <!--根据ids获取景区列表-->
-    <select id="findPageIds" resultMap="BaseResultMap">
+    <select id="findListByIds" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
         ,
         <include refid="Blob_Column_List"/>
         from t_bic_scenic
-        <where>
-            id in
-            <foreach collection="ids" item="item" index="index" open="(" separator="," close=")">
-                #{item}
-            </foreach>
-            <if test="status != null">
-                <if test="status == 9">
-                    and status = #{status,jdbcType=INTEGER}
-                </if>
-                <if test="status == 1">
-                    and (status = 1 or status = 0)
-                </if>
-            </if>
-        </where>
+        where status = 9
+        and id in
+        <foreach collection="ids" item="item" index="index" open="(" separator="," close=")">
+            #{item}
+        </foreach>
     </select>
     <select id="findBySearchValue" resultMap="BaseResultMap">
         select

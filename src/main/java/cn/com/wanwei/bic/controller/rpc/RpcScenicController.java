@@ -54,15 +54,11 @@ public class RpcScenicController extends BaseController {
         return scenicService.scenicPageNew(page, size, filter);
     }
 
-    @ApiOperation(value = "根据ids串获取景区列表", notes = "根据ids串获取景区列表")
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "ids", value = "ids字符串", required = true),
-            @ApiImplicitParam(name = "status", value = "是否上线（1下线  9 上线）")
-    })
-    @GetMapping("/pageByIds")
-    public ResponseMessage findPageByIds(@RequestParam String ids,
-                                         @RequestParam(value = "status", required = false) String status) throws Exception {
-        return scenicService.findPageIds(ids, status);
+    @ApiOperation(value = "根据id集合获取景区列表，只返回上线的数据", notes = "根据id集合获取景区列表，只返回上线的数据")
+    @ApiImplicitParam(name = "ids", value = "多个ID已英文逗号分隔", required = true)
+    @GetMapping("/findListByIds")
+    public ResponseMessage findListByIds(@RequestParam String ids) throws Exception {
+        return scenicService.findListByIds(ids);
     }
 
 
