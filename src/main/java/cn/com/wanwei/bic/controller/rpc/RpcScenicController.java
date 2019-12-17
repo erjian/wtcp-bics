@@ -23,7 +23,7 @@ import java.util.Map;
 @RestController
 @RefreshScope
 @RequestMapping("/rpc/scenic")
-@Api(value = "景区管理feign接口", tags = "景区管理相关feign接口")
+@Api(value = "景区信息Feign接口", tags = "景区信息Feign接口")
 public class RpcScenicController extends BaseController {
 
     @Autowired
@@ -55,22 +55,24 @@ public class RpcScenicController extends BaseController {
     }
 
     @ApiOperation(value = "根据id集合获取景区列表，只返回上线的数据", notes = "根据id集合获取景区列表，只返回上线的数据")
-    @ApiImplicitParam(name = "ids", value = "多个ID已英文逗号分隔", required = true)
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "ids", value = "多个ID已英文逗号分隔", required = true),
+            @ApiImplicitParam(name = "status", value = "状态，默认返回上线的，-1为不限制", defaultValue = "9")
+    })
     @GetMapping("/findListByIds")
-    public ResponseMessage findListByIds(@RequestParam String ids) throws Exception {
-        return scenicService.findListByIds(ids);
+    public ResponseMessage findListByIds(@RequestParam String ids, @RequestParam(required = false,defaultValue = "9") String status) throws Exception {
+        return scenicService.findListByIds(ids, status);
     }
 
 
     // ----------------------------------以下接口为导游导览提供-----------------------------------------
 
-    @ApiOperation(value = "获取景区分页列表", notes = "获取景区分页列表，排序方式及字段可指定，数据会根据用户数据权限过滤，调用时请将access_token作为参数传入")
+    @ApiOperation(value = "获取景区分页列表", notes = "获取景区分页列表，排序方式及字段可指定，" +
+            "数据会根据用户数据权限过滤，调用时请将access_token作为参数传入" +
+            "可根据类型category，级别level，名称title获取数据")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "page", value = "页号", defaultValue = "0"),
-            @ApiImplicitParam(name = "size", value = "每页数量", defaultValue = "10"),
-            @ApiImplicitParam(name = "category",value = "类型",dataType = "String"),
-            @ApiImplicitParam(name = "level",value = "级别",dataType = "String"),
-            @ApiImplicitParam(name = "title",value =  "景区名称",dataType = "String")
+            @ApiImplicitParam(name = "size", value = "每页数量", defaultValue = "10")
     })
     @OperationLog(value = "wtcp-bic/获取景区分页列表", operate = "获取景区分页列表", module = "景区管理")
     @GetMapping(value = "/page")
@@ -80,7 +82,10 @@ public class RpcScenicController extends BaseController {
         Map<String, Object> filter = RequestUtil.getParameters(request);
         PageUtils.getInstance().setToken(filter);
         // 只返回上线的数据
-        filter.put("status", 9);
+        String statusKey = "status";
+        if(!filter.containsKey(statusKey) || null == filter.get(statusKey)){
+            filter.put("status", 9);
+        }
         return scenicService.findByPage(page, size, getCurrentUser(), filter);
     }
 

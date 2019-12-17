@@ -21,19 +21,18 @@ import java.util.Map;
 @RestController
 @RefreshScope
 @RequestMapping("/rpc/poi")
-@Api(value = "POI管理Feign接口", tags = "POI管理Feign接口")
+@Api(value = "POI信息Feign接口", tags = "POI信息Feign接口")
 public class RpcPoiController {
 
     @Autowired
     private PoiService poiService;
 
-    @ApiOperation(value = "获取POI分页列表", notes = "获取POI分页列表（只返回上线的数据）")
+    @ApiOperation(value = "获取POI分页列表", notes = "获取POI分页列表（默认只返回上线的数据）" +
+            "可根据类型type,名称title，状态status获取数据")
     @GetMapping(value = "/page")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "page", value = "页号", defaultValue = "0"),
-            @ApiImplicitParam(name = "size", value = "每页数量", defaultValue = "10"),
-            @ApiImplicitParam(name = "type",value = "类型",dataType = "String"),
-            @ApiImplicitParam(name = "title",value =  "名称",dataType = "String")
+            @ApiImplicitParam(name = "size", value = "每页数量", defaultValue = "10")
     })
     @OperationLog(value = "wtcp-bics/获取POI分页列表", operate = "r", module = "poi管理")
     public ResponseMessage findByPage(@RequestParam(value = "page", defaultValue = "0") Integer page,
@@ -42,7 +41,10 @@ public class RpcPoiController {
         Map<String, Object> filter = RequestUtil.getParameters(request);
         PageUtils.getInstance().setToken(filter);
         // 只返回上线的数据
-        filter.put("status", 9);
+        String statusKey = "status";
+        if(!filter.containsKey(statusKey) || null == filter.get(statusKey)){
+            filter.put("status", 9);
+        }
         return poiService.findByPage(page, size, filter);
     }
 

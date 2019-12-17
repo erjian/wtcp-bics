@@ -24,7 +24,7 @@ import java.util.Map;
 @RestController
 @RefreshScope
 @RequestMapping("/rpc/destination")
-@Api(value = "目的地", tags = "目的地")
+@Api(value = "目的地管理Feign接口", tags = "目的地管理Feign接口")
 public class RpcDestinationController {
 
     @Autowired

@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RefreshScope
 @RequestMapping("/rpc/material")
-@Api(value = "Feign素材相关接口", tags = "Feign素材相关接口")
+@Api(value = "素材信息Feign接口", tags = "素材信息Feign接口")
 public class RpcMaterialController {
 
     @Autowired

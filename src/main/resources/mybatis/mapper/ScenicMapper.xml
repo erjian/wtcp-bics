@@ -294,6 +294,14 @@
         <foreach collection="ids" item="item" index="index" open="(" separator="," close=")">
             #{item}
         </foreach>
+        <if test="status != null and status != -1">
+            <if test="status == 9">
+                and status = #{status,jdbcType=INTEGER}
+            </if>
+            <if test="status == 1">
+                and 9 > status
+            </if>
+        </if>
     </select>
     <select id="findBySearchValue" resultMap="BaseResultMap">
         select

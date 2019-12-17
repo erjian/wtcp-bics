@@ -24,8 +24,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RefreshScope
 @RequestMapping("/rpc/catalogues")
-@Api(value = "feign资源目录", tags = "feign资源目录")
-@SuppressWarnings("all")
+@Api(value = "各类型资源信息Feign接口", tags = "各类型资源信息Feign接口")
 public class RpcCataloguesController {
 
     @Autowired
