@@ -60,7 +60,7 @@ public class RpcScenicController extends BaseController {
             @ApiImplicitParam(name = "status", value = "状态，默认返回上线的，-1为不限制", defaultValue = "9")
     })
     @GetMapping("/findListByIds")
-    public ResponseMessage findListByIds(@RequestParam String ids, @RequestParam(required = false,defaultValue = "9") String status) throws Exception {
+    public ResponseMessage findListByIds(@RequestParam String ids, @RequestParam(required = false,defaultValue = "9") Integer status) throws Exception {
         return scenicService.findListByIds(ids, status);
     }
 

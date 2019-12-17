@@ -152,5 +152,5 @@ public interface ScenicService {
 	 * @param ids ids
 	 * @return 景区列表
 	 */
-	ResponseMessage findListByIds(String ids, String status);
+	ResponseMessage findListByIds(String ids, Integer status);
 }

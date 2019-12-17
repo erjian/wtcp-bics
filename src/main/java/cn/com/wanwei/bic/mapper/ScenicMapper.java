@@ -105,7 +105,7 @@ public interface ScenicMapper {
      * @param ids id集合
      * @return
      */
-    List<ScenicEntity> findListByIds(@Param("ids") List<String> ids, @Param("status") String status);
+    List<ScenicEntity> findListByIds(@Param("ids") List<String> ids, @Param("status") Integer status);
 
     /**
      * 景区列表

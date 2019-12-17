@@ -317,7 +317,7 @@ public class ScenicServiceImpl implements ScenicService {
     }
 
     @Override
-    public ResponseMessage findListByIds(String ids,String status) {
+    public ResponseMessage findListByIds(String ids,Integer status) {
         List<String> idList = Arrays.asList(ids.split(","));
         List<ScenicEntity> entitiesList = scenicMapper.findListByIds(idList,status);
         for (ScenicEntity scenicEntity : entitiesList) {

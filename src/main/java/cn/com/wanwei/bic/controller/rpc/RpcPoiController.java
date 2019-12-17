@@ -28,7 +28,7 @@ public class RpcPoiController {
     private PoiService poiService;
 
     @ApiOperation(value = "获取POI分页列表", notes = "获取POI分页列表（默认只返回上线的数据）" +
-            "可根据类型type,名称title，状态status获取数据")
+            "可根据关联信息ID（principalId）类型（type），名称（title），状态（status）获取数据")
     @GetMapping(value = "/page")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "page", value = "页号", defaultValue = "0"),

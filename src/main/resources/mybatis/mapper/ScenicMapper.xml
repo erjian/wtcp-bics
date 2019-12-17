@@ -289,8 +289,7 @@
         ,
         <include refid="Blob_Column_List"/>
         from t_bic_scenic
-        where status = 9
-        and id in
+        where id in
         <foreach collection="ids" item="item" index="index" open="(" separator="," close=")">
             #{item}
         </foreach>
