@@ -3,6 +3,7 @@ package cn.com.wanwei.bic.service;
 import cn.com.wanwei.bic.entity.AuditLogEntity;
 import cn.com.wanwei.bic.entity.TrafficAgentEntity;
 import cn.com.wanwei.bic.model.DataBindModel;
+import cn.com.wanwei.bic.model.GouldModel;
 import cn.com.wanwei.common.model.ResponseMessage;
 import cn.com.wanwei.common.model.User;
 
@@ -89,4 +90,11 @@ public interface TrafficAgentService {
      * @return
      */
     ResponseMessage findBySearchValue(String searchValue);
+
+    /**
+     * 保存高德交通枢纽搜索数据
+     * @param gouldModel
+     * @return
+     */
+    ResponseMessage saveGouldTrafficData(GouldModel gouldModel, User user, Long ruleId, Integer appCode);
 }

@@ -24,11 +24,14 @@
     <result column="content" jdbcType="LONGVARCHAR" property="content" />
     <result column="simple_spell" jdbcType="VARCHAR" property="simpleSpell" />
     <result column="full_spell" jdbcType="VARCHAR" property="fullSpell" />
+    <result column="gould_id" jdbcType="VARCHAR" property="gouldId" />
+    <result column="phone" jdbcType="VARCHAR" property="phone" />
+
   </resultMap>
   <sql id="Base_Column_List">
     id, title, code, summary, description, weight, longitude, latitude, region_full_name, 
     region_full_code, region, address, created_date, created_user, updated_date, updated_user, 
-    dept_code, status,type,content,simple_spell,full_spell
+    dept_code, status,type,content,simple_spell,full_spell,gould_id,phone
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
     select 
@@ -46,7 +49,7 @@
       latitude, region_full_name, region_full_code, 
       region, address, created_date, 
       created_user, updated_date, updated_user, 
-      dept_code, status, content,type,simple_spell,full_spell
+      dept_code, status, content,type,simple_spell,full_spell,gould_id,phone
       )
     values (#{id,jdbcType=VARCHAR},#{title,jdbcType=VARCHAR}, #{code,jdbcType=VARCHAR}, #{summary,jdbcType=VARCHAR},
       #{description,jdbcType=VARCHAR}, #{weight,jdbcType=INTEGER}, #{longitude,jdbcType=DOUBLE}, 
@@ -54,7 +57,7 @@
       #{region,jdbcType=VARCHAR}, #{address,jdbcType=VARCHAR}, #{createdDate,jdbcType=TIMESTAMP}, 
       #{createdUser,jdbcType=VARCHAR}, #{updatedDate,jdbcType=TIMESTAMP}, #{updatedUser,jdbcType=VARCHAR}, 
       #{deptCode,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER}, #{content,jdbcType=LONGVARCHAR},#{type,jdbcType=VARCHAR},
-      #{simpleSpell,jdbcType=VARCHAR}, #{fullSpell,jdbcType=VARCHAR}
+      #{simpleSpell,jdbcType=VARCHAR}, #{fullSpell,jdbcType=VARCHAR},#{gouldId,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR}
       )
   </insert>
   <update id="updateByPrimaryKey" parameterType="cn.com.wanwei.bic.entity.TrafficAgentEntity">
@@ -144,5 +147,12 @@
         and (title like #{searchValue} or full_spell like #{searchValue} or simple_spell like #{searchValue})
       </if>
     </where>
+  </select>
+  <!--根据gouldId交通枢纽列表-->
+  <select id="findByGouldId" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from t_bic_traffic_agent
+    where gould_id = #{gouldId,jdbcType=VARCHAR}
   </select>
 </mapper>

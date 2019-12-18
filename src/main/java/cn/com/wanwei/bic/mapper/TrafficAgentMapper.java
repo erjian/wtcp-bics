@@ -66,4 +66,11 @@ public interface TrafficAgentMapper {
      * @return
      */
     List<TrafficAgentEntity> findBySearchValue(String searchValue);
+
+    /**
+     * 根据高德数据id查询数据列表
+     * @param gouldId
+     * @return
+     */
+    List<TrafficAgentEntity> findByGouldId(String gouldId);
 }

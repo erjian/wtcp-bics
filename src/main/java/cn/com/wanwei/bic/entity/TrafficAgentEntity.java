@@ -73,6 +73,12 @@ public class TrafficAgentEntity extends BaseEntity{
     @ApiModelProperty(value = "全拼",readOnly = true)
     private String fullSpell;
 
+    @ApiModelProperty(value = "高德数据id",readOnly = true)
+    private String gouldId;
+
+    @ApiModelProperty(value = "联系电话",readOnly = true)
+    private String phone;
+
     //冗余字段获取简拼（用来生成code）
     @Transient
     private String jpin;
@@ -80,4 +86,6 @@ public class TrafficAgentEntity extends BaseEntity{
     //冗余字段，关联素材的id
     @Transient
     private String timeId;
+
+
 }

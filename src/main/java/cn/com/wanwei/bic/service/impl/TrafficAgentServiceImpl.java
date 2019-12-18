@@ -6,6 +6,7 @@ import cn.com.wanwei.bic.feign.CoderServiceFeign;
 import cn.com.wanwei.bic.mapper.MaterialMapper;
 import cn.com.wanwei.bic.mapper.TrafficAgentMapper;
 import cn.com.wanwei.bic.model.DataBindModel;
+import cn.com.wanwei.bic.model.GouldModel;
 import cn.com.wanwei.bic.service.AuditLogService;
 import cn.com.wanwei.bic.service.TrafficAgentService;
 import cn.com.wanwei.bic.utils.PageUtils;
@@ -16,6 +17,8 @@ import cn.com.wanwei.common.model.User;
 import cn.com.wanwei.persistence.mybatis.MybatisPageRequest;
 import cn.com.wanwei.persistence.mybatis.PageInfo;
 import cn.com.wanwei.persistence.mybatis.utils.EscapeCharUtils;
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import lombok.extern.slf4j.Slf4j;
@@ -183,5 +186,44 @@ public class TrafficAgentServiceImpl implements TrafficAgentService {
             responseMessage.setData("暂无数据");
         }
         return responseMessage;
+    }
+
+    @Override
+    public ResponseMessage saveGouldTrafficData(GouldModel gouldModel,User user, Long ruleId, Integer appCode) {
+        JSONArray jsonArray = JSONObject.parseArray(gouldModel.getData());
+        jsonArray.forEach(array->{
+            JSONObject jsonObject = (JSONObject)array;
+            String gouldId = jsonObject.getString("id");
+            List<TrafficAgentEntity>  trafficAgentList = trafficAgentMapper.findByGouldId(gouldId);
+            if(null == trafficAgentList || trafficAgentList.size() == 0){
+                TrafficAgentEntity trafficAgentEntity = new TrafficAgentEntity();
+                String id = UUIDUtils.getInstance().getId();
+                trafficAgentEntity.setId(id);
+                trafficAgentEntity.setTitle(jsonObject.getString("name"));
+                trafficAgentEntity.setType(gouldModel.getType());
+                trafficAgentEntity.setGouldId(jsonObject.getString("id"));
+                trafficAgentEntity.setLatitude(jsonObject.getJSONObject("location").getDouble("lat"));
+                trafficAgentEntity.setLongitude(jsonObject.getJSONObject("location").getDouble("lng"));
+                trafficAgentEntity.setAddress(jsonObject.getString("address"));
+                trafficAgentEntity.setPhone(jsonObject.getString("tel"));
+                trafficAgentEntity.setRegion(jsonObject.getString("adcode"));
+                trafficAgentEntity.setRegionFullCode(String.format("%s,%s,%s",jsonObject.getString("adcode").substring(0,2),jsonObject.getString("adcode").substring(0,4),jsonObject.getString("adcode").substring(0,6)));
+                trafficAgentEntity.setRegionFullName(String.format("%s,%s,%s",jsonObject.getString("pname"),jsonObject.getString("cityname"),jsonObject.getString("adname")));
+                trafficAgentEntity.setStatus(0);
+                trafficAgentEntity.setWeight(0);
+                trafficAgentEntity.setCreatedUser(user.getUsername());
+                trafficAgentEntity.setCreatedDate(new Date());
+                trafficAgentEntity.setDeptCode(user.getOrg().getCode());
+                trafficAgentEntity.setFullSpell(PinyinUtil.getPingYin(trafficAgentEntity.getTitle()));
+                trafficAgentEntity.setSimpleSpell(PinyinUtil.getPinYinHeadChar(trafficAgentEntity.getTitle()));
+                ResponseMessage responseMessageOnlyCode = coderServiceFeign.buildSerialByCode(ruleId, appCode,"JTSN");
+                if (responseMessageOnlyCode.getStatus() == 1 && null != responseMessageOnlyCode.getData()) {
+                    trafficAgentEntity.setCode(responseMessageOnlyCode.getData().toString());
+                }
+                trafficAgentMapper.insert(trafficAgentEntity);
+            }
+        });
+        return ResponseMessage.defaultResponse().setMsg("高德交通数据批量保存成功!");
+
     }
 }
