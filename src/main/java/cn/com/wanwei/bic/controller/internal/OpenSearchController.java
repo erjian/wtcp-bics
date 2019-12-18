@@ -20,7 +20,7 @@ import java.util.stream.Collectors;
 @RestController
 @RefreshScope
 @RequestMapping("/public/search")
-@Api(value = "C端高德搜索数据保存", tags = "C端高德搜索数据保存")
+@Api(value = "C端高德搜索数据拉取", tags = "C端高德搜索数据拉取")
 public class OpenSearchController extends BaseController {
 
     @Autowired
@@ -29,8 +29,8 @@ public class OpenSearchController extends BaseController {
     @Autowired
     private TrafficType searchType;
 
-    @ApiOperation(value = "保存高德搜索数据", notes = "保存高德搜索数据")
-    @ApiImplicitParam(name = "GouldModel", value = "保存数据模型",required = true, dataType = "GouldModel")
+    @ApiOperation(value = "高德搜索数据拉取", notes = "高德搜索数据拉取")
+    @ApiImplicitParam(name = "GouldModel", value = "数据模型",required = true, dataType = "GouldModel")
     @RequestMapping(value="/save", method=RequestMethod.POST)
     public ResponseMessage getOne(@RequestBody GouldModel gouldModel) throws Exception {
         String trafficCodes = searchType.getTypeConfig().stream().map(m->String.valueOf(m.getCode())).collect(Collectors.joining(","));
