@@ -172,4 +172,14 @@
             </if>
         </where>
     </select>
+    <select id="findByDeptCode" resultType="java.lang.Long">
+        select count(0)
+        from t_bic_periphery
+        <where>
+            <if test="_parameter != null">
+                <bind name="_parameter" value="_parameter+'%'"></bind>
+                dept_code like #{_parameter}
+            </if>
+        </where>
+    </select>
 </mapper>

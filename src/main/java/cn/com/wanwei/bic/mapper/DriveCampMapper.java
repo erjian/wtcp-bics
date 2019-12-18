@@ -68,4 +68,11 @@ public interface DriveCampMapper {
      * @return
      */
     List<DriveCampEntity> findBySearchValue(String searchValue);
+
+    /**
+     * 自驾营地数量
+     * @param code 组织机构编码
+     * @return
+     */
+    Long findByDeptCode(String code);
 }

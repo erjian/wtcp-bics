@@ -67,4 +67,11 @@ public interface RentalCarMapper {
      * @return
      */
     List<RentalCarEntity> findByTitleAndIdNot(@Param(value="title")String title, @Param(value="id")String id);
+
+    /**
+     * 租车数量
+     * @param code 组织机构编码
+     * @return
+     */
+    Long findByDeptCode(String code);
 }

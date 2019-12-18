@@ -155,4 +155,14 @@
     from t_bic_traffic_agent
     where gould_id = #{gouldId,jdbcType=VARCHAR}
   </select>
+    <select id="findByDeptCode" resultType="java.lang.Long">
+      select count(0)
+      from t_bic_traffic_agent
+      <where>
+        <if test="_parameter != null">
+          <bind name="_parameter" value="_parameter+'%'"></bind>
+          dept_code like #{_parameter}
+        </if>
+      </where>
+    </select>
 </mapper>

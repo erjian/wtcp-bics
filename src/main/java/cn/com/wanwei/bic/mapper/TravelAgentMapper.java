@@ -71,4 +71,11 @@ public interface TravelAgentMapper {
      */
     @DataScope
     List<TravelAgentEntity> findBySearchValue(String searchValue);
+
+    /**
+     * 旅行社数量
+     * @param code 组织机构编码
+     * @return
+     */
+    Long findByDeptCode(String code);
 }

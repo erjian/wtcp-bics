@@ -84,4 +84,11 @@ public interface EntertainmentMapper {
      * @return
      */
     List<EntertainmentEntity> findPageIds(@Param("ids")List<String> ids, @Param("status")String status);
+
+    /**
+     * 休闲娱乐数量
+     * @param code 组织机构编码
+     * @return
+     */
+    Long findByDeptCode(String code);
 }

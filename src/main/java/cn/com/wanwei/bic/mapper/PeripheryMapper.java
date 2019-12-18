@@ -74,4 +74,11 @@ public interface PeripheryMapper {
      * @return
      */
     List<PeripheryEntity> findBySearchValue(@Param("type")String type, @Param("searchValue")String searchValue);
+
+    /**
+     * 周边数量
+     * @param code 组织机构编码
+     * @return
+     */
+    Long findByDeptCode(String code);
 }

@@ -73,4 +73,11 @@ public interface TrafficAgentMapper {
      * @return
      */
     List<TrafficAgentEntity> findByGouldId(String gouldId);
+
+    /**
+     * 交通枢纽数量
+     * @param code 组织机构编码
+     * @return
+     */
+    Long findByDeptCode(String code);
 }

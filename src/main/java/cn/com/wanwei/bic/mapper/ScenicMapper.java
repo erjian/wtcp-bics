@@ -114,4 +114,11 @@ public interface ScenicMapper {
      * @return 普通景区  or 旅游示范村
      */
     List<ScenicEntity> findBySearchValue(@Param("type")String type, @Param("searchValue")String searchValue);
+
+    /**
+     * 获取景区数量
+     * @param code 组织机构编码
+     * @return
+     */
+    Long findByDeptCode(String code);
 }
