@@ -54,4 +54,28 @@
       updated_date = #{updatedDate,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=VARCHAR}
   </update>
+
+  <!-- 辅助数据查询开始 -->
+  <select id="selectTableInfo" resultType="java.util.HashMap">
+    SELECT
+        TABLE_NAME AS tableName, TABLE_COMMENT AS tableDes
+    FROM
+        information_schema.`TABLES`
+    WHERE
+	    TABLE_NAME NOT LIKE '%_log' AND TABLE_NAME NOT LIKE '%_tags' AND TABLE_NAME LIKE 't_bic_%' AND  TABLE_SCHEMA = 'wtcp-bics'
+    ORDER BY TABLE_NAME ASC
+  </select>
+  <select id="selectColumnInfo" parameterType="java.lang.String" resultType="java.util.HashMap">
+    SELECT
+        COLUMN_NAME AS cName, COLUMN_COMMENT AS cDes
+    FROM
+        information_schema.`COLUMNS`
+    WHERE
+	    COLUMN_NAME NOT LIKE 'updated_%'
+	    AND COLUMN_NAME NOT LIKE 'created_%'
+	    AND COLUMN_NAME != 'id'
+	    AND TABLE_NAME = #{tableName,jdbcType=VARCHAR}
+        AND TABLE_SCHEMA = 'wtcp-bics'
+  </select>
+  <!-- 辅助数据查询结束 -->
 </mapper>

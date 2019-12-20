@@ -3,6 +3,9 @@ package cn.com.wanwei.bic.mapper;
 import cn.com.wanwei.bic.entity.ResourceConfigEntity;
 import org.apache.ibatis.annotations.Mapper;
 
+import java.util.List;
+import java.util.Map;
+
 @Mapper
 public interface ResourceConfigMapper {
 
@@ -34,4 +37,19 @@ public interface ResourceConfigMapper {
      * @return
      */
     int updateByPrimaryKey(ResourceConfigEntity record);
+
+    /**
+     * 查询表信息
+     * @author linjw 2019年12月20日17:03:42
+     * @return
+     */
+    List<Map<String, Object>> selectTableInfo();
+
+    /**
+     * 根据表名查询对应的字段信息
+     * @author linjw 2019年12月20日17:04:18
+     * @param tableName
+     * @return
+     */
+    List<Map<String, Object>> selectColumnInfo(String tableName);
 }
