@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.com.wanwei.bic.mapper.ResourceConfigMapper">
+  <resultMap id="BaseResultMap" type="cn.com.wanwei.bic.entity.ResourceConfigEntity">
+    <id column="id" jdbcType="VARCHAR" property="id" />
+    <result column="code" jdbcType="VARCHAR" property="code" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="parent_code" jdbcType="VARCHAR" property="parentCode" />
+    <result column="query_way" jdbcType="VARCHAR" property="queryWay" />
+    <result column="table_name" jdbcType="VARCHAR" property="tableName" />
+    <result column="column_name" jdbcType="VARCHAR" property="columnName" />
+    <result column="created_user" jdbcType="VARCHAR" property="createdUser" />
+    <result column="created_date" jdbcType="TIMESTAMP" property="createdDate" />
+    <result column="updated_user" jdbcType="VARCHAR" property="updatedUser" />
+    <result column="updated_date" jdbcType="TIMESTAMP" property="updatedDate" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, code, name, parent_code, query_way, table_name, column_name, created_user, created_date, 
+    updated_user, updated_date
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_bic_resource_config
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <select id="selectByCode" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from t_bic_resource_config
+    where code = #{code,jdbcType=VARCHAR}
+  </select>
+  <insert id="insert" parameterType="cn.com.wanwei.bic.entity.ResourceConfigEntity">
+    insert into t_bic_resource_config (code, name, parent_code, 
+      query_way, table_name, column_name, 
+      created_user, created_date, updated_user, 
+      updated_date)
+    values (#{code,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{parentCode,jdbcType=VARCHAR}, 
+      #{queryWay,jdbcType=VARCHAR}, #{tableName,jdbcType=VARCHAR}, #{columnName,jdbcType=VARCHAR}, 
+      #{createdUser,jdbcType=VARCHAR}, #{createdDate,jdbcType=TIMESTAMP}, #{updatedUser,jdbcType=VARCHAR}, 
+      #{updatedDate,jdbcType=TIMESTAMP})
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="cn.com.wanwei.bic.entity.ResourceConfigEntity">
+    update t_bic_resource_config
+    set code = #{code,jdbcType=VARCHAR},
+      name = #{name,jdbcType=VARCHAR},
+      parent_code = #{parentCode,jdbcType=VARCHAR},
+      query_way = #{queryWay,jdbcType=VARCHAR},
+      table_name = #{tableName,jdbcType=VARCHAR},
+      column_name = #{columnName,jdbcType=VARCHAR},
+      created_user = #{createdUser,jdbcType=VARCHAR},
+      created_date = #{createdDate,jdbcType=TIMESTAMP},
+      updated_user = #{updatedUser,jdbcType=VARCHAR},
+      updated_date = #{updatedDate,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>
