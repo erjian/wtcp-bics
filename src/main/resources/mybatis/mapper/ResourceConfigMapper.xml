@@ -31,11 +31,11 @@
     where code = #{code,jdbcType=VARCHAR}
   </select>
   <insert id="insert" parameterType="cn.com.wanwei.bic.entity.ResourceConfigEntity">
-    insert into t_bic_resource_config (code, name, parent_code, 
+    insert into t_bic_resource_config (id, code, name, parent_code,
       query_way, table_name, column_name, 
       created_user, created_date, updated_user, 
       updated_date)
-    values (#{code,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{parentCode,jdbcType=VARCHAR}, 
+    values (#{id,jdbcType=VARCHAR}, #{code,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{parentCode,jdbcType=VARCHAR},
       #{queryWay,jdbcType=VARCHAR}, #{tableName,jdbcType=VARCHAR}, #{columnName,jdbcType=VARCHAR}, 
       #{createdUser,jdbcType=VARCHAR}, #{createdDate,jdbcType=TIMESTAMP}, #{updatedUser,jdbcType=VARCHAR}, 
       #{updatedDate,jdbcType=TIMESTAMP})
