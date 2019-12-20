@@ -68,8 +68,6 @@ public class CommonServiceImpl<T> implements CommonService<T> {
             // 获取数据信息
             FindStatusModel statusModel = commonMapper.findById(id, tableName);
             if (null != statusModel) {
-//                JSONObject jsonObject = JSONObject.parseObject(JSON.toJSONString(entityMap.get("status")));
-//                Integer preStatus = Integer.parseInt(entityMap.get("status").toString());
                 // 进行上下线操作时，必须是审核通过的
                 if (batchAuditModel.getType() == 1 && statusModel.getStatus() == 0) {
                     flag = true;

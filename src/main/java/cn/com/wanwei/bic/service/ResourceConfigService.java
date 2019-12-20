@@ -55,4 +55,21 @@ public interface ResourceConfigService {
 	 * @return
 	 */
 	ResponseMessage selectByCode(String code) throws Exception;
+
+	/**
+	 * 查询表信息
+	 * @auth linjw 2019年12月20日16:32:29
+	 * @return
+	 * @throws Exception
+	 */
+	ResponseMessage selectTableInfo() throws Exception;
+
+	/**
+	 * 根据表名查询相应的字段信息
+	 * @auth linjw 2019年12月20日17:05:33
+	 * @param tableName
+	 * @return
+	 * @throws Exception
+	 */
+	ResponseMessage selectColumnInfo(String tableName) throws Exception;
 }

@@ -3,18 +3,30 @@ package cn.com.wanwei.bic.service;
 import cn.com.wanwei.common.model.ResponseMessage;
 import cn.com.wanwei.common.model.User;
 
+import java.util.Map;
+
 public interface ResourceService {
     /**
      * 获取饼状图数据
      * @param user 用户
+     * @param queryModel 查询参数
      * @return
      */
-    ResponseMessage findByPieChart(User user);
+    ResponseMessage findByPieChart(User user, Map<String, Object> queryModel);
 
     /**
-     * 获取柱状图
-     * @param user 用户
+     * 根据资源code和当前登录用户获取饼状图数据
+     * @author linjw 2019年12月20日09:05:47
+     * @param currentUser
+     * @param code
      * @return
      */
-    ResponseMessage findByHistogram(User user);
+    ResponseMessage initPieByCode(User currentUser, String code, Integer size);
+
+//    /**
+//     * 获取柱状图
+//     * @param user 用户
+//     * @return
+//     */
+//    ResponseMessage findByHistogram(User user);
 }

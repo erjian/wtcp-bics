@@ -31,11 +31,11 @@
     where code = #{code,jdbcType=VARCHAR}
   </select>
   <insert id="insert" parameterType="cn.com.wanwei.bic.entity.ResourceConfigEntity">
-    insert into t_bic_resource_config (code, name, parent_code, 
+    insert into t_bic_resource_config (id, code, name, parent_code,
       query_way, table_name, column_name, 
       created_user, created_date, updated_user, 
       updated_date)
-    values (#{code,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{parentCode,jdbcType=VARCHAR}, 
+    values (#{id,jdbcType=VARCHAR}, #{code,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{parentCode,jdbcType=VARCHAR},
       #{queryWay,jdbcType=VARCHAR}, #{tableName,jdbcType=VARCHAR}, #{columnName,jdbcType=VARCHAR}, 
       #{createdUser,jdbcType=VARCHAR}, #{createdDate,jdbcType=TIMESTAMP}, #{updatedUser,jdbcType=VARCHAR}, 
       #{updatedDate,jdbcType=TIMESTAMP})
@@ -54,4 +54,28 @@
       updated_date = #{updatedDate,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=VARCHAR}
   </update>
+
+  <!-- 辅助数据查询开始 -->
+  <select id="selectTableInfo" resultType="java.util.HashMap">
+    SELECT
+        TABLE_NAME AS tableName, TABLE_COMMENT AS tableDes
+    FROM
+        information_schema.`TABLES`
+    WHERE
+	    TABLE_NAME NOT LIKE '%_log' AND TABLE_NAME NOT LIKE '%_tags' AND TABLE_NAME LIKE 't_bic_%' AND  TABLE_SCHEMA = 'wtcp-bics'
+    ORDER BY TABLE_NAME ASC
+  </select>
+  <select id="selectColumnInfo" parameterType="java.lang.String" resultType="java.util.HashMap">
+    SELECT
+        COLUMN_NAME AS cName, COLUMN_COMMENT AS cDes
+    FROM
+        information_schema.`COLUMNS`
+    WHERE
+	    COLUMN_NAME NOT LIKE 'updated_%'
+	    AND COLUMN_NAME NOT LIKE 'created_%'
+	    AND COLUMN_NAME != 'id'
+	    AND TABLE_NAME = #{tableName,jdbcType=VARCHAR}
+        AND TABLE_SCHEMA = 'wtcp-bics'
+  </select>
+  <!-- 辅助数据查询结束 -->
 </mapper>

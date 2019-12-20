@@ -60,11 +60,29 @@ public class ResourceConfigServiceImpl implements ResourceConfigService {
 
     @Override
     public ResponseMessage selectByPrimaryKey(String id) throws Exception {
-        return ResponseMessage.defaultResponse().setData(resourceConfigMapper.selectByPrimaryKey(id));
+        ResourceConfigEntity entity = resourceConfigMapper.selectByPrimaryKey(id);
+        if(null == entity){
+            return ResponseMessage.validFailResponse().setMsg("该配置信息不存在");
+        }
+        return ResponseMessage.defaultResponse().setData(entity);
     }
 
     @Override
     public ResponseMessage selectByCode(String code) throws Exception {
-        return ResponseMessage.defaultResponse().setData(resourceConfigMapper.selectByCode(code));
+        ResourceConfigEntity entity = resourceConfigMapper.selectByCode(code);
+        if(null == entity){
+            return ResponseMessage.validFailResponse().setMsg("该配置信息不存在");
+        }
+        return ResponseMessage.defaultResponse().setData(entity);
+    }
+
+    @Override
+    public ResponseMessage selectTableInfo() throws Exception {
+        return ResponseMessage.defaultResponse().setData(resourceConfigMapper.selectTableInfo());
+    }
+
+    @Override
+    public ResponseMessage selectColumnInfo(String tableName) throws Exception {
+        return ResponseMessage.defaultResponse().setData(resourceConfigMapper.selectColumnInfo(tableName));
     }
 }

@@ -316,14 +316,19 @@
             </if>
         </where>
     </select>
-    <select id="findByDeptCode" resultType="java.lang.Long">
-        select count(0)
-        from t_bic_scenic
+
+    <select id="getCount" resultType="java.lang.Long" parameterType="java.util.Map">
+        select count(1)
+        from ${table}
         <where>
-            <if test="_parameter != null">
-                <bind name="_parameter" value="_parameter+'%'"></bind>
-                dept_code like #{_parameter}
+            <if test="deptCode != null and deptCode != ''">
+                <bind name="deptCode" value="deptCode+'%'"></bind>
+                and dept_code like #{deptCode}
+            </if>
+            <if test="column != null and column != '' and typeVal != null and typeVal != ''">
+                and ${column} = #{typeVal,jdbcType=VARCHAR}
             </if>
         </where>
     </select>
+
 </mapper>

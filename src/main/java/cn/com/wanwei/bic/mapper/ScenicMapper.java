@@ -116,9 +116,10 @@ public interface ScenicMapper {
     List<ScenicEntity> findBySearchValue(@Param("type")String type, @Param("searchValue")String searchValue);
 
     /**
-     * 获取景区数量
-     * @param code 组织机构编码
+     * 获取统计数据
+     * @author linjw 2019年12月19日15:15:15
+     * @param map
      * @return
      */
-    Long findByDeptCode(String code);
+    Long getCount(Map<String, Object> map);
 }

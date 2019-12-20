@@ -1,17 +1,18 @@
 package cn.com.wanwei.bic.service.impl;
 
-import cn.com.wanwei.bic.feign.AuthServiceFeign;
-import cn.com.wanwei.bic.mapper.*;
+import cn.com.wanwei.bic.mapper.ScenicMapper;
 import cn.com.wanwei.bic.service.ResourceService;
+import cn.com.wanwei.bic.service.ScenicService;
 import cn.com.wanwei.common.model.ResponseMessage;
 import cn.com.wanwei.common.model.User;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -26,117 +27,74 @@ public class ResourceServiceImpl implements ResourceService {
     @Autowired
     private ScenicMapper scenicMapper;
 
-    @Autowired
-    private PeripheryMapper peripheryMapper;
-
-    @Autowired
-    private TravelAgentMapper travelAgentMapper;
-
-    @Autowired
-    private RentalCarMapper rentalCarMapper;
-
-    @Autowired
-    private TrafficAgentMapper trafficAgentMapper;
-
-    @Autowired
-    private EntertainmentMapper entertainmentMapper;
-
-    @Autowired
-    private DriveCampMapper driveCampMapper;
-
-    @Autowired
-    private AuthServiceFeign authServiceFeign;
+    private final String prefix = "t_bic_";
 
     @Override
-    public ResponseMessage findByPieChart(User user) {
-        List<Map<String, Object>> list = new ArrayList<>();
-        Map<String, Object> map1 = new HashMap<>();
-        Long scenicCount = scenicMapper.findByDeptCode(user.getOrg().getCode());
-        map1.put("value", scenicCount);
-        map1.put("name", "景区");
+    public ResponseMessage findByPieChart(User user, Map<String, Object> queryModel) {
+
+        //1、获取查询参数
+        List<Map<String, Object>> resourceList = (List<Map<String, Object>>)queryModel.get("resource_list");
+
+        //2、循环查询数据并进行相应的赋值
+        if(CollectionUtils.isNotEmpty(resourceList)){
+            for(Map<String, Object> map:resourceList){
+                if(user.getDsType() != 1){
+                    map.put("deptCode", user.getOrg().getCode());
+                }
+                String table = String.valueOf(map.get("table"));
+                if(table.indexOf(prefix) == -1){
+                    map.put("table", prefix.concat(table));
+                }
+                Long count = scenicMapper.getCount(map);
+                if(!count.equals(0)){
+                    map.put("value", count);
+                }
+            }
+        }
+        return ResponseMessage.defaultResponse().setData(resourceList);
+    }
+
+    @Override
+    public ResponseMessage initPieByCode(User currentUser, String code, Integer size) {
+        //1、从资源配置表中获取当前资源code相关的配置
+//        ResourceConfigEntity entity = resourceConfigMapper.selectByCode(code);
+        //2、判断当前资源相关配置是否为空
+//        if(null == entity){
+//            return ResponseMessage.validFailResponse().setMsg("当前资源没有相关配置");
+//        }
+        //3、判断当前资源的下级资源是否全部配置
+//        List<ResourceConfigEntity> entities = resourceConfigMapper.selectByParentCode(code);
+//        if(CollectionUtils.isEmpty(entities) || entities.size() < size){
+//            return ResponseMessage.validFailResponse().setMsg("当前资源的下级资源没有配置完全");
+//        }
+        /**
+         * 假设当前code就是景区且已经进行了相关配置：单表查询1，表名 t_bic_scenic,类型字段名 category
+         * 类型对应关系{name: '普通景区', code: '125001001'},{name: '旅游示范村', code: '125001002'}
+         */
+        List<Map<String, Object>> list = Lists.newArrayList();
+        Map<String, Object> map1 = Maps.newHashMap();
+        map1.put("name","普通景区");
+        map1.put("code","125001001");
+        map1.put("table","t_bic_scenic");
+        map1.put("column","category");
+        map1.put("typeVal","125001001");
+        Map<String, Object> map2 = Maps.newHashMap();
+        map2.put("name","旅游示范村");
+        map2.put("code","125001002");
+        map2.put("table","t_bic_scenic");
+        map2.put("column","category");
+        map2.put("typeVal","125001002");
         list.add(map1);
-        Long peripheryCount = peripheryMapper.findByDeptCode(user.getOrg().getCode());
-        Map<String, Object> map2 = new HashMap<>();
-        map2.put("value", peripheryCount);
-        map2.put("name", "周边");
         list.add(map2);
-        Long travelCount = travelAgentMapper.findByDeptCode(user.getOrg().getCode());
-        Map<String, Object> map3 = new HashMap<>();
-        map3.put("value", travelCount);
-        map3.put("name", "从业");
-        list.add(map3);
-        Long rentalCount = rentalCarMapper.findByDeptCode(user.getOrg().getCode());
-        Long trafficCount = trafficAgentMapper.findByDeptCode(user.getOrg().getCode());
-        Map<String, Object> map4 = new HashMap<>();
-        map4.put("value", rentalCount + trafficCount);
-        map4.put("name", "出行");
-        list.add(map4);
-        Long entertainmentCount = entertainmentMapper.findByDeptCode(user.getOrg().getCode());
-        Long driveCount = driveCampMapper.findByDeptCode(user.getOrg().getCode());
-        Map<String, Object> map5 = new HashMap<>();
-        map5.put("value", entertainmentCount + driveCount);
-        map5.put("name", "休闲娱乐");
-        list.add(map5);
+
+        for(Map<String, Object> map:list){
+            if(currentUser.getDsType() != 1){
+                map.put("deptCode", currentUser.getOrg().getCode());
+            }
+            Long count = scenicMapper.getCount(map);
+            map.put("value", (null == count || count.equals(0))?0:count);
+        }
         return ResponseMessage.defaultResponse().setData(list);
-    }
-
-    @Override
-    public ResponseMessage findByHistogram(User user) {
-        Map<String, Object> nameMap = new HashMap<>();
-        List<String> nameList = new ArrayList<>();
-        List<String> codeList = new ArrayList<>();
-        nameMap.put("deptName", nameList);
-        //获取组织机构数据
-        ResponseMessage responseMessage = authServiceFeign.findByDeptCode(user.getOrg().getCode());
-        List<Map<String, String>> list = (List<Map<String, String>>) responseMessage.getData();
-        for (Map<String, String> map : list) {
-            nameList.add(map.get("name"));
-            codeList.add(map.get("code"));
-        }
-        Map<String, Object> histogramMap = this.histogramData(codeList, user);
-        histogramMap.put("deptName", nameList);
-        return ResponseMessage.defaultResponse().setData(histogramMap);
-    }
-
-    /**
-     * 景区、周边、从业、出行、休闲娱乐的数量
-     *
-     * @param codeList 组织机构编码
-     * @param user     用户
-     * @return Map
-     */
-    private Map<String, Object> histogramData(List<String> codeList, User user) {
-        Map<String, Object> map = new HashMap<>();
-        // 景区
-        List<Long> scenicList = new ArrayList<>();
-        // 周边
-        List<Long> peripheryList = new ArrayList<>();
-        //从业
-        List<Long> employedList = new ArrayList<>();
-        // 出行
-        List<Long> travelList = new ArrayList<>();
-        // 休闲娱乐
-        List<Long> entertainmentList = new ArrayList<>();
-        for (String deptCode : codeList) {
-            Long scenicCount = scenicMapper.findByDeptCode(deptCode);
-            scenicList.add(scenicCount);
-            Long peripheryCount = peripheryMapper.findByDeptCode(user.getOrg().getCode());
-            peripheryList.add(peripheryCount);
-            Long travelCount = travelAgentMapper.findByDeptCode(user.getOrg().getCode());
-            employedList.add(travelCount);
-            Long rentalCount = rentalCarMapper.findByDeptCode(user.getOrg().getCode());
-            Long trafficCount = trafficAgentMapper.findByDeptCode(user.getOrg().getCode());
-            travelList.add(rentalCount + trafficCount);
-            Long entertainmentCount = entertainmentMapper.findByDeptCode(user.getOrg().getCode());
-            Long driveCount = driveCampMapper.findByDeptCode(user.getOrg().getCode());
-            entertainmentList.add(entertainmentCount + driveCount);
-        }
-        map.put("景区", scenicList);
-        map.put("周边", peripheryList);
-        map.put("从业", employedList);
-        map.put("出行", travelList);
-        map.put("休闲", entertainmentList);
-        return map;
     }
 
 }
