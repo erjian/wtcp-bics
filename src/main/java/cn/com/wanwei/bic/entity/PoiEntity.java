@@ -41,6 +41,12 @@ public class PoiEntity extends CommonEntity {
     @ApiModelProperty(value = "景区名称")
     private String scenicName;
 
+    @ApiModelProperty(value = "男坑位数")
+    private Integer manPit;
+
+    @ApiModelProperty(value = "女坑位数")
+    private Integer womanPit;
+
     //冗余字段，关联素材的id
     @Transient
     private String timeId;
