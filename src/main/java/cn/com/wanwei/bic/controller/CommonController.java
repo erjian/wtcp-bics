@@ -14,7 +14,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
 
 @Slf4j
 @RestController
@@ -31,12 +34,21 @@ public class CommonController extends BaseController {
     @OperationLog(value = "wtcp-bic/信息批量审核&上线", module = "信息批量审核&上线")
     @PreAuthorize("hasAuthority('commonInfo:be') or hasAuthority('commonInfo:bo')")
     @PutMapping("/batchChangeStatus")
-    public ResponseMessage batchChangeStatus(@RequestBody BatchAuditModel batchAuditModel) throws Exception {
-        Class clazz = SpringContextUtil.getBean(String.format("%sEntity", batchAuditModel.getClassPrefixName())).getClass();
-        if (null != clazz) {
-            return commonService.batchChangeStatus(batchAuditModel, getCurrentUser(), clazz);
+    public ResponseMessage batchChangeStatus(@RequestBody @Valid BatchAuditModel batchAuditModel, BindingResult bindingResult) throws Exception {
+        if (bindingResult.hasErrors()) {
+            return ResponseMessage.validFailResponse().setMsg(bindingResult.getAllErrors());
         }
-        return ResponseMessage.validFailResponse().setMsg("参数错误");
+        ResponseMessage responseMessage = ResponseMessage.defaultResponse();
+        Class clazz = null;
+        try{
+            clazz = Class.forName(String.format("cn.com.wanwei.bic.entity.%sEntity", batchAuditModel.getClassPrefixName()));
+        }catch (ClassNotFoundException e){
+            responseMessage.setStatus(ResponseMessage.FAILED).setMsg("参数错误");
+        }
+        if (null != clazz) {
+            responseMessage = commonService.batchChangeStatus(batchAuditModel, getCurrentUser(), clazz);
+        }
+        return responseMessage;
     }
 
 }

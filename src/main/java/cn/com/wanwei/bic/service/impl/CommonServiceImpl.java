@@ -5,12 +5,16 @@ import cn.com.wanwei.bic.mapper.AuditLogMapper;
 import cn.com.wanwei.bic.mapper.CommonMapper;
 import cn.com.wanwei.bic.mapper.ScenicMapper;
 import cn.com.wanwei.bic.model.BatchAuditModel;
+import cn.com.wanwei.bic.model.FindStatusModel;
 import cn.com.wanwei.bic.model.WeightModel;
 import cn.com.wanwei.bic.service.CommonService;
 import cn.com.wanwei.bic.utils.UUIDUtils;
 import cn.com.wanwei.common.model.ResponseMessage;
 import cn.com.wanwei.common.model.User;
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.google.common.collect.Maps;
+import io.swagger.models.auth.In;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -62,11 +66,12 @@ public class CommonServiceImpl<T> implements CommonService<T> {
         boolean flag = false;
         for (String id : batchAuditModel.getIds()) {
             // 获取数据信息
-            Map<String, Object> entityMap = commonMapper.findById(id, tableName);
-            if (null != entityMap && entityMap.containsKey("status")) {
-                Integer preStatus = Integer.valueOf(entityMap.get("status").toString());
+            FindStatusModel statusModel = commonMapper.findById(id, tableName);
+            if (null != statusModel) {
+//                JSONObject jsonObject = JSONObject.parseObject(JSON.toJSONString(entityMap.get("status")));
+//                Integer preStatus = Integer.parseInt(entityMap.get("status").toString());
                 // 进行上下线操作时，必须是审核通过的
-                if (batchAuditModel.getType() == 1 && preStatus == 0) {
+                if (batchAuditModel.getType() == 1 && statusModel.getStatus() == 0) {
                     flag = true;
                     continue;
                 }
@@ -74,7 +79,7 @@ public class CommonServiceImpl<T> implements CommonService<T> {
                 int successNum = commonMapper.updateById(this.makeParams(id, batchAuditModel.getStatus(), user, tableName));
                 // 记录操作流水
                 if (successNum > 0) {
-                    this.saveAuditLog(id, preStatus, batchAuditModel, user);
+                    this.saveAuditLog(id, statusModel.getStatus(), batchAuditModel, user);
                 }
             }
         }
