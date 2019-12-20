@@ -15,8 +15,6 @@ public interface AuditLogMapper {
 
     AuditLogEntity selectByPrimaryKey(String id);
 
-    int updateByPrimaryKey(AuditLogEntity record);
-
     /**
      * 审核记录管理分页列表
      * @param filter

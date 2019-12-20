@@ -1,29 +1,35 @@
-/**
- * 该源代码文件 CommonServiceImpl.java 是工程“wtcp-bics”的一部分。
- *
- * @project wtcp-bics
- * @author linjw
- * @date 2019年10月14日10:31:49
- */
 package cn.com.wanwei.bic.service.impl;
 
+import cn.com.wanwei.bic.entity.AuditLogEntity;
+import cn.com.wanwei.bic.mapper.AuditLogMapper;
+import cn.com.wanwei.bic.mapper.CommonMapper;
 import cn.com.wanwei.bic.mapper.ScenicMapper;
+import cn.com.wanwei.bic.model.BatchAuditModel;
 import cn.com.wanwei.bic.model.WeightModel;
 import cn.com.wanwei.bic.service.CommonService;
+import cn.com.wanwei.bic.utils.UUIDUtils;
 import cn.com.wanwei.common.model.ResponseMessage;
 import cn.com.wanwei.common.model.User;
+import com.google.common.collect.Maps;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.Table;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class CommonServiceImpl<T> implements CommonService<T> {
 
     @Autowired
     private ScenicMapper scenicMapper;
+
+    @Autowired
+    private CommonMapper commonMapper;
+
+    @Autowired
+    private AuditLogMapper auditLogMapper;
 
     @Override
     public ResponseMessage changeWeight(WeightModel weightModel, User user, Class<T> clazz) throws Exception {
@@ -49,8 +55,63 @@ public class CommonServiceImpl<T> implements CommonService<T> {
         return ResponseMessage.defaultResponse().setMsg("权重修改成功！");
     }
 
+    @Override
+    public ResponseMessage batchChangeStatus(BatchAuditModel batchAuditModel, User user, Class<T> clazz) {
+        ResponseMessage responseMessage = ResponseMessage.defaultResponse();
+        String tableName = getTableName(clazz);
+        boolean flag = false;
+        for (String id : batchAuditModel.getIds()) {
+            // 获取数据信息
+            Map<String, Object> entityMap = commonMapper.findById(id, tableName);
+            if (null != entityMap && entityMap.containsKey("status")) {
+                Integer preStatus = Integer.valueOf(entityMap.get("status").toString());
+                // 进行上下线操作时，必须是审核通过的
+                if (batchAuditModel.getType() == 1 && preStatus == 0) {
+                    flag = true;
+                    continue;
+                }
+                // 更新状态
+                int successNum = commonMapper.updateById(this.makeParams(id, batchAuditModel.getStatus(), user, tableName));
+                // 记录操作流水
+                if (successNum > 0) {
+                    this.saveAuditLog(id, preStatus, batchAuditModel, user);
+                }
+            }
+        }
+        String backMsg = "操作成功";
+        if (batchAuditModel.getType() == 0) {
+            backMsg = "审核成功";
+        } else if (batchAuditModel.getType() == 1) {
+            backMsg = flag ? "操作成功，已过滤未审核通过的数据" : backMsg;
+        }
+        return responseMessage.setMsg(backMsg);
+    }
+
+    private Map<String, Object> makeParams(String id, Integer status, User user, String tableName) {
+        Map<String, Object> params = Maps.newHashMap();
+        params.put("tableName", tableName);
+        params.put("id", id);
+        params.put("status", status);
+        params.put("updatedDate", new Date());
+        params.put("updatedUser", user.getUsername());
+        return params;
+    }
+
+    private void saveAuditLog(String id, Integer preStatus, BatchAuditModel batchAuditModel, User user) {
+        AuditLogEntity auditLogEntity = new AuditLogEntity();
+        auditLogEntity.setId(UUIDUtils.getInstance().getId());
+        auditLogEntity.setCreatedDate(new Date());
+        auditLogEntity.setCreatedUser(user.getUsername());
+        auditLogEntity.setPreStatus(preStatus);
+        auditLogEntity.setStatus(batchAuditModel.getStatus());
+        auditLogEntity.setPrincipalId(id);
+        auditLogEntity.setType(batchAuditModel.getType());
+        auditLogEntity.setOpinion(batchAuditModel.getMsg());
+        auditLogMapper.insert(auditLogEntity);
+    }
+
     private String getTableName(Class<T> clazz) {
-        if(clazz.isAnnotationPresent(Table.class)){
+        if (clazz.isAnnotationPresent(Table.class)) {
             return clazz.getAnnotation(Table.class).name();
         }
         return null;
