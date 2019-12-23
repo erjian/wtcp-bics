@@ -131,6 +131,12 @@
                     and 9 > status
                 </if>
             </if>
+            <if test="excludeIds != null">
+                and id not in
+                <foreach collection="excludeIds" item="item" index="index" open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
         </where>
     </select>
     <select id="checkTitle" parameterType="java.lang.String" resultMap="BaseResultMap">

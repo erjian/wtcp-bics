@@ -5,10 +5,12 @@ import cn.com.wanwei.bic.utils.PageUtils;
 import cn.com.wanwei.common.log.annotation.OperationLog;
 import cn.com.wanwei.common.model.ResponseMessage;
 import cn.com.wanwei.common.utils.RequestUtil;
+import cn.com.wanwei.persistence.mybatis.utils.DataScopeUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
@@ -16,6 +18,8 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Collections;
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -37,6 +41,7 @@ public class RpcPoiController {
     @OperationLog(value = "wtcp-bics/获取POI分页列表", operate = "r", module = "poi管理")
     public ResponseMessage findByPage(@RequestParam(value = "page", defaultValue = "0") Integer page,
                                       @RequestParam(value = "size", defaultValue = "10") Integer size,
+                                      @RequestParam(name = "要排除的id集合", required = false) List<String> excludeIds,
                                       HttpServletRequest request) throws Exception {
         Map<String, Object> filter = RequestUtil.getParameters(request);
         PageUtils.getInstance().setToken(filter);
@@ -44,6 +49,9 @@ public class RpcPoiController {
         String statusKey = "status";
         if(!filter.containsKey(statusKey) || null == filter.get(statusKey)){
             filter.put("status", 9);
+        }
+        if(null != excludeIds && !CollectionUtils.isEmpty(excludeIds)){
+            filter.put("excludeIds", excludeIds);
         }
         return poiService.findByPage(page, size, filter);
     }
