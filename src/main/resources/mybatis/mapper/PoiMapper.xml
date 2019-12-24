@@ -104,6 +104,14 @@
         </foreach>
     </update>
     <select id="findByPage" parameterType="java.util.Map" resultMap="BaseResultMap">
+        <include refid="Get_Page_Info"/>
+    </select>
+
+    <select id="findByPageForFeign" parameterType="java.util.Map" resultMap="BaseResultMap">
+        <include refid="Get_Page_Info"/>
+    </select>
+
+    <sql id="Get_Page_Info">
         select
         <include refid="Base_Column_List"/>
         from t_bic_poi
@@ -138,7 +146,8 @@
                 </foreach>
             </if>
         </where>
-    </select>
+    </sql>
+
     <select id="checkTitle" parameterType="java.lang.String" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>

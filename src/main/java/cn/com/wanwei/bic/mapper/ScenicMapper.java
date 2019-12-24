@@ -30,6 +30,8 @@ public interface ScenicMapper {
     @DataScope
     Page<ScenicEntity> findByPage(Map<String, Object> filter);
 
+    Page<ScenicEntity> findByPageForFeign(Map<String, Object> filter);
+
     /**
      * 关联机构
      * @param updatedUser

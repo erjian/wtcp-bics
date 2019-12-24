@@ -73,10 +73,24 @@ public class DestinationServiceImpl implements DestinationService {
      */
     @Override
     public ResponseMessage findByPage(Integer page, Integer size, Map<String, Object> filter) throws Exception {
+        return getPageInfo(page, size, filter,null);
+    }
+
+    @Override
+    public ResponseMessage findByPageForFeign(Integer page, Integer size, Map<String, Object> filter) throws Exception {
+        return getPageInfo(page, size, filter,"feign");
+    }
+
+    private ResponseMessage getPageInfo(Integer page, Integer size, Map<String, Object> filter, String type){
         EscapeCharUtils.escape(filter, "regionFullName");
         MybatisPageRequest pageRequest = PageUtils.getInstance().setPage(page, size, filter, Sort.Direction.DESC, "created_date", "updated_date");
-        Page<DestinationEntity> DestinationEntities = destinationMapper.findByPage(filter);
-        PageInfo<DestinationEntity> pageInfo = new PageInfo<>(DestinationEntities, pageRequest);
+        Page<DestinationEntity> destinationEntities = null;
+        if(StringUtils.isNotEmpty(type) && "feign".equalsIgnoreCase(type)){
+            destinationEntities = destinationMapper.findByPageForFeign(filter);
+        }else{
+            destinationEntities = destinationMapper.findByPage(filter);
+        }
+        PageInfo<DestinationEntity> pageInfo = new PageInfo<>(destinationEntities, pageRequest);
         return ResponseMessage.defaultResponse().setData(pageInfo);
     }
 

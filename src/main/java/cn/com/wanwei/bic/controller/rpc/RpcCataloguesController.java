@@ -65,27 +65,35 @@ public class RpcCataloguesController {
     })
     @GetMapping("/getDataByType")
     public ResponseMessage getDataByType(@RequestParam String type, String searchValue) throws Exception {
+        ResponseMessage responseMessage = ResponseMessage.defaultResponse();
         switch (type) {
             case SCENIC_TYPE:
-                return scenicService.findBySearchValue(type,searchValue); //普通景区
             case TOUR_VILLAGE_TYPE:
-                return scenicService.findBySearchValue(type,searchValue); //旅游示范村
+                responseMessage = scenicService.findBySearchValue(type,searchValue); //旅游示范村
+                break;
             case TRAVEL_TYPE:
-                return travelAgentService.findBySearchValue(searchValue);  // 旅行社
+                responseMessage =  travelAgentService.findBySearchValue(searchValue);  // 旅行社
+                break;
             case FOOD_TYPE:
-                return peripheryService.findBySearchValue(type, searchValue); // 餐饮服务
             case SHOPPING_TYPE:
-                return peripheryService.findBySearchValue(type, searchValue);  // 购物
+                responseMessage =  peripheryService.findBySearchValue(type, searchValue);  // 购物
+                break;
             case AGRITAINMENT_TYPE:
-                return entertainmentService.findBySearchValue(type, searchValue);  // 农家乐
+                responseMessage =  entertainmentService.findBySearchValue(type, searchValue);  // 农家乐
+                break;
             case RENTAL_CAR_TYPE:
-                return rentalCarService.findBySearchValue(searchValue);  // 租车
+                responseMessage =  rentalCarService.findBySearchValue(searchValue);  // 租车
+                break;
             case TRAFFIC_AGENT_TYPE:
-                return trafficAgentService.findBySearchValue(searchValue);  // 交通枢纽
+                responseMessage =  trafficAgentService.findBySearchValue(searchValue);  // 交通枢纽
+                break;
             case DRIVE_CAMP_TYPE:
-                return driveCampService.findBySearchValue(searchValue);  // 自驾营地
+                responseMessage =  driveCampService.findBySearchValue(searchValue);  // 自驾营地
+                break;
             default:
-                return ResponseMessage.validFailResponse().setMsg("获取失败");
+                responseMessage =  ResponseMessage.validFailResponse().setMsg("获取失败");
+                break;
         }
+        return responseMessage;
     }
 }

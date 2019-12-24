@@ -72,9 +72,23 @@ public class PoiServiceImpl implements PoiService {
 
     @Override
     public ResponseMessage findByPage(Integer page, Integer size, Map<String, Object> filter) {
+        return getPageInfo(page, size, filter,null);
+    }
+
+    @Override
+    public ResponseMessage findByPageForFeign(Integer page, Integer size, Map<String, Object> filter) {
+        return getPageInfo(page, size, filter,"feign");
+    }
+
+    private ResponseMessage getPageInfo(Integer page, Integer size, Map<String, Object> filter, String type){
         EscapeCharUtils.escape(filter, "title");
         MybatisPageRequest pageRequest = PageUtils.getInstance().setPage(page, size, filter, Sort.Direction.DESC, "weight", "created_date");
-        Page<PoiEntity> poiEntities = poiMapper.findByPage(filter);
+        Page<PoiEntity> poiEntities = null;
+        if(StringUtils.isNotEmpty(type) && "feign".equalsIgnoreCase(type)){
+            poiEntities = poiMapper.findByPageForFeign(filter);
+        }else{
+            poiEntities = poiMapper.findByPage(filter);
+        }
         PageInfo<PoiEntity> pageInfo = new PageInfo<>(poiEntities, pageRequest);
         for (PoiEntity entity : pageInfo.getContent()) {
             ScenicEntity scenicEntity = scenicMapper.selectByPrimaryKey(entity.getPrincipalId());

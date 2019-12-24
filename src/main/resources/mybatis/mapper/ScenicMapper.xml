@@ -151,6 +151,13 @@
     where id = #{id,jdbcType=VARCHAR}
   </update>
     <select id="findByPage" parameterType="java.util.Map" resultMap="BaseResultMap">
+        <include refid="Get_Page_Info"/>
+    </select>
+    <select id="findByPageForFeign" parameterType="java.util.Map" resultMap="BaseResultMap">
+        <include refid="Get_Page_Info"/>
+    </select>
+
+    <sql id="Get_Page_Info">
         select
         <include refid="Base_Column_List"/>
         ,
@@ -196,7 +203,7 @@
                 </if>
             </if>
         </where>
-    </select>
+    </sql>
 
     <update id="dataBind">
         update t_bic_scenic

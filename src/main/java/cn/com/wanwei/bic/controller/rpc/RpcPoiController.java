@@ -53,7 +53,7 @@ public class RpcPoiController {
         if(null != excludeIds && !CollectionUtils.isEmpty(excludeIds)){
             filter.put("excludeIds", excludeIds);
         }
-        return poiService.findByPage(page, size, filter);
+        return poiService.findByPageForFeign(page, size, filter);
     }
 
     @ApiOperation(value = "根据ID获取POI详情", notes = "根据ID获取POI详情")

@@ -29,6 +29,8 @@ public interface PoiMapper {
     @DataScope
     Page<PoiEntity> findByPage(Map<String, Object> filter);
 
+    Page<PoiEntity> findByPageForFeign(Map<String, Object> filter);
+
     /**
      *标题重复校验
      * @param title

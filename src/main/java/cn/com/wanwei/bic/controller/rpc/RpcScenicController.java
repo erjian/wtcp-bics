@@ -86,7 +86,7 @@ public class RpcScenicController extends BaseController {
         if(!filter.containsKey(statusKey) || null == filter.get(statusKey)){
             filter.put("status", 9);
         }
-        return scenicService.findByPage(page, size, getCurrentUser(), filter);
+        return scenicService.findByPageForFeign(page, size, getCurrentUser(), filter);
     }
 
     @ApiOperation(value = "获取景区详细信息", notes = "获取景区详细信息")

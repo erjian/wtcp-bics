@@ -47,14 +47,14 @@ public class RpcDestinationController {
     @ApiOperation(value = "根据区域名称获取目的地分页列表", notes = "根据区域名称获取目的地分页列表")
     @GetMapping(value = "/findByPage")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "page", value = "页号", defaultValue = "1"),
+            @ApiImplicitParam(name = "page", value = "页号", defaultValue = "0"),
             @ApiImplicitParam(name = "size", value = "每页数量", defaultValue = "10"),
     })
-    public ResponseMessage findByPage(@RequestParam(value = "page", defaultValue = "1") Integer page,
+    public ResponseMessage findByPage(@RequestParam(value = "page", defaultValue = "0") Integer page,
                                       @RequestParam(value = "size", defaultValue = "10") Integer size,
                                       HttpServletRequest request) throws Exception {
         Map<String, Object> filter = RequestUtil.getParameters(request);
-        return destinationService.findByPage(page, size, filter);
+        return destinationService.findByPageForFeign(page, size, filter);
     }
 
 

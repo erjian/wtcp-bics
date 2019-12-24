@@ -76,6 +76,14 @@
 
   <!-- 分页查询目的地列表 -->
   <select id="findByPage" parameterType="java.util.Map" resultMap="BaseResultMap">
+    <include refid="Get_Page_Info" />
+  </select>
+
+  <select id="findByPageForFeign" parameterType="java.util.Map" resultMap="BaseResultMap">
+    <include refid="Get_Page_Info" />
+  </select>
+
+  <sql id="Get_Page_Info">
     select
     <include refid="Base_Column_List" />
     from t_bic_destination
@@ -97,7 +105,7 @@
         </if>
       </if>
     </where>
-  </select>
+  </sql>
 
   <!-- 校验目的地名称的唯一性  -->
   <select id="checkRegionFullCode"  parameterType="java.lang.String" resultMap="BaseResultMap">

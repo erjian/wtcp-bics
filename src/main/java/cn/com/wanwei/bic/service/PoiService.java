@@ -24,6 +24,8 @@ public interface PoiService {
      */
     ResponseMessage findByPage(Integer page, Integer size, Map<String, Object> filter);
 
+    ResponseMessage findByPageForFeign(Integer page, Integer size, Map<String, Object> filter);
+
     /**
      * 查询poi信息
      * @param id

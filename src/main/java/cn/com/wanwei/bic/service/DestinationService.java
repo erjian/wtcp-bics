@@ -28,6 +28,8 @@ public interface DestinationService {
      */
     ResponseMessage findByPage(Integer page, Integer size, Map<String, Object> filter) throws Exception;
 
+    ResponseMessage findByPageForFeign(Integer page, Integer size, Map<String, Object> filter) throws Exception;
+
     /**
      * 目的地基础信息新增
      *

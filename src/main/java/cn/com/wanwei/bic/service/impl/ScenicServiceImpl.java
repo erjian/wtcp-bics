@@ -30,6 +30,7 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.data.domain.Sort;
@@ -142,9 +143,23 @@ public class ScenicServiceImpl implements ScenicService {
 
     @Override
     public ResponseMessage findByPage(Integer page, Integer size, User user1, Map<String, Object> filter) {
+        return getPageInfo(page, size, filter,null);
+    }
+
+    @Override
+    public ResponseMessage findByPageForFeign(Integer page, Integer size, User user1, Map<String, Object> filter) {
+        return getPageInfo(page, size, filter,"feign");
+    }
+
+    private ResponseMessage getPageInfo(Integer page, Integer size, Map<String, Object> filter, String type){
         EscapeCharUtils.escape(filter, "title", "subTitle", "areaName");
         MybatisPageRequest pageRequest = PageUtils.getInstance().setPage(page, size, filter, Sort.Direction.DESC, "created_date", "updated_date");
-        Page<ScenicEntity> scenicEntities = scenicMapper.findByPage(filter);
+        Page<ScenicEntity> scenicEntities = null;
+        if(StringUtils.isNotEmpty(type) && "feign".equalsIgnoreCase(type)){
+            scenicEntities = scenicMapper.findByPageForFeign(filter);
+        }else{
+            scenicEntities = scenicMapper.findByPage(filter);
+        }
         PageInfo<ScenicEntity> pageInfo = new PageInfo<>(scenicEntities, pageRequest);
         return ResponseMessage.defaultResponse().setData(pageInfo);
     }
@@ -287,7 +302,7 @@ public class ScenicServiceImpl implements ScenicService {
         List<ScenicEntity> list = scenicMapper.findBySearchValue(type,searchValue);
         if (!list.isEmpty()) {
             for (ScenicEntity entity : list) {
-                Map<String, Object> map = new HashMap<>();
+                Map<String, Object> map = Maps.newHashMap();
                 map.put("id", entity.getId());
                 map.put("name", entity.getTitle());
                 map.put("pinyin", entity.getTitleJp());
