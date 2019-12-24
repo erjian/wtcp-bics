@@ -329,8 +329,7 @@
         from ${table}
         <where>
             <if test="deptCode != null and deptCode != ''">
-                <bind name="deptCode" value="deptCode+'%'"></bind>
-                and dept_code like #{deptCode}
+                and dept_code ${deptCode}
             </if>
             <if test="column != null and column != '' and typeVal != null and typeVal != ''">
                 and ${column} = #{typeVal,jdbcType=VARCHAR}

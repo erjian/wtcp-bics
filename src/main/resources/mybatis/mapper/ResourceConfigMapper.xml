@@ -30,6 +30,12 @@
     from t_bic_resource_config
     where code = #{code,jdbcType=VARCHAR}
   </select>
+  <select id="selectByParentCode" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from t_bic_resource_config
+    where parent_code = #{code,jdbcType=VARCHAR}
+  </select>
   <insert id="insert" parameterType="cn.com.wanwei.bic.entity.ResourceConfigEntity">
     insert into t_bic_resource_config (id, code, name, parent_code,
       query_way, table_name, column_name, 

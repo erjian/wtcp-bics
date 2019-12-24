@@ -52,4 +52,12 @@ public interface ResourceConfigMapper {
      * @return
      */
     List<Map<String, Object>> selectColumnInfo(String tableName);
+
+    /**
+     * 根据父级编码获取所有的子级配置
+     * @author linjw 2019年12月23日16:26:25
+     * @param code
+     * @return
+     */
+    List<ResourceConfigEntity> selectByParentCode(String code);
 }
