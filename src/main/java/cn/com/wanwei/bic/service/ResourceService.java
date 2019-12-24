@@ -23,10 +23,12 @@ public interface ResourceService {
      */
     ResponseMessage initPieByCode(User currentUser, String code, Integer size);
 
-//    /**
-//     * 获取柱状图
-//     * @param user 用户
-//     * @return
-//     */
-//    ResponseMessage findByHistogram(User user);
+    /**
+     * 获取柱状图数据
+     * @param user 用户
+     * @param queryModel 查询参数
+     * @return
+     */
+    ResponseMessage findByBarChart(User user, Map<String, Object> queryModel);
+
 }

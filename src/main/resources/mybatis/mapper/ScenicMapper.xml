@@ -331,6 +331,9 @@
             <if test="deptCode != null and deptCode != ''">
                 and dept_code ${deptCode}
             </if>
+            <if test="region != null and region != ''">
+                and region = #{region,jdbcType=VARCHAR}
+            </if>
             <if test="column != null and column != '' and typeVal != null and typeVal != ''">
                 and ${column} = #{typeVal,jdbcType=VARCHAR}
             </if>

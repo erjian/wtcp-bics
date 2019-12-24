@@ -32,7 +32,7 @@ public class ResourceController extends BaseController{
     @Autowired
     private AuthServiceFeign authServiceFeign;
 
-    @ApiOperation(value = "饼状图", notes = "饼状图")
+    @ApiOperation(value = "饼状图（第一次初始化调用的接口）", notes = "饼状图（第一次初始化调用的接口）")
     @RequestMapping(value = "/findByPieChart", method = RequestMethod.POST)
     public ResponseMessage findByPieChart(@RequestBody Map<String, Object> queryModel)throws Exception{
         return resourceService.findByPieChart(getCurrentUser(), queryModel);
@@ -56,10 +56,10 @@ public class ResourceController extends BaseController{
         return authServiceFeign.findChildByAreaCode(areaCode);
     }
 
-//    @ApiOperation(value = "柱状图", notes = "柱状图")
-//    @RequestMapping(value = "/findByHistogram", method = RequestMethod.GET)
-//    public ResponseMessage findByHistogram() throws Exception{
-//        return resourceService.findByHistogram(getCurrentUser());
-//    }
+    @ApiOperation(value = "柱状图（第一次初始化调用的接口）", notes = "柱状图（第一次初始化调用的接口）")
+    @RequestMapping(value = "/findByBarChart", method = RequestMethod.POST)
+    public ResponseMessage findByBarChart(@RequestBody Map<String, Object> queryBarModel) throws Exception{
+        return resourceService.findByBarChart(getCurrentUser(), queryBarModel);
+    }
 
 }

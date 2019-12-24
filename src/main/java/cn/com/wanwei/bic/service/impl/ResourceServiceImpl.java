@@ -95,4 +95,31 @@ public class ResourceServiceImpl implements ResourceService {
         return ResponseMessage.defaultResponse().setData(list);
     }
 
+    @Override
+    public ResponseMessage findByBarChart(User user, Map<String, Object> queryModel) {
+        //1、从queryModel中取出所有的参数
+        List<Map<String, Object>> barSeries = (List<Map<String, Object>>)queryModel.get("barSeries");
+        List<Map<String, Object>> barXAxisDataRel = (List<Map<String, Object>>)queryModel.get("barXAxisDataRel");
+//        List<String> barXAxisData = (List<String>)queryModel.get("barXAxisData");
+
+        //2、循环barSeries查询并初始化数据
+        if(CollectionUtils.isNotEmpty(barSeries) && CollectionUtils.isNotEmpty(barSeries)) {
+            for (Map map : barSeries) {
+                map.put("deptCode", DataScopeUtils.getDataScope());
+                String table = String.valueOf(map.get("table"));
+                if (table.indexOf(prefix) == -1) {
+                    map.put("table", prefix.concat(table));
+                }
+                List<Long> data = Lists.newArrayList();
+                for (Map map1 : barXAxisDataRel) {
+                    map.put("region", String.valueOf(map1.get("areaCode")));
+                    Long count = scenicMapper.getCount(map);
+                    data.add((null == count || count.equals(0))?0:count);
+                }
+                map.put("data", data);
+            }
+        }
+        return ResponseMessage.defaultResponse().setData(barSeries);
+    }
+
 }
