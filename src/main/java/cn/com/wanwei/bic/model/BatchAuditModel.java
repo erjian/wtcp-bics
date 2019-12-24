@@ -30,4 +30,7 @@ public class BatchAuditModel implements Serializable {
     @NotEmpty(message = "要操作的对象类前缀不可为空")
     private String classPrefixName;
 
+    @ApiModelProperty(value="是否有审核功能", required = true)
+    private Boolean hasAudit = true;
+
 }

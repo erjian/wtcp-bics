@@ -63,14 +63,12 @@ public class CommonServiceImpl<T> implements CommonService<T> {
     public ResponseMessage batchChangeStatus(BatchAuditModel batchAuditModel, User user, Class<T> clazz) {
         ResponseMessage responseMessage = ResponseMessage.defaultResponse();
         String tableName = getTableName(clazz);
-        boolean flag = false;
         for (String id : batchAuditModel.getIds()) {
             // 获取数据信息
             FindStatusModel statusModel = commonMapper.findById(id, tableName);
             if (null != statusModel) {
-                // 进行上下线操作时，必须是审核通过的
-                if (batchAuditModel.getType() == 1 && statusModel.getStatus() == 0) {
-                    flag = true;
+                // 若包含审核，则进行上下线操作时，必须是审核通过的
+                if (batchAuditModel.getHasAudit() && batchAuditModel.getType() == 1 && statusModel.getStatus() == 0) {
                     continue;
                 }
                 // 更新状态
@@ -84,8 +82,8 @@ public class CommonServiceImpl<T> implements CommonService<T> {
         String backMsg = "操作成功";
         if (batchAuditModel.getType() == 0) {
             backMsg = "审核成功";
-        } else if (batchAuditModel.getType() == 1) {
-            backMsg = flag ? "操作成功，已过滤未审核通过的数据" : backMsg;
+        } else if (batchAuditModel.getHasAudit() && batchAuditModel.getType() == 1) {
+            backMsg = "操作成功，已过滤未审核通过的数据";
         }
         return responseMessage.setMsg(backMsg);
     }
