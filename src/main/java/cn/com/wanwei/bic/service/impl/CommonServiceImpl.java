@@ -14,6 +14,7 @@ import cn.com.wanwei.common.model.User;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.google.common.collect.Maps;
+import com.sun.org.apache.xpath.internal.operations.Bool;
 import io.swagger.models.auth.In;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -68,7 +69,9 @@ public class CommonServiceImpl<T> implements CommonService<T> {
             FindStatusModel statusModel = commonMapper.findById(id, tableName);
             if (null != statusModel) {
                 // 若包含审核，则进行上下线操作时，必须是审核通过的
-                if (batchAuditModel.getHasAudit() && batchAuditModel.getType() == 1 && statusModel.getStatus() == 0) {
+                Boolean statusFlag = (statusModel.getStatus() == 0 || statusModel.getStatus() == 2) ? true : false;
+                Boolean passFlag = (statusModel.getStatus() == 2 && batchAuditModel.getStatus() == 1) ? true : false;
+                if (batchAuditModel.getHasAudit() && (statusFlag || passFlag)) {
                     continue;
                 }
                 // 更新状态
@@ -82,8 +85,8 @@ public class CommonServiceImpl<T> implements CommonService<T> {
         String backMsg = "操作成功";
         if (batchAuditModel.getType() == 0) {
             backMsg = "审核成功";
-        } else if (batchAuditModel.getHasAudit() && batchAuditModel.getType() == 1) {
-            backMsg = "操作成功，已过滤未审核通过的数据";
+        } else if (batchAuditModel.getHasAudit()) {
+            backMsg = "操作成功，已过滤不可操作的数据";
         }
         return responseMessage.setMsg(backMsg);
     }
