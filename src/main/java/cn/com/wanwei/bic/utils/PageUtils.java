@@ -26,19 +26,23 @@ public class PageUtils {
 
     public static final String TOKEN_KEY = "access_token";
 
-    public MybatisPageRequest setPage(Integer page, Integer size, Map<String, Object> filter, Sort.Direction orderBy, String... sortFields){
+    public static final String SORT_FIELD_KEY = "sortField";
+
+    public static final String ORDER_BY_KEY = "orderBy";
+
+    public MybatisPageRequest setPage(Integer page, Integer size, Map<String, Object> filter, Sort.Direction orderBy, String... sortFields) {
         List<Sort.Order> sortList = Lists.newArrayList();
-        if(filter.containsKey("orderBy")){
-            if(StringUtils.equals("asc", filter.get("orderBy").toString().toLowerCase())){
+        if (filter.containsKey(ORDER_BY_KEY)) {
+            if (StringUtils.equals("asc", filter.get(ORDER_BY_KEY).toString().toLowerCase())) {
                 orderBy = Sort.Direction.ASC;
-            }else{
+            } else {
                 orderBy = Sort.Direction.DESC;
             }
         }
-        if(filter.containsKey("sortField") && null != filter.get("sortField") && StringUtils.isNotEmpty(filter.get("sortField").toString())){
-            sortList.add(new Sort.Order(orderBy, filter.get("sortField").toString()));
-        }else{
-            for(String field : sortFields){
+        if (filter.containsKey(SORT_FIELD_KEY) && null != filter.get(SORT_FIELD_KEY) && StringUtils.isNotEmpty(filter.get(SORT_FIELD_KEY).toString())) {
+            sortList.add(new Sort.Order(orderBy, filter.get(SORT_FIELD_KEY).toString()));
+        } else {
+            for (String field : sortFields) {
                 sortList.add(new Sort.Order(orderBy, field));
             }
         }
@@ -49,7 +53,7 @@ public class PageUtils {
         return pageRequest;
     }
 
-    public void setToken(Map<String, Object> filter){
+    public void setToken(Map<String, Object> filter) {
         if (filter.containsKey(TOKEN_KEY) && StringUtils.isNotEmpty(TOKEN_KEY)) {
             RequestUtil.getRequest().setAttribute(TOKEN_KEY, filter.get(TOKEN_KEY));
         }
