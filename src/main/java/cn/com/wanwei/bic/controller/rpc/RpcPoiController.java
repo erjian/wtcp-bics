@@ -36,8 +36,7 @@ public class RpcPoiController {
     @GetMapping(value = "/page")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "page", value = "页号", defaultValue = "0"),
-            @ApiImplicitParam(name = "size", value = "每页数量", defaultValue = "10"),
-            @ApiImplicitParam(name = "excludeIds", value = "要排除的ID集合", defaultValue = "10")
+            @ApiImplicitParam(name = "size", value = "每页数量", defaultValue = "10")
     })
     @OperationLog(value = "wtcp-bics/获取POI分页列表", operate = "r", module = "poi管理")
     public ResponseMessage findByPage(@RequestParam(value = "page", defaultValue = "0") Integer page,
