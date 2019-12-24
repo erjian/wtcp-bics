@@ -41,7 +41,7 @@ public class RpcPoiController {
     @OperationLog(value = "wtcp-bics/获取POI分页列表", operate = "r", module = "poi管理")
     public ResponseMessage findByPage(@RequestParam(value = "page", defaultValue = "0") Integer page,
                                       @RequestParam(value = "size", defaultValue = "10") Integer size,
-                                      @RequestParam(name = "要排除的id集合", required = false) List<String> excludeIds,
+                                      @RequestParam(value = "excludeIds", name = "要排除的id集合", required = false) List<String> excludeIds,
                                       HttpServletRequest request) throws Exception {
         Map<String, Object> filter = RequestUtil.getParameters(request);
         PageUtils.getInstance().setToken(filter);
