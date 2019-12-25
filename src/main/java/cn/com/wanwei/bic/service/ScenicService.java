@@ -59,12 +59,12 @@ public interface ScenicService {
 	 *
 	 * @param page
 	 * @param size
-	 * @param user
 	 * @param filter
 	 * @return
 	 */
-	ResponseMessage findByPage(Integer page, Integer size, User user, Map<String, Object> filter) throws Exception;
-	ResponseMessage findByPageForFeign(Integer page, Integer size, User user, Map<String, Object> filter) throws Exception;
+	ResponseMessage findByPage(Integer page, Integer size, Map<String, Object> filter) throws Exception;
+
+	ResponseMessage findByPageForFeign(Integer page, Integer size, Map<String, Object> filter) throws Exception;
 
 	/**
 	 * 关联机构

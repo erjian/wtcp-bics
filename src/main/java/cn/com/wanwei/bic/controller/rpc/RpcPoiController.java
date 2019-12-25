@@ -40,7 +40,6 @@ public class RpcPoiController {
                                       @RequestParam(value = "excludeIds", required = false) List<String> excludeIds,
                                       HttpServletRequest request) throws Exception {
         Map<String, Object> filter = RequestUtil.getParameters(request);
-        PageUtils.getInstance().setToken(filter);
         // 只返回上线的数据
         String statusKey = "status";
         if(!filter.containsKey(statusKey) || null == filter.get(statusKey)){

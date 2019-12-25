@@ -142,12 +142,12 @@ public class ScenicServiceImpl implements ScenicService {
     }
 
     @Override
-    public ResponseMessage findByPage(Integer page, Integer size, User user1, Map<String, Object> filter) {
+    public ResponseMessage findByPage(Integer page, Integer size,Map<String, Object> filter) {
         return getPageInfo(page, size, filter,null);
     }
 
     @Override
-    public ResponseMessage findByPageForFeign(Integer page, Integer size, User user1, Map<String, Object> filter) {
+    public ResponseMessage findByPageForFeign(Integer page, Integer size,Map<String, Object> filter) {
         return getPageInfo(page, size, filter,"feign");
     }
 
