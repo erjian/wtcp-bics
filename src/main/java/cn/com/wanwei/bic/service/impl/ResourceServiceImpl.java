@@ -112,10 +112,10 @@ public class ResourceServiceImpl implements ResourceService {
             return ResponseMessage.validFailResponse().setMsg("当前资源的下级资源没有配置完全");
         }
         //5、返回数据
-        return initData(entity,entities,null,queryParams,null,pieRegion);
+        return initData("pie",entity,entities,null,queryParams,null,pieRegion);
     }
 
-    private ResponseMessage initData(ResourceConfigEntity entity, List<ResourceConfigEntity> entities,List<Map<String, Object>> barXAxisDataRel, Map<String, Object> queryParams, Map<String, Object> label, String pieRegion){
+    private ResponseMessage initData(String flag,ResourceConfigEntity entity, List<ResourceConfigEntity> entities,List<Map<String, Object>> barXAxisDataRel, Map<String, Object> queryParams, Map<String, Object> label, String pieRegion){
         String startDate = String.valueOf(queryParams.get("startDate"));
         String endDate = String.valueOf(queryParams.get("endDate"));
 
@@ -136,7 +136,7 @@ public class ResourceServiceImpl implements ResourceService {
             if(StringUtil.isNotEmpty(entity.getQueryWay()) && entity.getQueryWay().equals("0")){ //多表查询
                 map.put("table",configEntity.getTableName());
             }
-            if(CollectionUtils.isNotEmpty(barXAxisDataRel)){
+            if(flag.equals("bar")){
                 map.put("type", "bar");
                 map.put("stack", "总量");
                 map.put("barMaxWidth", 50);
@@ -150,7 +150,8 @@ public class ResourceServiceImpl implements ResourceService {
                     data.add((null == count || count.equals(0))?0:count);
                 }
                 map.put("data", data);
-            }else{
+            }
+            if(flag.equals("pie")){
                 if(StringUtil.isNotEmpty(pieRegion)){
                     map.put("pieRegion", pieRegion);
                 }
@@ -186,11 +187,7 @@ public class ResourceServiceImpl implements ResourceService {
             return ResponseMessage.validFailResponse().setMsg("当前资源的下级资源没有配置完全");
         }
         //5、返回数据
-        return initData(entity,entities,barXAxisDataRel,queryParams,label, "");
+        return initData("bar",entity,entities,barXAxisDataRel,queryParams,label, "");
     }
-
-
-
-
 
 }
