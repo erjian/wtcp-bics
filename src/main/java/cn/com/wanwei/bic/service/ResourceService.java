@@ -18,10 +18,18 @@ public interface ResourceService {
      * 根据资源code和当前登录用户获取饼状图数据
      * @author linjw 2019年12月20日09:05:47
      * @param currentUser
-     * @param code
+     * @param queryParams
      * @return
      */
-    ResponseMessage initPieByCode(User currentUser, String code, Integer size);
+    ResponseMessage initPieByCode(User currentUser, Map<String, Object> queryParams);
+
+    /**
+     * 根据资源code和当前登录用户获取柱状图数据
+     * @param currentUser
+     * @param queryParams
+     * @return
+     */
+    ResponseMessage initBarByCode(User currentUser, Map<String, Object> queryParams);
 
     /**
      * 获取柱状图数据
@@ -30,5 +38,4 @@ public interface ResourceService {
      * @return
      */
     ResponseMessage findByBarChart(User user, Map<String, Object> queryModel);
-
 }
