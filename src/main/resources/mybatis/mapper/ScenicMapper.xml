@@ -332,7 +332,8 @@
                 and dept_code ${deptCode}
             </if>
             <if test="region != null and region != ''">
-                and region = #{region,jdbcType=VARCHAR}
+                <bind name="region" value="region+'%'"></bind>
+                and region like #{region}
             </if>
             <if test="column != null and column != '' and typeVal != null and typeVal != ''">
                 and ${column} = #{typeVal,jdbcType=VARCHAR}
