@@ -87,7 +87,7 @@ public class PoiServiceImpl implements PoiService {
         if(StringUtils.isNotEmpty(type) && "feign".equalsIgnoreCase(type)){
             poiEntities = poiMapper.findByPageForFeign(filter);
             for(PoiEntity item : poiEntities){
-                item.setTagList(tagsService.findListByPriId(item.getId(),ScenicEntity.class));
+                item.setTagList(tagsService.findListByPriId(item.getId(),PoiEntity.class));
             }
         }else{
             poiEntities = poiMapper.findByPage(filter);
