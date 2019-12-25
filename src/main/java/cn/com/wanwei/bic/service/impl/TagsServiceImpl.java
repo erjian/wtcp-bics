@@ -37,6 +37,11 @@ public class TagsServiceImpl<T> implements TagsService<T> {
     }
 
     @Override
+    public List<BaseTagsEntity> findListByPriId(String principalId, Class<T> clazz) {
+        return tagsMapper.findByPrincipalId(principalId, getTableName(clazz));
+    }
+
+    @Override
     public int deleteByPrincipalId(String principalId, Class<T> clazz) {
         return tagsMapper.deleteByPrincipalId(principalId, getTableName(clazz));
     }

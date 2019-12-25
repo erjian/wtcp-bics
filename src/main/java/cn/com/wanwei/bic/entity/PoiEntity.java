@@ -10,6 +10,7 @@ import lombok.ToString;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 import javax.persistence.Transient;
+import java.util.List;
 
 @Data
 @EqualsAndHashCode(callSuper=false)
@@ -50,5 +51,8 @@ public class PoiEntity extends CommonEntity {
     //冗余字段，关联素材的id
     @Transient
     private String timeId;
+
+    //冗余字段，标签列表
+    private List<BaseTagsEntity> tagList;
 
 }

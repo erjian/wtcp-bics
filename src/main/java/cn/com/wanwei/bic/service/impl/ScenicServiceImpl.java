@@ -157,6 +157,9 @@ public class ScenicServiceImpl implements ScenicService {
         Page<ScenicEntity> scenicEntities = null;
         if(StringUtils.isNotEmpty(type) && "feign".equalsIgnoreCase(type)){
             scenicEntities = scenicMapper.findByPageForFeign(filter);
+            for(ScenicEntity item : scenicEntities){
+                item.setTagsEntities(tagsService.findListByPriId(item.getId(),ScenicEntity.class));
+            }
         }else{
             scenicEntities = scenicMapper.findByPage(filter);
         }
