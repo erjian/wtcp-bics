@@ -139,6 +139,7 @@ public class ResourceServiceImpl implements ResourceService {
             if(CollectionUtils.isNotEmpty(barXAxisDataRel)){
                 map.put("type", "bar");
                 map.put("stack", "总量");
+                map.put("barMaxWidth", 100);
                 if(null != label){
                     map.put("label", label);
                 }
