@@ -69,7 +69,7 @@ public class CommonServiceImpl<T> implements CommonService<T> {
             FindStatusModel statusModel = commonMapper.findById(id, tableName);
             if (null != statusModel) {
                 // 若包含审核，则进行上下线操作时，必须是审核通过的
-                Boolean statusFlag = (statusModel.getStatus() == 0 || statusModel.getStatus() == 2) ? true : false;
+                Boolean statusFlag = statusModel.getStatus() == 2 ? true : false;
                 Boolean passFlag = (statusModel.getStatus() == 2 && batchAuditModel.getStatus() == 1) ? true : false;
                 if (batchAuditModel.getHasAudit() && (statusFlag || passFlag)) {
                     continue;
