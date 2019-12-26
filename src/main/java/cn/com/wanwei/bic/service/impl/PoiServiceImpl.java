@@ -299,6 +299,7 @@ public class PoiServiceImpl implements PoiService {
             return ResponseMessage.validFailResponse().setMsg("该POI不存在");
         }
         Map<String, Object> map = new HashMap<>();
+        poiEntity.setTagList(tagsService.findListByPriId(id, PoiTagsEntity.class));
         map.put("poiEntity", poiEntity);
 
         //2、查询poi相关的素材信息

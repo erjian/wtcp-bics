@@ -264,6 +264,7 @@ public class ScenicServiceImpl implements ScenicService {
         }
 
         Map<String, Object> data = Maps.newHashMap();
+        scenicEntity.setTagsEntities(tagsService.findListByPriId(id, ScenicTagsEntity.class));
         data.put("scenicEntity", scenicEntity);
 
         //2、查询企业信息并添加到返回数据中
