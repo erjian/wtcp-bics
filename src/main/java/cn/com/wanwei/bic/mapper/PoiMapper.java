@@ -16,7 +16,6 @@ public interface PoiMapper {
 
     int insert(PoiEntity record);
 
-    @DataScope
     PoiEntity selectByPrimaryKey(String id);
 
     int updateByPrimaryKey(PoiEntity record);
