@@ -71,7 +71,8 @@ public class CommonServiceImpl<T> implements CommonService<T> {
                 // 若包含审核，则进行上下线操作时，必须是审核通过的
                 Boolean statusFlag = statusModel.getStatus() == 2 ? true : false;
                 Boolean passFlag = (statusModel.getStatus() == 2 && batchAuditModel.getStatus() == 1) ? true : false;
-                if (batchAuditModel.getHasAudit() && (statusFlag || passFlag)) {
+                Boolean pendingFlag = (batchAuditModel.getHasAudit() && statusModel.getStatus() == 0 && batchAuditModel.getStatus() == 9) ? true : false;
+                if (batchAuditModel.getHasAudit() && (statusFlag || passFlag || pendingFlag)) {
                     continue;
                 }
                 // 更新状态
