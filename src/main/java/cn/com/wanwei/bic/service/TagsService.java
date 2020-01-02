@@ -12,6 +12,8 @@ public interface TagsService<T> {
 
     ResponseMessage findByPrincipalId(String principalId, Class<T> clazz);
 
+    List<BaseTagsEntity> findListByPriId(String principalId, Class<T> clazz);
+
     int deleteByPrincipalId(String principalId, Class<T> clazz);
 
     int batchInsert(String principalId, List<BaseTagsEntity> entityList, User user, Class<T> clazz);

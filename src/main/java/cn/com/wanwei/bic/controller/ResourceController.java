@@ -39,13 +39,15 @@ public class ResourceController extends BaseController{
     }
 
     @ApiOperation(value = "根据资源编码Code获取饼状图的数据", notes = "根据资源编码Code获取饼状图的数据")
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "code", value = "资源编码", required = true),
-            @ApiImplicitParam(name = "size", value = "资源子级资源数量", required = true)
-    })
-    @RequestMapping(value = "/initPieByCode", method = RequestMethod.GET)
-    public ResponseMessage initPieByCode(@RequestParam String code, @RequestParam Integer size) throws Exception{
-        return resourceService.initPieByCode(getCurrentUser(), code, size);
+    @RequestMapping(value = "/initPieByCode", method = RequestMethod.POST)
+    public ResponseMessage initPieByCode(@RequestBody Map<String, Object> queryParams) throws Exception{
+        return resourceService.initPieByCode(getCurrentUser(), queryParams);
+    }
+
+    @ApiOperation(value = "根据资源编码Code获取柱状图的数据", notes = "根据资源编码Code获取柱状图的数据")
+    @RequestMapping(value = "/initBarByCode", method = RequestMethod.POST)
+    public ResponseMessage initBarByCode(@RequestBody Map<String, Object> queryParams) throws Exception{
+        return resourceService.initBarByCode(getCurrentUser(), queryParams);
     }
 
     @ApiOperation(value = "根据所属区划编码获取子级组织机构", notes = "根据所属区划编码获取子级组织机构")

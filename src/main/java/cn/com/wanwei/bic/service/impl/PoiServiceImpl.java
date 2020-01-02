@@ -86,6 +86,9 @@ public class PoiServiceImpl implements PoiService {
         Page<PoiEntity> poiEntities = null;
         if(StringUtils.isNotEmpty(type) && "feign".equalsIgnoreCase(type)){
             poiEntities = poiMapper.findByPageForFeign(filter);
+            for(PoiEntity item : poiEntities){
+                item.setTagList(tagsService.findListByPriId(item.getId(), PoiTagsEntity.class));
+            }
         }else{
             poiEntities = poiMapper.findByPage(filter);
         }
@@ -296,6 +299,7 @@ public class PoiServiceImpl implements PoiService {
             return ResponseMessage.validFailResponse().setMsg("该POI不存在");
         }
         Map<String, Object> map = new HashMap<>();
+        poiEntity.setTagList(tagsService.findListByPriId(id, PoiTagsEntity.class));
         map.put("poiEntity", poiEntity);
 
         //2、查询poi相关的素材信息

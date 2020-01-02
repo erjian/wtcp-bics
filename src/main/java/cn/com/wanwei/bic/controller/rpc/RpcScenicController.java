@@ -79,13 +79,12 @@ public class RpcScenicController extends BaseController {
                                       @RequestParam(value = "size", defaultValue = "10") Integer size,
                                       HttpServletRequest request) throws Exception {
         Map<String, Object> filter = RequestUtil.getParameters(request);
-        PageUtils.getInstance().setToken(filter);
         // 只返回上线的数据
         String statusKey = "status";
         if(!filter.containsKey(statusKey) || null == filter.get(statusKey)){
             filter.put("status", 9);
         }
-        return scenicService.findByPageForFeign(page, size, getCurrentUser(), filter);
+        return scenicService.findByPageForFeign(page, size, filter);
     }
 
     @ApiOperation(value = "获取景区详细信息", notes = "获取景区详细信息")

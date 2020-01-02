@@ -1,12 +1,9 @@
 package cn.com.wanwei.bic.controller;
 
-import cn.com.wanwei.bic.entity.PoiEntity;
-import cn.com.wanwei.bic.entity.ScenicEntity;
 import cn.com.wanwei.bic.model.BatchAuditModel;
 import cn.com.wanwei.bic.service.CommonService;
 import cn.com.wanwei.common.log.annotation.OperationLog;
 import cn.com.wanwei.common.model.ResponseMessage;
-import cn.com.wanwei.common.utils.SpringContextUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
@@ -15,7 +12,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
 

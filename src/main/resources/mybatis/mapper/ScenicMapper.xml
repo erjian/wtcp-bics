@@ -160,8 +160,6 @@
     <sql id="Get_Page_Info">
         select
         <include refid="Base_Column_List"/>
-        ,
-        <include refid="Blob_Column_List"/>
         from t_bic_scenic
         <where>
             <if test="title != null and title!='' ">
@@ -328,12 +326,22 @@
         select count(1)
         from ${table}
         <where>
+            <if test="startDate != null and startDate != ''">
+                and created_date >= #{startDate,jdbcType=VARCHAR}
+            </if>
+            <if test="endDate != null and endDate != ''">
+                and #{endDate,jdbcType=VARCHAR} >= created_date
+            </if>
             <if test="deptCode != null and deptCode != ''">
                 and dept_code ${deptCode}
             </if>
             <if test="region != null and region != ''">
                 <bind name="region" value="region+'%'"></bind>
                 and region like #{region}
+            </if>
+            <if test="pieRegion != null and pieRegion != ''">
+                <bind name="pieRegion" value="pieRegion+'%'"></bind>
+                and region like #{pieRegion}
             </if>
             <if test="column != null and column != '' and typeVal != null and typeVal != ''">
                 and ${column} = #{typeVal,jdbcType=VARCHAR}

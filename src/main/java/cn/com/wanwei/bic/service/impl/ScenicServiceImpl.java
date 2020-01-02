@@ -142,12 +142,12 @@ public class ScenicServiceImpl implements ScenicService {
     }
 
     @Override
-    public ResponseMessage findByPage(Integer page, Integer size, User user1, Map<String, Object> filter) {
+    public ResponseMessage findByPage(Integer page, Integer size,Map<String, Object> filter) {
         return getPageInfo(page, size, filter,null);
     }
 
     @Override
-    public ResponseMessage findByPageForFeign(Integer page, Integer size, User user1, Map<String, Object> filter) {
+    public ResponseMessage findByPageForFeign(Integer page, Integer size,Map<String, Object> filter) {
         return getPageInfo(page, size, filter,"feign");
     }
 
@@ -157,6 +157,9 @@ public class ScenicServiceImpl implements ScenicService {
         Page<ScenicEntity> scenicEntities = null;
         if(StringUtils.isNotEmpty(type) && "feign".equalsIgnoreCase(type)){
             scenicEntities = scenicMapper.findByPageForFeign(filter);
+            for(ScenicEntity item : scenicEntities){
+                item.setTagsEntities(tagsService.findListByPriId(item.getId(), ScenicTagsEntity.class));
+            }
         }else{
             scenicEntities = scenicMapper.findByPage(filter);
         }
@@ -261,6 +264,7 @@ public class ScenicServiceImpl implements ScenicService {
         }
 
         Map<String, Object> data = Maps.newHashMap();
+        scenicEntity.setTagsEntities(tagsService.findListByPriId(id, ScenicTagsEntity.class));
         data.put("scenicEntity", scenicEntity);
 
         //2、查询企业信息并添加到返回数据中

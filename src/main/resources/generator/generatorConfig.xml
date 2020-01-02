@@ -55,7 +55,7 @@
                 selectByExampleQueryId="false">
              <generatedKey column="id" sqlStatement="Mysql" identity="true"/>
          </table>
-        <table tableName="bic_destination_relation" domainObjectName="DestinationRelationEntity"
+        <table tableName="t_bic_resource_config" domainObjectName="ResourceConfigEntity"
                enableCountByExample="false" enableUpdateByExample="false"
                enableDeleteByExample="false" enableSelectByExample="false"
                selectByExampleQueryId="false">
