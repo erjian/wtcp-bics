@@ -54,7 +54,7 @@ public class ResourceServiceImpl implements ResourceService {
                     map.put("table", prefix.concat(table));
                 }
                 Long count = scenicMapper.getCount(map);
-                if(!count.equals(0)){
+                if(!count.equals(0L)){
                     map.put("value", count);
                 }
             }
@@ -82,7 +82,7 @@ public class ResourceServiceImpl implements ResourceService {
                 for (Map map1 : barXAxisDataRel) {
                     map.put("region", String.valueOf(map1.get("areaCode")));
                     Long count = scenicMapper.getCount(map);
-                    data.add((null == count || count.equals(0))?0:count);
+                    data.add((null == count || count.equals(0L))?0:count);
                 }
                 map.put("data", data);
             }
@@ -147,7 +147,7 @@ public class ResourceServiceImpl implements ResourceService {
                 for (Map map1 : barXAxisDataRel) {
                     map.put("region", String.valueOf(map1.get("areaCode")));
                     Long count = scenicMapper.getCount(map);
-                    data.add((null == count || count.equals(0))?0:count);
+                    data.add((null == count || count.equals(0L))?0:count);
                 }
                 map.put("data", data);
             }
@@ -156,7 +156,7 @@ public class ResourceServiceImpl implements ResourceService {
                     map.put("pieRegion", pieRegion);
                 }
                 Long count = scenicMapper.getCount(map);
-                map.put("value", (null == count || count.equals(0))?0:count);
+                map.put("value", (null == count || count.equals(0L))?0:count);
             }
             list.add(map);
         }
