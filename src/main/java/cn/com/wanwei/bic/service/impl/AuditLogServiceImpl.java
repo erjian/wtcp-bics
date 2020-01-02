@@ -36,8 +36,8 @@ public class AuditLogServiceImpl implements AuditLogService {
             Sort sort = Sort.by(new Sort.Order[]{new Sort.Order(Sort.Direction.DESC, "created_date")});
             MybatisPageRequest pageRequest = MybatisPageRequest.of(page, size, sort);
             PageHelper.startPage(pageRequest.getPage(),pageRequest.getSize(),pageRequest.getOrders());
-            Page<PoiEntity> poiEntities = auditLogMapper.findByPage(filter);
-            PageInfo<PoiEntity> pageInfo = new PageInfo<>(poiEntities, pageRequest);
+            Page<AuditLogEntity> auditLogEntityies = auditLogMapper.findByPage(filter);
+            PageInfo<AuditLogEntity> pageInfo = new PageInfo<>(auditLogEntityies, pageRequest);
             return ResponseMessage.defaultResponse().setData(pageInfo);
         } catch (Exception e) {
             log.info(e.getMessage());

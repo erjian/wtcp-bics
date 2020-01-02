@@ -9,7 +9,7 @@
         <result column="file_url" jdbcType="VARCHAR" property="fileUrl"/>
         <result column="cover_image_url" jdbcType="VARCHAR" property="coverImageUrl"/>
         <result column="file_name" jdbcType="VARCHAR" property="fileName"/>
-        <result column="file_identify" jdbcType="INTEGER" property="fileIdentify"/>
+        <result column="file_identify" jdbcType="VARCHAR" property="fileIdentify"/>
         <result column="created_user" jdbcType="VARCHAR" property="createdUser"/>
         <result column="created_date" jdbcType="TIMESTAMP" property="createdDate"/>
         <result column="updated_user" jdbcType="VARCHAR" property="updatedUser"/>
@@ -56,7 +56,7 @@
         <include refid="Base_Column_List"/>
         from t_bic_material
         where principal_id = #{principalId,jdbcType=VARCHAR}
-        AND file_identify = #{fileIdentify,jdbcType=INTEGER}
+        AND file_identify = #{fileIdentify,jdbcType=VARCHAR}
     </select>
 
     <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
@@ -89,7 +89,7 @@
         (   #{id,jdbcType=VARCHAR},
             #{principalId,jdbcType=VARCHAR}, #{materialId,jdbcType=VARCHAR},
             #{fileType,jdbcType=VARCHAR}, #{fileName,jdbcType=VARCHAR},
-            #{fileUrl,jdbcType=VARCHAR}, #{coverImageUrl,jdbcType=VARCHAR}, #{fileIdentify,jdbcType=BIT},
+            #{fileUrl,jdbcType=VARCHAR}, #{coverImageUrl,jdbcType=VARCHAR}, #{fileIdentify,jdbcType=VARCHAR},
             #{createdUser,jdbcType=VARCHAR}, #{createdDate,jdbcType=TIMESTAMP},
             #{updatedUser,jdbcType=VARCHAR}, #{updatedDate,jdbcType=TIMESTAMP}
         )
@@ -103,7 +103,7 @@
             (   #{item.id,jdbcType=VARCHAR},
                 #{item.principalId,jdbcType=VARCHAR}, #{item.materialId,jdbcType=VARCHAR},
                 #{item.fileType,jdbcType=VARCHAR}, #{item.fileName,jdbcType=VARCHAR},
-                #{item.fileUrl,jdbcType=VARCHAR}, #{item.coverImageUrl,jdbcType=VARCHAR}, #{item.fileIdentify,jdbcType=INTEGER},
+                #{item.fileUrl,jdbcType=VARCHAR}, #{item.coverImageUrl,jdbcType=VARCHAR}, #{item.fileIdentify,jdbcType=VARCHAR},
                 #{item.createdUser,jdbcType=VARCHAR}, #{item.createdDate,jdbcType=TIMESTAMP},
                 #{item.updatedUser,jdbcType=VARCHAR}, #{item.updatedDate,jdbcType=TIMESTAMP}
             )
@@ -118,7 +118,7 @@
             file_name = #{fileName,jdbcType=VARCHAR},
             file_url = #{fileUrl,jdbcType=VARCHAR},
             cover_image_url = #{coverImageUrl,jdbcType=VARCHAR},
-            file_identify = #{fileIdentify,jdbcType=INTEGER},
+            file_identify = #{fileIdentify,jdbcType=VARCHAR},
             created_user = #{createdUser,jdbcType=VARCHAR},
             created_date = #{createdDate,jdbcType=TIMESTAMP},
             updated_user = #{updatedUser,jdbcType=VARCHAR},

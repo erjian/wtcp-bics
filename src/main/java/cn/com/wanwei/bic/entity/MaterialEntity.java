@@ -38,6 +38,6 @@ public class MaterialEntity extends BaseEntity{
     private String coverImageUrl;
 
     @ApiModelProperty(value = "素材标识（1：标题图片，2：亮点图片，3：标题且亮点图片）")
-    private Integer fileIdentify;
+    private String fileIdentify;
 
 }

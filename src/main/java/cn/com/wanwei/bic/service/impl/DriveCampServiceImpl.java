@@ -11,10 +11,10 @@ import cn.com.wanwei.bic.service.DriveCampService;
 import cn.com.wanwei.bic.service.MaterialService;
 import cn.com.wanwei.bic.service.TagsService;
 import cn.com.wanwei.bic.utils.PageUtils;
-import cn.com.wanwei.bic.utils.PinyinUtil;
 import cn.com.wanwei.bic.utils.UUIDUtils;
 import cn.com.wanwei.common.model.ResponseMessage;
 import cn.com.wanwei.common.model.User;
+import cn.com.wanwei.common.utils.PinyinUtils;
 import cn.com.wanwei.persistence.mybatis.MybatisPageRequest;
 import cn.com.wanwei.persistence.mybatis.PageInfo;
 import cn.com.wanwei.persistence.mybatis.utils.EscapeCharUtils;
@@ -90,8 +90,8 @@ public class DriveCampServiceImpl implements DriveCampService {
             DriveCampEntity driveCampEntity  = driveCampModel.getEntity();
             String id= UUIDUtils.getInstance().getId();
             driveCampEntity.setId(id);
-            driveCampEntity.setFullSpell(PinyinUtil.getPingYin(driveCampEntity.getTitle()));
-            driveCampEntity.setSimpleSpell(PinyinUtil.getPinYinHeadChar(driveCampEntity.getTitle()));
+            driveCampEntity.setFullSpell(PinyinUtils.getPingYin(driveCampEntity.getTitle()));
+            driveCampEntity.setSimpleSpell(PinyinUtils.converterToFirstSpell(driveCampEntity.getTitle()));
             driveCampEntity.setCode(responseMessageGetCode.getData().toString());
             driveCampEntity.setStatus(0);
             driveCampEntity.setWeight(0);
@@ -116,8 +116,8 @@ public class DriveCampServiceImpl implements DriveCampService {
         if (dCampEntity != null) {
             DriveCampEntity  driveCampEntity = driveCampModel.getEntity();
             driveCampEntity.setId(dCampEntity.getId());
-            driveCampEntity.setFullSpell(PinyinUtil.getPingYin(driveCampEntity.getTitle()));
-            driveCampEntity.setSimpleSpell(PinyinUtil.getPinYinHeadChar(driveCampEntity.getTitle()));
+            driveCampEntity.setFullSpell(PinyinUtils.getPingYin(driveCampEntity.getTitle()));
+            driveCampEntity.setSimpleSpell(PinyinUtils.converterToFirstSpell(driveCampEntity.getTitle()));
             driveCampEntity.setCreatedUser(dCampEntity.getCreatedUser());
             driveCampEntity.setCreatedDate(dCampEntity.getCreatedDate());
             driveCampEntity.setStatus(0);

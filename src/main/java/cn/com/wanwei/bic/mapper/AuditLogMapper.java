@@ -20,5 +20,5 @@ public interface AuditLogMapper {
      * @param filter
      * @return
      */
-    Page<PoiEntity> findByPage(Map<String, Object> filter);
+    Page<AuditLogEntity> findByPage(Map<String, Object> filter);
 }

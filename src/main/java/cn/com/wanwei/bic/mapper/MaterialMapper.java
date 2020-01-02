@@ -25,7 +25,7 @@ public interface MaterialMapper {
 
     List<MaterialEntity> findByPidAndType(@Param("principalId") String principalId, @Param("type")String type);
 
-    List<MaterialEntity> findByPidAndIdentify(@Param("principalId")String principalId, @Param("fileIdentify")Integer fileIdentify);
+    List<MaterialEntity> findByPidAndIdentify(@Param("principalId")String principalId, @Param("fileIdentify")String fileIdentify);
 
     int updateByPrimaryKey(MaterialEntity materialEntity);
 

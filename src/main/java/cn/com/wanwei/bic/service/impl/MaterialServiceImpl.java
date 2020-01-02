@@ -2,6 +2,8 @@ package cn.com.wanwei.bic.service.impl;
 
 import cn.com.wanwei.bic.entity.MaterialEntity;
 import cn.com.wanwei.bic.mapper.MaterialMapper;
+import cn.com.wanwei.bic.model.InfoType;
+import cn.com.wanwei.bic.model.MaterialModel;
 import cn.com.wanwei.bic.service.MaterialService;
 import cn.com.wanwei.bic.utils.ParseContentUtils;
 import cn.com.wanwei.bic.utils.UUIDUtils;
@@ -10,6 +12,7 @@ import cn.com.wanwei.common.model.User;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.bouncycastle.util.Strings;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +25,9 @@ public class MaterialServiceImpl implements MaterialService {
 
     @Autowired
     private MaterialMapper materialMapper;
+
+    @Autowired
+    private MaterialModel materialModel;
 
     @Override
     public ResponseMessage deleteByPrimaryKey(String id) {
@@ -131,7 +137,7 @@ public class MaterialServiceImpl implements MaterialService {
     }
 
     @Override
-    public ResponseMessage findByPidAndIdentify(String principalId, Integer fileIdentify) {
+    public ResponseMessage findByPidAndIdentify(String principalId, String fileIdentify) {
         ResponseMessage responseMessage = ResponseMessage.defaultResponse();
         List<MaterialEntity> backList = materialMapper.findByPidAndIdentify(principalId, fileIdentify);
         if (backList.size() > 0) {
@@ -149,7 +155,7 @@ public class MaterialServiceImpl implements MaterialService {
     }
 
     @Override
-    public ResponseMessage updateIdentify(String principalId, String id, Integer identify, User user) {
+    public ResponseMessage updateIdentify(String principalId, String id, String identify, User user) {
         ResponseMessage responseMessage = ResponseMessage.defaultResponse();
         // 查询数据是否存在
         MaterialEntity entity = materialMapper.findByIdAndPid(id, principalId);
@@ -166,8 +172,26 @@ public class MaterialServiceImpl implements MaterialService {
 //                    materialMapper.updateByPrimaryKey(item);
 //                }
 //            }
+            String[] identifyArray=entity.getFileIdentify().split(",");
+            List<String> arrList=new ArrayList<>(Arrays.asList(identifyArray));
+            Boolean removeFlag=false;
+            //取消标识关联
+            if(CollectionUtils.isNotEmpty(arrList)){
+                for(int i=0;i<arrList.size();i++){
+                    if(identify.equals(arrList.get(i))){
+                        arrList.remove(i);
+                        removeFlag=true;
+                        break;
+                    }
+                }
+            }
+            //添加标识关联
+           if(CollectionUtils.isEmpty(arrList)&&!removeFlag){
+               arrList.add(identify);
+           }
             // 更新数据
-            entity.setFileIdentify(identify);
+            String strIdentify= StringUtils.join(arrList.toArray(),",");
+            entity.setFileIdentify(strIdentify);
             entity.setUpdatedUser(user.getUsername());
             entity.setUpdatedDate(new Date());
             materialMapper.updateByPrimaryKey(entity);
@@ -200,13 +224,13 @@ public class MaterialServiceImpl implements MaterialService {
                 if (entity.getFileType().toLowerCase().equals("file")) {
                     fileList.add(entity);
                 }
-                if (null != entity.getFileIdentify() && entity.getFileIdentify() == 1) {
+                if (null != entity.getFileIdentify() && entity.getFileIdentify() == "1") {
                     titleImageList.add(entity);
                 }
-                if (null != entity.getFileIdentify() && entity.getFileIdentify() == 2) {
+                if (null != entity.getFileIdentify() && entity.getFileIdentify() == "2") {
                     spotImageList.add(entity);
                 }
-                if (null != entity.getFileIdentify() && entity.getFileIdentify() == 3) {
+                if (null != entity.getFileIdentify() && entity.getFileIdentify() == "3") {
                     titleImageList.add(entity);
                     spotImageList.add(entity);
                 }
@@ -246,4 +270,74 @@ public class MaterialServiceImpl implements MaterialService {
         return map;
     }
 
+    @Override
+    public Map<String,Map<String,Map<String,Object>>> handleMaterialNew(String principalId) {
+        List<MaterialEntity> list = materialMapper.findByPrincipalId(principalId);
+        Map<String,Map<String,Map<String,Object>>> materialList = Maps.newHashMap();
+        Map<String,Map<String,Object>> imageList = getMaterialTypeMap("image");
+        Map<String,Map<String,Object>> audioList = getMaterialTypeMap("audio");
+        Map<String,Map<String,Object>> videoList =getMaterialTypeMap("video");
+        Map<String,Map<String,Object>> fileList = getMaterialTypeMap("file");
+        materialList.put("image", imageList);
+        materialList.put("audio", audioList);
+        materialList.put("video", videoList);
+        materialList.put("file", fileList);
+        if (CollectionUtils.isNotEmpty(list)) {
+            for (MaterialEntity entity : list) {
+                if (entity.getFileType().toLowerCase().equals("image")) {
+                    getMaterialData( materialList.get("image"),entity);
+                }
+                if (entity.getFileType().toLowerCase().equals("audio")) {
+                    getMaterialData( materialList.get("audio"),entity);
+                }
+                if (entity.getFileType().toLowerCase().equals("video")) {
+                    getMaterialData( materialList.get("video"),entity);
+                }
+                if (entity.getFileType().toLowerCase().equals("file")) {
+                    getMaterialData( materialList.get("file"),entity);
+                }
+            }
+        }
+        return materialList;
+    }
+
+    private  Map<String,Map<String,Object>> getMaterialTypeMap(String name){
+        //获取该文件类型下标识集合
+        List<MaterialEntity> materialList=Lists.newArrayList();
+        Map<String,Map<String,Object>> codeMap= new HashMap<>();
+        Map<String,Object> map = new HashMap<>();
+        map.put("name","全部");
+        map.put("materials",materialList);
+        codeMap.put("all",map);
+        for(InfoType infoType:(List<InfoType>)getMaterialType().get(name)){
+            materialList=Lists.newArrayList();
+            map=new HashMap<>();
+            map.put("name",infoType.getName());
+            map.put("materials",materialList);
+            codeMap.put(infoType.getCode(),map);
+        }
+        return codeMap;
+    }
+
+    private Map<String,Map<String,Object>> getMaterialData( Map<String,Map<String,Object>> typeMap,MaterialEntity entity){
+        //跟据标识分配文件
+        List<MaterialEntity> mList=(List<MaterialEntity>) typeMap.get("all").get("materials");
+        mList.add(entity);
+        String[] identifyArr = entity.getFileIdentify().split(",");
+        for(String str:identifyArr){
+            mList= (List<MaterialEntity>) typeMap.get(str).get("materials");
+            mList.add(entity);
+        }
+        return typeMap;
+    }
+
+    @Override
+    public Map<String,Object> getMaterialType() {
+        Map<String,Object> map = new HashMap<>();
+        map.put("image",materialModel.getImage().get("info-type"));
+        map.put("video",materialModel.getVideo().get("info-type"));
+        map.put("audio",materialModel.getAudio().get("info-type"));
+        map.put("file",materialModel.getFile().get("info-type"));
+        return map;
+    }
 }

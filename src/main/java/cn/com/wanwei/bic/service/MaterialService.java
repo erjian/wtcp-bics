@@ -29,11 +29,11 @@ public interface MaterialService {
 
     ResponseMessage findByPidAndType(String principalId, String type);
 
-    ResponseMessage findByPidAndIdentify(String principalId, Integer fileIdentify);
+    ResponseMessage findByPidAndIdentify(String principalId, String fileIdentify);
 
     ResponseMessage updateByPrimaryKey(String id, MaterialEntity materialEntity, User user);
 
-    ResponseMessage updateIdentify(String principalId, String id, Integer identify, User user);
+    ResponseMessage updateIdentify(String principalId, String id, String identify, User user);
 
     Map<String, Object> handleMaterial(String principalId);
 
@@ -44,4 +44,12 @@ public interface MaterialService {
      * @return
      */
     ResponseMessage findByIds(String ids,Integer parameter);
+
+    Map<String,Map<String,Map<String,Object>>> handleMaterialNew(String principalId);
+
+    /**
+     * 获取素材类型
+     * @return
+     */
+    Map<String,Object>  getMaterialType();
 }

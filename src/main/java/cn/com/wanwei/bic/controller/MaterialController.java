@@ -82,7 +82,7 @@ public class MaterialController extends BaseController {
     @RequestMapping(value = "/findByPidAndIdentify", method = RequestMethod.GET)
     @PreAuthorize("hasAuthority('material:r')")
     @OperationLog(value = "wtcp-bic/根据关联ID及素材标识获取素材信息", operate = "r", module = "素材管理")
-    public ResponseMessage findByPidAndIdentify(@RequestParam String principalId, @RequestParam Integer identify) {
+    public ResponseMessage findByPidAndIdentify(@RequestParam String principalId, @RequestParam String identify) {
         return ResponseMessage.defaultResponse().setData(materialService.findByPidAndIdentify(principalId, identify));
     }
 
@@ -95,7 +95,7 @@ public class MaterialController extends BaseController {
     @RequestMapping(value = "/updateImgIdentify", method = RequestMethod.PUT)
     @PreAuthorize("hasAuthority('material:u')")
     @OperationLog(value = "wtcp-bic/根据关联ID和主键更新图片素材标识", operate = "u", module = "素材管理")
-    public ResponseMessage updateIdentify(@RequestParam String principalId, @RequestParam String id, @RequestParam Integer identify) throws Exception {
+    public ResponseMessage updateIdentify(@RequestParam String principalId, @RequestParam String id, @RequestParam String identify) throws Exception {
         return ResponseMessage.defaultResponse().setData(materialService.updateIdentify(principalId, id, identify, getCurrentUser()));
     }
 
@@ -116,12 +116,7 @@ public class MaterialController extends BaseController {
     @GetMapping(value = "/getMaterialType")
     @OperationLog(value = "wtcp-bics/素材类型", operate = "r", module = "素材类型")
     public ResponseMessage getMaterialType(){
-        Map<String,Object> map = new HashMap<>();
-        map.put("image",materialModel.getImage().get("info-type"));
-        map.put("video",materialModel.getVideo().get("info-type"));
-        map.put("audio",materialModel.getAudio().get("info-type"));
-        map.put("file",materialModel.getFile().get("info-type"));
-        return ResponseMessage.defaultResponse().setData(map);
+        return ResponseMessage.defaultResponse().setData(materialService.getMaterialType());
     }
 
 }

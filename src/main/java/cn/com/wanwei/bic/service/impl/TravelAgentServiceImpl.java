@@ -11,10 +11,10 @@ import cn.com.wanwei.bic.service.MaterialService;
 import cn.com.wanwei.bic.service.TagsService;
 import cn.com.wanwei.bic.service.TravelAgentService;
 import cn.com.wanwei.bic.utils.PageUtils;
-import cn.com.wanwei.bic.utils.PinyinUtil;
 import cn.com.wanwei.bic.utils.UUIDUtils;
 import cn.com.wanwei.common.model.ResponseMessage;
 import cn.com.wanwei.common.model.User;
+import cn.com.wanwei.common.utils.PinyinUtils;
 import cn.com.wanwei.persistence.mybatis.MybatisPageRequest;
 import cn.com.wanwei.persistence.mybatis.PageInfo;
 import cn.com.wanwei.persistence.mybatis.utils.EscapeCharUtils;
@@ -90,8 +90,8 @@ public class TravelAgentServiceImpl implements TravelAgentService {
             TravelAgentEntity travelAgentEntity = travelAgentModel.getEntity();
             String id= UUIDUtils.getInstance().getId();
             travelAgentEntity.setId(id);
-            travelAgentEntity.setFullSpell(PinyinUtil.getPingYin(travelAgentEntity.getTitle()));
-            travelAgentEntity.setSimpleSpell(PinyinUtil.getPinYinHeadChar(travelAgentEntity.getTitle()));
+            travelAgentEntity.setFullSpell(PinyinUtils.getPingYin(travelAgentEntity.getTitle()));
+            travelAgentEntity.setSimpleSpell(PinyinUtils.converterToFirstSpell(travelAgentEntity.getTitle()));
             travelAgentEntity.setCode(responseMessageGetCode.getData().toString());
             travelAgentEntity.setStatus(0);
             travelAgentEntity.setWeight(0);
@@ -117,8 +117,8 @@ public class TravelAgentServiceImpl implements TravelAgentService {
         if (tEntity != null) {
             TravelAgentEntity travelAgentEntity = travelAgentModel.getEntity();
             travelAgentEntity.setId(tEntity.getId());
-            travelAgentEntity.setFullSpell(PinyinUtil.getPingYin(travelAgentEntity.getTitle()));
-            travelAgentEntity.setSimpleSpell(PinyinUtil.getPinYinHeadChar(travelAgentEntity.getTitle()));
+            travelAgentEntity.setFullSpell(PinyinUtils.getPingYin(travelAgentEntity.getTitle()));
+            travelAgentEntity.setSimpleSpell(PinyinUtils.converterToFirstSpell(travelAgentEntity.getTitle()));
             travelAgentEntity.setCreatedUser(tEntity.getCreatedUser());
             travelAgentEntity.setCreatedDate(tEntity.getCreatedDate());
             travelAgentEntity.setStatus(0);

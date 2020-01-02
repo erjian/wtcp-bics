@@ -47,7 +47,7 @@ public class MaterialServiceTest {
         materialEntity.setCreatedUser("ceshi");
         materialEntity.setCreatedDate(new Date());
         materialEntity.setFileType("image");
-        materialEntity.setFileIdentify(1);
+        materialEntity.setFileIdentify("1");
         materialEntity.setFileUrl("/data/abc.jpg");
         materialEntity.setMaterialId("-666");
 
