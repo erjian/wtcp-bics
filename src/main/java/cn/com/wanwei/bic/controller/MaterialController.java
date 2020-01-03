@@ -13,8 +13,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -99,15 +101,17 @@ public class MaterialController extends BaseController {
         return ResponseMessage.defaultResponse().setData(materialService.updateIdentify(principalId, id, identify, getCurrentUser()));
     }
 
-    @ApiOperation(value = "根据关联ID保存素材", notes = "根据关联ID保存素材")
+    @ApiOperation(value = "根据关联ID批量保存素材", notes = "根据关联ID批量保存素材")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "principalId", value = "关联ID", required = true),
-            @ApiImplicitParam(name = "materialList", value = "素材主键", required = true)
+            @ApiImplicitParam(name = "principalId", value = "关联ID", required = true)
     })
     @RequestMapping(value = "/batchInsert", method = RequestMethod.PUT)
     @PreAuthorize("hasAuthority('material:u')")
     @OperationLog(value = "batchInsert/根据关联ID保存素材", operate = "批量保存素材", module = "素材管理")
-    public ResponseMessage batchInsert(@RequestParam String principalId, @RequestBody List<MaterialEntity> materialList) throws Exception {
+    public ResponseMessage batchInsert(@RequestParam String principalId, @RequestBody @Valid List<MaterialEntity> materialList , BindingResult bindingResult) throws Exception {
+        if (bindingResult.hasErrors()) {
+            return ResponseMessage.validFailResponse().setMsg(bindingResult.getAllErrors());
+        }
         return ResponseMessage.defaultResponse().setData(materialService.batchInsert(principalId, materialList, getCurrentUser()));
     }
 
