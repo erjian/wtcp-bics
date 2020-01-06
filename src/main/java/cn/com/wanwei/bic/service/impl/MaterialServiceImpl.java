@@ -172,7 +172,7 @@ public class MaterialServiceImpl implements MaterialService {
 //                    materialMapper.updateByPrimaryKey(item);
 //                }
 //            }
-            String[] identifyArray=entity.getFileIdentify().split(",");
+            String[] identifyArray=StringUtils.isNotBlank(entity.getFileIdentify())?entity.getFileIdentify().trim().split(","):new String[]{};
             List<String> arrList=new ArrayList<>(Arrays.asList(identifyArray));
             Boolean removeFlag=false;
             //取消标识关联
@@ -186,7 +186,7 @@ public class MaterialServiceImpl implements MaterialService {
                 }
             }
             //添加标识关联
-           if(CollectionUtils.isEmpty(arrList)&&!removeFlag){
+           if(!removeFlag){
                arrList.add(identify);
            }
             // 更新数据
