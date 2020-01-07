@@ -84,13 +84,14 @@ public class MaterialServiceImpl implements MaterialService {
     @Override
     public ResponseMessage batchInsert(String principalId, List<MaterialEntity> materialList, User user) {
         for (MaterialEntity item : materialList) {
-            item.setId(UUIDUtils.getInstance().getId());
             item.setCreatedUser(user.getUsername());
             item.setCreatedDate(new Date());
             item.setPrincipalId(principalId);
             item.setFileName(dealFileName(item.getFileName()));
             if(StringUtils.isNotBlank(item.getId())){
                 materialMapper.deleteByPrimaryKey(item.getId());
+            }else{
+                item.setId(UUIDUtils.getInstance().getId());
             }
         }
         materialMapper.batchInsert(materialList);
