@@ -89,13 +89,16 @@ public class MaterialServiceImpl implements MaterialService {
             item.setCreatedDate(new Date());
             item.setPrincipalId(principalId);
             item.setFileName(dealFileName(item.getFileName()));
+            if(StringUtils.isNotBlank(item.getId())){
+                materialMapper.deleteByPrimaryKey(item.getId());
+            }
         }
         materialMapper.batchInsert(materialList);
         return ResponseMessage.defaultResponse().setMsg("添加成功");
     }
 
     private String dealFileName(String fileName){
-        if (StringUtils.isNotEmpty(fileName) && fileName.length() > 100) {
+        if (StringUtils.isNotBlank(fileName) && fileName.length() > 100) {
             String[] nameArray = fileName.split("[.]");
             if (nameArray.length == 2 && nameArray[0].length() >= 20) {
                 return nameArray[0].substring(0, 20) + "." + nameArray[1];
