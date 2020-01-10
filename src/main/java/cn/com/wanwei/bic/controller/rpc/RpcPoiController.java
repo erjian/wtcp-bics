@@ -28,7 +28,7 @@ public class RpcPoiController {
     private PoiService poiService;
 
     @ApiOperation(value = "获取POI分页列表", notes = "获取POI分页列表（默认只返回上线的数据）" +
-            "可根据关联信息ID（principalId）类型（type），名称（title），状态（status）获取数据")
+            "可根据关联信息ID（principalId）类型（type），名称（title），状态（status），是否在景区：1 是 0 否（insideScenic）获取数据")
     @GetMapping(value = "/page")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "page", value = "页号", defaultValue = "0"),
@@ -49,6 +49,13 @@ public class RpcPoiController {
             filter.put("excludeIds", excludeIds);
         }
         return poiService.findByPageForFeign(page, size, filter);
+    }
+
+    @ApiOperation(value = "根据景区ID获取POI列表", notes = "根据景区ID获取POI列表")
+    @ApiImplicitParams({@ApiImplicitParam(name = "insideScenic", value = "是否在景区：1 是 0 否", required = true, dataType = "String")})
+    @RequestMapping(value = "/getListByInsideScenic", method = RequestMethod.GET)
+    public ResponseMessage getListByInsideScenic(@RequestParam String insideScenic) {
+        return poiService.getListByInsideScenic(insideScenic);
     }
 
     @ApiOperation(value = "根据ID获取POI详情", notes = "根据ID获取POI详情")

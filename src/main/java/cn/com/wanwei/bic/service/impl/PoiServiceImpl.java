@@ -322,5 +322,10 @@ public class PoiServiceImpl implements PoiService {
         return ResponseMessage.defaultResponse().setData(data);
     }
 
+    @Override
+    public ResponseMessage getListByInsideScenic(String insideScenic) {
+        return ResponseMessage.defaultResponse().setData(poiMapper.getListByInsideScenic(insideScenic));
+    }
+
 
 }

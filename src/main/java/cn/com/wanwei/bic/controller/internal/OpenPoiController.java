@@ -15,10 +15,7 @@ import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * wtcp-bics - OpenPoiController
@@ -39,6 +36,13 @@ public class OpenPoiController extends BaseController {
 	@RequestMapping(value = "/getList/{id}", method = RequestMethod.GET)
 	public ResponseMessage getList(@PathVariable("id") String principalId,String type) {
 		return poiService.getList(principalId, type);
+	}
+
+	@ApiOperation(value = "根据景区ID获取POI列表", notes = "根据景区ID获取POI列表")
+	@ApiImplicitParams({@ApiImplicitParam(name = "insideScenic", value = "是否在景区：1 是 0 否", required = true, dataType = "String")})
+	@RequestMapping(value = "/getListByInsideScenic", method = RequestMethod.GET)
+	public ResponseMessage getListByInsideScenic(@RequestParam String insideScenic) {
+		return poiService.getListByInsideScenic(insideScenic);
 	}
 
 	@ApiOperation(value = "C端根据ID获取POI详情", notes = "C端根据ID获取POI详情")

@@ -72,4 +72,12 @@ public interface PoiMapper {
      * @return
      */
     List<PoiEntity> getList(@Param(value = "principalId")String principalId, @Param(value = "type")String type);
+
+    /**
+     * 查询是否在景区的POI信息
+     * @author linjw 2020年1月10日17:17:51
+     * @param insideScenic
+     * @return
+     */
+    List<PoiEntity> getListByInsideScenic(@Param(value = "insideScenic") String insideScenic);
 }

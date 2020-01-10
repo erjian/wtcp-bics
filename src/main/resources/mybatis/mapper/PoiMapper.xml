@@ -129,6 +129,9 @@
                 <bind name="type" value="type + '%'"></bind>
                 and type like #{type}
             </if>
+            <if test="insideScenic != null and insideScenic != ''">
+                and inside_scenic = #{insideScenic,jdbcType=VARCHAR}
+            </if>
             <if test="regionFullCode != null and regionFullCode!='' ">
                 <bind name="regionFullCode" value="regionFullCode + '%'"></bind>
                 and region_full_code like #{regionFullCode}
@@ -178,6 +181,17 @@
             </if>
             <if test="type != null and type != ''">
                 and `type` = #{type,jdbcType=VARCHAR}
+            </if>
+        </where>
+    </select>
+
+    <select id="getListByInsideScenic" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from t_bic_poi
+        <where>
+            <if test="insideScenic != null and insideScenic != ''">
+                and inside_scenic = #{insideScenic,jdbcType=VARCHAR}
             </if>
         </where>
     </select>

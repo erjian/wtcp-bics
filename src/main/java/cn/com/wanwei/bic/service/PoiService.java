@@ -118,4 +118,12 @@ public interface PoiService {
      * @return
      */
     ResponseMessage getList(String principalId, String type);
+
+    /**
+     * 查询是否在景区的POI数据
+     * @author linjw 2020年1月10日17:12:53
+     * @param insideScenic
+     * @return
+     */
+    ResponseMessage getListByInsideScenic(String insideScenic);
 }
