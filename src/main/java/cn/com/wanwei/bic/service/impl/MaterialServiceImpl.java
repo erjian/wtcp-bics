@@ -161,41 +161,11 @@ public class MaterialServiceImpl implements MaterialService {
     @Override
     public ResponseMessage updateIdentify(String principalId, String id, String identify, User user) {
         ResponseMessage responseMessage = ResponseMessage.defaultResponse();
-        // 查询数据是否存在
         MaterialEntity entity = materialMapper.findByIdAndPid(id, principalId);
         if (null == entity) {
             responseMessage.setStatus(ResponseMessage.FAILED).setMsg("资源不存在");
         } else {
-            // 先获取当前资源在改标识下的数据
-            List<MaterialEntity> oldList = materialMapper.findByPidAndIdentify(principalId, identify);
-//            if(null != oldList){
-//                for(MaterialEntity item : oldList){
-//                    item.setFileIdentify(0);
-//                    item.setUpdatedUser(user.getUsername());
-//                    item.setUpdatedDate(new Date());
-//                    materialMapper.updateByPrimaryKey(item);
-//                }
-//            }
-            String[] identifyArray=StringUtils.isNotBlank(entity.getFileIdentify())?entity.getFileIdentify().trim().split(","):new String[]{};
-            List<String> arrList=new ArrayList<>(Arrays.asList(identifyArray));
-            Boolean removeFlag=false;
-            //取消标识关联
-            if(CollectionUtils.isNotEmpty(arrList)){
-                for(int i=0;i<arrList.size();i++){
-                    if(identify.equals(arrList.get(i))){
-                        arrList.remove(i);
-                        removeFlag=true;
-                        break;
-                    }
-                }
-            }
-            //添加标识关联
-           if(!removeFlag){
-               arrList.add(identify);
-           }
-            // 更新数据
-            String strIdentify= StringUtils.join(arrList.toArray(),",");
-            entity.setFileIdentify(strIdentify);
+            entity.setFileIdentify(identify);
             entity.setUpdatedUser(user.getUsername());
             entity.setUpdatedDate(new Date());
             materialMapper.updateByPrimaryKey(entity);
