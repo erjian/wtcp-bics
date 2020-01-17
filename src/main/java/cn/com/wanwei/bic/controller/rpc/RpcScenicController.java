@@ -2,7 +2,6 @@ package cn.com.wanwei.bic.controller.rpc;
 
 import cn.com.wanwei.bic.controller.BaseController;
 import cn.com.wanwei.bic.service.ScenicService;
-import cn.com.wanwei.bic.utils.PageUtils;
 import cn.com.wanwei.common.log.annotation.OperationLog;
 import cn.com.wanwei.common.model.ResponseMessage;
 import cn.com.wanwei.common.utils.RequestUtil;
@@ -13,6 +12,7 @@ import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -28,12 +28,15 @@ public class RpcScenicController extends BaseController {
     @Autowired
     private ScenicService scenicService;
 
-    @ApiOperation(value = "查询景区信息的feign接口", notes = "查询景区信息的feign接口")
+    @ApiOperation(value = "根据景区名称和上线状态查询景区信息的feign接口", notes = "根据景区名称和上线状态查询景区信息的feign接口")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "title", value = "景区名称",required = true),
+            @ApiImplicitParam(name = "status", value = "上下线（9 上线，1 下线）")
+    })
     @RequestMapping(value = "/getScenicInfo", method = RequestMethod.GET)
-    @OperationLog(value = "wtcp-bics/查询景区信息的feign接口", operate = "v", module = "景区管理")
-    public ResponseMessage getScenicInfo(String title) throws Exception {
-        title = title == null ? "" : title;
-        return scenicService.getScenicInfo(title.trim().toLowerCase());
+    @OperationLog(value = "wtcp-bics/根据景区名称和上线状态查询景区信息的feign接口", operate = "v", module = "景区管理")
+    public ResponseMessage getScenicInfo(@RequestParam String title, Integer status) throws Exception {
+        return scenicService.getScenicInfo(StringUtils.isEmpty(title)?"":title.trim().toLowerCase(), status);
     }
 
     // ----------------------------------以下接口为自驾游提供-----------------------------------------

@@ -48,7 +48,7 @@ public interface ScenicMapper {
      * @param title
      * @return
      */
-    List<ScenicEntity> getScenicInfo(@Param(value="title") String title);
+    List<ScenicEntity> getScenicInfo(@Param(value="title") String title, @Param(value="status") Integer status);
 
     /**
      * 获取最大权重

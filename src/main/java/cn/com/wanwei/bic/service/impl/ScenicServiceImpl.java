@@ -233,8 +233,8 @@ public class ScenicServiceImpl implements ScenicService {
     }
 
     @Override
-    public ResponseMessage getScenicInfo(String title) {
-        List<ScenicEntity> entities = scenicMapper.getScenicInfo(title);
+    public ResponseMessage getScenicInfo(String title, Integer status) {
+        List<ScenicEntity> entities = scenicMapper.getScenicInfo(title, status);
         return ResponseMessage.defaultResponse().setData(entities);
     }
 

@@ -9,7 +9,6 @@ import cn.com.wanwei.bic.service.ScenicService;
 import cn.com.wanwei.common.log.annotation.OperationLog;
 import cn.com.wanwei.common.model.ResponseMessage;
 import cn.com.wanwei.common.utils.RequestUtil;
-import cn.com.wanwei.persistence.mybatis.utils.EscapeCharUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
@@ -18,6 +17,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
@@ -159,8 +159,7 @@ public class ScenicController extends BaseController {
     @PreAuthorize("hasAuthority('scenic:r')")
     @OperationLog(value = "wtcp-bics/获取景区列表", operate = "r", module = "景区管理")
     public ResponseMessage getScenicList(String title) throws Exception {
-        title = title == null? "":title;
-        return scenicService.getScenicInfo(title.trim().toLowerCase());
+        return scenicService.getScenicInfo(StringUtils.isEmpty(title)?"":title.trim().toLowerCase(), null);
     }
 
     @ApiOperation(value = "景区名称是否重复", notes = "景区名称是否重复(status:1 表示不重复，0表示重复)")
