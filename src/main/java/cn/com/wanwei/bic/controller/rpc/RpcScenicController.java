@@ -35,7 +35,7 @@ public class RpcScenicController extends BaseController {
     })
     @RequestMapping(value = "/getScenicInfo", method = RequestMethod.GET)
     @OperationLog(value = "wtcp-bics/根据景区名称和上线状态查询景区信息的feign接口", operate = "v", module = "景区管理")
-    public ResponseMessage getScenicInfo(@RequestParam String title, Integer status) throws Exception {
+    public ResponseMessage getScenicInfo(String title, Integer status) throws Exception {
         return scenicService.getScenicInfo(StringUtils.isEmpty(title)?"":title.trim().toLowerCase(), status);
     }
 
