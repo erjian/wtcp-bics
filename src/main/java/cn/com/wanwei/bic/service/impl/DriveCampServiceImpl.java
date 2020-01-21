@@ -104,7 +104,9 @@ public class DriveCampServiceImpl implements DriveCampService {
                 tagsService.batchInsert(id,driveCampModel.getTagsList(),user, DriveCampTagsEntity.class);
             }
             //处理编辑页面新增素材
-            materialMapper.batchUpdateByPrincipalId(id,driveCampEntity.getTimeId());
+            if(CollectionUtils.isNotEmpty(driveCampModel.getMaterialList())){
+                materialService.batchInsert(id,driveCampModel.getMaterialList(),user);
+            }
             return ResponseMessage.defaultResponse().setMsg("保存成功!").setData(id);
         }
         return responseMessageGetCode;

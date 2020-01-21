@@ -3,11 +3,11 @@ package cn.com.wanwei.bic.service.impl;
 import cn.com.wanwei.bic.entity.AuditLogEntity;
 import cn.com.wanwei.bic.entity.TrafficAgentEntity;
 import cn.com.wanwei.bic.feign.CoderServiceFeign;
-import cn.com.wanwei.bic.mapper.MaterialMapper;
 import cn.com.wanwei.bic.mapper.TrafficAgentMapper;
 import cn.com.wanwei.bic.model.DataBindModel;
 import cn.com.wanwei.bic.model.GouldModel;
 import cn.com.wanwei.bic.service.AuditLogService;
+import cn.com.wanwei.bic.service.MaterialService;
 import cn.com.wanwei.bic.service.TrafficAgentService;
 import cn.com.wanwei.bic.utils.PageUtils;
 import cn.com.wanwei.bic.utils.UUIDUtils;
@@ -22,6 +22,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
@@ -45,7 +46,7 @@ public class TrafficAgentServiceImpl implements TrafficAgentService {
     private AuditLogService auditLogService;
 
     @Autowired
-    private MaterialMapper materialMapper;
+    private MaterialService materialService;
 
     @Override
     public ResponseMessage findByPage(Integer page, Integer size, Map<String, Object> filter) {
@@ -83,7 +84,9 @@ public class TrafficAgentServiceImpl implements TrafficAgentService {
             trafficAgentEntity.setDeptCode(user.getOrg().getCode());
             trafficAgentMapper.insert(trafficAgentEntity);
             //处理编辑页面新增素材
-            materialMapper.batchUpdateByPrincipalId(id,trafficAgentEntity.getTimeId());
+            if(CollectionUtils.isNotEmpty(trafficAgentEntity.getMaterialList())){
+                materialService.batchInsert(id,trafficAgentEntity.getMaterialList(),user);
+            }
             return ResponseMessage.defaultResponse().setMsg("保存成功!").setData(id);
         }
         return responseMessageGetCode;

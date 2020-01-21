@@ -120,9 +120,10 @@ public class PoiServiceImpl implements PoiService {
             PoiEntity poiEntity = poiModel.getEntity();
             //获取统一认证生成的code
             String type = poiModel.getType();
+            String id = UUIDUtils.getInstance().getId();
             ResponseMessage responseMessageGetCode = coderServiceFeign.buildSerialByCode(ruleId, appCode, type);
             if (responseMessageGetCode.getStatus() == 1 && responseMessageGetCode.getData() != null) {
-                poiEntity.setId(UUIDUtils.getInstance().getId());
+                poiEntity.setId(id);
                 poiEntity.setCode(responseMessageGetCode.getData().toString());
                 poiEntity.setStatus(1);
                 poiEntity.setWeight(0);
@@ -136,7 +137,9 @@ public class PoiServiceImpl implements PoiService {
                     tagsService.batchInsert(poiEntity.getId(), poiModel.getTagsList(),user,PoiTagsEntity.class);
                 }
                 //处理编辑页面新增素材
-                materialMapper.batchUpdateByPrincipalId(poiEntity.getId(),poiEntity.getTimeId());
+                if(CollectionUtils.isNotEmpty(poiModel.getMaterialList())){
+                    materialService.batchInsert(id,poiModel.getMaterialList(),user);
+                }
                 return ResponseMessage.defaultResponse().setMsg("保存成功!");
             }
             return responseMessageGetCode;

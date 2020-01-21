@@ -97,9 +97,10 @@ public class ExtendServiceImpl implements ExtendService {
      */
     @Override
     public ResponseMessage save(EntityTagsModel<ExtendEntity> extendModel, User user, Long ruleId, Integer appCode) throws Exception{
+        String id = UUIDUtils.getInstance().getId();
         ExtendEntity extendEntity = extendModel.getEntity();
         ResponseMessage responseMessage = coderServiceFeign.buildSerialByCode(ruleId,appCode,extendEntity.getCode());
-        extendEntity.setId(UUIDUtils.getInstance().getId());
+        extendEntity.setId(id);
         extendEntity.setCreatedUser(user.getUsername());
         extendEntity.setCreatedDate(new Date());
         extendEntity.setStatus(0);
@@ -112,7 +113,9 @@ public class ExtendServiceImpl implements ExtendService {
         }
 
         //处理编辑页面新增素材
-        materialMapper.batchUpdateByPrincipalId(extendEntity.getId(),extendEntity.getTimeId());
+        if(CollectionUtils.isNotEmpty(extendModel.getMaterialList())){
+            materialService.batchInsert(id,extendModel.getMaterialList(),user);
+        }
         return ResponseMessage.defaultResponse().setMsg("新增成功!");
     }
 

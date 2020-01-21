@@ -11,6 +11,7 @@ import lombok.ToString;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 import javax.persistence.Transient;
+import java.util.List;
 
 
 @Data
@@ -86,6 +87,10 @@ public class TrafficAgentEntity extends BaseEntity{
     //冗余字段，关联素材的id
     @Transient
     private String timeId;
+
+    //冗余字段，素材数组
+    @Transient
+    private List<MaterialEntity> materialList;
 
 
 }

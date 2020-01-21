@@ -107,13 +107,14 @@ public class RentalCarServiceImpl implements RentalCarService {
         carEntity.setDeptCode(user.getOrg().getCode());
         carEntity.setStatus(0);
         carEntity.setWeight(0);
-        //处理编辑页面新增素材
-        materialMapper.batchUpdateByPrincipalId(id,carEntity.getTimeId());
         rentalCarMapper.insert(carEntity);
-
         //处理标签
         if (CollectionUtils.isNotEmpty(rentalCarModel.getTagsList())) {
             tagsService.batchInsert(carEntity.getId(), rentalCarModel.getTagsList(), user, RentalCarTagsEntity.class);
+        }
+        //处理编辑页面新增素材
+        if(CollectionUtils.isNotEmpty(rentalCarModel.getMaterialList())){
+            materialService.batchInsert(id,rentalCarModel.getMaterialList(),user);
         }
         return ResponseMessage.defaultResponse().setMsg("保存成功").setData(id);
     }

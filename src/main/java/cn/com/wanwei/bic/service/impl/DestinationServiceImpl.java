@@ -60,9 +60,6 @@ public class DestinationServiceImpl implements DestinationService {
     @Autowired
     private MaterialService materialService;
 
-    @Autowired
-    private MaterialMapper materialMapper;
-
     /**
      * 查询目的地分页列表数据
      * @param page  页数
@@ -102,8 +99,9 @@ public class DestinationServiceImpl implements DestinationService {
      */
     @Override
     public ResponseMessage save(EntityTagsModel<DestinationEntity> destinationModel, User user) throws Exception{
+        String id = UUIDUtils.getInstance().getId();
         DestinationEntity destinationEntity = destinationModel.getEntity();
-        destinationEntity.setId(UUIDUtils.getInstance().getId());
+        destinationEntity.setId(id);
         destinationEntity.setCreatedUser(user.getUsername());
         destinationEntity.setCreatedDate(new Date());
         destinationEntity.setStatus(1);
@@ -116,7 +114,9 @@ public class DestinationServiceImpl implements DestinationService {
             tagsService.batchInsert(destinationEntity.getId(),destinationModel.getTagsList(),user, DestinationTagsEntity.class);
         }
         //处理编辑页面新增素材
-        materialMapper.batchUpdateByPrincipalId(destinationEntity.getId(),destinationEntity.getTimeId());
+        if(CollectionUtils.isNotEmpty(destinationModel.getMaterialList())){
+            materialService.batchInsert(id,destinationModel.getMaterialList(),user);
+        }
         return ResponseMessage.defaultResponse().setMsg("保存成功!");
     }
 

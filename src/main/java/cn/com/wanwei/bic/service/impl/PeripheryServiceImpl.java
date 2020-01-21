@@ -86,10 +86,11 @@ public class PeripheryServiceImpl implements PeripheryService {
     public ResponseMessage save(EntityTagsModel<PeripheryEntity> peripheryModel, User user, Long ruleId, Integer appCode) {
         PeripheryEntity peripheryEntity = peripheryModel.getEntity();
         String type = peripheryModel.getType();
+        String id= UUIDUtils.getInstance().getId();
         //获取统一认证生成的code
         ResponseMessage responseMessageGetCode = coderServiceFeign.buildSerialByCode(ruleId, appCode, type);
         if (responseMessageGetCode.getStatus() == 1 && responseMessageGetCode.getData() != null) {
-            peripheryEntity.setId(UUIDUtils.getInstance().getId());
+            peripheryEntity.setId(id);
             peripheryEntity.setCode(responseMessageGetCode.getData().toString());
             peripheryEntity.setStatus(1);
             peripheryEntity.setWeight(0);
@@ -103,7 +104,9 @@ public class PeripheryServiceImpl implements PeripheryService {
                 tagsService.batchInsert(peripheryEntity.getId(), peripheryModel.getTagsList(), user, PeripheryTagsEntity.class);
             }
             //处理编辑页面新增素材
-            materialMapper.batchUpdateByPrincipalId(peripheryEntity.getId(),peripheryEntity.getTimeId());
+            if(CollectionUtils.isNotEmpty(peripheryModel.getMaterialList())){
+                materialService.batchInsert(id,peripheryModel.getMaterialList(),user);
+            }
             return ResponseMessage.defaultResponse().setMsg("保存成功!");
         }
         return responseMessageGetCode;

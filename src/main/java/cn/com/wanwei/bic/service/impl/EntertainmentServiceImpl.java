@@ -112,7 +112,9 @@ public class EntertainmentServiceImpl implements EntertainmentService {
                 tagsService.batchInsert(id, entertainmentModel.getTagsList(), user, EntertainmentTagsEntity.class);
             }
             //处理编辑页面新增素材
-            materialMapper.batchUpdateByPrincipalId(entertainmentEntity.getId(),entertainmentEntity.getTimeId());
+            if(CollectionUtils.isNotEmpty(entertainmentModel.getMaterialList())){
+                materialService.batchInsert(id,entertainmentModel.getMaterialList(),user);
+            }
 
             return ResponseMessage.defaultResponse().setMsg("保存成功!").setData(id);
         }

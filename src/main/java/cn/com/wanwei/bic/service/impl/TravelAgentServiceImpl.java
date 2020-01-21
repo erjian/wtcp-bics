@@ -105,7 +105,9 @@ public class TravelAgentServiceImpl implements TravelAgentService {
             }
 
             //处理编辑页面新增素材
-            materialMapper.batchUpdateByPrincipalId(id,travelAgentEntity.getTimeId());
+            if(CollectionUtils.isNotEmpty(travelAgentModel.getMaterialList())){
+                materialService.batchInsert(id,travelAgentModel.getMaterialList(),user);
+            }
             return ResponseMessage.defaultResponse().setMsg("保存成功!").setData(id);
         }
         return responseMessageGetCode;

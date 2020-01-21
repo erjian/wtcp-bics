@@ -53,9 +53,6 @@
     where id = #{id,jdbcType=VARCHAR}
   </delete>
     <insert id="insert" parameterType="cn.com.wanwei.bic.entity.RentalCarEntity">
-        <selectKey keyProperty="id" order="AFTER" resultType="java.lang.String">
-            SELECT LAST_INSERT_ID()
-        </selectKey>
         insert into t_bic_rental_car (id,created_date, created_user, updated_date,
         updated_user,code, title, sub_title,
         title_qp, title_jp, region_full_code,

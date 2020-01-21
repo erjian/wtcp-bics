@@ -9,6 +9,7 @@
 package cn.com.wanwei.bic.model;
 
 import cn.com.wanwei.bic.entity.BaseTagsEntity;
+import cn.com.wanwei.bic.entity.MaterialEntity;
 import lombok.Data;
 
 import java.util.List;
@@ -24,4 +25,6 @@ public class EntityTagsModel<T> {
 	private List<BaseTagsEntity> tagsList;
 
 	private T entity;
+
+	private List<MaterialEntity> materialList;
 }
