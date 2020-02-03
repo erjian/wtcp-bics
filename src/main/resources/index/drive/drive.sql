@@ -1,3 +1,7 @@
+/**
+ * 自驾营地
+ */
+
 select t.id relateId,t.id,t.`code`, t.title,t.sub_title subTitle,t.full_spell fullSpell, t.simple_spell simpleSpell,t.slogan,
 t.summary, t.description, t.address,t.open_time,t.start_time,t.traffic,CONCAT(t.latitude,",",t.longitude) geoPoint,
 t.latitude, t.longitude,t.region,t.region_full_code regionFullCode,t.region_full_name regionFullName,

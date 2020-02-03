@@ -1,3 +1,7 @@
+/**
+ * 景区
+ */
+
 select t.id relateId,t.id,t.`code`, t.title,t.sub_title subTitle,t.title_qp fullSpell, t.title_jp simpleSpell,t.slogan,
 t.summary, t.description, t.address,t.`level`,t.category,t.area,t.panoramic_url panoramicUrl,t.playtime,t.score,
 t.latitude, t.longitude,CONCAT(t.latitude,",",t.longitude) geoPoint,t.region,t.region_full_code regionFullCode,t.region_full_name regionFullName,

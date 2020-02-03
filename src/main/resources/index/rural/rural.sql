@@ -1,3 +1,7 @@
+/**
+ * 农家乐
+ */
+
 select t.id relateId,t.id,t.`code`, t.title,t.sub_title subTitle,t.slogan,t.summary, t.description,
 t.address,t.scenic_id scenicId, t.within_scenic withinScenic, t.within_park withinPark,t.num,
 t.latitude, t.longitude,CONCAT(t.latitude,",",t.longitude) geoPoint,t.region,t.region_full_code regionFullCode,t.region_full_name regionFullName,
