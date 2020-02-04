@@ -22,6 +22,7 @@ import cn.com.wanwei.persistence.mybatis.MybatisPageRequest;
 import cn.com.wanwei.persistence.mybatis.PageInfo;
 import cn.com.wanwei.persistence.mybatis.utils.EscapeCharUtils;
 import com.github.pagehelper.Page;
+import com.github.pagehelper.util.StringUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -273,18 +274,28 @@ public class PeripheryServiceImpl implements PeripheryService {
     }
 
     @Override
-    public ResponseMessage findBySearchValue(String type, String searchValue) {
+    public ResponseMessage findBySearchValue(String type, String name, String ids) {
         ResponseMessage responseMessage = ResponseMessage.defaultResponse();
-        List<PeripheryEntity> list = peripheryMapper.findBySearchValue(type,searchValue);
+        List<String> idList = null;
+        if(StringUtil.isNotEmpty(ids)){
+            idList = Arrays.asList(ids.split(","));
+        }
+        List<PeripheryEntity> list = peripheryMapper.findBySearchValue(type,name,idList);
         List<Map<String, Object>> data = new ArrayList<>();
         if (list != null && !list.isEmpty()) {
             for (PeripheryEntity entity : list) {
                 Map<String, Object> map = new HashMap<>();
                 map.put("id", entity.getId());
+                map.put("unicode", entity.getCode());
                 map.put("name", entity.getTitle());
+                map.put("level", null);
+                map.put("longitude", entity.getLongitude());
+                map.put("latitude", entity.getLatitude());
+                map.put("areaCode", entity.getRegion());
+                map.put("areaName", entity.getRegionFullName());
+                map.put("address", entity.getAddress());
                 map.put("pinyin", null);
                 map.put("pinyinqp", null);
-                map.put("onlyCode", entity.getCode());
                 data.add(map);
             }
             responseMessage.setData(data);

@@ -65,10 +65,10 @@ public interface EntertainmentMapper {
 
     /**
      * 农家乐列表
-     * @param searchValue 条件
+     * @param name 条件
      * @return
      */
-    List<EntertainmentEntity> findBySearchValue(String searchValue);
+    List<EntertainmentEntity> findBySearchValue(@Param("name") String name, @Param("ids") List<String> ids);
 
     /**
      * 根据区域获取农家乐列表

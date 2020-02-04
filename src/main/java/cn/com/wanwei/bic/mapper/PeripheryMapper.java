@@ -70,10 +70,10 @@ public interface PeripheryMapper {
     /**
      * 根据类型搜索购物或者餐饮列表
      * @param type code
-     * @param searchValue 条件
+     * @param name 条件
      * @return
      */
-    List<PeripheryEntity> findBySearchValue(@Param("type")String type, @Param("searchValue")String searchValue);
+    List<PeripheryEntity> findBySearchValue(@Param("type")String type, @Param("name")String name, @Param("ids") List<String> ids);
 
     /**
      * 周边数量

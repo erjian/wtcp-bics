@@ -3,6 +3,7 @@ import cn.com.wanwei.bic.entity.TrafficAgentEntity;
 import cn.com.wanwei.common.annotation.DataScope;
 import com.github.pagehelper.Page;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 import java.util.Map;
@@ -65,7 +66,7 @@ public interface TrafficAgentMapper {
      * @param searchValue 搜索条件（标题  or 全拼  or 简拼）
      * @return
      */
-    List<TrafficAgentEntity> findBySearchValue(String searchValue);
+    List<TrafficAgentEntity> findBySearchValue(@Param("searchValue") String searchValue, @Param("ids") List<String> ids);
 
     /**
      * 根据高德数据id查询数据列表

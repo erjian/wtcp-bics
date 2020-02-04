@@ -323,9 +323,15 @@
         from t_bic_scenic
         <where>
             category = #{type,jdbcType=VARCHAR}
-            <if test="searchValue != null and searchValue != ''">
-                <bind name="searchValue" value="'%'+searchValue+'%'"></bind>
-                and (title like #{searchValue} or title_qp like #{searchValue} or title_jp like #{searchValue})
+            <if test="name != null and name != ''">
+                <bind name="name" value="'%'+name+'%'"></bind>
+                and (title like #{name} or title_qp like #{name} or title_jp like #{name})
+            </if>
+            <if test="ids != null">
+                and id in
+                <foreach collection="ids" item="item" index="index" open="(" separator="," close=")">
+                    #{item}
+                </foreach>
             </if>
         </where>
     </select>

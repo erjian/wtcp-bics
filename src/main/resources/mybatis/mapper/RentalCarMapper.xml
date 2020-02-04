@@ -139,6 +139,12 @@
                 <bind name="title" value="'%' + title + '%'"></bind>
                 and (title like #{title} or title_qp like #{title} or title_jp like #{title})
             </if>
+            <if test="ids != null">
+                and id in
+                <foreach collection="ids" item="item" index="index" open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
         </where>
     </select>
     <select id="findByPage" parameterType="java.util.Map" resultMap="BaseResultMap">

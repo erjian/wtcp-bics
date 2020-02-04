@@ -112,10 +112,10 @@ public interface ScenicMapper {
     /**
      * 景区列表
      * @param type code
-     * @param searchValue 搜索条件（标题 or 全拼  or 简拼）
+     * @param name 搜索条件（标题 or 全拼  or 简拼）
      * @return 普通景区  or 旅游示范村
      */
-    List<ScenicEntity> findBySearchValue(@Param("type")String type, @Param("searchValue")String searchValue);
+    List<ScenicEntity> findBySearchValue(@Param("type")String type, @Param("name")String name, @Param("ids") List<String> ids);
 
     /**
      * 获取统计数据

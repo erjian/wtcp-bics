@@ -117,10 +117,11 @@ public interface EntertainmentService {
     /**
      * 农家乐列表
      * @param type code
-     * @param searchValue 条件
+     * @param name 条件
+     * @param ids 条件
      * @return
      */
-    ResponseMessage findBySearchValue(String type, String searchValue);
+    ResponseMessage findBySearchValue(String type, String name, String ids);
 
     /**
      * 根据区域编码查询农家乐列表

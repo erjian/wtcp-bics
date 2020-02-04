@@ -163,9 +163,15 @@
         <include refid="Base_Column_List"/>
         from t_bic_entertainment
         <where>
-            <if test="searchValue != null and searchValue != ''">
-                <bind name="searchValue" value="'%'+ searchValue + '%'"></bind>
-                and title like #{searchValue}
+            <if test="name != null and name != ''">
+                <bind name="name" value="'%'+ name + '%'"></bind>
+                and title like #{name}
+            </if>
+            <if test="ids != null">
+                and id in
+                <foreach collection="ids" item="item" index="index" open="(" separator="," close=")">
+                    #{item}
+                </foreach>
             </if>
         </where>
     </select>

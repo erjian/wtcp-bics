@@ -113,8 +113,8 @@ public interface DriveCampService {
 
     /**
      * 自驾营地列表
-     * @param searchValue 搜索条件（标题 or 简拼 or 全拼）
+     * @param name 搜索条件（标题 or 简拼 or 全拼）
      * @return
      */
-    ResponseMessage findBySearchValue(String searchValue);
+    ResponseMessage findBySearchValue(String name, String ids);
 }

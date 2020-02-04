@@ -61,34 +61,35 @@ public class RpcCataloguesController {
     @ApiOperation(value = "根据资源编码获取资源", notes = "根据资源编码获取资源")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "type", value = "资源编码", required = true, dataType = "String"),
-            @ApiImplicitParam(name = "searchValue", value = "检索条件", dataType = "String")
+            @ApiImplicitParam(name = "name", value = "资源名称", dataType = "String"),
+            @ApiImplicitParam(name = "ids", value = "用逗号分隔的主键字符串", dataType = "String"),
     })
     @GetMapping("/getDataByType")
-    public ResponseMessage getDataByType(@RequestParam String type, String searchValue) throws Exception {
-        ResponseMessage responseMessage = ResponseMessage.defaultResponse();
+    public ResponseMessage getDataByType(@RequestParam String type, String name, String ids) throws Exception {
+        ResponseMessage responseMessage;
         switch (type) {
             case SCENIC_TYPE:
             case TOUR_VILLAGE_TYPE:
-                responseMessage = scenicService.findBySearchValue(type,searchValue); //旅游示范村
+                responseMessage = scenicService.findBySearchValue(type,name,ids); //旅游示范村
                 break;
             case TRAVEL_TYPE:
-                responseMessage =  travelAgentService.findBySearchValue(searchValue);  // 旅行社
+                responseMessage =  travelAgentService.findBySearchValue(name,ids);  // 旅行社
                 break;
             case FOOD_TYPE:
             case SHOPPING_TYPE:
-                responseMessage =  peripheryService.findBySearchValue(type, searchValue);  // 购物
+                responseMessage =  peripheryService.findBySearchValue(type, name,ids);  // 购物
                 break;
             case AGRITAINMENT_TYPE:
-                responseMessage =  entertainmentService.findBySearchValue(type, searchValue);  // 农家乐
+                responseMessage =  entertainmentService.findBySearchValue(type, name,ids);  // 农家乐
                 break;
             case RENTAL_CAR_TYPE:
-                responseMessage =  rentalCarService.findBySearchValue(searchValue);  // 租车
+                responseMessage =  rentalCarService.findBySearchValue(name,ids);  // 租车
                 break;
             case TRAFFIC_AGENT_TYPE:
-                responseMessage =  trafficAgentService.findBySearchValue(searchValue);  // 交通枢纽
+                responseMessage =  trafficAgentService.findBySearchValue(name,ids);  // 交通枢纽
                 break;
             case DRIVE_CAMP_TYPE:
-                responseMessage =  driveCampService.findBySearchValue(searchValue);  // 自驾营地
+                responseMessage =  driveCampService.findBySearchValue(name,ids);  // 自驾营地
                 break;
             default:
                 responseMessage =  ResponseMessage.validFailResponse().setMsg("获取失败");

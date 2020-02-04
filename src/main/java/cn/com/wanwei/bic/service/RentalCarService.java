@@ -124,8 +124,9 @@ public interface RentalCarService{
 
     /**
      * 租车列表
-     * @param searchValue 条件
+     * @param name 条件
+     * @param ids 条件
      * @return
      */
-    ResponseMessage findBySearchValue(String searchValue);
+    ResponseMessage findBySearchValue(String name, String ids);
 }

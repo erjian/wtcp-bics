@@ -66,11 +66,12 @@ public interface TravelAgentMapper {
 
     /**
      * 查询旅行社列表
-     * @param searchValue 搜索参数
+     * @param name
+     * @param ids
      * @return
      */
     @DataScope
-    List<TravelAgentEntity> findBySearchValue(String searchValue);
+    List<TravelAgentEntity> findBySearchValue(@Param("name") String name, @Param("ids") List<String> ids);
 
     /**
      * 旅行社数量

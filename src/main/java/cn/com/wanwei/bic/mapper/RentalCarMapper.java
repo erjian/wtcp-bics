@@ -46,7 +46,7 @@ public interface RentalCarMapper {
      * @param title 搜索条件
      * @return
      */
-    List<RentalCarEntity> getRentalCarInfo(@Param(value="title") String title);
+    List<RentalCarEntity> getRentalCarInfo(@Param(value="title") String title, @Param("ids") List<String> ids);
 
     /**
      * 获取最大权重

@@ -67,7 +67,7 @@ public interface DriveCampMapper {
      * @param searchValue 搜索条件
      * @return
      */
-    List<DriveCampEntity> findBySearchValue(String searchValue);
+    List<DriveCampEntity> findBySearchValue(@Param("searchValue") String searchValue, @Param("ids") List<String> ids);
 
     /**
      * 自驾营地数量

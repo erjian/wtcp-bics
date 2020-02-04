@@ -112,8 +112,9 @@ public interface TravelAgentService {
 
     /**
      * 查询旅行社列表
-     * @param searchValue 搜索条件
+     * @param name
+     * @param ids
      * @return
      */
-    ResponseMessage findBySearchValue(String searchValue);
+    ResponseMessage findBySearchValue(String name, String ids);
 }

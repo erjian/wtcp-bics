@@ -21,6 +21,7 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.util.StringUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -170,18 +171,28 @@ public class TrafficAgentServiceImpl implements TrafficAgentService {
 
 
     @Override
-    public ResponseMessage findBySearchValue(String searchValue) {
+    public ResponseMessage findBySearchValue(String name, String ids) {
         ResponseMessage responseMessage = ResponseMessage.defaultResponse();
         List<Map<String, Object>> data = new ArrayList<>();
-        List<TrafficAgentEntity> list = trafficAgentMapper.findBySearchValue(searchValue);
+        List<String> idList = null;
+        if(StringUtil.isNotEmpty(ids)){
+            idList = Arrays.asList(ids.split(","));
+        }
+        List<TrafficAgentEntity> list = trafficAgentMapper.findBySearchValue(name, idList);
         if (!list.isEmpty()) {
             for (TrafficAgentEntity entity : list) {
                 Map<String, Object> map = new HashMap<>();
                 map.put("id", entity.getId());
+                map.put("unicode", entity.getCode());
                 map.put("name", entity.getTitle());
+                map.put("level", null);
+                map.put("longitude", entity.getLongitude());
+                map.put("latitude", entity.getLatitude());
+                map.put("areaCode", entity.getRegion());
+                map.put("areaName", entity.getRegionFullName());
+                map.put("address", entity.getAddress());
                 map.put("pinyin", entity.getSimpleSpell());
                 map.put("pinyinqp", entity.getFullSpell());
-                map.put("onlyCode", entity.getCode());
                 data.add(map);
             }
             responseMessage.setData(data);

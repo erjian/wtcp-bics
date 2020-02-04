@@ -86,10 +86,10 @@ public interface TrafficAgentService {
 
     /**
      * 交通枢纽列表
-     * @param searchValue 搜索条件（标题  or 全拼  or 简拼）
+     * @param name 搜索条件（标题  or 全拼  or 简拼）
      * @return
      */
-    ResponseMessage findBySearchValue(String searchValue);
+    ResponseMessage findBySearchValue(String name, String ids);
 
     /**
      * 保存高德交通枢纽搜索数据

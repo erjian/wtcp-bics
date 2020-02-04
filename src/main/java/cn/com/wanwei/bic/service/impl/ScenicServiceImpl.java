@@ -26,6 +26,7 @@ import cn.com.wanwei.persistence.mybatis.PageInfo;
 import cn.com.wanwei.persistence.mybatis.utils.EscapeCharUtils;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.util.StringUtil;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import lombok.extern.slf4j.Slf4j;
@@ -300,18 +301,28 @@ public class ScenicServiceImpl implements ScenicService {
     }
 
     @Override
-    public ResponseMessage findBySearchValue(String type,String searchValue) {
+    public ResponseMessage findBySearchValue(String type,String name, String ids) {
         ResponseMessage responseMessage = ResponseMessage.defaultResponse();
         List<Map<String, Object>> data = new ArrayList<>();
-        List<ScenicEntity> list = scenicMapper.findBySearchValue(type,searchValue);
+        List<String> idList = null;
+        if(StringUtil.isNotEmpty(ids)){
+            idList = Arrays.asList(ids.split(","));
+        }
+        List<ScenicEntity> list = scenicMapper.findBySearchValue(type,name,idList);
         if (!list.isEmpty()) {
             for (ScenicEntity entity : list) {
                 Map<String, Object> map = Maps.newHashMap();
                 map.put("id", entity.getId());
+                map.put("unicode", entity.getCode());
                 map.put("name", entity.getTitle());
+                map.put("level", entity.getLevel());
+                map.put("longitude", entity.getLongitude());
+                map.put("latitude", entity.getLatitude());
+                map.put("areaCode", entity.getRegion());
+                map.put("areaName", entity.getRegionFullName());
+                map.put("address", entity.getAddress());
                 map.put("pinyin", entity.getTitleJp());
                 map.put("pinyinqp", entity.getTitleQp());
-                map.put("onlyCode", entity.getCode());
                 data.add(map);
             }
             responseMessage.setData(data);
