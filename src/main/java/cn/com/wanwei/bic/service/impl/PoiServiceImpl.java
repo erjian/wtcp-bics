@@ -95,7 +95,9 @@ public class PoiServiceImpl implements PoiService {
         PageInfo<PoiEntity> pageInfo = new PageInfo<>(poiEntities, pageRequest);
         for (PoiEntity entity : pageInfo.getContent()) {
             ScenicEntity scenicEntity = scenicMapper.selectByPrimaryKey(entity.getPrincipalId());
-            entity.setScenicName(scenicEntity.getTitle());
+            if(null != scenicEntity){
+                entity.setScenicName(scenicEntity.getTitle());
+            }
         }
         return ResponseMessage.defaultResponse().setData(pageInfo);
     }
