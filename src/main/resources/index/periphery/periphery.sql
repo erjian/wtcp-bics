@@ -1,19 +1,18 @@
 /**
- * 农家乐
+ * 周边
  */
 
-select t.id relateId,t.id,t.`code`, t.title,t.sub_title subTitle,t.slogan,t.summary, t.description,
-t.address,t.scenic_id scenicId, t.within_scenic withinScenic, t.within_park withinPark,t.num,t.weight,
-t.latitude, t.longitude,CONCAT(t.latitude,",",t.longitude) geoPoint,t.region,t.region_full_code regionFullCode,t.region_full_name regionFullName,
+select t.id relateId,t.id,t.`code`, t.title,t.sub_title subTitle,t.slogan,t.summary,t.description,t.content,t.address,
+t.weight,t.category,t.type,t.phone,t.trading_area tradingArea,t.score,t.per_consumption perConsumption,t.latitude, t.longitude,
+CONCAT(t.latitude,",",t.longitude) geoPoint,t.region,t.region_full_code regionFullCode,t.region_full_name regionFullName,
 t.dept_code deptCode,'' images,'' videos,'' audios, '' tags,'' relateTags, '' allTags, if(t.status=9, 1,0) publishStatus
-from t_bic_entertainment t ;
+from t_bic_periphery t ;
 
 
 select b.id relateId,CONCAT('[',GROUP_CONCAT('"',t.tag_name,'"'),']') tags
-from t_bic_entertainment_tags t LEFT JOIN t_bic_entertainment b on t.principal_id = b.id
-where t.principal_id in(select a.id from t_bic_entertainment a  ) GROUP BY t.principal_id;
+from t_bic_periphery_tags t LEFT JOIN t_bic_periphery b on t.principal_id = b.id
+where t.principal_id in(select a.id from t_bic_periphery a  ) GROUP BY t.principal_id;
 
--- 通用
 select t.principal_id relateId, CONCAT('[',GROUP_CONCAT('"',REPLACE(t.file_url,'\\','/'),'"'),']') images
 from t_bic_material t
 where t.file_type = 'image' and t.principal_id is not null

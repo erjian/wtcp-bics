@@ -1,5 +1,5 @@
 {
-  "wtcp-bic-drive-camp": {
+  "wtcp-bic-travel-agent": {
     "settings": {
       "index": {
         "number_of_shards": "5",
@@ -93,6 +93,82 @@
           "type": "keyword",
           "ignore_above": 256
         },
+        "keyword": {
+          "type": "text",
+          "fields": {
+            "keyword": {
+              "type": "keyword",
+              "ignore_above": 256
+            }
+          },
+          "analyzer": "ik_max_word"
+        },
+        "businessScope": {
+          "type": "text",
+          "fields": {
+            "keyword": {
+              "type": "keyword",
+              "ignore_above": 256
+            }
+          },
+          "analyzer": "ik_max_word"
+        },
+        "businessType": {
+          "type": "keyword",
+          "ignore_above": 256
+        },
+        "destinationCity": {
+          "type": "text",
+          "fields": {
+            "keyword": {
+              "type": "keyword",
+              "ignore_above": 256
+            }
+          },
+          "analyzer": "ik_max_word"
+        },
+        "fromCity": {
+          "type": "text",
+          "fields": {
+            "keyword": {
+              "type": "keyword",
+              "ignore_above": 256
+            }
+          },
+          "analyzer": "ik_max_word"
+        },
+        "level": {
+          "type": "keyword",
+          "ignore_above": 256
+        },
+        "levelTime": {
+          "type": "keyword",
+          "ignore_above": 256
+        },
+        "startTime": {
+          "type": "keyword",
+          "ignore_above": 256
+        },
+        "teamType": {
+          "type": "text",
+          "fields": {
+            "keyword": {
+              "type": "keyword",
+              "ignore_above": 256
+            }
+          },
+          "analyzer": "ik_max_word"
+        },
+        "tourType": {
+          "type": "text",
+          "fields": {
+            "keyword": {
+              "type": "keyword",
+              "ignore_above": 256
+            }
+          },
+          "analyzer": "ik_max_word"
+        },
         "weight": {
           "type": "integer"
         },
@@ -123,28 +199,6 @@
           "analyzer": "ik_max_word"
         },
         "regionFullName": {
-          "type": "text",
-          "fields": {
-            "keyword": {
-              "type": "keyword",
-              "ignore_above": 256
-            }
-          },
-          "analyzer": "ik_max_word"
-        },
-        "openTime": {
-          "type": "keyword",
-          "ignore_above": 256
-        },
-        "startTime": {
-          "type": "keyword",
-          "ignore_above": 256
-        },
-        "traffic": {
-          "type": "keyword",
-          "ignore_above": 256
-        },
-        "keyword": {
           "type": "text",
           "fields": {
             "keyword": {

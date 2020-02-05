@@ -1,5 +1,5 @@
 {
-  "wtcp-bic-drive-camp": {
+  "wtcp-bic-car": {
     "settings": {
       "index": {
         "number_of_shards": "5",
@@ -79,7 +79,23 @@
           },
           "analyzer": "ik_max_word"
         },
-        "description": {
+        "address": {
+          "type": "keyword",
+          "ignore_above": 256
+        },
+        "establishTime": {
+          "type": "keyword",
+          "ignore_above": 256
+        },
+        "charteredBusType": {
+          "type": "keyword",
+          "ignore_above": 256
+        },
+        "regularBusType": {
+          "type": "keyword",
+          "ignore_above": 256
+        },
+        "keyword": {
           "type": "text",
           "fields": {
             "keyword": {
@@ -88,10 +104,6 @@
             }
           },
           "analyzer": "ik_max_word"
-        },
-        "address": {
-          "type": "keyword",
-          "ignore_above": 256
         },
         "weight": {
           "type": "integer"
@@ -123,28 +135,6 @@
           "analyzer": "ik_max_word"
         },
         "regionFullName": {
-          "type": "text",
-          "fields": {
-            "keyword": {
-              "type": "keyword",
-              "ignore_above": 256
-            }
-          },
-          "analyzer": "ik_max_word"
-        },
-        "openTime": {
-          "type": "keyword",
-          "ignore_above": 256
-        },
-        "startTime": {
-          "type": "keyword",
-          "ignore_above": 256
-        },
-        "traffic": {
-          "type": "keyword",
-          "ignore_above": 256
-        },
-        "keyword": {
           "type": "text",
           "fields": {
             "keyword": {

@@ -1,5 +1,5 @@
 {
-  "wtcp-bic-drive-camp": {
+  "wtcp-bic-extend": {
     "settings": {
       "index": {
         "number_of_shards": "5",
@@ -20,26 +20,6 @@
           "ignore_above": 256
         },
         "title": {
-          "type": "text",
-          "fields": {
-            "keyword": {
-              "type": "keyword",
-              "ignore_above": 256
-            }
-          },
-          "analyzer": "ik_max_word"
-        },
-        "fullSpell": {
-          "type": "text",
-          "fields": {
-            "keyword": {
-              "type": "keyword",
-              "ignore_above": 256
-            }
-          },
-          "analyzer": "ik_max_word"
-        },
-        "simpleSpell": {
           "type": "text",
           "fields": {
             "keyword": {
@@ -89,70 +69,29 @@
           },
           "analyzer": "ik_max_word"
         },
-        "address": {
+        "content": {
+          "type": "text",
+          "fields": {
+            "keyword": {
+              "type": "keyword",
+              "ignore_above": 256
+            }
+          },
+          "analyzer": "ik_max_word"
+        },
+        "type": {
+          "type": "keyword",
+          "ignore_above": 256
+        },
+        "price": {
+          "type": "double"
+        },
+        "principalId": {
           "type": "keyword",
           "ignore_above": 256
         },
         "weight": {
           "type": "integer"
-        },
-        "longitude": {
-          "type": "keyword",
-          "ignore_above": 256
-        },
-        "latitude": {
-          "type": "keyword",
-          "ignore_above": 256
-        },
-        "geoPoint": {
-          "type": "geo_point",
-          "doc_values": true
-        },
-        "region": {
-          "type": "keyword",
-          "ignore_above": 256
-        },
-        "regionFullCode": {
-          "type": "text",
-          "fields": {
-            "keyword": {
-              "type": "keyword",
-              "ignore_above": 256
-            }
-          },
-          "analyzer": "ik_max_word"
-        },
-        "regionFullName": {
-          "type": "text",
-          "fields": {
-            "keyword": {
-              "type": "keyword",
-              "ignore_above": 256
-            }
-          },
-          "analyzer": "ik_max_word"
-        },
-        "openTime": {
-          "type": "keyword",
-          "ignore_above": 256
-        },
-        "startTime": {
-          "type": "keyword",
-          "ignore_above": 256
-        },
-        "traffic": {
-          "type": "keyword",
-          "ignore_above": 256
-        },
-        "keyword": {
-          "type": "text",
-          "fields": {
-            "keyword": {
-              "type": "keyword",
-              "ignore_above": 256
-            }
-          },
-          "analyzer": "ik_max_word"
         },
         "images": {
           "type": "keyword",

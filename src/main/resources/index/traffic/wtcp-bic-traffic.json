@@ -1,5 +1,5 @@
 {
-  "wtcp-bic-drive-camp": {
+  "wtcp-bic-traffic": {
     "settings": {
       "index": {
         "number_of_shards": "5",
@@ -49,26 +49,6 @@
           },
           "analyzer": "ik_max_word"
         },
-        "subTitle": {
-          "type": "text",
-          "fields": {
-            "keyword": {
-              "type": "keyword",
-              "ignore_above": 256
-            }
-          },
-          "analyzer": "ik_max_word"
-        },
-        "slogan": {
-          "type": "text",
-          "fields": {
-            "keyword": {
-              "type": "keyword",
-              "ignore_above": 256
-            }
-          },
-          "analyzer": "ik_max_word"
-        },
         "summary": {
           "type": "text",
           "fields": {
@@ -89,7 +69,19 @@
           },
           "analyzer": "ik_max_word"
         },
+        "content": {
+          "type": "keyword",
+          "ignore_above": 256
+        },
         "address": {
+          "type": "keyword",
+          "ignore_above": 256
+        },
+        "type": {
+          "type": "keyword",
+          "ignore_above": 256
+        },
+        "phone": {
           "type": "keyword",
           "ignore_above": 256
         },
@@ -132,28 +124,6 @@
           },
           "analyzer": "ik_max_word"
         },
-        "openTime": {
-          "type": "keyword",
-          "ignore_above": 256
-        },
-        "startTime": {
-          "type": "keyword",
-          "ignore_above": 256
-        },
-        "traffic": {
-          "type": "keyword",
-          "ignore_above": 256
-        },
-        "keyword": {
-          "type": "text",
-          "fields": {
-            "keyword": {
-              "type": "keyword",
-              "ignore_above": 256
-            }
-          },
-          "analyzer": "ik_max_word"
-        },
         "images": {
           "type": "keyword",
           "ignore_above": 256
@@ -165,11 +135,6 @@
         "audios": {
           "type": "keyword",
           "ignore_above": 256
-        },
-        "tags": {
-          "type": "keyword",
-          "ignore_above": 256,
-          "copy_to": "allTags"
         },
         "relateTags": {
           "type": "keyword",

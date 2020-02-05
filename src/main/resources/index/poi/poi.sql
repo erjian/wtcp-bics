@@ -1,19 +1,18 @@
 /**
- * 农家乐
+ * POI
  */
 
-select t.id relateId,t.id,t.`code`, t.title,t.sub_title subTitle,t.slogan,t.summary, t.description,
-t.address,t.scenic_id scenicId, t.within_scenic withinScenic, t.within_park withinPark,t.num,t.weight,
+select t.id relateId,t.id,t.`code`,t.parent_id parentId,t.principal_id principalId,t.title,t.sub_title subTitle,t.weight,t.slogan,
+t.summary,t.description,t.content,t.address,t.type,t.num,t.man_pit manPit,t.woman_pit womanPit,t.inside_scenic insideScenic,
 t.latitude, t.longitude,CONCAT(t.latitude,",",t.longitude) geoPoint,t.region,t.region_full_code regionFullCode,t.region_full_name regionFullName,
 t.dept_code deptCode,'' images,'' videos,'' audios, '' tags,'' relateTags, '' allTags, if(t.status=9, 1,0) publishStatus
-from t_bic_entertainment t ;
+from t_bic_poi t ;
 
 
 select b.id relateId,CONCAT('[',GROUP_CONCAT('"',t.tag_name,'"'),']') tags
-from t_bic_entertainment_tags t LEFT JOIN t_bic_entertainment b on t.principal_id = b.id
-where t.principal_id in(select a.id from t_bic_entertainment a  ) GROUP BY t.principal_id;
+from t_bic_poi_tags t LEFT JOIN t_bic_poi b on t.principal_id = b.id
+where t.principal_id in(select a.id from t_bic_poi a  ) GROUP BY t.principal_id;
 
--- 通用
 select t.principal_id relateId, CONCAT('[',GROUP_CONCAT('"',REPLACE(t.file_url,'\\','/'),'"'),']') images
 from t_bic_material t
 where t.file_type = 'image' and t.principal_id is not null

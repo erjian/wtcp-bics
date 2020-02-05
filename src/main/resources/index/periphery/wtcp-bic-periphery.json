@@ -1,5 +1,5 @@
 {
-  "wtcp-bic-drive-camp": {
+  "wtcp-bic-periphery": {
     "settings": {
       "index": {
         "number_of_shards": "5",
@@ -20,26 +20,6 @@
           "ignore_above": 256
         },
         "title": {
-          "type": "text",
-          "fields": {
-            "keyword": {
-              "type": "keyword",
-              "ignore_above": 256
-            }
-          },
-          "analyzer": "ik_max_word"
-        },
-        "fullSpell": {
-          "type": "text",
-          "fields": {
-            "keyword": {
-              "type": "keyword",
-              "ignore_above": 256
-            }
-          },
-          "analyzer": "ik_max_word"
-        },
-        "simpleSpell": {
           "type": "text",
           "fields": {
             "keyword": {
@@ -89,9 +69,41 @@
           },
           "analyzer": "ik_max_word"
         },
+        "content": {
+          "type": "text",
+          "fields": {
+            "keyword": {
+              "type": "keyword",
+              "ignore_above": 256
+            }
+          },
+          "analyzer": "ik_max_word"
+        },
         "address": {
           "type": "keyword",
           "ignore_above": 256
+        },
+        "category": {
+          "type": "keyword",
+          "ignore_above": 256
+        },
+        "type": {
+          "type": "keyword",
+          "ignore_above": 256
+        },
+        "phone": {
+          "type": "keyword",
+          "ignore_above": 256
+        },
+        "tradingArea": {
+          "type": "keyword",
+          "ignore_above": 256
+        },
+        "perConsumption": {
+          "type": "float"
+        },
+        "score": {
+          "type": "float"
         },
         "weight": {
           "type": "integer"
@@ -123,28 +135,6 @@
           "analyzer": "ik_max_word"
         },
         "regionFullName": {
-          "type": "text",
-          "fields": {
-            "keyword": {
-              "type": "keyword",
-              "ignore_above": 256
-            }
-          },
-          "analyzer": "ik_max_word"
-        },
-        "openTime": {
-          "type": "keyword",
-          "ignore_above": 256
-        },
-        "startTime": {
-          "type": "keyword",
-          "ignore_above": 256
-        },
-        "traffic": {
-          "type": "keyword",
-          "ignore_above": 256
-        },
-        "keyword": {
           "type": "text",
           "fields": {
             "keyword": {
