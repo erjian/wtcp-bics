@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.com.wanwei.bic.mapper.CateRelationMapper">
+    <resultMap id="BaseResultMap" type="cn.com.wanwei.bic.entity.CateRelationEntity">
+        <id column="id" jdbcType="VARCHAR" property="id"/>
+        <result column="cate_id" jdbcType="VARCHAR" property="cateId"/>
+        <result column="catering_id" jdbcType="VARCHAR" property="cateringId"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id, cate_id, catering_id
+    </sql>
+
+    <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from t_bic_cate_relation
+        where id = #{id,jdbcType=VARCHAR}
+    </select>
+
+    <select id="findByCateringId" resultType="java.lang.String">
+        select cate_id from t_bic_cate_relation
+        where catering_id = #{cateringId,jdbcType=VARCHAR}
+    </select>
+
+    <select id="findByCateId" resultType="java.lang.String">
+        select catering_id from t_bic_cate_relation
+        where cate_id = #{cateId,jdbcType=VARCHAR}
+    </select>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+        delete from t_bic_cate_relation
+        where id = #{id,jdbcType=VARCHAR}
+    </delete>
+
+    <delete id="deleteByCateringId" parameterType="java.lang.String">
+      delete from t_bic_cate_relation
+        where catering_id = #{cateringId,jdbcType=VARCHAR}
+    </delete>
+
+    <delete id="deleteByCateId" parameterType="java.lang.String">
+        delete from t_bic_cate_relation
+        where cate_id = #{cateId,jdbcType=VARCHAR}
+    </delete>
+
+    <insert id="insert" parameterType="cn.com.wanwei.bic.entity.CateRelationEntity">
+        insert into t_bic_cate_relation (id, cate_id, catering_id)
+        values (#{id,jdbcType=VARCHAR}, #{cateId,jdbcType=VARCHAR}, #{cateringId,jdbcType=VARCHAR})
+    </insert>
+
+    <insert id="batchInsert" parameterType="java.util.List">
+        insert into t_bic_cate_relation (id, cate_id, catering_id) values
+        <foreach collection="list" item="item" index="index" separator=",">
+            (#{item.id,jdbcType=VARCHAR}, #{item.cateId,jdbcType=VARCHAR}, #{item.cateringId,jdbcType=VARCHAR})
+        </foreach>
+    </insert>
+
+    <update id="updateByPrimaryKey" parameterType="cn.com.wanwei.bic.entity.CateRelationEntity">
+        update t_bic_cate_relation
+        set cate_id = #{cateId,jdbcType=VARCHAR},
+            catering_id = #{cateringId,jdbcType=VARCHAR}
+        where id = #{id,jdbcType=VARCHAR}
+    </update>
+</mapper>

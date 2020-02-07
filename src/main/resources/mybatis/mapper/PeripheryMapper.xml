@@ -22,6 +22,7 @@
         <result column="type" jdbcType="VARCHAR" property="type"/>
         <result column="status" jdbcType="BIT" property="status"/>
         <result column="score" jdbcType="REAL" property="score"/>
+        <result column="park_score" jdbcType="REAL" property="parkScore"/>
         <result column="per_consumption" jdbcType="REAL" property="perConsumption"/>
         <result column="dept_code" jdbcType="VARCHAR" property="deptCode"/>
         <result column="created_user" jdbcType="VARCHAR" property="createdUser"/>
@@ -35,7 +36,7 @@
     <sql id="Base_Column_List">
     id, category, code, title, sub_title, slogan, summary, description, weight, longitude, 
     latitude, region_full_name, region_full_code, region, address, phone, trading_area, 
-    type, status, score, per_consumption, dept_code, created_user, created_date, updated_user, 
+    type, status, score, park_score, per_consumption, dept_code, created_user, created_date, updated_user,
     updated_date
   </sql>
     <sql id="Blob_Column_List">
@@ -60,7 +61,7 @@
       latitude, region_full_name, region_full_code, 
       region, address, phone, 
       trading_area, type, status, 
-      score, per_consumption, dept_code, 
+      score, park_score, per_consumption, dept_code,
       created_user, created_date, updated_user, 
       updated_date, content)
     values (#{id,jdbcType=VARCHAR},#{category,jdbcType=VARCHAR}, #{code,jdbcType=VARCHAR}, #{title,jdbcType=VARCHAR},
@@ -69,7 +70,7 @@
       #{latitude,jdbcType=DOUBLE}, #{regionFullName,jdbcType=VARCHAR}, #{regionFullCode,jdbcType=VARCHAR}, 
       #{region,jdbcType=VARCHAR}, #{address,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR}, 
       #{tradingArea,jdbcType=VARCHAR}, #{type,jdbcType=VARCHAR}, #{status,jdbcType=BIT},
-      #{score,jdbcType=REAL}, #{perConsumption,jdbcType=REAL}, #{deptCode,jdbcType=VARCHAR}, 
+      #{score,jdbcType=REAL}, #{parkScore,jdbcType=REAL}, #{perConsumption,jdbcType=REAL}, #{deptCode,jdbcType=VARCHAR},
       #{createdUser,jdbcType=VARCHAR}, #{createdDate,jdbcType=TIMESTAMP}, #{updatedUser,jdbcType=VARCHAR}, 
       #{updatedDate,jdbcType=TIMESTAMP}, #{content,jdbcType=LONGVARCHAR})
   </insert>
@@ -94,6 +95,7 @@
       type = #{type,jdbcType=VARCHAR},
       status = #{status,jdbcType=BIT},
       score = #{score,jdbcType=REAL},
+      park_score = #{parkScore,jdbcType=REAL},
       per_consumption = #{perConsumption,jdbcType=REAL},
       dept_code = #{deptCode,jdbcType=VARCHAR},
       created_user = #{createdUser,jdbcType=VARCHAR},
@@ -185,6 +187,42 @@
             <if test="_parameter != null">
                 <bind name="_parameter" value="_parameter+'%'"></bind>
                 dept_code like #{_parameter}
+            </if>
+        </where>
+    </select>
+
+    <select id="findByIds" resultType="cn.com.wanwei.bic.entity.PeripheryEntity">
+        select
+        <include refid="Base_Column_List"/>
+        <if test="longitude != null and longitude != '' and latitude != null and latitude != ''">
+            , (st_distance (point (t.longitude,t.latitude),point (103.88969,36.05229))*111195/1000 )as dist
+        </if>
+        from t_bic_periphery
+        <where>
+            <if test="ids != null">
+                and id in
+                <foreach collection="ids" item="item" index="index" open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+        </where>
+        <if test="sortField != null and sortField != '' and orderBy != null and orderBy != ''">
+            order by #{item} #{orderBy}
+        </if>
+        <if test="longitude != null and longitude != '' and latitude != null and latitude != ''">
+            ORDER BY dist ASC
+        </if>
+    </select>
+
+    <select id="findByCategory" resultType="cn.com.wanwei.bic.entity.PeripheryEntity">
+        select
+        <include refid="Base_Column_List"/>
+        from t_bic_periphery
+        <where>
+            category = #{category,jdbcType=VARCHAR}
+            <if test="title != null and title !='' ">
+                <bind name="title" value="'%' + title + '%'"></bind>
+                and title like #{title}
             </if>
         </where>
     </select>

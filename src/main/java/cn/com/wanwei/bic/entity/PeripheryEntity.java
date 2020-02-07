@@ -10,6 +10,7 @@ import lombok.ToString;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 import javax.persistence.Transient;
+import java.util.List;
 
 @Data
 @EqualsAndHashCode(callSuper=false)
@@ -38,6 +39,9 @@ public class PeripheryEntity extends CommonEntity {
     @ApiModelProperty(value = "评分")
     private Float score;
 
+    @ApiModelProperty(value = "停车方便评分")
+    private Float parkScore;
+
     @ApiModelProperty(value = "人均消费")
     private Float perConsumption;
 
@@ -54,4 +58,8 @@ public class PeripheryEntity extends CommonEntity {
     //冗余字段，关联素材的id
     @Transient
     private String timeId;
+
+    // 关联的美食ID集合
+    @Transient
+    private List<String> cateIds;
 }

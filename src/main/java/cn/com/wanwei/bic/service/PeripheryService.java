@@ -115,4 +115,8 @@ public interface PeripheryService {
      * @return
      */
     ResponseMessage findBySearchValue(String type, String name, String ids);
+
+    List<PeripheryEntity> findByIds(Map<String, Object> filter);
+
+    List<PeripheryEntity> findByCategory(Map<String, Object> filter);
 }

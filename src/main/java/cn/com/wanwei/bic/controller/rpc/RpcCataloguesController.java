@@ -51,7 +51,7 @@ public class RpcCataloguesController {
     private static final String SCENIC_TYPE = "125001001";        //普通景区
     private static final String TOUR_VILLAGE_TYPE = "125001002";  //旅游示范村
     private static final String TRAVEL_TYPE = "125003001";        // 旅行社
-    private static final String AGRITAINMENT_TYPE = "125002001";  // 农家乐
+    private static final String AGRITAINMENT_TYPE = "125005002";  // 农家乐
     private static final String FOOD_TYPE = "125006002";          //  餐饮
     private static final String DRIVE_CAMP_TYPE = "125005001";    // 自驾营地
     private static final String SHOPPING_TYPE = "125006004";      // 购物

@@ -5,12 +5,15 @@ import cn.com.wanwei.bic.entity.PeripheryEntity;
 import cn.com.wanwei.bic.model.DataBindModel;
 import cn.com.wanwei.bic.model.EntityTagsModel;
 import cn.com.wanwei.bic.model.WeightModel;
+import cn.com.wanwei.bic.service.CateRelationService;
 import cn.com.wanwei.bic.service.CommonService;
 import cn.com.wanwei.bic.service.PeripheryService;
 import cn.com.wanwei.common.log.annotation.OperationLog;
 import cn.com.wanwei.common.model.ResponseMessage;
 import cn.com.wanwei.common.utils.RequestUtil;
 import cn.com.wanwei.persistence.mybatis.utils.EscapeCharUtils;
+import com.google.common.base.Strings;
+import com.google.common.collect.Maps;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
@@ -40,6 +43,9 @@ public class PeripheryController extends BaseController {
 
     @Autowired
     private CommonService commonService;
+
+    @Autowired
+    private CateRelationService cateRelationService;
 
     @ApiOperation(value = "周边管理分页列表",notes = "周边管理分页列表")
     @GetMapping("/page")
@@ -173,7 +179,6 @@ public class PeripheryController extends BaseController {
         return commonService.changeWeight(weightModel,getCurrentUser(),PeripheryEntity.class);
     }
 
-
     @ApiOperation(value = "周边管理信息关联标签", notes = "周边管理信息关联标签")
     @ApiImplicitParam(name = "tags", value = "关联标签", required = true, dataType = "Map")
     @RequestMapping(value = "/relateTags", method = RequestMethod.PUT)
@@ -184,5 +189,36 @@ public class PeripheryController extends BaseController {
         }
         return peripheryService.relateTags(tags,getCurrentUser());
     }
+
+    @ApiOperation(value = "根据餐饮企业获取关联的美食ID集合", notes = "根据餐饮企业获取关联的美食ID集合")
+    @ApiImplicitParam(name = "cateringId", value = "餐饮企业ID", required = true)
+    @RequestMapping(value = "/findByCateringId", method = RequestMethod.GET)
+    public ResponseMessage findByCateringId(String cateringId) {
+        return ResponseMessage.defaultResponse().setData(cateRelationService.findByCateringId(cateringId));
+    }
+
+    @ApiOperation(value = "根据美食获取餐饮企业ID集合", notes = "根据美食获取餐饮企业ID集合")
+    @ApiImplicitParam(name = "cateId", value = "美食ID", required = true)
+    @RequestMapping(value = "/findByCateId", method = RequestMethod.GET)
+    public ResponseMessage findByCateId(String cateId) {
+        return ResponseMessage.defaultResponse().setData(cateRelationService.findByCateId(cateId));
+    }
+
+    @ApiOperation(value = "根据类型获取周边信息，可根据名称进行过滤", notes = "根据类型获取周边信息，可根据名称进行过滤")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "category", value = "类型", required = true),
+            @ApiImplicitParam(name = "title", value = "名称")
+    })
+    @RequestMapping(value = "/findByCategory", method = RequestMethod.GET)
+    public ResponseMessage findByCategory(@RequestParam("category") String category, String title) {
+        Map<String, Object> filter = Maps.newHashMap();
+        filter.put("category", category);
+        if(!Strings.isNullOrEmpty(title)){
+            filter.put("title", title);
+        }
+        return ResponseMessage.defaultResponse().setData(peripheryService.findByCategory(filter));
+    }
+
+
 
 }

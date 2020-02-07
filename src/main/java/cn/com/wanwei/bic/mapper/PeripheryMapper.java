@@ -20,6 +20,7 @@ public interface PeripheryMapper {
 
     /**
      * 修改
+     *
      * @param record
      * @return
      */
@@ -27,14 +28,16 @@ public interface PeripheryMapper {
 
     /**
      * 查询分页
+     *
      * @param filter
      * @return
      */
     @DataScope
-    Page<PeripheryEntity> findByPage(Map<String,Object> filter);
+    Page<PeripheryEntity> findByPage(Map<String, Object> filter);
 
     /**
      * 标题重名校验
+     *
      * @param title
      * @return
      */
@@ -42,22 +45,25 @@ public interface PeripheryMapper {
 
     /**
      * 批量删除
+     *
      * @param ids
      */
-    void batchDelete(@Param(value="ids") List<String> ids);
+    void batchDelete(@Param(value = "ids") List<String> ids);
 
     /**
      * 数据绑定
+     *
      * @param updatedUser
      * @param updatedDate
      * @param deptCode
      * @param ids
      */
-    int dataBind(@Param(value="updatedUser") String updatedUser, @Param(value="updatedDate") String updatedDate,
-                  @Param(value="deptCode") String deptCode, @Param(value="ids") List<String> ids);
+    int dataBind(@Param(value = "updatedUser") String updatedUser, @Param(value = "updatedDate") String updatedDate,
+                 @Param(value = "deptCode") String deptCode, @Param(value = "ids") List<String> ids);
 
     /**
      * 查询最大权重值
+     *
      * @return
      */
     Integer maxWeight();
@@ -69,16 +75,22 @@ public interface PeripheryMapper {
 
     /**
      * 根据类型搜索购物或者餐饮列表
+     *
      * @param type code
      * @param name 条件
      * @return
      */
-    List<PeripheryEntity> findBySearchValue(@Param("type")String type, @Param("name")String name, @Param("ids") List<String> ids);
+    List<PeripheryEntity> findBySearchValue(@Param("type") String type, @Param("name") String name, @Param("ids") List<String> ids);
 
     /**
      * 周边数量
+     *
      * @param code 组织机构编码
      * @return
      */
     Long findByDeptCode(String code);
+
+    List<PeripheryEntity> findByIds(Map<String, Object> filter);
+
+    List<PeripheryEntity> findByCategory(Map<String, Object> filter);
 }

@@ -49,17 +49,11 @@
         </table>
         -->
 
-         <table tableName="bic_destination" domainObjectName="DestinationEntity"
+         <table tableName="t_bic_cate_relation" domainObjectName="CateRelation"
                 enableCountByExample="false" enableUpdateByExample="false"
                 enableDeleteByExample="false" enableSelectByExample="false"
                 selectByExampleQueryId="false">
              <generatedKey column="id" sqlStatement="Mysql" identity="true"/>
          </table>
-        <table tableName="t_bic_resource_config" domainObjectName="ResourceConfigEntity"
-               enableCountByExample="false" enableUpdateByExample="false"
-               enableDeleteByExample="false" enableSelectByExample="false"
-               selectByExampleQueryId="false">
-            <generatedKey column="id" sqlStatement="Mysql" identity="true"/>
-        </table>
     </context>
 </generatorConfiguration>

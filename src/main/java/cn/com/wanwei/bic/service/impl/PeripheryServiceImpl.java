@@ -1,19 +1,14 @@
 package cn.com.wanwei.bic.service.impl;
 
-import cn.com.wanwei.bic.entity.AuditLogEntity;
-import cn.com.wanwei.bic.entity.BaseTagsEntity;
-import cn.com.wanwei.bic.entity.PeripheryEntity;
-import cn.com.wanwei.bic.entity.PeripheryTagsEntity;
+import cn.com.wanwei.bic.entity.*;
 import cn.com.wanwei.bic.feign.CoderServiceFeign;
+import cn.com.wanwei.bic.mapper.CateRelationMapper;
 import cn.com.wanwei.bic.mapper.MaterialMapper;
 import cn.com.wanwei.bic.mapper.PeripheryMapper;
 import cn.com.wanwei.bic.model.DataBindModel;
 import cn.com.wanwei.bic.model.EntityTagsModel;
 import cn.com.wanwei.bic.model.WeightModel;
-import cn.com.wanwei.bic.service.AuditLogService;
-import cn.com.wanwei.bic.service.MaterialService;
-import cn.com.wanwei.bic.service.PeripheryService;
-import cn.com.wanwei.bic.service.TagsService;
+import cn.com.wanwei.bic.service.*;
 import cn.com.wanwei.bic.utils.PageUtils;
 import cn.com.wanwei.bic.utils.UUIDUtils;
 import cn.com.wanwei.common.model.ResponseMessage;
@@ -23,6 +18,7 @@ import cn.com.wanwei.persistence.mybatis.PageInfo;
 import cn.com.wanwei.persistence.mybatis.utils.EscapeCharUtils;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.util.StringUtil;
+import com.google.common.collect.Lists;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -59,6 +55,9 @@ public class PeripheryServiceImpl implements PeripheryService {
     @Autowired
     private MaterialMapper materialMapper;
 
+    @Autowired
+    private CateRelationService cateRelationService;
+
     private static final String FOOD_TYPE = "125006002";            //  餐饮
     private static final String SHOPPING_TYPE = "125006004";     // 购物
 
@@ -75,6 +74,8 @@ public class PeripheryServiceImpl implements PeripheryService {
     public ResponseMessage find(String id) {
         ResponseMessage responseMessage = ResponseMessage.defaultResponse();
         PeripheryEntity entity = peripheryMapper.selectByPrimaryKey(id);
+        List<String> cateIds = cateRelationService.findByCateringId(id);
+        entity.setCateIds(cateIds);
         if (entity != null) {
             responseMessage.setData(entity);
         } else {
@@ -87,7 +88,7 @@ public class PeripheryServiceImpl implements PeripheryService {
     public ResponseMessage save(EntityTagsModel<PeripheryEntity> peripheryModel, User user, Long ruleId, Integer appCode) {
         PeripheryEntity peripheryEntity = peripheryModel.getEntity();
         String type = peripheryModel.getType();
-        String id= UUIDUtils.getInstance().getId();
+        String id = UUIDUtils.getInstance().getId();
         //获取统一认证生成的code
         ResponseMessage responseMessageGetCode = coderServiceFeign.buildSerialByCode(ruleId, appCode, type);
         if (responseMessageGetCode.getStatus() == 1 && responseMessageGetCode.getData() != null) {
@@ -100,13 +101,18 @@ public class PeripheryServiceImpl implements PeripheryService {
             peripheryEntity.setCreatedDate(new Date());
             peripheryMapper.insert(peripheryEntity);
 
+            // 保存关联的美食
+            if (null != peripheryEntity.getCateIds() && CollectionUtils.isNotEmpty(peripheryEntity.getCateIds())) {
+                cateRelationService.batchInsert(peripheryEntity.getCateIds(), id);
+            }
+
             //处理标签
             if (CollectionUtils.isNotEmpty(peripheryModel.getTagsList())) {
                 tagsService.batchInsert(peripheryEntity.getId(), peripheryModel.getTagsList(), user, PeripheryTagsEntity.class);
             }
             //处理编辑页面新增素材
-            if(CollectionUtils.isNotEmpty(peripheryModel.getMaterialList())){
-                materialService.batchInsert(id,peripheryModel.getMaterialList(),user);
+            if (CollectionUtils.isNotEmpty(peripheryModel.getMaterialList())) {
+                materialService.batchInsert(id, peripheryModel.getMaterialList(), user);
             }
             return ResponseMessage.defaultResponse().setMsg("保存成功!");
         }
@@ -126,6 +132,12 @@ public class PeripheryServiceImpl implements PeripheryService {
             peripheryEntity.setStatus(1);
             peripheryEntity.setCode(entity.getCode());
             peripheryMapper.updateByPrimaryKey(peripheryEntity);
+
+            // 先删除之前关联的美食，再保存关联的美食
+            cateRelationService.deleteByCateringId(id);
+            if (null != peripheryEntity.getCateIds() && CollectionUtils.isNotEmpty(peripheryEntity.getCateIds())) {
+                cateRelationService.batchInsert(peripheryEntity.getCateIds(), id);
+            }
 
             //处理标签
             if (CollectionUtils.isNotEmpty(peripheryModel.getTagsList())) {
@@ -277,10 +289,10 @@ public class PeripheryServiceImpl implements PeripheryService {
     public ResponseMessage findBySearchValue(String type, String name, String ids) {
         ResponseMessage responseMessage = ResponseMessage.defaultResponse();
         List<String> idList = null;
-        if(StringUtil.isNotEmpty(ids)){
+        if (StringUtil.isNotEmpty(ids)) {
             idList = Arrays.asList(ids.split(","));
         }
-        List<PeripheryEntity> list = peripheryMapper.findBySearchValue(type,name,idList);
+        List<PeripheryEntity> list = peripheryMapper.findBySearchValue(type, name, idList);
         List<Map<String, Object>> data = new ArrayList<>();
         if (list != null && !list.isEmpty()) {
             for (PeripheryEntity entity : list) {
@@ -303,5 +315,15 @@ public class PeripheryServiceImpl implements PeripheryService {
             responseMessage.setData("暂无数据");
         }
         return responseMessage;
+    }
+
+    @Override
+    public List<PeripheryEntity> findByIds(Map<String, Object> filter) {
+        return peripheryMapper.findByIds(filter);
+    }
+
+    @Override
+    public List<PeripheryEntity> findByCategory(Map<String, Object> filter) {
+        return peripheryMapper.findByCategory(filter);
     }
 }
