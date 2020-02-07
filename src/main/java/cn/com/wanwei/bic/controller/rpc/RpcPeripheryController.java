@@ -67,7 +67,10 @@ public class RpcPeripheryController {
             ids = cateRelationService.findByCateId(id);
         }
         filter.put("ids", ids);
-        List<PeripheryEntity> peripheryList = peripheryService.findByIds(filter);
+        List<PeripheryEntity> peripheryList = Lists.newArrayList();
+        if(ids.size() > 0){
+            peripheryList = peripheryService.findByIds(filter);
+        }
         return peripheryList;
     }
 
