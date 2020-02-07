@@ -281,7 +281,7 @@ public class ScenicServiceImpl implements ScenicService {
         data.put("contactEntity", contactEntity);
 
         //5、查询素材信息，按照素材类型分类处理并添加到返回数据中
-        data.put("fileList", materialService.handleMaterial(id));
+        data.put("fileList", materialService.handleMaterialNew(id));
         return ResponseMessage.defaultResponse().setData(data);
     }
 

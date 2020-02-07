@@ -308,7 +308,7 @@ public class PoiServiceImpl implements PoiService {
         map.put("poiEntity", poiEntity);
 
         //2、查询poi相关的素材信息
-        map.put("fileList", materialService.handleMaterial(id));
+        map.put("fileList", materialService.handleMaterialNew(id));
         return ResponseMessage.defaultResponse().setData(map);
     }
 
@@ -320,7 +320,7 @@ public class PoiServiceImpl implements PoiService {
             for(PoiEntity entity:list){
                 Map<String, Object> map = Maps.newHashMap();
                 map.put("poiEntity", entity);
-                map.put("fileList", materialService.handleMaterial(entity.getId()));
+                map.put("fileList", materialService.handleMaterialNew(entity.getId()));
                 data.add(map);
             }
         }

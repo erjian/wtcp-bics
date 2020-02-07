@@ -281,7 +281,7 @@ public class PeripheryServiceImpl implements PeripheryService {
         Map<String, Object> map = new HashMap<>();
         map.put("peripheryEntity", peripheryEntity);
         //获取素材
-        map.put("fileList", materialService.handleMaterial(id));
+        map.put("fileList", materialService.handleMaterialNew(id));
         return ResponseMessage.defaultResponse().setData(map);
     }
 

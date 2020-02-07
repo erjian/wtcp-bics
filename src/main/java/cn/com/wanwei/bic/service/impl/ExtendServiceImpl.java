@@ -275,7 +275,7 @@ public class ExtendServiceImpl implements ExtendService {
                 Map<String,Object>map= Maps.newHashMap();
                 map.put("ExtendEntity",extendEntity);
                 //素材信息
-                map.put("fileList",materialService.handleMaterial(extendEntity.getId()));
+                map.put("fileList",materialService.handleMaterialNew(extendEntity.getId()));
                 list.add(map);
             }
         }
@@ -289,7 +289,7 @@ public class ExtendServiceImpl implements ExtendService {
         if(extendEntity != null){
             map.put("extendEntity",extendEntity);
             //素材信息
-            map.put("fileList",materialService.handleMaterial(id));
+            map.put("fileList",materialService.handleMaterialNew(id));
             return ResponseMessage.defaultResponse().setData(map);
         }else{
             return ResponseMessage.validFailResponse().setMsg("无扩展信息！");
