@@ -9,12 +9,12 @@ import cn.com.wanwei.bic.utils.ParseContentUtils;
 import cn.com.wanwei.bic.utils.UUIDUtils;
 import cn.com.wanwei.common.model.ResponseMessage;
 import cn.com.wanwei.common.model.User;
+import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.bouncycastle.util.Strings;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -88,9 +88,9 @@ public class MaterialServiceImpl implements MaterialService {
             item.setCreatedDate(new Date());
             item.setPrincipalId(principalId);
             item.setFileName(dealFileName(item.getFileName()));
-            if(StringUtils.isNotBlank(item.getId())){
+            if (StringUtils.isNotBlank(item.getId())) {
                 materialMapper.deleteByPrimaryKey(item.getId());
-            }else{
+            } else {
                 item.setId(UUIDUtils.getInstance().getId());
             }
         }
@@ -98,7 +98,7 @@ public class MaterialServiceImpl implements MaterialService {
         return ResponseMessage.defaultResponse().setMsg("添加成功");
     }
 
-    private String dealFileName(String fileName){
+    private String dealFileName(String fileName) {
         if (StringUtils.isNotBlank(fileName) && fileName.length() > 100) {
             String[] nameArray = fileName.split("[.]");
             if (nameArray.length == 2 && nameArray[0].length() >= 20) {
@@ -220,38 +220,38 @@ public class MaterialServiceImpl implements MaterialService {
 //    }
 
     @Override
-    public ResponseMessage findByIds(String ids,Integer parameter) {
+    public ResponseMessage findByIds(String ids, Integer parameter) {
         ResponseMessage responseMessage = ResponseMessage.defaultResponse();
         List<String> idsList = Arrays.asList(ids.split(","));
-        if(parameter == 1){
+        if (parameter == 1) {
             List<MaterialEntity> list = materialMapper.findByIds(idsList);
             responseMessage.setData(list);
-        }else if (parameter == 2){
-            Map<String,Object> map = this.findByIdsEach(idsList);
+        } else if (parameter == 2) {
+            Map<String, Object> map = this.findByIdsEach(idsList);
             responseMessage.setData(map);
-        }else {
+        } else {
             responseMessage.setData("暂无数据");
         }
         return responseMessage;
     }
 
-    public Map<String,Object> findByIdsEach(List<String> ids){
-        Map<String,Object> map = new HashMap<>();
-        for (String id :ids){
+    public Map<String, Object> findByIdsEach(List<String> ids) {
+        Map<String, Object> map = new HashMap<>();
+        for (String id : ids) {
             List<MaterialEntity> list = materialMapper.findByPrincipalId(id);
-            map.put(id,list);
+            map.put(id, list);
         }
         return map;
     }
 
     @Override
-    public Map<String,Map<String,Map<String,Object>>> handleMaterialNew(String principalId) {
+    public Map<String, Map<String, Map<String, Object>>> handleMaterialNew(String principalId) {
         List<MaterialEntity> list = materialMapper.findByPrincipalId(principalId);
-        Map<String,Map<String,Map<String,Object>>> materialList = Maps.newHashMap();
-        Map<String,Map<String,Object>> imageList = getMaterialTypeMap("image");
-        Map<String,Map<String,Object>> audioList = getMaterialTypeMap("audio");
-        Map<String,Map<String,Object>> videoList =getMaterialTypeMap("video");
-        Map<String,Map<String,Object>> fileList = getMaterialTypeMap("file");
+        Map<String, Map<String, Map<String, Object>>> materialList = Maps.newHashMap();
+        Map<String, Map<String, Object>> imageList = getMaterialTypeMap("image");
+        Map<String, Map<String, Object>> audioList = getMaterialTypeMap("audio");
+        Map<String, Map<String, Object>> videoList = getMaterialTypeMap("video");
+        Map<String, Map<String, Object>> fileList = getMaterialTypeMap("file");
         materialList.put("image", imageList);
         materialList.put("audio", audioList);
         materialList.put("video", videoList);
@@ -259,59 +259,64 @@ public class MaterialServiceImpl implements MaterialService {
         if (CollectionUtils.isNotEmpty(list)) {
             for (MaterialEntity entity : list) {
                 if (entity.getFileType().toLowerCase().equals("image")) {
-                    getMaterialData( materialList.get("image"),entity);
+                    getMaterialData(materialList.get("image"), entity);
                 }
                 if (entity.getFileType().toLowerCase().equals("audio")) {
-                    getMaterialData( materialList.get("audio"),entity);
+                    getMaterialData(materialList.get("audio"), entity);
                 }
                 if (entity.getFileType().toLowerCase().equals("video")) {
-                    getMaterialData( materialList.get("video"),entity);
+                    getMaterialData(materialList.get("video"), entity);
                 }
                 if (entity.getFileType().toLowerCase().equals("file")) {
-                    getMaterialData( materialList.get("file"),entity);
+                    getMaterialData(materialList.get("file"), entity);
                 }
             }
         }
         return materialList;
     }
 
-    private  Map<String,Map<String,Object>> getMaterialTypeMap(String name){
+    private Map<String, Map<String, Object>> getMaterialTypeMap(String name) {
         //获取该文件类型下标识集合
-        List<MaterialEntity> materialList=Lists.newArrayList();
-        Map<String,Map<String,Object>> codeMap= new HashMap<>();
-        Map<String,Object> map = new HashMap<>();
-        map.put("name","全部");
-        map.put("materials",materialList);
-        codeMap.put("all",map);
-        for(InfoType infoType:(List<InfoType>)getMaterialType().get(name)){
-            materialList=Lists.newArrayList();
-            map=new HashMap<>();
-            map.put("name",infoType.getName());
-            map.put("materials",materialList);
-            codeMap.put(infoType.getCode(),map);
+        List<MaterialEntity> materialList = Lists.newArrayList();
+        Map<String, Map<String, Object>> codeMap = new HashMap<>();
+        Map<String, Object> map = new HashMap<>();
+        map.put("name", "全部");
+        map.put("materials", materialList);
+        codeMap.put("all", map);
+        for (InfoType infoType : (List<InfoType>) getMaterialType().get(name)) {
+            materialList = Lists.newArrayList();
+            map = new HashMap<>();
+            map.put("name", infoType.getName());
+            map.put("materials", materialList);
+            codeMap.put(infoType.getCode(), map);
         }
         return codeMap;
     }
 
-    private Map<String,Map<String,Object>> getMaterialData( Map<String,Map<String,Object>> typeMap,MaterialEntity entity){
+    private Map<String, Map<String, Object>> getMaterialData(Map<String, Map<String, Object>> typeMap, MaterialEntity entity) {
         //跟据标识分配文件
-        List<MaterialEntity> mList=(List<MaterialEntity>) typeMap.get("all").get("materials");
-        mList.add(entity);
-        String[] identifyArr = entity.getFileIdentify().split(",");
-        for(String str:identifyArr){
-            mList= (List<MaterialEntity>) typeMap.get(str).get("materials");
-            mList.add(entity);
+        List<MaterialEntity> materialList = (List<MaterialEntity>) typeMap.get("all").get("materials");
+        materialList.add(entity);
+        if (!Strings.isNullOrEmpty(entity.getFileIdentify())) {
+            String[] identifyArr = entity.getFileIdentify().split(",");
+            for (String str : identifyArr) {
+                Map<String, Object> identMap = typeMap.get(str);
+                if (identMap != null && identMap.containsKey("materials")) {
+                    materialList = (List<MaterialEntity>) identMap.get("materials");
+                    materialList.add(entity);
+                }
+            }
         }
         return typeMap;
     }
 
     @Override
-    public Map<String,Object> getMaterialType() {
-        Map<String,Object> map = new HashMap<>();
-        map.put("image",materialModel.getImage().get("info-type"));
-        map.put("video",materialModel.getVideo().get("info-type"));
-        map.put("audio",materialModel.getAudio().get("info-type"));
-        map.put("file",materialModel.getFile().get("info-type"));
+    public Map<String, Object> getMaterialType() {
+        Map<String, Object> map = new HashMap<>();
+        map.put("image", materialModel.getImage().get("info-type"));
+        map.put("video", materialModel.getVideo().get("info-type"));
+        map.put("audio", materialModel.getAudio().get("info-type"));
+        map.put("file", materialModel.getFile().get("info-type"));
         return map;
     }
 }
