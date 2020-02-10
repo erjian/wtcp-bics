@@ -1,10 +1,12 @@
 package cn.com.wanwei.bic.controller.internal;
 
 import cn.com.wanwei.bic.config.Constant;
+import cn.com.wanwei.bic.service.CommonService;
 import cn.com.wanwei.common.model.ResponseMessage;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -24,6 +26,19 @@ public class OpenRegionController {
 
     @Autowired
     private RedisTemplate redisTemplate;
+
+    @Autowired
+    private CommonService commonService;
+
+    @ApiOperation(value = "初始化行政区划（省市县）树形列表缓存", notes = "初始化行政区划（省市县）树形列表缓存")
+    @RequestMapping(value = "/initListCache", method = RequestMethod.GET)
+    public ResponseMessage initListCache(){
+        List<Map<String, Object>> areaList = commonService.getAreaListByPcode("", 6);
+        if (null != areaList && CollectionUtils.isNotEmpty(areaList)) {
+            redisTemplate.opsForValue().set(Constant.AREA_LIST_CACHED_KEY, areaList);
+        }
+        return ResponseMessage.defaultResponse();
+    }
 
     @ApiOperation(value = "获取行政区划（省市县）树形列表", notes = "获取行政区划（省市县）树形列表")
     @RequestMapping(value = "/list", method = RequestMethod.GET)
