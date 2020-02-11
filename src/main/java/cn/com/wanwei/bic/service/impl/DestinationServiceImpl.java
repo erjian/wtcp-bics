@@ -291,7 +291,7 @@ public class DestinationServiceImpl implements DestinationService {
         if(destinationEntity!=null){
             map.put("destinationEntity",destinationEntity);
             //素材信息
-            map.put("fileList",materialService.handleMaterial(destinationEntity.getId()));
+            map.put("fileList",materialService.handleMaterialNew(destinationEntity.getId()));
             return ResponseMessage.defaultResponse().setData(map);
         }else{
             return ResponseMessage.validFailResponse().setMsg("该目的地信息不存在！");
@@ -307,7 +307,7 @@ public class DestinationServiceImpl implements DestinationService {
             Map<String,Object>map= Maps.newHashMap();
             map.put("destinationEntity",destinationEntity);
             //素材信息
-            map.put("fileList",materialService.handleMaterial(destinationEntity.getId()));
+            map.put("fileList",materialService.handleMaterialNew(destinationEntity.getId()));
             list.add(map);
         }
         PageInfo<Map<String, Object>> pageInfo = new PageInfo<>(list, pageRequest);

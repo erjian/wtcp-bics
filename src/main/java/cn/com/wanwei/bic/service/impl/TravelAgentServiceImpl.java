@@ -249,7 +249,7 @@ public class TravelAgentServiceImpl implements TravelAgentService {
             ContactEntity contactEntity = contactMapper.selectByPrincipalId(id);
             map.put("contactEntity",contactEntity);
             //素材信息
-            map.put("fileList",materialService.handleMaterial(id));
+            map.put("fileList",materialService.handleMaterialNew(id));
             return ResponseMessage.defaultResponse().setData(map);
         }else{
             return ResponseMessage.validFailResponse().setMsg("暂无该旅行社信息！");

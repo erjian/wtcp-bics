@@ -35,7 +35,7 @@ public interface MaterialService {
 
     ResponseMessage updateIdentify(String principalId, String id, String identify, User user);
 
-    Map<String, Object> handleMaterial(String principalId);
+//    Map<String, Object> handleMaterial(String principalId);
 
     /**
      * 根据ids获取素材
@@ -45,7 +45,7 @@ public interface MaterialService {
      */
     ResponseMessage findByIds(String ids,Integer parameter);
 
-    Map<String,Map<String,Map<String,Object>>> handleMaterialNew(String principalId);
+    Map<String,Object> handleMaterialNew(String principalId);
 
     /**
      * 获取素材类型

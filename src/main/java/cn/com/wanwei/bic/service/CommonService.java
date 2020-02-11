@@ -5,10 +5,15 @@ import cn.com.wanwei.bic.model.WeightModel;
 import cn.com.wanwei.common.model.ResponseMessage;
 import cn.com.wanwei.common.model.User;
 
+import java.util.List;
+import java.util.Map;
+
 public interface CommonService<T> {
 
     ResponseMessage changeWeight(WeightModel weightModel, User user, Class<T> clazz) throws Exception;
 
     ResponseMessage batchChangeStatus(BatchAuditModel batchAuditModel, User user, Class<T> clazz);
+
+    List<Map<String, Object>> getAreaListByPcode(String pcode, int length);
 
 }

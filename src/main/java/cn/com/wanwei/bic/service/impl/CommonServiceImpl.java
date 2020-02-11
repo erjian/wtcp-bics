@@ -1,6 +1,8 @@
 package cn.com.wanwei.bic.service.impl;
 
+import cn.com.wanwei.bic.config.Constant;
 import cn.com.wanwei.bic.entity.AuditLogEntity;
+import cn.com.wanwei.bic.feign.CoderServiceFeign;
 import cn.com.wanwei.bic.mapper.AuditLogMapper;
 import cn.com.wanwei.bic.mapper.CommonMapper;
 import cn.com.wanwei.bic.mapper.ScenicMapper;
@@ -14,15 +16,16 @@ import cn.com.wanwei.common.model.User;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.google.common.collect.Maps;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import com.sun.org.apache.xpath.internal.operations.Bool;
 import io.swagger.models.auth.In;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.Table;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 public class CommonServiceImpl<T> implements CommonService<T> {
@@ -35,6 +38,9 @@ public class CommonServiceImpl<T> implements CommonService<T> {
 
     @Autowired
     private AuditLogMapper auditLogMapper;
+
+    @Autowired
+    private CoderServiceFeign coderServiceFeign;
 
     @Override
     public ResponseMessage changeWeight(WeightModel weightModel, User user, Class<T> clazz) throws Exception {
@@ -90,6 +96,31 @@ public class CommonServiceImpl<T> implements CommonService<T> {
             backMsg = "操作成功，已过滤不可操作的数据";
         }
         return responseMessage.setMsg(backMsg);
+    }
+
+    @Override
+    public List<Map<String, Object>> getAreaListByPcode(String pcode, int length) {
+        ResponseMessage responseMessageByCity = coderServiceFeign.areaList(pcode);
+        if (responseMessageByCity.getStatus() == 1 && responseMessageByCity.getData() != null) {
+            JsonArray citys = new JsonParser().parse(responseMessageByCity.getData().toString()).getAsJsonArray();
+            List<Map<String, Object>> areaList = new ArrayList<>();
+            citys.forEach(areaObject -> {
+                Map<String, Object> areaMap = new HashMap<>();
+                JsonObject area = areaObject.getAsJsonObject();
+                String code = area.get("code").getAsString();
+                String name = area.get("name").getAsString();
+                areaMap.put(Constant.LABEL, name);
+                areaMap.put(Constant.VALUE, name);
+                areaMap.put("code", code);
+                //此处设置仅查询县级及以上数据
+                if (code.length() < length) {
+                    areaMap.put(Constant.CHILDREN, getAreaListByPcode(code, length));
+                }
+                areaList.add(areaMap);
+            });
+            return areaList;
+        }
+        return null;
     }
 
     private Map<String, Object> makeParams(String id, Integer status, User user, String tableName) {
