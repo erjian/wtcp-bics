@@ -42,6 +42,21 @@ public class EntertainmentEntity extends CommonEntity {
     @ApiModelProperty(value = "在线状态")
     private Integer onlineStatus;
 
+    @ApiModelProperty(value = "客房数", notes = "客房数")
+    private String guestRoomNum;
+
+    @ApiModelProperty(value = "客房床位数", notes = "客房床位数")
+    private String guestBedNum;
+
+    @ApiModelProperty(value = "餐厅数", notes = "餐厅数")
+    private String restaurantNum;
+
+    @ApiModelProperty(value = "餐厅可容多少人共同用餐", notes = "餐厅可容多少人共同用餐")
+    private String restaurantPermit;
+
+    @ApiModelProperty(value = "可接待人数", notes = "该农家乐可接待多少人")
+    private String receptionPermit;
+
     public Integer getOnlineStatus() {
         return this.status == 9 ? this.status : 1;
     }

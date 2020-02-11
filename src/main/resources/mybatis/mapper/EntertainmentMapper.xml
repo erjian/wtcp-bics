@@ -27,12 +27,17 @@
         <result column="updated_user" jdbcType="VARCHAR" property="updatedUser"/>
         <result column="updated_date" jdbcType="TIMESTAMP" property="updatedDate"/>
         <result column="content" jdbcType="LONGVARCHAR" property="content"/>
+        <result column="guest_room_num" jdbcType="VARCHAR" property="guestRoomNum"/>
+        <result column="guest_bed_num" jdbcType="VARCHAR" property="guestBedNum"/>
+        <result column="restaurant_num" jdbcType="VARCHAR" property="restaurantNum"/>
+        <result column="restaurant_permit" jdbcType="VARCHAR" property="restaurantPermit"/>
+        <result column="reception_permit" jdbcType="VARCHAR" property="receptionPermit"/>
     </resultMap>
     <sql id="Base_Column_List">
     id, code, title, sub_title, slogan, summary, description, weight, longitude,
     latitude, region_full_name, region_full_code, region, address, status, scenic_id, 
     within_scenic, within_park, num, dept_code, created_user, created_date, updated_user, 
-    updated_date,content
+    updated_date,content, guest_room_num, guest_bed_num, restaurant_num, restaurant_permit, reception_permit
   </sql>
     <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
         select
@@ -53,7 +58,7 @@
       scenic_id, within_scenic, within_park, 
       num, dept_code, created_user, 
       created_date, updated_user, updated_date, 
-      content)
+      content, guest_room_num, guest_bed_num, restaurant_num, restaurant_permit, reception_permit)
     values (#{id,jdbcType=VARCHAR}, #{code,jdbcType=VARCHAR}, #{title,jdbcType=VARCHAR},
       #{subTitle,jdbcType=VARCHAR}, #{slogan,jdbcType=VARCHAR}, #{summary,jdbcType=VARCHAR}, 
       #{description,jdbcType=VARCHAR}, #{weight,jdbcType=INTEGER}, #{longitude,jdbcType=DOUBLE},
@@ -62,7 +67,8 @@
       #{scenicId,jdbcType=VARCHAR}, #{withinScenic,jdbcType=INTEGER}, #{withinPark,jdbcType=INTEGER},
       #{num,jdbcType=INTEGER}, #{deptCode,jdbcType=VARCHAR}, #{createdUser,jdbcType=VARCHAR}, 
       #{createdDate,jdbcType=TIMESTAMP}, #{updatedUser,jdbcType=VARCHAR}, #{updatedDate,jdbcType=TIMESTAMP}, 
-      #{content,jdbcType=LONGVARCHAR})
+      #{content,jdbcType=LONGVARCHAR}, #{guestRoomNum,jdbcType=VARCHAR}, #{guestBedNum,jdbcType=VARCHAR},
+      #{restaurantNum,jdbcType=VARCHAR}, #{restaurantPermit,jdbcType=VARCHAR}, #{receptionPermit,jdbcType=VARCHAR})
   </insert>
     <update id="updateByPrimaryKey" parameterType="cn.com.wanwei.bic.entity.EntertainmentEntity">
     update t_bic_entertainment
@@ -90,7 +96,12 @@
       created_date = #{createdDate,jdbcType=TIMESTAMP},
       updated_user = #{updatedUser,jdbcType=VARCHAR},
       updated_date = #{updatedDate,jdbcType=TIMESTAMP},
-      content = #{content,jdbcType=LONGVARCHAR}
+      content = #{content,jdbcType=LONGVARCHAR},
+      guest_room_num = #{guestRoomNum,jdbcType=VARCHAR},
+      guest_bed_num = #{guestBedNum,jdbcType=VARCHAR},
+      restaurant_num = #{restaurantNum,jdbcType=VARCHAR},
+      restaurant_permit = #{restaurantPermit,jdbcType=VARCHAR},
+      reception_permit = #{receptionPermit,jdbcType=VARCHAR}
     where id = #{id,jdbcType=VARCHAR}
   </update>
     <select id="findByPage" parameterType="java.util.Map" resultMap="BaseResultMap">
