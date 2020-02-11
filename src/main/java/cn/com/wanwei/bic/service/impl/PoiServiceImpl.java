@@ -88,6 +88,7 @@ public class PoiServiceImpl implements PoiService {
             poiEntities = poiMapper.findByPageForFeign(filter);
             for(PoiEntity item : poiEntities){
                 item.setTagList(tagsService.findListByPriId(item.getId(), PoiTagsEntity.class));
+                item.setFileList(materialService.handleMaterialNew(item.getId()));
             }
         }else{
             poiEntities = poiMapper.findByPage(filter);

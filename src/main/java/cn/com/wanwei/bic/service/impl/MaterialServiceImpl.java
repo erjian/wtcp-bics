@@ -245,13 +245,13 @@ public class MaterialServiceImpl implements MaterialService {
     }
 
     @Override
-    public Map<String, Map<String, Map<String, Object>>> handleMaterialNew(String principalId) {
+    public Map<String, Object> handleMaterialNew(String principalId) {
         List<MaterialEntity> list = materialMapper.findByPrincipalId(principalId);
-        Map<String, Map<String, Map<String, Object>>> materialList = Maps.newHashMap();
-        Map<String, Map<String, Object>> imageList = getMaterialTypeMap("image");
-        Map<String, Map<String, Object>> audioList = getMaterialTypeMap("audio");
-        Map<String, Map<String, Object>> videoList = getMaterialTypeMap("video");
-        Map<String, Map<String, Object>> fileList = getMaterialTypeMap("file");
+        Map<String, Object> materialList = Maps.newHashMap();
+        Map<String, Object> imageList = getMaterialTypeMap("image");
+        Map<String, Object> audioList = getMaterialTypeMap("audio");
+        Map<String, Object> videoList = getMaterialTypeMap("video");
+        Map<String, Object> fileList = getMaterialTypeMap("file");
         materialList.put("image", imageList);
         materialList.put("audio", audioList);
         materialList.put("video", videoList);
@@ -259,26 +259,26 @@ public class MaterialServiceImpl implements MaterialService {
         if (CollectionUtils.isNotEmpty(list)) {
             for (MaterialEntity entity : list) {
                 if (entity.getFileType().toLowerCase().equals("image")) {
-                    getMaterialData(materialList.get("image"), entity);
+                    getMaterialData((Map<String, Object>) materialList.get("image"), entity);
                 }
                 if (entity.getFileType().toLowerCase().equals("audio")) {
-                    getMaterialData(materialList.get("audio"), entity);
+                    getMaterialData((Map<String, Object>) materialList.get("audio"), entity);
                 }
                 if (entity.getFileType().toLowerCase().equals("video")) {
-                    getMaterialData(materialList.get("video"), entity);
+                    getMaterialData((Map<String, Object>) materialList.get("video"), entity);
                 }
                 if (entity.getFileType().toLowerCase().equals("file")) {
-                    getMaterialData(materialList.get("file"), entity);
+                    getMaterialData((Map<String, Object>) materialList.get("file"), entity);
                 }
             }
         }
         return materialList;
     }
 
-    private Map<String, Map<String, Object>> getMaterialTypeMap(String name) {
+    private Map<String, Object> getMaterialTypeMap(String name) {
         //获取该文件类型下标识集合
         List<MaterialEntity> materialList = Lists.newArrayList();
-        Map<String, Map<String, Object>> codeMap = new HashMap<>();
+        Map<String, Object> codeMap = new HashMap<>();
         Map<String, Object> map = new HashMap<>();
         map.put("name", "全部");
         map.put("materials", materialList);
@@ -293,14 +293,15 @@ public class MaterialServiceImpl implements MaterialService {
         return codeMap;
     }
 
-    private Map<String, Map<String, Object>> getMaterialData(Map<String, Map<String, Object>> typeMap, MaterialEntity entity) {
+    private Map<String, Object> getMaterialData(Map<String, Object> typeMap, MaterialEntity entity) {
         //跟据标识分配文件
-        List<MaterialEntity> materialList = (List<MaterialEntity>) typeMap.get("all").get("materials");
+        Map<String, Object> all = (Map<String, Object>) typeMap.get("all");
+        List<MaterialEntity> materialList = (List<MaterialEntity>) all.get("materials");
         materialList.add(entity);
         if (!Strings.isNullOrEmpty(entity.getFileIdentify())) {
             String[] identifyArr = entity.getFileIdentify().split(",");
             for (String str : identifyArr) {
-                Map<String, Object> identMap = typeMap.get(str);
+                Map<String, Object> identMap = (Map<String, Object>) typeMap.get(str);
                 if (identMap != null && identMap.containsKey("materials")) {
                     materialList = (List<MaterialEntity>) identMap.get("materials");
                     materialList.add(entity);

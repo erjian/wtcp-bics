@@ -45,7 +45,7 @@ public interface MaterialService {
      */
     ResponseMessage findByIds(String ids,Integer parameter);
 
-    Map<String,Map<String,Map<String,Object>>> handleMaterialNew(String principalId);
+    Map<String,Object> handleMaterialNew(String principalId);
 
     /**
      * 获取素材类型
