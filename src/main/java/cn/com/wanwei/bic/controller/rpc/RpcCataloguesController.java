@@ -68,8 +68,8 @@ public class RpcCataloguesController {
             @ApiImplicitParam(name = "syncDate", value = "同步日期，格式：yyyy-MM-dd"),
             @ApiImplicitParam(name = "category", value = "资源类型", required = true, dataType = "String")
     })
-    @GetMapping("/SyncDataServer")
-    public ResponseMessage SyncDataServer(@RequestParam(value = "page", defaultValue = "0") Integer page,
+    @GetMapping("/syncData")
+    public ResponseMessage syncData(@RequestParam(value = "page", defaultValue = "0") Integer page,
                                           @RequestParam(value = "size", defaultValue = "500") Integer size,
                                           @RequestParam(value = "syncType", defaultValue = "1") Integer syncType,
                                           @RequestParam(value = "syncDate") String syncDate,
