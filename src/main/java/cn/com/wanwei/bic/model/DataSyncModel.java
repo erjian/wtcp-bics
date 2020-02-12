@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 @Data
-public class SyncDataModel {
+public class DataSyncModel {
 
     @ApiModelProperty(value="主键")
     private String id;

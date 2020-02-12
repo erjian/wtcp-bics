@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.com.wanwei.bic.mapper.DataSyncMapper">
+    <resultMap id="BaseResultMap" type="cn.com.wanwei.bic.model.DataSyncModel">
+        <id column="id" jdbcType="VARCHAR" property="id"/>
+        <result column="title" jdbcType="VARCHAR" property="title"/>
+        <result column="address" jdbcType="VARCHAR" property="address"/>
+        <result column="region" jdbcType="VARCHAR" property="region"/>
+        <result column="longitude" jdbcType="DOUBLE" property="longitude"/>
+        <result column="latitude" jdbcType="DOUBLE" property="latitude"/>
+        <result column="phone" jdbcType="VARCHAR" property="phone"/>
+        <result column="content" jdbcType="LONGVARCHAR" property="content"/>
+        <result column="grade" jdbcType="VARCHAR" property="grade"/>
+        <result column="score" jdbcType="REAL" property="score"/>
+        <result column="weight" jdbcType="INTEGER" property="weight"/>
+        <result column="category" jdbcType="VARCHAR" property="category"/>
+        <result column="type" jdbcType="VARCHAR" property="type"/>
+    </resultMap>
+
+    <sql id="Scenic_Base_Column_List">
+        id, title, address, region, longitude, latitude, phone, content, grade, score, weight, category, type
+    </sql>
+
+    <select id="findScenicByPage" parameterType="java.util.Map" resultMap="BaseResultMap">
+        <include refid="Get_Scenic_Page_Info"/>
+    </select>
+
+    <sql id="Get_Scenic_Page_Info">
+        select
+        <include refid="Scenic_Base_Column_List"/>
+        from t_bic_scenic
+        <where>
+            status >= 9
+            <if test="category != null">
+                and category = #{category,jdbcType=VARCHAR}
+            </if>
+            <include refid="Add_Date_Scope_Params"/>
+        </where>
+    </sql>
+
+    <sql id="Add_Date_Scope_Params">
+        <if test="startDate != null and startDate != ''">
+            and updated_date >= #{startDate,jdbcType=VARCHAR}
+        </if>
+        <if test="endDate != null and endDate != ''">
+            and #{endDate,jdbcType=VARCHAR} >= updated_date
+        </if>
+    </sql>
+
+
+</mapper>
