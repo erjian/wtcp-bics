@@ -38,7 +38,11 @@ public class DataSyncServiceImpl implements DataSyncService {
             dataSyncModels = dataSyncMapper.findScenicByPage(filter);
         } else if (category.equals(DataType.TRAVEL_TYPE.getKey())) {
             dataSyncModels = dataSyncMapper.findTravelByPage(filter);
-        } else if (category.equals(DataType.FOOD_TYPE.getKey()) || category.equals(DataType.SHOPPING_TYPE.getKey())) {
+        } else if (category.equals(DataType.FOOD_TYPE.getKey())
+                || category.equals(DataType.SHOPPING_TYPE.getKey())
+                || category.equals(DataType.FOOD_STREET.getKey())
+                || category.equals(DataType.SPECIAL_SNACKS.getKey())
+                || category.equals(DataType.SPECIALTY.getKey())) {
             dataSyncModels = dataSyncMapper.findPeripheryByPage(filter);
         } else if (category.equals(DataType.AGRITAINMENT_TYPE.getKey())) {
             dataSyncModels = dataSyncMapper.findEntertainmentByPage(filter);
