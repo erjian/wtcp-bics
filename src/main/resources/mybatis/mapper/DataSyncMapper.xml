@@ -26,8 +26,20 @@
     </select>
 
     <sql id="Get_Scenic_Page_Info">
-        select
-        <include refid="Scenic_Base_Column_List"/>
+        select s.*,b.phone from
+        ( select
+        id id,
+        title title,
+        address address,
+        region region,
+        longitude longitude,
+        latitude latitude,
+        content content,
+        level grade,
+        if(score is null,0,score) score,
+        weight weight,
+        category category,
+        '' type
         from t_bic_scenic
         <where>
             status >= 9
@@ -36,6 +48,36 @@
             </if>
             <include refid="Add_Date_Scope_Params"/>
         </where>
+        )s
+        left join t_bic_business b on b.principal_id=s.id
+    </sql>
+
+    <select id="findRentalCarByPage" parameterType="java.util.Map" resultMap="BaseResultMap">
+        <include refid="Get_RentalCar_Page_Info"/>
+    </select>
+
+    <sql id="Get_RentalCar_Page_Info">
+        select s.*,b.phone from
+        ( select
+        id id,
+        title title,
+        address address,
+        region region,
+        longitude longitude,
+        latitude latitude,
+        content content,
+        '' grade,
+        0 score,
+        weight weight,
+        '125004001' category,
+        '' type
+        from t_bic_scenic
+        <where>
+            status >= 9
+            <include refid="Add_Date_Scope_Params"/>
+        </where>
+        )s
+        left join t_bic_business b on b.principal_id=s.id
     </sql>
 
     <select id="findPeripheryByPage" parameterType="java.util.Map" resultMap="BaseResultMap">

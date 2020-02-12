@@ -9,6 +9,14 @@ import java.util.Map;
 @Mapper
 public interface DataSyncMapper {
 
+    /**
+     * 获取租车的分页数据，并返回指定的字段
+     * @author mzy 2020年2月12日17:24:39
+     * @param filter
+     * @return
+     */
+    Page<DataSyncModel> findRentalCarByPage(Map<String, Object> filter);
+
     Page<DataSyncModel> findScenicByPage(Map<String, Object> filter);
 
     /**
