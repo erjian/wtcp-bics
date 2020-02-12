@@ -19,6 +19,8 @@ public interface DataSyncMapper {
 
     Page<DataSyncModel> findScenicByPage(Map<String, Object> filter);
 
+    Page<DataSyncModel> findTravelByPage(Map<String, Object> filter);
+
     /**
      * 获取周边的分页数据，并返回指定的字段
      * @author linjw 2020年2月12日16:14:39
