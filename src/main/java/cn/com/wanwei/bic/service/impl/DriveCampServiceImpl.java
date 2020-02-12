@@ -247,7 +247,7 @@ public class DriveCampServiceImpl implements DriveCampService {
             //通讯信息
             ContactEntity contactEntity = contactMapper.selectByPrincipalId(id);
             map.put("contactEntity",contactEntity);
-            //素材信息
+            //素材信息handleMaterialNew
             map.put("fileList",materialService.handleMaterialNew(id));
             return ResponseMessage.defaultResponse().setData(map);
         }else{

@@ -57,6 +57,7 @@ public class TagsServiceImpl<T> implements TagsService<T> {
             item.setPrincipalId(principalId);
             item.setCreatedUser(user.getUsername());
             item.setCreatedDate(new Date());
+            item.setUpdatedDate(new Date());
         }
         Map<String, Object> params = Maps.newHashMap();
         params.put("entityList", entityList);

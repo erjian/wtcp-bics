@@ -65,6 +65,7 @@ public class MaterialServiceImpl implements MaterialService {
         materialEntity.setId(UUIDUtils.getInstance().getId());
         materialEntity.setCreatedUser(user.getUsername());
         materialEntity.setCreatedDate(new Date());
+        materialEntity.setUpdatedDate(new Date());
         materialEntity.setFileName(dealFileName(materialEntity.getFileName()));
         materialMapper.insert(materialEntity);
         return ResponseMessage.defaultResponse().setMsg("添加成功");
@@ -86,6 +87,7 @@ public class MaterialServiceImpl implements MaterialService {
         for (MaterialEntity item : materialList) {
             item.setCreatedUser(user.getUsername());
             item.setCreatedDate(new Date());
+            item.setUpdatedDate(new Date());
             item.setPrincipalId(principalId);
             item.setFileName(dealFileName(item.getFileName()));
             if (StringUtils.isNotBlank(item.getId())) {

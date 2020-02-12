@@ -88,6 +88,7 @@ public class ScenicServiceImpl implements ScenicService {
         record.setTitleJp(PinyinUtils.converterToFirstSpell(record.getTitle()).toLowerCase());
         record.setCreatedUser(user.getUsername());
         record.setCreatedDate(new Date());
+        record.setUpdatedDate(new Date());
         record.setDeptCode(user.getOrg().getCode());
         record.setStatus(0);
         record.setWeight(0);

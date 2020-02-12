@@ -82,6 +82,7 @@ public class TrafficAgentServiceImpl implements TrafficAgentService {
             trafficAgentEntity.setWeight(0);
             trafficAgentEntity.setCreatedUser(user.getUsername());
             trafficAgentEntity.setCreatedDate(new Date());
+            trafficAgentEntity.setUpdatedDate(new Date());
             trafficAgentEntity.setDeptCode(user.getOrg().getCode());
             trafficAgentMapper.insert(trafficAgentEntity);
             //处理编辑页面新增素材

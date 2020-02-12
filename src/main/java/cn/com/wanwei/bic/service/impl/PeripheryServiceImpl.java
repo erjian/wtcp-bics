@@ -104,6 +104,7 @@ public class PeripheryServiceImpl implements PeripheryService {
             peripheryEntity.setDeptCode(user.getOrg().getCode());
             peripheryEntity.setCreatedUser(user.getUsername());
             peripheryEntity.setCreatedDate(new Date());
+            peripheryEntity.setUpdatedDate(new Date());
             peripheryMapper.insert(peripheryEntity);
 
             // 保存关联的美食

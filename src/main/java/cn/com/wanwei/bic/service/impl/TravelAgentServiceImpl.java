@@ -98,6 +98,7 @@ public class TravelAgentServiceImpl implements TravelAgentService {
             travelAgentEntity.setWeight(0);
             travelAgentEntity.setCreatedUser(user.getUsername());
             travelAgentEntity.setCreatedDate(new Date());
+            travelAgentEntity.setUpdatedDate(new Date());
             travelAgentEntity.setDeptCode(user.getOrg().getCode());
             tarvaAgentMapper.insert(travelAgentEntity);
             //处理标签

@@ -103,6 +103,7 @@ public class ExtendServiceImpl implements ExtendService {
         extendEntity.setId(id);
         extendEntity.setCreatedUser(user.getUsername());
         extendEntity.setCreatedDate(new Date());
+        extendEntity.setUpdatedDate(new Date());
         extendEntity.setStatus(0);
         extendEntity.setCode(responseMessage.getData().toString());
         extendMapper.insert(extendEntity);

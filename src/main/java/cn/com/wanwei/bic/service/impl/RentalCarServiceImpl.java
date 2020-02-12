@@ -105,6 +105,7 @@ public class RentalCarServiceImpl implements RentalCarService {
         carEntity.setTitleQp(PinyinUtils.getPingYin(carEntity.getTitle()).toLowerCase());
         carEntity.setCreatedUser(user.getUsername());
         carEntity.setCreatedDate(new Date());
+        carEntity.setUpdatedDate(new Date());
         carEntity.setDeptCode(user.getOrg().getCode());
         carEntity.setStatus(0);
         carEntity.setWeight(0);

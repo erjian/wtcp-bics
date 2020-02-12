@@ -102,6 +102,7 @@ public class EntertainmentServiceImpl implements EntertainmentService {
             entertainmentEntity.setWeight(0);
             entertainmentEntity.setCreatedUser(user.getUsername());
             entertainmentEntity.setCreatedDate(new Date());
+            entertainmentEntity.setUpdatedDate(new Date());
             entertainmentEntity.setDeptCode(user.getOrg().getCode());
             entertainmentMapper.insert(entertainmentEntity);
 

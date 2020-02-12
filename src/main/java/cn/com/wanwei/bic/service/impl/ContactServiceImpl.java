@@ -34,6 +34,7 @@ public class ContactServiceImpl implements ContactService {
 		record.setId(UUIDUtils.getInstance().getId());
 		record.setCreatedUser(userName);
 		record.setCreatedDate(new Date());
+		record.setUpdatedDate(new Date());
 		contactMapper.insert(record);
 		return ResponseMessage.defaultResponse().setMsg("保存成功");
 	}

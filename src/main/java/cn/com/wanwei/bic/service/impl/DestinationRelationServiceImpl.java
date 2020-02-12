@@ -54,6 +54,7 @@ public class DestinationRelationServiceImpl implements DestinationRelationServic
         destinationRelationEntity.setId(UUIDUtils.getInstance().getId());
         destinationRelationEntity.setCreatedUser(username);
         destinationRelationEntity.setCreatedDate(new Date());
+        destinationRelationEntity.setUpdatedDate(new Date());
         destinationRelationMapper.insert(destinationRelationEntity);
         return ResponseMessage.defaultResponse().setMsg("保存成功!");
     }

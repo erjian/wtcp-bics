@@ -39,6 +39,7 @@ public class ResourceConfigServiceImpl implements ResourceConfigService {
         entity.setId(id);
         entity.setCreatedUser(user.getUsername());
         entity.setCreatedDate(new Date());
+        entity.setUpdatedDate(new Date());
         resourceConfigMapper.insert(entity);
         return ResponseMessage.defaultResponse().setMsg("保存成功");
     }

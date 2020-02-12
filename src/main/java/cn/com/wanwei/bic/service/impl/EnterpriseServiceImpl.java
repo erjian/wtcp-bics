@@ -34,6 +34,7 @@ public class EnterpriseServiceImpl implements EnterpriseService {
 		record.setId(UUIDUtils.getInstance().getId());
 		record.setCreatedUser(userName);
 		record.setCreatedDate(new Date());
+		record.setUpdatedDate(new Date());
 		enterpriseMapper.insert(record);
 		return ResponseMessage.defaultResponse().setMsg("保存成功");
 	}

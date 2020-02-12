@@ -132,6 +132,7 @@ public class PoiServiceImpl implements PoiService {
                 poiEntity.setWeight(0);
                 poiEntity.setCreatedUser(user.getUsername());
                 poiEntity.setCreatedDate(new Date());
+                poiEntity.setUpdatedDate(new Date());
                 ScenicEntity entity = scenicMapper.selectByPrimaryKey(poiEntity.getPrincipalId());
                 poiEntity.setDeptCode(entity.getDeptCode());
                 poiMapper.insert(poiEntity);
