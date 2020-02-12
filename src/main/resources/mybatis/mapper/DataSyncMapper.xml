@@ -60,23 +60,8 @@
     </select>
 
     <select id="findPeripheryByPage" parameterType="java.util.Map" resultMap="BaseResultMap">
-        <include refid="Get_Periphery_Page_Info"/>
-    </select>
-
-    <sql id="Get_Periphery_Page_Info">
-        SELECT id id,
-        title title,
-        address address,
-        region region,
-        longitude longitude,
-        latitude latitude,
-        phone phone,
-        content content,
-        0 grade,
-        score score,
-        weight weight,
-        category category,
-        type type
+        SELECT id id, title title, address address, region region, longitude longitude, latitude latitude,
+        phone phone, content content,  null grade, score score, weight weight,category category,type type
         FROM t_bic_periphery
         <where>
             status >= 9
@@ -85,90 +70,46 @@
             </if>
             <include refid="Add_Date_Scope_Params"/>
         </where>
-    </sql>
-
-    <select id="findEntertainmentByPage" parameterType="java.util.Map" resultMap="BaseResultMap">
-        <include refid="Get_Entertainment_Page_Info"/>
     </select>
 
-    <sql id="Get_Entertainment_Page_Info">
-        SELECT t.id id,
-        t.title title,
-        t.address address,
-        t.region region,
-        t.longitude longitude,
-        t.latitude latitude,
-        s.phone phone,
-        t.content content,
-        0 grade,
-        0 score,
-        t.weight weight,
-        '125005002' category,
-        '125005002' type
+    <select id="findEntertainmentByPage" parameterType="java.util.Map" resultMap="BaseResultMap">
+        SELECT t.id id, t.title title, t.address address, t.region region,t.longitude longitude,t.latitude latitude,
+        s.phone phone,t.content content,null grade, 0 score, t.weight weight,null category, null type
         FROM t_bic_entertainment t
         LEFT JOIN t_bic_business s ON t.id=s.principal_id
         <where>
             status >= 9
             <include refid="Add_Date_Scope_Params"/>
         </where>
-    </sql>
-
-    <select id="findDriveCampByPage" parameterType="java.util.Map" resultMap="BaseResultMap">
-        <include refid="Get_DriveCamp_Page_Info"/>
     </select>
 
-    <sql id="Get_DriveCamp_Page_Info">
-        SELECT t.id id,
-        t.title title,
-        t.address address,
-        t.region region,
-        t.longitude longitude,
-        t.latitude latitude,
-        s.phone phone,
-        t.content content,
-        0 grade,
-        0 score,
-        t.weight weight,
-        '125005001' category,
-        '125005001' type
+    <select id="findDriveCampByPage" parameterType="java.util.Map" resultMap="BaseResultMap">
+        SELECT t.id id, t.title title, t.address address, t.region region, t.longitude longitude,  t.latitude latitude,
+        s.phone phone, t.content content,  null grade, 0 score, t.weight weight, null category, null type
         FROM t_bic_drive_camp t
         LEFT JOIN t_bic_business s ON t.id=s.principal_id
         <where>
             status >= 9
             <include refid="Add_Date_Scope_Params"/>
         </where>
-    </sql>
-
-    <select id="findTrafficAgentByPage" parameterType="java.util.Map" resultMap="BaseResultMap">
-        <include refid="Get_TrafficAgent_Page_Info"/>
     </select>
 
-    <sql id="Get_TrafficAgent_Page_Info">
-        SELECT id id,
-        title title,
-        address address,
-        region region,
-        longitude longitude,
-        latitude latitude,
-        phone phone,
-        content content,
-        0 grade,
-        0 score,
-        t.weight weight,
-        '125004002' category,
-        type type
+    <select id="findTrafficAgentByPage" parameterType="java.util.Map" resultMap="BaseResultMap">
+        SELECT id id, title title, address address, region region, longitude longitude, latitude latitude,
+         phone phone, content content, null grade,  0 score, t.weight weight, null category, type type
         FROM t_bic_traffic_agent t
         <where>
             status >= 9
             <include refid="Add_Date_Scope_Params"/>
         </where>
-    </sql>
-
-
+    </select>
 
     <sql id="Add_Date_Scope_Params">
-        <if test="startDate != null and startDate != '' and endDate != null and endDate != ''">
-            and updated_date BETWEEN #{startDate,jdbcType=VARCHAR} and #{endDate,jdbcType=VARCHAR}
+        <if test="startDate != null and startDate != ''">
+            and updated_date >= #{startDate,jdbcType=VARCHAR}
+        </if>
+        <if test="endDate != null and endDate != ''">
+            and #{endDate,jdbcType=VARCHAR} >= updated_date
         </if>
     </sql>
 
