@@ -46,7 +46,7 @@ public interface DataSyncMapper {
     Page<DataSyncModel> findDriveCampByPage(Map<String, Object> filter);
 
     /**
-     * 获取自驾营地的分页数据，并返回指定的字段
+     * 获取交通枢纽的分页数据，并返回指定的字段
      * @author linjw 2020年2月12日16:30:46
      * @param filter
      * @return
