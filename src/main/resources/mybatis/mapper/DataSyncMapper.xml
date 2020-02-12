@@ -38,6 +38,113 @@
         </where>
     </sql>
 
+    <select id="findPeripheryByPage" parameterType="java.util.Map" resultMap="BaseResultMap">
+        <include refid="Get_Periphery_Page_Info"/>
+    </select>
+
+    <sql id="Get_Periphery_Page_Info">
+        SELECT id id,
+        title title,
+        address address,
+        region region,
+        longitude longitude,
+        latitude latitude,
+        phone phone,
+        content content,
+        0 grade,
+        score score,
+        weight weight,
+        category category,
+        type type
+        FROM t_bic_periphery
+        <where>
+            status >= 9
+            <if test="category != null and category ！= ''">
+                and category = #{category,jdbcType=VARCHAR}
+            </if>
+            <include refid="Add_Date_Scope_Params"/>
+        </where>
+    </sql>
+
+    <select id="findEntertainmentByPage" parameterType="java.util.Map" resultMap="BaseResultMap">
+        <include refid="Get_Entertainment_Page_Info"/>
+    </select>
+
+    <sql id="Get_Entertainment_Page_Info">
+        SELECT t.id id,
+        t.title title,
+        t.address address,
+        t.region region,
+        t.longitude longitude,
+        t.latitude latitude,
+        s.phone phone,
+        t.content content,
+        0 grade,
+        0 score,
+        t.weight weight,
+        '125005002' category,
+        '125005002' type
+        FROM t_bic_entertainment t
+        LEFT JOIN t_bic_business s ON t.id=s.principal_id
+        <where>
+            status >= 9
+            <include refid="Add_Date_Scope_Params"/>
+        </where>
+    </sql>
+
+    <select id="findDriveCampByPage" parameterType="java.util.Map" resultMap="BaseResultMap">
+        <include refid="Get_DriveCamp_Page_Info"/>
+    </select>
+
+    <sql id="Get_DriveCamp_Page_Info">
+        SELECT t.id id,
+        t.title title,
+        t.address address,
+        t.region region,
+        t.longitude longitude,
+        t.latitude latitude,
+        s.phone phone,
+        t.content content,
+        0 grade,
+        0 score,
+        t.weight weight,
+        '125005001' category,
+        '125005001' type
+        FROM t_bic_drive_camp t
+        LEFT JOIN t_bic_business s ON t.id=s.principal_id
+        <where>
+            status >= 9
+            <include refid="Add_Date_Scope_Params"/>
+        </where>
+    </sql>
+
+    <select id="findTrafficAgentByPage" parameterType="java.util.Map" resultMap="BaseResultMap">
+        <include refid="Get_TrafficAgent_Page_Info"/>
+    </select>
+
+    <sql id="Get_TrafficAgent_Page_Info">
+        SELECT id id,
+        title title,
+        address address,
+        region region,
+        longitude longitude,
+        latitude latitude,
+        phone phone,
+        content content,
+        0 grade,
+        0 score,
+        t.weight weight,
+        '125004002' category,
+        type type
+        FROM t_bic_traffic_agent t
+        <where>
+            status >= 9
+            <include refid="Add_Date_Scope_Params"/>
+        </where>
+    </sql>
+
+
+
     <sql id="Add_Date_Scope_Params">
         <if test="startDate != null and startDate != ''">
             and updated_date >= #{startDate,jdbcType=VARCHAR}
