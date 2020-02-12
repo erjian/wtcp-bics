@@ -89,8 +89,7 @@ public class RpcCataloguesController {
             filter.put("startDate", syncDate + " 00:00:00");
             filter.put("endDate", syncDate + " 23:59:59");
         }
-        ResponseMessage back = dataSyncService.findByPage(category, page, size, filter);
-        return back;
+        return dataSyncService.findByPage(category, page, size, filter);
     }
 
     @ApiOperation(value = "根据资源编码获取资源", notes = "根据资源编码获取资源")

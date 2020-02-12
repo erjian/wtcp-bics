@@ -18,24 +18,9 @@
     </resultMap>
 
     <select id="findScenicByPage" parameterType="java.util.Map" resultMap="BaseResultMap">
-        <include refid="Get_Scenic_Page_Info"/>
-    </select>
-
-    <sql id="Get_Scenic_Page_Info">
-        select s.*,b.phone from
-        ( select
-        id id,
-        title title,
-        address address,
-        region region,
-        longitude longitude,
-        latitude latitude,
-        content content,
-        level grade,
-        if(score is null,0,score) score,
-        weight weight,
-        category category,
-        '' type
+        select s.*,b.phone
+        from  ( select id id, title title, address address, region region, longitude longitude, latitude latitude,
+        content content, level grade, if(score is null,0,score) score, weight weight, category category,null type
         from t_bic_scenic
         <where>
             status >= 9
@@ -46,27 +31,12 @@
         </where>
         )s
         left join t_bic_business b on b.principal_id=s.id
-    </sql>
-
-    <select id="findRentalCarByPage" parameterType="java.util.Map" resultMap="BaseResultMap">
-        <include refid="Get_RentalCar_Page_Info"/>
     </select>
 
-    <sql id="Get_RentalCar_Page_Info">
-        select s.*,b.phone from
-        ( select
-        id id,
-        title title,
-        address address,
-        region region,
-        longitude longitude,
-        latitude latitude,
-        content content,
-        '' grade,
-        0 score,
-        weight weight,
-        '125004001' category,
-        '' type
+    <select id="findRentalCarByPage" parameterType="java.util.Map" resultMap="BaseResultMap">
+        select s.*,b.phone
+        from ( select id id, title title, address address, region region, longitude longitude, latitude latitude,
+        content content, null grade, null score, weight weight, null category, null type
         from t_bic_scenic
         <where>
             status >= 9
@@ -74,20 +44,20 @@
         </where>
         )s
         left join t_bic_business b on b.principal_id=s.id
-    </sql>
-
-    <select id="findTravelByPage" parameterType="java.util.Map" resultMap="BaseResultMap">
-        <include refid="Get_Travel_Page_Info"/>
     </select>
 
-    <sql id="Get_Travel_Page_Info">
-        select id, title, address, region, longitude, latitude, content, level as grade, 0 as score, weight,'' category,'' phone, '' type
-        from t_bic_travel_agent
-        <where>
-            status >= 9
-            <include refid="Add_Date_Scope_Params"/>
-        </where>
-    </sql>
+    <select id="findTravelByPage" parameterType="java.util.Map" resultMap="BaseResultMap">
+        SELECT s.*, b.phone
+        FROM ( SELECT id id, title title, address address, region region, longitude longitude, latitude latitude,
+                content content, LEVEL grade, NULL score, weight weight, NULL category, NULL type
+                FROM t_bic_travel_agent
+                <where>
+                    status >= 9
+                    <include refid="Add_Date_Scope_Params"/>
+                </where>
+            ) s
+        LEFT JOIN t_bic_business b ON b.principal_id = s.id
+    </select>
 
     <select id="findPeripheryByPage" parameterType="java.util.Map" resultMap="BaseResultMap">
         <include refid="Get_Periphery_Page_Info"/>
