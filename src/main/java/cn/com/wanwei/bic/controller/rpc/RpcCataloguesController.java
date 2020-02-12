@@ -85,9 +85,11 @@ public class RpcCataloguesController {
         filter.put("size", size);
         filter.put("syncType", syncType);
         filter.put("category", category);
-        filter.put("startDate", syncDate + " 00:00:00");
-        filter.put("endDate", syncDate + " 23:59:59");
-        ResponseMessage back = dataSyncService.findTravelByPage(category, page, size, filter);
+        if(syncType == 1){
+            filter.put("startDate", syncDate + " 00:00:00");
+            filter.put("endDate", syncDate + " 23:59:59");
+        }
+        ResponseMessage back = dataSyncService.findByPage(category, page, size, filter);
         return back;
     }
 

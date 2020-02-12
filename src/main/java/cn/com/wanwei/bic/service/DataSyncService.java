@@ -6,6 +6,6 @@ import java.util.Map;
 
 public interface DataSyncService {
 
-    ResponseMessage findTravelByPage(String category, Integer page, Integer size, Map<String, Object> filter);
+    ResponseMessage findByPage(String category, Integer page, Integer size, Map<String, Object> filter);
 
 }
