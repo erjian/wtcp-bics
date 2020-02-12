@@ -60,11 +60,11 @@ public class RpcCataloguesController {
     @Value("${wtcp.bic.syncSize}")
     protected Integer syncSize;
 
-    @ApiOperation(value = "定时同步数据server端接口", notes = "定时同步数据server端接口")
+    @ApiOperation(value = "定时同步数据接口", notes = "定时同步数据接口")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "page", value = "页号", defaultValue = "0"),
-            @ApiImplicitParam(name = "size", value = "每页数量,最大值为500", defaultValue = "500"),
-            @ApiImplicitParam(name = "syncType", value = "同步类型：0 全量 1 增量，默认为增量"),
+            @ApiImplicitParam(name = "size", value = "每页数量，允许的最大值为500", defaultValue = "500"),
+            @ApiImplicitParam(name = "syncType", value = "同步类型：0.全量 1.增量，默认为增量"),
             @ApiImplicitParam(name = "syncDate", value = "同步日期，格式：yyyy-MM-dd"),
             @ApiImplicitParam(name = "category", value = "资源类型", required = true, dataType = "String")
     })

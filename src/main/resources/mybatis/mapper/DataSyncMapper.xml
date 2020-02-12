@@ -105,11 +105,8 @@
     </select>
 
     <sql id="Add_Date_Scope_Params">
-        <if test="startDate != null and startDate != ''">
-            and updated_date >= #{startDate,jdbcType=VARCHAR}
-        </if>
-        <if test="endDate != null and endDate != ''">
-            and #{endDate,jdbcType=VARCHAR} >= updated_date
+        <if test="syncType == 1 and startDate != null and startDate != '' and endDate != null and endDate != ''">
+            and updated_date BETWEEN #{startDate,jdbcType=VARCHAR} and #{endDate,jdbcType=VARCHAR}
         </if>
     </sql>
 
