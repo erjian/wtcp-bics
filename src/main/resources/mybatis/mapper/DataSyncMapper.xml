@@ -65,7 +65,7 @@
         FROM t_bic_periphery
         <where>
             status >= 9
-            <if test="category != null and category ！= ''">
+            <if test="category != null and category != ''">
                 and category = #{category,jdbcType=VARCHAR}
             </if>
             <include refid="Add_Date_Scope_Params"/>
