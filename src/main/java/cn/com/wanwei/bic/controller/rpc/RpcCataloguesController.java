@@ -105,7 +105,11 @@ public class RpcCataloguesController {
             responseMessage = scenicService.findBySearchValue(type, name, ids);
         } else if (type.equals(DataType.TRAVEL_TYPE.getKey())) {
             responseMessage = travelAgentService.findBySearchValue(name, ids);
-        } else if (type.equals(DataType.FOOD_TYPE.getKey()) || type.equals(DataType.SHOPPING_TYPE.getKey())) {
+        } else if (type.equals(DataType.FOOD_TYPE.getKey())
+                || type.equals(DataType.SHOPPING_TYPE.getKey())
+                || type.equals(DataType.FOOD_STREET.getKey())
+                || type.equals(DataType.SPECIAL_SNACKS.getKey())
+                || type.equals(DataType.SPECIALTY.getKey())) {
             responseMessage = peripheryService.findBySearchValue(type, name, ids);
         } else if (type.equals(DataType.AGRITAINMENT_TYPE.getKey())) {
             responseMessage = entertainmentService.findBySearchValue(type, name, ids);
