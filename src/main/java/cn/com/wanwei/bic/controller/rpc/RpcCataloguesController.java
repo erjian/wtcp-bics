@@ -62,9 +62,9 @@ public class RpcCataloguesController {
 
     @ApiOperation(value = "定时同步数据接口", notes = "定时同步数据接口")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "page", value = "页号", defaultValue = "0"),
-            @ApiImplicitParam(name = "size", value = "每页数量，允许的最大值为500", defaultValue = "500"),
-            @ApiImplicitParam(name = "syncType", value = "同步类型：0.全量 1.增量，默认为增量"),
+            @ApiImplicitParam(name = "page", value = "页号", required = true, defaultValue = "0"),
+            @ApiImplicitParam(name = "size", value = "每页数量，允许的最大值为500", required = true, defaultValue = "500"),
+            @ApiImplicitParam(name = "syncType", value = "同步类型：0.全量 1.增量，默认为增量", required = true, defaultValue = "1"),
             @ApiImplicitParam(name = "syncDate", value = "同步日期，格式：yyyy-MM-dd"),
             @ApiImplicitParam(name = "category", value = "资源类型", required = true, dataType = "String")
     })
@@ -72,7 +72,7 @@ public class RpcCataloguesController {
     public ResponseMessage syncData(@RequestParam(value = "page", defaultValue = "0") Integer page,
                                           @RequestParam(value = "size", defaultValue = "500") Integer size,
                                           @RequestParam(value = "syncType", defaultValue = "1") Integer syncType,
-                                          @RequestParam(value = "syncDate") String syncDate,
+                                          @RequestParam(value = "syncDate", required = false) String syncDate,
                                           @RequestParam(value = "category") String category) {
         if (size > syncSize) {
             return ResponseMessage.validFailResponse().setMsg("参数错误，每页最对允许获取的条数为：" + syncSize);
