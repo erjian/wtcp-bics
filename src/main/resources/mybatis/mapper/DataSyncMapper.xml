@@ -37,7 +37,7 @@
         select s.*,b.phone
         from ( select id id, title title, address address, region region, longitude longitude, latitude latitude,
         content content, null grade, null score, weight weight, null category, null type
-        from t_bic_scenic
+        from t_bic_rental_car
         <where>
             status >= 9
             <include refid="Add_Date_Scope_Params"/>
