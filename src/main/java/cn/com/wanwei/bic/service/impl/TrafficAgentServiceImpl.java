@@ -60,6 +60,16 @@ public class TrafficAgentServiceImpl implements TrafficAgentService {
     }
 
     @Override
+    public ResponseMessage findByPageToC(Integer page, Integer size, Map<String, Object> filter) {
+        EscapeCharUtils.escape(filter, "title");
+        MybatisPageRequest pageRequest = PageUtils.getInstance().setPage(page, size, filter, Sort.Direction.DESC, "created_date", "updated_date");
+        PageHelper.startPage(pageRequest.getPage(), pageRequest.getSize(), pageRequest.getOrders());
+        Page<TrafficAgentEntity> trafficAgentEntities = trafficAgentMapper.findByPageToC(filter);
+        PageInfo<TrafficAgentEntity> pageInfo = new PageInfo<>(trafficAgentEntities, pageRequest);
+        return ResponseMessage.defaultResponse().setData(pageInfo);
+    }
+
+    @Override
     public ResponseMessage find(String id) {
         TrafficAgentEntity trafficAgentEntity = trafficAgentMapper.selectByPrimaryKey(id);
         if (trafficAgentEntity == null) {

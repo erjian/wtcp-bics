@@ -97,4 +97,14 @@ public interface TrafficAgentService {
      * @return
      */
     ResponseMessage saveGouldTrafficData(GouldModel gouldModel, User user, Long ruleId, Integer appCode);
+
+    /**
+     * C端-获取交通枢纽分页列表
+     * @auth linjw 2020年2月17日16:00:14
+     * @param page
+     * @param size
+     * @param filter
+     * @return
+     */
+    ResponseMessage findByPageToC(Integer page, Integer size, Map<String, Object> filter);
 }

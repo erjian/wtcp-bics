@@ -28,6 +28,13 @@ public interface TrafficAgentMapper {
     Page<TrafficAgentEntity> findByPage(Map<String, Object> filter);
 
     /**
+     * C端-交通枢纽管理分页列表
+     * @param filter
+     * @return
+     */
+    Page<TrafficAgentEntity> findByPageToC(Map<String, Object> filter);
+
+    /**
      * 标题重名校验
      * @param title
      * @return
