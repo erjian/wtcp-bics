@@ -7,20 +7,17 @@ import cn.com.wanwei.bic.mapper.AuditLogMapper;
 import cn.com.wanwei.bic.mapper.CommonMapper;
 import cn.com.wanwei.bic.mapper.ScenicMapper;
 import cn.com.wanwei.bic.model.BatchAuditModel;
+import cn.com.wanwei.bic.model.DataType;
 import cn.com.wanwei.bic.model.FindStatusModel;
 import cn.com.wanwei.bic.model.WeightModel;
-import cn.com.wanwei.bic.service.CommonService;
+import cn.com.wanwei.bic.service.*;
 import cn.com.wanwei.bic.utils.UUIDUtils;
 import cn.com.wanwei.common.model.ResponseMessage;
 import cn.com.wanwei.common.model.User;
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
 import com.google.common.collect.Maps;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import com.sun.org.apache.xpath.internal.operations.Bool;
-import io.swagger.models.auth.In;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -41,6 +38,27 @@ public class CommonServiceImpl<T> implements CommonService<T> {
 
     @Autowired
     private CoderServiceFeign coderServiceFeign;
+
+    @Autowired
+    private ScenicService scenicService;
+
+    @Autowired
+    private EntertainmentService entertainmentService;
+
+    @Autowired
+    private TravelAgentService travelAgentService;
+
+    @Autowired
+    private RentalCarService rentalCarService;
+
+    @Autowired
+    private PeripheryService peripheryService;
+
+    @Autowired
+    private DriveCampService driveCampService;
+
+    @Autowired
+    private TrafficAgentService trafficAgentService;
 
     @Override
     public ResponseMessage changeWeight(WeightModel weightModel, User user, Class<T> clazz) throws Exception {
@@ -121,6 +139,33 @@ public class CommonServiceImpl<T> implements CommonService<T> {
             return areaList;
         }
         return null;
+    }
+
+    @Override
+    public ResponseMessage getDataByType(String type, String name, String ids) {
+        ResponseMessage responseMessage;
+        if (type.equals(DataType.SCENIC_TYPE.getKey()) || type.equals(DataType.TOUR_VILLAGE_TYPE.getKey())) {
+            responseMessage = scenicService.findBySearchValue(type, name, ids);
+        } else if (type.equals(DataType.TRAVEL_TYPE.getKey())) {
+            responseMessage = travelAgentService.findBySearchValue(name, ids);
+        } else if (type.equals(DataType.FOOD_TYPE.getKey())
+                || type.equals(DataType.SHOPPING_TYPE.getKey())
+                || type.equals(DataType.FOOD_STREET.getKey())
+                || type.equals(DataType.SPECIAL_SNACKS.getKey())
+                || type.equals(DataType.SPECIALTY.getKey())) {
+            responseMessage = peripheryService.findBySearchValue(type, name, ids);
+        } else if (type.equals(DataType.AGRITAINMENT_TYPE.getKey())) {
+            responseMessage = entertainmentService.findBySearchValue(type, name, ids);
+        } else if (type.equals(DataType.RENTAL_CAR_TYPE.getKey())) {
+            responseMessage = rentalCarService.findBySearchValue(name, ids);
+        } else if (type.equals(DataType.TRAFFIC_AGENT_TYPE.getKey())) {
+            responseMessage = trafficAgentService.findBySearchValue(name, ids);
+        } else if (type.equals(DataType.DRIVE_CAMP_TYPE.getKey())) {
+            responseMessage = driveCampService.findBySearchValue(name, ids);
+        } else {
+            responseMessage = ResponseMessage.validFailResponse().setMsg("获取失败");
+        }
+        return responseMessage;
     }
 
     private Map<String, Object> makeParams(String id, Integer status, User user, String tableName) {

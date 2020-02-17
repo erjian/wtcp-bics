@@ -34,25 +34,7 @@ import java.util.Map;
 public class RpcCataloguesController {
 
     @Autowired
-    private ScenicService scenicService;
-
-    @Autowired
-    private EntertainmentService entertainmentService;
-
-    @Autowired
-    private TravelAgentService travelAgentService;
-
-    @Autowired
-    private RentalCarService rentalCarService;
-
-    @Autowired
-    private PeripheryService peripheryService;
-
-    @Autowired
-    private DriveCampService driveCampService;
-
-    @Autowired
-    private TrafficAgentService trafficAgentService;
+    private CommonService commonService;
 
     @Autowired
     private DataSyncService dataSyncService;
@@ -70,10 +52,10 @@ public class RpcCataloguesController {
     })
     @GetMapping("/syncData")
     public ResponseMessage syncData(@RequestParam(value = "page", defaultValue = "0") Integer page,
-                                          @RequestParam(value = "size", defaultValue = "500") Integer size,
-                                          @RequestParam(value = "syncType", defaultValue = "1") Integer syncType,
-                                          @RequestParam(value = "syncDate", required = false) String syncDate,
-                                          @RequestParam(value = "category") String category) {
+                                    @RequestParam(value = "size", defaultValue = "500") Integer size,
+                                    @RequestParam(value = "syncType", defaultValue = "1") Integer syncType,
+                                    @RequestParam(value = "syncDate", required = false) String syncDate,
+                                    @RequestParam(value = "category") String category) {
         if (size > syncSize) {
             return ResponseMessage.validFailResponse().setMsg("参数错误，每页最对允许获取的条数为：" + syncSize);
         }
@@ -85,7 +67,7 @@ public class RpcCataloguesController {
         filter.put("size", size);
         filter.put("syncType", syncType);
         filter.put("category", category);
-        if(syncType == 1){
+        if (syncType == 1) {
             filter.put("startDate", syncDate + " 00:00:00");
             filter.put("endDate", syncDate + " 23:59:59");
         }
@@ -100,29 +82,7 @@ public class RpcCataloguesController {
     })
     @GetMapping("/getDataByType")
     public ResponseMessage getDataByType(@RequestParam String type, String name, String ids) throws Exception {
-        ResponseMessage responseMessage;
-        if (type.equals(DataType.SCENIC_TYPE.getKey()) || type.equals(DataType.TOUR_VILLAGE_TYPE.getKey())) {
-            responseMessage = scenicService.findBySearchValue(type, name, ids);
-        } else if (type.equals(DataType.TRAVEL_TYPE.getKey())) {
-            responseMessage = travelAgentService.findBySearchValue(name, ids);
-        } else if (type.equals(DataType.FOOD_TYPE.getKey())
-                || type.equals(DataType.SHOPPING_TYPE.getKey())
-                || type.equals(DataType.FOOD_STREET.getKey())
-                || type.equals(DataType.SPECIAL_SNACKS.getKey())
-                || type.equals(DataType.SPECIALTY.getKey())) {
-            responseMessage = peripheryService.findBySearchValue(type, name, ids);
-        } else if (type.equals(DataType.AGRITAINMENT_TYPE.getKey())) {
-            responseMessage = entertainmentService.findBySearchValue(type, name, ids);
-        } else if (type.equals(DataType.RENTAL_CAR_TYPE.getKey())) {
-            responseMessage = rentalCarService.findBySearchValue(name, ids);
-        } else if (type.equals(DataType.TRAFFIC_AGENT_TYPE.getKey())) {
-            responseMessage = trafficAgentService.findBySearchValue(name, ids);
-        } else if (type.equals(DataType.DRIVE_CAMP_TYPE.getKey())) {
-            responseMessage = driveCampService.findBySearchValue(name, ids);
-        } else {
-            responseMessage = ResponseMessage.validFailResponse().setMsg("获取失败");
-        }
-        return responseMessage;
+        return commonService.getDataByType(type, name, ids);
     }
 
     @ApiOperation(value = "获取资源类型", notes = "获取资源类型")
