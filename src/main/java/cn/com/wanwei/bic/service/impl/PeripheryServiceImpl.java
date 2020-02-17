@@ -300,13 +300,11 @@ public class PeripheryServiceImpl implements PeripheryService {
     public ResponseMessage findById(String id) {
         PeripheryEntity peripheryEntity = peripheryMapper.selectByPrimaryKey(id);
         if (peripheryEntity == null) {
-            return ResponseMessage.validFailResponse().setMsg("该周边管理信息不存在");
+            return ResponseMessage.validFailResponse().setMsg("该周边信息不存在");
         }
-        Map<String, Object> map = new HashMap<>();
-        map.put("peripheryEntity", peripheryEntity);
-        //获取素材
-        map.put("fileList", materialService.handleMaterialNew(id));
-        return ResponseMessage.defaultResponse().setData(map);
+        peripheryEntity.setTagList(tagsService.findListByPriId(id, PeripheryTagsEntity.class));
+        peripheryEntity.setFileList(materialService.handleMaterialNew(id));
+        return ResponseMessage.defaultResponse().setData(peripheryEntity);
     }
 
     @Override
