@@ -68,7 +68,7 @@ public class PeripheryServiceImpl implements PeripheryService {
 
     @Override
     public ResponseMessage findByPageToc(Integer page, Integer size, Map<String, Object> filter) {
-        return getPageInfo("feign", page, size, filter);
+        return getPageInfo("toc", page, size, filter);
     }
 
     private ResponseMessage getPageInfo(String type, Integer page, Integer size, Map<String, Object> filter) {
@@ -80,7 +80,7 @@ public class PeripheryServiceImpl implements PeripheryService {
         }
         MybatisPageRequest pageRequest = PageUtils.getInstance().setPage(page, size, filter, Sort.Direction.DESC, "created_date", "updated_date");
         Page<PeripheryEntity> peripheryEntities = null;
-        if (StringUtils.isNotEmpty(type) && "feign".equalsIgnoreCase(type)) {
+        if (StringUtils.isNotEmpty(type) && "toc".equalsIgnoreCase(type)) {
             peripheryEntities = peripheryMapper.findByPageToc(filter);
         } else {
             peripheryEntities = peripheryMapper.findByPage(filter);

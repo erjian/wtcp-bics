@@ -1,6 +1,8 @@
 package cn.com.wanwei.bic.service.impl;
 
 import cn.com.wanwei.bic.entity.AuditLogEntity;
+import cn.com.wanwei.bic.entity.PoiEntity;
+import cn.com.wanwei.bic.entity.PoiTagsEntity;
 import cn.com.wanwei.bic.entity.TrafficAgentEntity;
 import cn.com.wanwei.bic.feign.CoderServiceFeign;
 import cn.com.wanwei.bic.mapper.TrafficAgentMapper;
@@ -51,20 +53,24 @@ public class TrafficAgentServiceImpl implements TrafficAgentService {
 
     @Override
     public ResponseMessage findByPage(Integer page, Integer size, Map<String, Object> filter) {
-        EscapeCharUtils.escape(filter, "title");
-        MybatisPageRequest pageRequest = PageUtils.getInstance().setPage(page, size, filter, Sort.Direction.DESC, "created_date", "updated_date");
-        PageHelper.startPage(pageRequest.getPage(), pageRequest.getSize(), pageRequest.getOrders());
-        Page<TrafficAgentEntity> trafficAgentEntities = trafficAgentMapper.findByPage(filter);
-        PageInfo<TrafficAgentEntity> pageInfo = new PageInfo<>(trafficAgentEntities, pageRequest);
-        return ResponseMessage.defaultResponse().setData(pageInfo);
+        return getPageInfo(page, size, filter, null);
     }
 
     @Override
     public ResponseMessage findByPageToC(Integer page, Integer size, Map<String, Object> filter) {
+        return getPageInfo(page, size, filter, "toc");
+    }
+
+    private ResponseMessage getPageInfo(Integer page, Integer size, Map<String, Object> filter, String type){
         EscapeCharUtils.escape(filter, "title");
         MybatisPageRequest pageRequest = PageUtils.getInstance().setPage(page, size, filter, Sort.Direction.DESC, "created_date", "updated_date");
         PageHelper.startPage(pageRequest.getPage(), pageRequest.getSize(), pageRequest.getOrders());
-        Page<TrafficAgentEntity> trafficAgentEntities = trafficAgentMapper.findByPageToC(filter);
+        Page<TrafficAgentEntity> trafficAgentEntities = null;
+        if(StringUtils.isNotEmpty(type) && "toc".equalsIgnoreCase(type)){
+            trafficAgentEntities = trafficAgentMapper.findByPageToC(filter);
+        }else{
+            trafficAgentEntities = trafficAgentMapper.findByPage(filter);
+        }
         PageInfo<TrafficAgentEntity> pageInfo = new PageInfo<>(trafficAgentEntities, pageRequest);
         return ResponseMessage.defaultResponse().setData(pageInfo);
     }

@@ -32,7 +32,7 @@ public class InternalTrafficController {
     @GetMapping(value = "/page")
     @PreAuthorize("hasAuthority('trafficAgent:r')")
     @OperationLog(value = "wtcp-bics/交通枢纽管理分页列表", operate = "r", module = "交通枢纽管理")
-    public ResponseMessage findByPage(@RequestParam(value = "page", defaultValue = "1") Integer page,
+    public ResponseMessage findByPage(@RequestParam(value = "page", defaultValue = "0") Integer page,
                                       @RequestParam(value = "size", defaultValue = "10") Integer size,
                                       HttpServletRequest request) {
         Map<String, Object> filter = RequestUtil.getParameters(request);
