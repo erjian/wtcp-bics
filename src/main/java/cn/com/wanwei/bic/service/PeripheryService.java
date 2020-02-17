@@ -20,6 +20,8 @@ public interface PeripheryService {
      * @return 分页
      */
     ResponseMessage findByPage(Integer page, Integer size, Map<String,Object> filter);
+    
+    ResponseMessage findByPageToc(Integer page, Integer size, Map<String,Object> filter);
 
     /**
      * 根据id获取周边管理信息

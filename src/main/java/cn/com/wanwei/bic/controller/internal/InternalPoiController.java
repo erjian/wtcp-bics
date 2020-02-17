@@ -25,7 +25,7 @@ import org.springframework.web.bind.annotation.*;
 @RefreshScope
 @RequestMapping("/public/poi")
 @Api(value = "C端POI管理", tags = "C端POI管理相关接口")
-public class OpenPoiController extends BaseController {
+public class InternalPoiController extends BaseController {
 	
 	@Autowired
 	private PoiService poiService;

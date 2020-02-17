@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.*;
 @RefreshScope
 @RequestMapping("/public/rentalCar")
 @Api(value = "C端租车管理", tags = "C端租车管理相关接口")
-public class OpenRentalCarController {
+public class InternalRentalCarController {
 
     @Autowired
     private RentalCarService rentalCarService;

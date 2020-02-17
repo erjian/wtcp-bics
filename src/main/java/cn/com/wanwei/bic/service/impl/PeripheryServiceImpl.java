@@ -63,14 +63,32 @@ public class PeripheryServiceImpl implements PeripheryService {
 
     @Override
     public ResponseMessage findByPage(Integer page, Integer size, Map<String, Object> filter) {
+        return getPageInfo(null, page, size, filter);
+    }
+
+    @Override
+    public ResponseMessage findByPageToc(Integer page, Integer size, Map<String, Object> filter) {
+        return getPageInfo("feign", page, size, filter);
+    }
+
+    private ResponseMessage getPageInfo(String type, Integer page, Integer size, Map<String, Object> filter) {
         EscapeCharUtils.escape(filter, "title", "category");
         String regionFullCodeKey = "regionFullCode";
         Object fullCode = filter.get(regionFullCodeKey);
-        if(filter.containsKey(regionFullCodeKey) && null != fullCode){
-            filter.put(regionFullCodeKey, fullCode.toString().split(",")[fullCode.toString().split(",").length-1]);
+        if (filter.containsKey(regionFullCodeKey) && null != fullCode) {
+            filter.put(regionFullCodeKey, fullCode.toString().split(",")[fullCode.toString().split(",").length - 1]);
         }
         MybatisPageRequest pageRequest = PageUtils.getInstance().setPage(page, size, filter, Sort.Direction.DESC, "created_date", "updated_date");
-        Page<PeripheryEntity> peripheryEntities = peripheryMapper.findByPage(filter);
+        Page<PeripheryEntity> peripheryEntities = null;
+        if (StringUtils.isNotEmpty(type) && "feign".equalsIgnoreCase(type)) {
+            peripheryEntities = peripheryMapper.findByPageToc(filter);
+        } else {
+            peripheryEntities = peripheryMapper.findByPage(filter);
+        }
+        for (PeripheryEntity item : peripheryEntities) {
+            item.setTagList(tagsService.findListByPriId(item.getId(), PeripheryTagsEntity.class));
+            item.setFileList(materialService.handleMaterialNew(item.getId()));
+        }
         PageInfo<PeripheryEntity> pageInfo = new PageInfo<>(peripheryEntities, pageRequest);
         return ResponseMessage.defaultResponse().setData(pageInfo);
     }

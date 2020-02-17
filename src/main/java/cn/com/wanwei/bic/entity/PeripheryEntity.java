@@ -11,6 +11,7 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 import java.util.List;
+import java.util.Map;
 
 @Data
 @EqualsAndHashCode(callSuper=false)
@@ -62,4 +63,10 @@ public class PeripheryEntity extends CommonEntity {
     // 关联的美食ID集合
     @Transient
     private List<String> cateIds;
+
+    //冗余字段，标签列表
+    private List<BaseTagsEntity> tagList;
+
+    //冗余字段，素材信息
+    private Map<String, Object> fileList;
 }

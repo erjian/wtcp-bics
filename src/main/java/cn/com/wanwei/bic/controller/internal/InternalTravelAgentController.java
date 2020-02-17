@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RefreshScope
 @RequestMapping("/public/travelAgent")
 @Api(value = "C端旅行社管理", tags = "C端旅行社管理相关接口")
-public class OpenTravelAgentController extends BaseController {
+public class InternalTravelAgentController extends BaseController {
 
     @Autowired
     private TravelAgentService travelAgentService;

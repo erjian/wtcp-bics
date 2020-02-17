@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.*;
 @RefreshScope
 @RequestMapping("/public/extend")
 @Api(value = "C端扩展信息管理", tags = "C端扩展信息管理相关接口")
-public class OpenExtendController extends BaseController {
+public class InternalExtendController extends BaseController {
 
     @Autowired
     private ExtendService extendService;

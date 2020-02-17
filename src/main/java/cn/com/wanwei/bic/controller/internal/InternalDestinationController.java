@@ -20,7 +20,7 @@ import java.util.Map;
 @RefreshScope
 @RequestMapping("/public/destination")
 @Api(value = "C端目的地管理", tags = "C端目的地管理相关接口")
-public class OpenDestinationController extends BaseController {
+public class InternalDestinationController extends BaseController {
 
     @Autowired
     private DestinationService destinationService;

@@ -16,7 +16,7 @@ public interface CoderServiceFeign {
 
     @ApiOperation(value = "获取地区编码详细信息", notes = "根据编码获取地区编码详细信息")
     @RequestMapping(value = "/area/{code}", method = RequestMethod.GET)
-    ResponseMessage areaDetail(@RequestParam(value = "code") String code);
+    ResponseMessage areaDetail(@PathVariable(value = "code") String code);
 
     @GetMapping(value = "/coders/generate/snow/{appCode}")
     ResponseMessage buildSerialNum(@PathVariable("appCode") Integer appCode);
