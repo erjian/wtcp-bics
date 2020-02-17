@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RefreshScope
 @RequestMapping("/public/catalogues")
-@Api(value = "各类型资源信息C端接口", tags = "各类型资源信息C端接口")
+@Api(value = "C端各类型资源信息接口", tags = "C端各类型资源信息接口")
 public class InternalCataloguesController {
 
     @Autowired

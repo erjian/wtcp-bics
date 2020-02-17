@@ -28,23 +28,23 @@ public class InternalDestinationController extends BaseController {
     @ApiOperation(value = "目的地基础信息管理分页列表", notes = "目的地基础信息管理分页列表")
     @GetMapping(value = "/getDestList")
     public ResponseMessage getDestinationList(@RequestParam(value = "page", defaultValue = "1") Integer page,
-                                      @RequestParam(value = "size", defaultValue = "10") Integer size,
-                                      HttpServletRequest request) throws Exception {
+                                              @RequestParam(value = "size", defaultValue = "10") Integer size,
+                                              HttpServletRequest request) {
         Map<String, Object> filter = RequestUtil.getParameters(request);
-        return destinationService.getDestinationList(page,size,getCurrentUser(),filter);
+        return destinationService.getDestinationList(page, size, filter);
     }
 
     @ApiOperation(value = "根据areaCode获取目的地详情", notes = "根据areaCode获取目的地详情")
     @ApiImplicitParam(name = "areaCode", value = "目的地编码", required = true)
-    @RequestMapping(value = "getDestDetailByAreaCode/{areaCode}", method = RequestMethod.GET)
-    public ResponseMessage getDestinationDetailByAreaCode(@PathVariable("areaCode") String areaCode){
-        return destinationService.getDestinationDetail(areaCode,null);
+    @RequestMapping(value = "getDestByAreaCode/{areaCode}", method = RequestMethod.GET)
+    public ResponseMessage getDestByAreaCode(@PathVariable("areaCode") String areaCode) {
+        return destinationService.getDestinationDetail(areaCode, null);
     }
 
     @ApiOperation(value = "根据id获取目的地详情", notes = "根据id获取目的地详情")
     @ApiImplicitParam(name = "id", value = "目的地基础信息ID", required = true)
     @RequestMapping(value = "getOne/{id}", method = RequestMethod.GET)
-    public ResponseMessage getDestinationDetailById(@PathVariable("id") String id){
-        return destinationService.getDestinationDetail(null,id);
+    public ResponseMessage getDestinationDetailById(@PathVariable("id") String id) {
+        return destinationService.getDestinationDetail(null, id);
     }
 }

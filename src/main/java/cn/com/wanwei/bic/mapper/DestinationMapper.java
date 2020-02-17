@@ -30,6 +30,8 @@ public interface DestinationMapper {
 
     Page<DestinationEntity> findByPageForFeign(Map<String, Object> filter);
 
+    Page<DestinationEntity> findByPageToc(Map<String, Object> filter);
+
     /**
      * 校验目的地名称的唯一性
      * @param regionFullCode

@@ -83,6 +83,10 @@
     <include refid="Get_Page_Info" />
   </select>
 
+  <select id="findByPageToc" parameterType="java.util.Map" resultMap="BaseResultMap">
+    <include refid="Get_Page_Info" />
+  </select>
+
   <sql id="Get_Page_Info">
     select
     <include refid="Base_Column_List" />
