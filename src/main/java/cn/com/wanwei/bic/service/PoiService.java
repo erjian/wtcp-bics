@@ -113,11 +113,9 @@ public interface PoiService {
 
     /**
      * C端根据景区ID和type获取poi信息
-     * @param principalId
-     * @param type
      * @return
      */
-    ResponseMessage getList(String principalId, String type);
+    ResponseMessage getList(Map<String, Object> filter);
 
     /**
      * 查询是否在景区的POI数据
@@ -125,5 +123,4 @@ public interface PoiService {
      * @param insideScenic
      * @return
      */
-    ResponseMessage getListByInsideScenic(String insideScenic);
 }

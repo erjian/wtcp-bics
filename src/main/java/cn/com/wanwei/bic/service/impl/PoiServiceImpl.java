@@ -311,13 +311,14 @@ public class PoiServiceImpl implements PoiService {
 
         //2、查询poi相关的素材信息
         map.put("fileList", materialService.handleMaterialNew(id));
+        map.put("tagList", tagsService.findListByPriId(id, PoiTagsEntity.class));
         return ResponseMessage.defaultResponse().setData(map);
     }
 
     @Override
-    public ResponseMessage getList(String principalId, String type) {
+    public ResponseMessage getList(Map<String, Object> filter) {
         List<Map<String, Object>> data = Lists.newArrayList();
-        List<PoiEntity> list = poiMapper.getList(principalId, type);
+        List<PoiEntity> list = poiMapper.getList(filter);
         if(CollectionUtils.isNotEmpty(list)){
             for(PoiEntity entity:list){
                 Map<String, Object> map = Maps.newHashMap();
@@ -327,11 +328,6 @@ public class PoiServiceImpl implements PoiService {
             }
         }
         return ResponseMessage.defaultResponse().setData(data);
-    }
-
-    @Override
-    public ResponseMessage getListByInsideScenic(String insideScenic) {
-        return ResponseMessage.defaultResponse().setData(poiMapper.getListByInsideScenic(insideScenic));
     }
 
 
