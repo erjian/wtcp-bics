@@ -73,6 +73,10 @@
           "type": "keyword",
           "ignore_above": 256
         },
+        "serviceFacility": {
+          "type": "keyword",
+          "ignore_above": 256
+        },
         "weight": {
           "type": "long"
         },
