@@ -5,6 +5,7 @@ import cn.com.wanwei.bic.utils.PageUtils;
 import cn.com.wanwei.common.log.annotation.OperationLog;
 import cn.com.wanwei.common.model.ResponseMessage;
 import cn.com.wanwei.common.utils.RequestUtil;
+import com.google.common.collect.Maps;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
@@ -51,11 +52,19 @@ public class RpcPoiController {
         return poiService.findByPageForFeign(page, size, filter);
     }
 
-    @ApiOperation(value = "根据景区ID获取POI列表", notes = "根据景区ID获取POI列表")
-    @ApiImplicitParams({@ApiImplicitParam(name = "insideScenic", value = "是否在景区：1 是 0 否", required = true, dataType = "String")})
+    @ApiOperation(value = "根据景区ID获取景区内/外POI列表", notes = "根据景区ID获取景区内/外POI列表")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "principalId", value = "景区关联ID", dataType = "String"),
+            @ApiImplicitParam(name = "type", value = "类型", dataType = "String"),
+            @ApiImplicitParam(name = "insideScenic", value = "是否在景区：1 是 0 否", required = true, defaultValue = "1")
+    })
     @RequestMapping(value = "/getListByInsideScenic", method = RequestMethod.GET)
-    public ResponseMessage getListByInsideScenic(@RequestParam String insideScenic) {
-        return poiService.getListByInsideScenic(insideScenic);
+    public ResponseMessage getListByInsideScenic(String principalId, String type, @RequestParam(defaultValue = "1") String insideScenic) {
+        Map<String, Object> filter = Maps.newHashMap();
+        filter.put("principalId", principalId);
+        filter.put("type", type);
+        filter.put("insideScenic", insideScenic);
+        return poiService.getList(filter);
     }
 
     @ApiOperation(value = "根据ID获取POI详情", notes = "根据ID获取POI详情")

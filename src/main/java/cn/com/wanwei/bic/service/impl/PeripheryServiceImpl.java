@@ -63,14 +63,32 @@ public class PeripheryServiceImpl implements PeripheryService {
 
     @Override
     public ResponseMessage findByPage(Integer page, Integer size, Map<String, Object> filter) {
+        return getPageInfo(null, page, size, filter);
+    }
+
+    @Override
+    public ResponseMessage findByPageToc(Integer page, Integer size, Map<String, Object> filter) {
+        return getPageInfo("toc", page, size, filter);
+    }
+
+    private ResponseMessage getPageInfo(String type, Integer page, Integer size, Map<String, Object> filter) {
         EscapeCharUtils.escape(filter, "title", "category");
         String regionFullCodeKey = "regionFullCode";
         Object fullCode = filter.get(regionFullCodeKey);
-        if(filter.containsKey(regionFullCodeKey) && null != fullCode){
-            filter.put(regionFullCodeKey, fullCode.toString().split(",")[fullCode.toString().split(",").length-1]);
+        if (filter.containsKey(regionFullCodeKey) && null != fullCode) {
+            filter.put(regionFullCodeKey, fullCode.toString().split(",")[fullCode.toString().split(",").length - 1]);
         }
         MybatisPageRequest pageRequest = PageUtils.getInstance().setPage(page, size, filter, Sort.Direction.DESC, "created_date", "updated_date");
-        Page<PeripheryEntity> peripheryEntities = peripheryMapper.findByPage(filter);
+        Page<PeripheryEntity> peripheryEntities = null;
+        if (StringUtils.isNotEmpty(type) && "toc".equalsIgnoreCase(type)) {
+            peripheryEntities = peripheryMapper.findByPageToc(filter);
+        } else {
+            peripheryEntities = peripheryMapper.findByPage(filter);
+        }
+        for (PeripheryEntity item : peripheryEntities) {
+            item.setTagList(tagsService.findListByPriId(item.getId(), PeripheryTagsEntity.class));
+            item.setFileList(materialService.handleMaterialNew(item.getId()));
+        }
         PageInfo<PeripheryEntity> pageInfo = new PageInfo<>(peripheryEntities, pageRequest);
         return ResponseMessage.defaultResponse().setData(pageInfo);
     }
@@ -282,13 +300,11 @@ public class PeripheryServiceImpl implements PeripheryService {
     public ResponseMessage findById(String id) {
         PeripheryEntity peripheryEntity = peripheryMapper.selectByPrimaryKey(id);
         if (peripheryEntity == null) {
-            return ResponseMessage.validFailResponse().setMsg("该周边管理信息不存在");
+            return ResponseMessage.validFailResponse().setMsg("该周边信息不存在");
         }
-        Map<String, Object> map = new HashMap<>();
-        map.put("peripheryEntity", peripheryEntity);
-        //获取素材
-        map.put("fileList", materialService.handleMaterialNew(id));
-        return ResponseMessage.defaultResponse().setData(map);
+        peripheryEntity.setTagList(tagsService.findListByPriId(id, PeripheryTagsEntity.class));
+        peripheryEntity.setFileList(materialService.handleMaterialNew(id));
+        return ResponseMessage.defaultResponse().setData(peripheryEntity);
     }
 
     @Override

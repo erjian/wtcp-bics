@@ -115,6 +115,10 @@
         "score": {
           "type": "float"
         },
+        "serviceFacility": {
+          "type": "keyword",
+          "ignore_above": 256
+        },
         "weight": {
           "type": "integer"
         },

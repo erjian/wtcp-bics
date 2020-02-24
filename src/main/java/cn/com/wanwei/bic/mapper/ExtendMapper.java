@@ -15,7 +15,6 @@ public interface ExtendMapper {
 
     int insert(ExtendEntity record);
 
-    @DataScope
     ExtendEntity selectByPrimaryKey(String id);
 
     int updateByPrimaryKey(ExtendEntity record);

@@ -22,7 +22,7 @@ import java.util.Map;
 @RefreshScope
 @RequestMapping("/public/region")
 @Api(value = "C端行政区划", tags = "C端行政区划相关接口")
-public class OpenRegionController {
+public class InternalRegionController {
 
     @Autowired
     private RedisTemplate redisTemplate;

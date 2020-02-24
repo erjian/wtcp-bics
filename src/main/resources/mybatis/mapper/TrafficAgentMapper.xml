@@ -87,6 +87,14 @@
   </update>
 
   <select id="findByPage" parameterType="java.util.Map" resultMap="BaseResultMap">
+    <include refid="pageInfo"></include>
+  </select>
+
+  <select id="findByPageToC" parameterType="java.util.Map" resultMap="BaseResultMap">
+    <include refid="pageInfo"></include>
+  </select>
+
+  <sql id="pageInfo">
     select
     <include refid="Base_Column_List"/>
     from t_bic_traffic_agent
@@ -106,7 +114,8 @@
         and status = #{status,jdbcType=INTEGER}
       </if>
     </where>
-  </select>
+  </sql>
+
   <select id="checkTitle" parameterType="java.lang.String" resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List"/>

@@ -182,14 +182,6 @@
             <if test="type != null and type != ''">
                 and `type` = #{type,jdbcType=VARCHAR}
             </if>
-        </where>
-    </select>
-
-    <select id="getListByInsideScenic" resultMap="BaseResultMap">
-        select
-        <include refid="Base_Column_List"/>
-        from t_bic_poi
-        <where>
             <if test="insideScenic != null and insideScenic != ''">
                 and inside_scenic = #{insideScenic,jdbcType=VARCHAR}
             </if>

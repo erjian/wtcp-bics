@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RefreshScope
 @RequestMapping("/public/search")
 @Api(value = "C端高德搜索数据拉取", tags = "C端高德搜索数据拉取")
-public class OpenSearchController extends BaseController {
+public class InternalSearchController extends BaseController {
 
     @Autowired
     private TrafficAgentService trafficAgentService;

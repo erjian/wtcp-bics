@@ -125,7 +125,7 @@ public interface DestinationService {
     /**
      * 目的地基础信息管理分页列表
      */
-    ResponseMessage getDestinationList(Integer page, Integer size, User user, Map<String, Object> filter);
+    ResponseMessage getDestinationList(Integer page, Integer size, Map<String, Object> filter);
 
     /**
      * 根据区域编码/目的地名称/目的地ids串查询目的地信息

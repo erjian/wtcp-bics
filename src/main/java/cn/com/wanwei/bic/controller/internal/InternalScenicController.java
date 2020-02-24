@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RefreshScope
 @RequestMapping("/public/scenic")
 @Api(value = "C端景区管理", tags = "C端景区管理相关接口")
-public class OpenScenicController extends BaseController {
+public class InternalScenicController extends BaseController {
 
     @Autowired
     private ScenicService scenicService;

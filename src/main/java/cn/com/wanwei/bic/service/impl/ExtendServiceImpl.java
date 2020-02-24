@@ -69,6 +69,7 @@ public class ExtendServiceImpl implements ExtendService {
 
     /**
      * 扩展信息管理分页列表
+     *
      * @param page
      * @param size
      * @param currentUser
@@ -76,9 +77,9 @@ public class ExtendServiceImpl implements ExtendService {
      * @return
      */
     @Override
-    public ResponseMessage findByPage(Integer page, Integer size, User currentUser, Map<String, Object> filter) throws Exception{
+    public ResponseMessage findByPage(Integer page, Integer size, User currentUser, Map<String, Object> filter) throws Exception {
         EscapeCharUtils.escape(filter, "title");
-        MybatisPageRequest pageRequest = PageUtils.getInstance().setPage(page, size,filter, Sort.Direction.DESC,  "created_date");
+        MybatisPageRequest pageRequest = PageUtils.getInstance().setPage(page, size, filter, Sort.Direction.DESC, "created_date");
         PageHelper.startPage(pageRequest.getPage(), pageRequest.getSize(), pageRequest.getOrders());
         //查询扩展信息列表数据
         Page<ExtendEntity> userEntities = extendMapper.findByPage(filter);
@@ -88,6 +89,7 @@ public class ExtendServiceImpl implements ExtendService {
 
     /**
      * 扩展信息新增
+     *
      * @param extendModel
      * @param user
      * @param ruleId
@@ -96,10 +98,10 @@ public class ExtendServiceImpl implements ExtendService {
      * @throws Exception
      */
     @Override
-    public ResponseMessage save(EntityTagsModel<ExtendEntity> extendModel, User user, Long ruleId, Integer appCode) throws Exception{
+    public ResponseMessage save(EntityTagsModel<ExtendEntity> extendModel, User user, Long ruleId, Integer appCode) throws Exception {
         String id = UUIDUtils.getInstance().getId();
         ExtendEntity extendEntity = extendModel.getEntity();
-        ResponseMessage responseMessage = coderServiceFeign.buildSerialByCode(ruleId,appCode,extendEntity.getCode());
+        ResponseMessage responseMessage = coderServiceFeign.buildSerialByCode(ruleId, appCode, extendEntity.getCode());
         extendEntity.setId(id);
         extendEntity.setCreatedUser(user.getUsername());
         extendEntity.setCreatedDate(new Date());
@@ -109,19 +111,20 @@ public class ExtendServiceImpl implements ExtendService {
         extendMapper.insert(extendEntity);
 
         //保存标签
-        if(CollectionUtils.isNotEmpty(extendModel.getTagsList())){
-            tagsService.batchInsert(extendEntity.getId(),extendModel.getTagsList(),user,ExtendTagsEntity.class);
+        if (CollectionUtils.isNotEmpty(extendModel.getTagsList())) {
+            tagsService.batchInsert(extendEntity.getId(), extendModel.getTagsList(), user, ExtendTagsEntity.class);
         }
 
         //处理编辑页面新增素材
-        if(CollectionUtils.isNotEmpty(extendModel.getMaterialList())){
-            materialService.batchInsert(id,extendModel.getMaterialList(),user);
+        if (CollectionUtils.isNotEmpty(extendModel.getMaterialList())) {
+            materialService.batchInsert(id, extendModel.getMaterialList(), user);
         }
         return ResponseMessage.defaultResponse().setMsg("新增成功!");
     }
 
     /**
      * 扩展信息编辑
+     *
      * @param id
      * @param extendModel
      * @param user
@@ -129,10 +132,10 @@ public class ExtendServiceImpl implements ExtendService {
      * @throws Exception
      */
     @Override
-    public ResponseMessage edit(String id, EntityTagsModel<ExtendEntity> extendModel, User user) throws Exception{
+    public ResponseMessage edit(String id, EntityTagsModel<ExtendEntity> extendModel, User user) throws Exception {
         ExtendEntity entity = extendMapper.selectByPrimaryKey(id);
         ExtendEntity extendEntity = extendModel.getEntity();
-        if(null == entity){
+        if (null == entity) {
             return ResponseMessage.validFailResponse().setMsg("不存在扩展信息");
         }
         extendEntity.setId(id);
@@ -143,22 +146,23 @@ public class ExtendServiceImpl implements ExtendService {
         extendEntity.setUpdatedUser(user.getUsername());
         extendMapper.updateByPrimaryKey(extendEntity);
         //更新标签
-        if(CollectionUtils.isNotEmpty(extendModel.getTagsList())){
-            tagsService.batchInsert(extendEntity.getId(),extendModel.getTagsList(),user,ExtendTagsEntity.class);
+        if (CollectionUtils.isNotEmpty(extendModel.getTagsList())) {
+            tagsService.batchInsert(extendEntity.getId(), extendModel.getTagsList(), user, ExtendTagsEntity.class);
         }
         return ResponseMessage.defaultResponse().setMsg("更新成功!");
     }
 
     /**
      * 根据扩展信息id查询扩展信息详情
+     *
      * @param id
      * @return
      * @throws Exception
      */
     @Override
-    public ResponseMessage selectByPrimaryKey(String id) throws Exception{
+    public ResponseMessage selectByPrimaryKey(String id) throws Exception {
         ExtendEntity extendEntity = extendMapper.selectByPrimaryKey(id);
-        if(extendEntity == null){
+        if (extendEntity == null) {
             return ResponseMessage.validFailResponse().setMsg("暂无该扩展信息！");
         }
         return ResponseMessage.defaultResponse().setData(extendEntity);
@@ -166,31 +170,32 @@ public class ExtendServiceImpl implements ExtendService {
 
     /**
      * 扩展信息审核 、 上线
-     * @param auditLogEntity  审核实体类
-     * @param user  用户
-     * @param type 0-审核   1-上线
+     *
+     * @param auditLogEntity 审核实体类
+     * @param user           用户
+     * @param type           0-审核   1-上线
      * @return
      * @throws Exception
      */
     @Override
     public ResponseMessage auditOrIssue(AuditLogEntity auditLogEntity, User user, int type) throws Exception {
         ExtendEntity extendEntity = extendMapper.selectByPrimaryKey(auditLogEntity.getPrincipalId());
-        if(extendEntity == null){
+        if (extendEntity == null) {
             return ResponseMessage.validFailResponse().setMsg("无扩展信息!");
         }
-        String msg="审核成功！";
-        if(type==1){  //上线操作
-            if(auditLogEntity.getPreStatus()==0||auditLogEntity.getPreStatus()==2){
+        String msg = "审核成功！";
+        if (type == 1) {  //上线操作
+            if (auditLogEntity.getPreStatus() == 0 || auditLogEntity.getPreStatus() == 2) {
                 return ResponseMessage.validFailResponse().setMsg("请先审核通过后，再进⾏上线操作!");
-            }else {
-                if(auditLogEntity.getStatus()==1||auditLogEntity.getStatus()==9){
-                    msg=auditLogEntity.getStatus()==1?"下线成功！":"上线成功！";
-                }else{
+            } else {
+                if (auditLogEntity.getStatus() == 1 || auditLogEntity.getStatus() == 9) {
+                    msg = auditLogEntity.getStatus() == 1 ? "下线成功！" : "上线成功！";
+                } else {
                     return ResponseMessage.validFailResponse().setMsg("上下线状态错误！");
                 }
             }
-        }else {  //审核操作
-            if(auditLogEntity.getStatus()==9){
+        } else {  //审核操作
+            if (auditLogEntity.getStatus() == 9) {
                 return ResponseMessage.validFailResponse().setMsg("审核状态错误！");
             }
         }
@@ -199,12 +204,13 @@ public class ExtendServiceImpl implements ExtendService {
         extendEntity.setUpdatedDate(new Date());
         extendMapper.updateByPrimaryKey(extendEntity);
         auditLogEntity.setType(type);
-        auditLogService.create(auditLogEntity,user.getUsername());
+        auditLogService.create(auditLogEntity, user.getUsername());
         return ResponseMessage.defaultResponse().setMsg(msg);
     }
 
     /**
      * 根据扩展信息id删除扩展信息
+     *
      * @param id
      * @return
      * @throws Exception
@@ -217,15 +223,16 @@ public class ExtendServiceImpl implements ExtendService {
 
     /**
      * 扩展信息权重修改
-     * @param id  扩展信息id
-     * @param weight  权重
+     *
+     * @param id       扩展信息id
+     * @param weight   权重
      * @param username
      * @return
      */
     @Override
-    public ResponseMessage changeWeight(String id, Float weight, String username) throws Exception{
+    public ResponseMessage changeWeight(String id, Float weight, String username) throws Exception {
         ExtendEntity extendEntity = extendMapper.selectByPrimaryKey(id);
-        if(extendEntity == null){
+        if (extendEntity == null) {
             return ResponseMessage.validFailResponse().setMsg("无扩展信息！");
         }
         extendEntity.setId(id);
@@ -238,17 +245,19 @@ public class ExtendServiceImpl implements ExtendService {
 
     /**
      * 扩展信息关联标签
+     *
      * @param tags
      * @param user
      * @return
      */
     @Override
-    public ResponseMessage relateTags(Map<String, Object> tags, User user) throws Exception{
+    public ResponseMessage relateTags(Map<String, Object> tags, User user) throws Exception {
         List<BaseTagsEntity> list = (List<BaseTagsEntity>) tags.get("tagsArr");
         ObjectMapper mapper = new ObjectMapper();
-        List<BaseTagsEntity> tagsList = mapper.convertValue(list, new TypeReference<List<BaseTagsEntity>>() { });
-        if(CollectionUtils.isNotEmpty(tagsList)){
-            tagsService.batchInsert(tags.get("id").toString(),tagsList,user,ExtendTagsEntity.class);
+        List<BaseTagsEntity> tagsList = mapper.convertValue(list, new TypeReference<List<BaseTagsEntity>>() {
+        });
+        if (CollectionUtils.isNotEmpty(tagsList)) {
+            tagsService.batchInsert(tags.get("id").toString(), tagsList, user, ExtendTagsEntity.class);
         }
         return ResponseMessage.defaultResponse().setMsg("标签关联成功");
     }
@@ -270,13 +279,14 @@ public class ExtendServiceImpl implements ExtendService {
     @Override
     public ResponseMessage getList(String principalId, Integer type) {
         List<Map<String, Object>> list = new ArrayList<>();
-        List<ExtendEntity>extendList= extendMapper.getList(principalId,type);
-        if(extendList!=null&&!extendList.isEmpty()){
-            for(ExtendEntity extendEntity:extendList){
-                Map<String,Object>map= Maps.newHashMap();
-                map.put("ExtendEntity",extendEntity);
+        List<ExtendEntity> extendList = extendMapper.getList(principalId, type);
+        if (extendList != null && !extendList.isEmpty()) {
+            for (ExtendEntity extendEntity : extendList) {
+                Map<String, Object> map = Maps.newHashMap();
+                map.put("ExtendEntity", extendEntity);
                 //素材信息
-                map.put("fileList",materialService.handleMaterialNew(extendEntity.getId()));
+                map.put("fileList", materialService.handleMaterialNew(extendEntity.getId()));
+                map.put("tagList", tagsService.findListByPriId(extendEntity.getId(), ExtendTagsEntity.class));
                 list.add(map);
             }
         }
@@ -285,14 +295,14 @@ public class ExtendServiceImpl implements ExtendService {
 
     @Override
     public ResponseMessage getExtendInfo(String id) {
-        Map<String,Object>map= Maps.newHashMap();
+        Map<String, Object> map = Maps.newHashMap();
         ExtendEntity extendEntity = extendMapper.selectByPrimaryKey(id);
-        if(extendEntity != null){
-            map.put("extendEntity",extendEntity);
+        if (extendEntity != null) {
+            map.put("extendEntity", extendEntity);
             //素材信息
-            map.put("fileList",materialService.handleMaterialNew(id));
+            map.put("fileList", materialService.handleMaterialNew(id));
             return ResponseMessage.defaultResponse().setData(map);
-        }else{
+        } else {
             return ResponseMessage.validFailResponse().setMsg("无扩展信息！");
         }
     }

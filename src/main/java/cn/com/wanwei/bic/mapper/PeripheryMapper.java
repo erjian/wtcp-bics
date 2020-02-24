@@ -15,7 +15,6 @@ public interface PeripheryMapper {
 
     int insert(PeripheryEntity record);
 
-    @DataScope
     PeripheryEntity selectByPrimaryKey(String id);
 
     /**
@@ -34,6 +33,8 @@ public interface PeripheryMapper {
      */
     @DataScope
     Page<PeripheryEntity> findByPage(Map<String, Object> filter);
+
+    Page<PeripheryEntity> findByPageToc(Map<String, Object> filter);
 
     /**
      * 标题重名校验

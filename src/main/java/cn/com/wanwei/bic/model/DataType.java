@@ -28,7 +28,7 @@ public enum DataType {
     FOOD_TYPE("125002002","餐饮"),
     FOOD_STREET("125002003","小吃街"),
     SHOPPING_TYPE("125002004","购物"),
-    SPECIALTY("125002004","特产");
+    SPECIALTY("125002005","特产");
 
     private String key;
     private String name;

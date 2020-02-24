@@ -24,7 +24,7 @@ import java.util.Map;
 @RefreshScope
 @RequestMapping("/public/periphery")
 @Api(value = "C端周边管理", tags = "C端周边管理相关接口")
-public class OpenPeripheryController {
+public class InternalPeripheryController {
 
     @Autowired
     private PeripheryService peripheryService;
@@ -40,7 +40,7 @@ public class OpenPeripheryController {
                                                   HttpServletRequest request) {
         Map<String, Object> filter = RequestUtil.getParameters(request);
         filter.put("category", category);
-        return peripheryService.findByPage(page, size, filter);
+        return peripheryService.findByPageToc(page, size, filter);
     }
 
     @ApiOperation(value = "C端查询周边管理信息", notes = "C端查询周边管理信息")

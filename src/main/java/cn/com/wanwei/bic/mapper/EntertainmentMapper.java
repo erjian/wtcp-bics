@@ -11,11 +11,11 @@ import java.util.Map;
 
 @Mapper
 public interface EntertainmentMapper {
+
     int deleteByPrimaryKey(String id);
 
     int insert(EntertainmentEntity record);
 
-    @DataScope
     EntertainmentEntity selectByPrimaryKey(String id);
 
     int updateByPrimaryKey(EntertainmentEntity record);
@@ -60,7 +60,6 @@ public interface EntertainmentMapper {
      * 获取休闲娱乐信息
      * @return
      */
-    @DataScope
     List<EntertainmentEntity> getEnterList();
 
     /**
