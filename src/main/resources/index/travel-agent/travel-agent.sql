@@ -6,7 +6,8 @@ select t.id relateId,t.id,t.`code`, t.title,t.sub_title subTitle,t.full_spell fu
 t.summary, t.description, t.address,t.`level`,t.level_time levelTime,t.keyword,t.start_time startTime,t.from_city fromCity,
 t.destination_city destinationCity,t.business_type businessType,t.business_scope businessScope,t.tour_type tourType,t.team_type teamType,
 t.latitude, t.longitude,CONCAT(t.latitude,",",t.longitude) geoPoint,t.region,t.region_full_code regionFullCode,t.region_full_name regionFullName,
-t.dept_code deptCode,'' images,'' videos,'' audios, '' tags,'' relateTags, '' allTags, if(t.status=9, 1,0) publishStatus
+t.dept_code deptCode,'' images,'' videos,'' audios, '' tags,'' relateTags, '' allTags, if(t.status=9, 1,0) publishStatus,
+(select b.phone from t_bic_business b where b.principal_id = t.id) as phone
 from t_bic_travel_agent t ;
 
 

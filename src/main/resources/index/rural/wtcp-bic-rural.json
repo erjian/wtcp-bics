@@ -93,6 +93,10 @@
           "type": "keyword",
           "ignore_above": 256
         },
+        "phone": {
+          "type": "keyword",
+          "ignore_above": 256
+        },
         "weight": {
           "type": "long"
         },
