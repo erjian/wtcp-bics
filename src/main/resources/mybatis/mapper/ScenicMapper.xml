@@ -34,6 +34,7 @@
         <result column="summer_time" jdbcType="VARCHAR" property="summerTime"/>
         <result column="winter_time" jdbcType="VARCHAR" property="winterTime"/>
         <result column="rank" jdbcType="INTEGER" property="rank"/>
+        <result column="light_title" jdbcType="VARCHAR" property="lightTitle"/>
     </resultMap>
     <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="cn.com.wanwei.bic.entity.ScenicEntity">
         <result column="content" jdbcType="LONGVARCHAR" property="content"/>
@@ -41,7 +42,7 @@
     <sql id="Base_Column_List">
     id, code, title, title_qp, title_jp, sub_title, slogan, summary, description, weight, longitude, latitude,
     region_full_name, region_full_code, region, address, level, area, category, panoramic_url, 
-    status, playtime, score, dept_code, created_user, created_date, updated_user, updated_date,start_time,summer_time,winter_time,rank
+    status, playtime, score, dept_code, created_user, created_date, updated_user, updated_date,start_time,summer_time,winter_time,rank,light_title
   </sql>
     <sql id="Blob_Column_List">
     content
@@ -89,7 +90,7 @@
       playtime, score, dept_code, 
       created_user, created_date, updated_user, 
       updated_date, content,
-      start_time,summer_time,winter_time,rank)
+      start_time,summer_time,winter_time,rank,light_title)
     values (#{id,jdbcType=VARCHAR}, #{code,jdbcType=VARCHAR}, #{title,jdbcType=VARCHAR}, #{titleQp,jdbcType=VARCHAR}, #{titleJp,jdbcType=VARCHAR}, #{subTitle,jdbcType=VARCHAR},
       #{slogan,jdbcType=VARCHAR}, #{summary,jdbcType=VARCHAR}, #{description,jdbcType=VARCHAR}, 
       #{weight,jdbcType=REAL}, #{longitude,jdbcType=DOUBLE}, #{latitude,jdbcType=DOUBLE}, 
@@ -99,7 +100,7 @@
       #{playtime,jdbcType=REAL}, #{score,jdbcType=REAL}, #{deptCode,jdbcType=VARCHAR}, 
       #{createdUser,jdbcType=VARCHAR}, #{createdDate,jdbcType=TIMESTAMP}, #{updatedUser,jdbcType=VARCHAR}, 
       #{updatedDate,jdbcType=TIMESTAMP}, #{content,jdbcType=LONGVARCHAR},
-      #{startTime,jdbcType=TIMESTAMP}, #{summerTime,jdbcType=VARCHAR}, #{winterTime,jdbcType=VARCHAR},#{rank,jdbcType=INTEGER})
+      #{startTime,jdbcType=TIMESTAMP}, #{summerTime,jdbcType=VARCHAR}, #{winterTime,jdbcType=VARCHAR},#{rank,jdbcType=INTEGER}, #{lightTitle,jdbcType=VARCHAR})
   </insert>
     <update id="updateByPrimaryKeyWithBLOBs" parameterType="cn.com.wanwei.bic.entity.ScenicEntity">
     update t_bic_scenic
@@ -134,7 +135,8 @@
       start_time = #{startTime,jdbcType=TIMESTAMP},
       summer_time = #{summerTime,jdbcType=VARCHAR},
       winter_time = #{winterTime,jdbcType=VARCHAR},
-      rank = #{rank,jdbcType=INTEGER}
+      rank = #{rank,jdbcType=INTEGER},
+      light_title = #{lightTitle,jdbcType=VARCHAR}
     where id = #{id,jdbcType=VARCHAR}
   </update>
     <update id="updateByPrimaryKey" parameterType="cn.com.wanwei.bic.entity.ScenicEntity">
@@ -169,7 +171,8 @@
       start_time = #{startTime,jdbcType=TIMESTAMP},
       summer_time = #{summerTime,jdbcType=VARCHAR},
       winter_time = #{winterTime,jdbcType=VARCHAR},
-      rank = #{rank,jdbcType=INTEGER}
+      rank = #{rank,jdbcType=INTEGER},
+      light_title = #{lightTitle,jdbcType=VARCHAR}
     where id = #{id,jdbcType=VARCHAR}
   </update>
     <select id="findByPage" parameterType="java.util.Map" resultMap="BaseResultMap">

@@ -16,6 +16,7 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 import javax.persistence.Transient;
@@ -112,6 +113,9 @@ public class ScenicEntity extends BaseEntity{
 
     @ApiModelProperty(value = "冬季营业时间")
     private String winterTime;
+
+    @ApiModelProperty(value = "亮点标题", notes = "亮点标题")
+    private String lightTitle;
 
     @ApiModelProperty(value = "排名")
     private Integer rank;
