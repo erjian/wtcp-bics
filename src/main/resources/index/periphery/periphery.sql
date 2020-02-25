@@ -3,11 +3,12 @@
  */
 
 select t.id relateId,
-t.id,t.`code`, t.title,t.sub_title subTitle,t.slogan,t.summary,t.description,t.content,t.address,
+t.id,t.`code`, t.title,t.sub_title subTitle,t.slogan,t.summary,t.description,t.content,t.address,t.park_score parkScore,
 t.weight,t.category,t.type,t.phone,t.trading_area tradingArea,t.score,t.per_consumption perConsumption,t.latitude, t.longitude,
 CONCAT(t.latitude,",",t.longitude) geoPoint,t.region,t.region_full_code regionFullCode,t.region_full_name regionFullName,
 t.dept_code deptCode,'' images,'' videos,'' audios, '' tags,'' relateTags, '' allTags, if(t.status=9, 1,0) publishStatus,
-(select CONCAT('[',GROUP_CONCAT('"',c.cate_id,'"'),']') from t_bic_cate_relation c where c.catering_id = t.id GROUP BY c.catering_id) as cateTags
+(select CONCAT('[',GROUP_CONCAT('"',c.cate_id,'"'),']') from t_bic_cate_relation c where c.catering_id = t.id GROUP BY c.catering_id) as cateTags,
+(select CONCAT('[',GROUP_CONCAT('"',title,'"'),']') from t_bic_periphery where id in(select c.cate_id from t_bic_cate_relation c where c.catering_id = t.id GROUP BY c.catering_id))  as cateTagNames
 from t_bic_periphery t ;
 
 

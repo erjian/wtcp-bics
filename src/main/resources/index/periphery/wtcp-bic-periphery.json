@@ -102,6 +102,9 @@
         "perConsumption": {
           "type": "float"
         },
+        "parkScore": {
+          "type": "float"
+        },
         "score": {
           "type": "float"
         },
@@ -145,6 +148,10 @@
           "analyzer": "ik_max_word"
         },
         "cateTags": {
+          "type": "keyword",
+          "ignore_above": 256
+        },
+        "cateTagNames": {
           "type": "keyword",
           "ignore_above": 256
         },
