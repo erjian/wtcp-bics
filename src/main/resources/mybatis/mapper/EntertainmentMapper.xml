@@ -33,7 +33,7 @@
         <result column="restaurant_permit" jdbcType="VARCHAR" property="restaurantPermit"/>
         <result column="reception_permit" jdbcType="VARCHAR" property="receptionPermit"/>
         <result column="type" jdbcType="VARCHAR" property="type"/>
-        <result column="start_time" jdbcType="VARCHAR" property="startTime"/>
+        <result column="start_time" jdbcType="TIMESTAMP" property="startTime"/>
         <result column="summer_time" jdbcType="VARCHAR" property="summerTime"/>
         <result column="winter_time" jdbcType="VARCHAR" property="winterTime"/>
     </resultMap>
@@ -70,11 +70,11 @@
       #{latitude,jdbcType=DOUBLE}, #{regionFullName,jdbcType=VARCHAR}, #{regionFullCode,jdbcType=VARCHAR}, 
       #{region,jdbcType=VARCHAR}, #{address,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER},
       #{scenicId,jdbcType=VARCHAR}, #{withinScenic,jdbcType=INTEGER}, #{withinPark,jdbcType=INTEGER},
-      #{num,jdbcType=INTEGER}, #{deptCode,jdbcType=VARCHAR}, #{createdUser,jdbcType=VARCHAR}, 
+      #{num,jdbcType=INTEGER}, #{deptCode,jdbcType=VARCHAR}, #{createdUser,jdbcType=VARCHAR},
       #{createdDate,jdbcType=TIMESTAMP}, #{updatedUser,jdbcType=VARCHAR}, #{updatedDate,jdbcType=TIMESTAMP}, 
       #{content,jdbcType=LONGVARCHAR}, #{guestRoomNum,jdbcType=VARCHAR}, #{guestBedNum,jdbcType=VARCHAR},
       #{restaurantNum,jdbcType=VARCHAR}, #{restaurantPermit,jdbcType=VARCHAR}, #{receptionPermit,jdbcType=VARCHAR}, #{type,jdbcType=VARCHAR},
-      #{startTime,jdbcType=VARCHAR}, #{summerTime,jdbcType=VARCHAR}, #{winterTime,jdbcType=VARCHAR})
+      #{startTime,jdbcType=TIMESTAMP}, #{summerTime,jdbcType=VARCHAR}, #{winterTime,jdbcType=VARCHAR})
   </insert>
     <update id="updateByPrimaryKey" parameterType="cn.com.wanwei.bic.entity.EntertainmentEntity">
     update t_bic_entertainment
@@ -109,7 +109,7 @@
       restaurant_permit = #{restaurantPermit,jdbcType=VARCHAR},
       reception_permit = #{receptionPermit,jdbcType=VARCHAR},
       type= #{type,jdbcType=VARCHAR},
-      start_time = #{startTime,jdbcType=VARCHAR},
+      start_time = #{startTime,jdbcType=TIMESTAMP},
       summer_time = #{summerTime,jdbcType=VARCHAR},
       winter_time = #{winterTime,jdbcType=VARCHAR}
     where id = #{id,jdbcType=VARCHAR}

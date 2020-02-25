@@ -30,7 +30,7 @@
         <result column="created_date" jdbcType="TIMESTAMP" property="createdDate"/>
         <result column="updated_user" jdbcType="VARCHAR" property="updatedUser"/>
         <result column="updated_date" jdbcType="TIMESTAMP" property="updatedDate"/>
-        <result column="start_time" jdbcType="VARCHAR" property="startTime"/>
+        <result column="start_time" jdbcType="TIMESTAMP" property="startTime"/>
         <result column="summer_time" jdbcType="VARCHAR" property="summerTime"/>
         <result column="winter_time" jdbcType="VARCHAR" property="winterTime"/>
         <result column="rank" jdbcType="INTEGER" property="rank"/>
@@ -99,7 +99,7 @@
       #{playtime,jdbcType=REAL}, #{score,jdbcType=REAL}, #{deptCode,jdbcType=VARCHAR}, 
       #{createdUser,jdbcType=VARCHAR}, #{createdDate,jdbcType=TIMESTAMP}, #{updatedUser,jdbcType=VARCHAR}, 
       #{updatedDate,jdbcType=TIMESTAMP}, #{content,jdbcType=LONGVARCHAR},
-      #{startTime,jdbcType=VARCHAR}, #{summerTime,jdbcType=VARCHAR}, #{winterTime,jdbcType=VARCHAR},#{rank,jdbcType=INTEGER})
+      #{startTime,jdbcType=TIMESTAMP}, #{summerTime,jdbcType=VARCHAR}, #{winterTime,jdbcType=VARCHAR},#{rank,jdbcType=INTEGER})
   </insert>
     <update id="updateByPrimaryKeyWithBLOBs" parameterType="cn.com.wanwei.bic.entity.ScenicEntity">
     update t_bic_scenic
@@ -131,7 +131,7 @@
       updated_user = #{updatedUser,jdbcType=VARCHAR},
       updated_date = #{updatedDate,jdbcType=TIMESTAMP},
       content = #{content,jdbcType=LONGVARCHAR},
-      start_time = #{startTime,jdbcType=VARCHAR},
+      start_time = #{startTime,jdbcType=TIMESTAMP},
       summer_time = #{summerTime,jdbcType=VARCHAR},
       winter_time = #{winterTime,jdbcType=VARCHAR},
       rank = #{rank,jdbcType=INTEGER}
@@ -166,7 +166,7 @@
       created_date = #{createdDate,jdbcType=TIMESTAMP},
       updated_user = #{updatedUser,jdbcType=VARCHAR},
       updated_date = #{updatedDate,jdbcType=TIMESTAMP},
-      start_time = #{startTime,jdbcType=VARCHAR},
+      start_time = #{startTime,jdbcType=TIMESTAMP},
       summer_time = #{summerTime,jdbcType=VARCHAR},
       winter_time = #{winterTime,jdbcType=VARCHAR},
       rank = #{rank,jdbcType=INTEGER}

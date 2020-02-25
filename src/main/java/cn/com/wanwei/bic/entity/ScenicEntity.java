@@ -7,6 +7,7 @@
  */
 package cn.com.wanwei.bic.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import io.swagger.models.auth.In;
@@ -18,6 +19,7 @@ import lombok.ToString;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 import javax.persistence.Transient;
+import java.util.Date;
 import java.util.List;
 
 @Data
@@ -102,13 +104,14 @@ public class ScenicEntity extends BaseEntity{
     private String content;
 
     @ApiModelProperty(value = "开业时间")
-    private String start_time;
+    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
+    private Date startTime;
 
     @ApiModelProperty(value = "夏季营业时间")
-    private String summer_time;
+    private String summerTime;
 
     @ApiModelProperty(value = "冬季营业时间")
-    private String winter_time;
+    private String winterTime;
 
     @ApiModelProperty(value = "排名")
     private Integer rank;

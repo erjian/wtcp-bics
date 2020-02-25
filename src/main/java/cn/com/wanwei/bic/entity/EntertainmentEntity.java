@@ -1,5 +1,6 @@
 package cn.com.wanwei.bic.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -10,6 +11,7 @@ import lombok.ToString;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 import javax.persistence.Transient;
+import java.util.Date;
 import java.util.List;
 
 @Data
@@ -61,13 +63,14 @@ public class EntertainmentEntity extends CommonEntity {
     private String type;
 
     @ApiModelProperty(value = "开业时间")
-    private String start_time;
+    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
+    private Date startTime;
 
     @ApiModelProperty(value = "夏季营业时间")
-    private String summer_time;
+    private String summerTime;
 
     @ApiModelProperty(value = "冬季营业时间")
-    private String winter_time;
+    private String winterTime;
 
     public Integer getOnlineStatus() {
         return this.status == 9 ? this.status : 1;
