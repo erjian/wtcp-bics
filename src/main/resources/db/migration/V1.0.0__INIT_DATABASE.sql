@@ -1,12 +1,29 @@
 /*
  Source Server Type    : MySQL
  Source Schema         : wtcp-bics
- Date: 25/02/2020 09:20:44
+ Date: 25/02/2020 18:39:27
 */
 
 SET NAMES utf8mb4;
 SET FOREIGN_KEY_CHECKS = 0;
 
+-- ----------------------------
+-- Table structure for flyway_schema_history
+-- ----------------------------
+CREATE TABLE IF NOT EXISTS `flyway_schema_history` (
+  `installed_rank` int(11) NOT NULL,
+  `version` varchar(50) DEFAULT NULL,
+  `description` varchar(200) NOT NULL,
+  `type` varchar(20) NOT NULL,
+  `script` varchar(1000) NOT NULL,
+  `checksum` int(11) DEFAULT NULL,
+  `installed_by` varchar(100) NOT NULL,
+  `installed_on` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `execution_time` int(11) NOT NULL,
+  `success` tinyint(1) NOT NULL,
+  PRIMARY KEY (`installed_rank`),
+  KEY `flyway_schema_history_s_idx` (`success`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- ----------------------------
 -- Table structure for t_bic_audit_log
@@ -49,7 +66,7 @@ CREATE TABLE IF NOT EXISTS `t_bic_business` (
 -- ----------------------------
 -- Table structure for t_bic_cate_relation
 -- ----------------------------
-CREATE TABLE  IF NOT EXISTS `t_bic_cate_relation` (
+CREATE TABLE IF NOT EXISTS `t_bic_cate_relation` (
   `id` varchar(32) NOT NULL COMMENT '主键',
   `cate_id` varchar(32) DEFAULT NULL COMMENT '美食ID',
   `catering_id` varchar(32) DEFAULT NULL COMMENT '餐饮服务ID',
@@ -135,7 +152,7 @@ CREATE TABLE IF NOT EXISTS `t_bic_destination_tags` (
 -- ----------------------------
 -- Table structure for t_bic_drive_camp
 -- ----------------------------
-CREATE TABLE  IF NOT EXISTS `t_bic_drive_camp` (
+CREATE TABLE IF NOT EXISTS `t_bic_drive_camp` (
   `id` varchar(32) NOT NULL COMMENT '主键',
   `title` varchar(200) NOT NULL COMMENT '标题',
   `sub_title` varchar(200) DEFAULT NULL COMMENT '子标题',
@@ -158,18 +175,19 @@ CREATE TABLE  IF NOT EXISTS `t_bic_drive_camp` (
   `simple_spell` varchar(30) DEFAULT NULL COMMENT '拼音首字母',
   `full_spell` varchar(300) DEFAULT NULL COMMENT '全拼',
   `keyword` varchar(128) DEFAULT NULL COMMENT '关键字',
-  `open_time` varchar(256) DEFAULT NULL COMMENT '接待时间',
   `start_time` datetime DEFAULT NULL COMMENT '成立时间',
   `dept_code` varchar(50) DEFAULT NULL COMMENT '组织机构编码',
   `status` int(1) NOT NULL COMMENT '审核状态（0：待审，1：通过，2：退回，9：上线）',
   `traffic` varchar(500) DEFAULT NULL COMMENT '交通信息',
+  `summer_time` varchar(20) DEFAULT NULL COMMENT '夏季营业时间',
+  `winter_time` varchar(20) DEFAULT NULL COMMENT '冬季营业时间',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='自驾营地信息表';
 
 -- ----------------------------
 -- Table structure for t_bic_drive_camp_tags
 -- ----------------------------
-CREATE TABLE  IF NOT EXISTS `t_bic_drive_camp_tags` (
+CREATE TABLE IF NOT EXISTS `t_bic_drive_camp_tags` (
   `id` varchar(32) NOT NULL COMMENT '主键',
   `principal_id` varchar(32) NOT NULL COMMENT '自驾营地ID',
   `tag_catagory` varchar(20) NOT NULL COMMENT '标签分类',
@@ -184,7 +202,7 @@ CREATE TABLE  IF NOT EXISTS `t_bic_drive_camp_tags` (
 -- ----------------------------
 -- Table structure for t_bic_enterprise
 -- ----------------------------
-CREATE TABLE  IF NOT EXISTS `t_bic_enterprise` (
+CREATE TABLE IF NOT EXISTS `t_bic_enterprise` (
   `id` varchar(32) NOT NULL COMMENT '主键',
   `principal_id` varchar(32) NOT NULL COMMENT '关联信息ID',
   `name` varchar(100) NOT NULL COMMENT '企业名称',
@@ -237,13 +255,16 @@ CREATE TABLE IF NOT EXISTS `t_bic_entertainment` (
   `restaurant_permit` varchar(8) DEFAULT NULL COMMENT '餐厅可容多少人共同用餐',
   `reception_permit` varchar(8) DEFAULT NULL COMMENT '可接待人数',
   `type` varchar(50) DEFAULT NULL COMMENT '农家乐类型',
+  `start_time` datetime DEFAULT NULL COMMENT '开业时间',
+  `summer_time` varchar(20) DEFAULT NULL COMMENT '夏季营业时间',
+  `winter_time` varchar(20) DEFAULT NULL COMMENT '冬季营业时间',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='休闲娱乐表';
 
 -- ----------------------------
 -- Table structure for t_bic_entertainment_tags
 -- ----------------------------
-CREATE TABLE  IF NOT EXISTS `t_bic_entertainment_tags` (
+CREATE TABLE IF NOT EXISTS `t_bic_entertainment_tags` (
   `id` varchar(32) NOT NULL COMMENT '主键',
   `principal_id` varchar(32) NOT NULL COMMENT '周边ID',
   `tag_catagory` varchar(20) NOT NULL COMMENT '标签分类',
@@ -283,7 +304,7 @@ CREATE TABLE IF NOT EXISTS `t_bic_extend` (
 -- ----------------------------
 -- Table structure for t_bic_extend_tags
 -- ----------------------------
-CREATE TABLE  IF NOT EXISTS `t_bic_extend_tags` (
+CREATE TABLE IF NOT EXISTS `t_bic_extend_tags` (
   `id` varchar(32) NOT NULL COMMENT '主键',
   `principal_id` varchar(32) NOT NULL COMMENT '扩展ID',
   `tag_catagory` varchar(20) NOT NULL COMMENT '标签分类',
@@ -317,7 +338,7 @@ CREATE TABLE IF NOT EXISTS `t_bic_material` (
 -- ----------------------------
 -- Table structure for t_bic_periphery
 -- ----------------------------
-CREATE TABLE  IF NOT EXISTS `t_bic_periphery` (
+CREATE TABLE IF NOT EXISTS `t_bic_periphery` (
   `id` varchar(32) NOT NULL COMMENT '主键',
   `category` varchar(32) NOT NULL COMMENT '类别（1：特色小吃，2：餐饮服务，3：小吃街，4：购物场所，5：特产）',
   `code` varchar(50) NOT NULL COMMENT '编码',
@@ -513,13 +534,18 @@ CREATE TABLE IF NOT EXISTS `t_bic_scenic` (
   `updated_date` datetime DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
   `title_qp` varchar(800) DEFAULT NULL COMMENT '景区名称全拼',
   `title_jp` varchar(200) DEFAULT NULL COMMENT '景区名称简拼',
+  `start_time` datetime DEFAULT NULL COMMENT '开业时间',
+  `summer_time` varchar(20) DEFAULT NULL COMMENT '夏季营业时间',
+  `winter_time` varchar(20) DEFAULT NULL COMMENT '冬季营业时间',
+  `rank` tinyint(5) DEFAULT NULL COMMENT '排名',
+  `light_title` varchar(200) DEFAULT NULL COMMENT '亮点标题',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='景区表';
 
 -- ----------------------------
 -- Table structure for t_bic_scenic_tags
 -- ----------------------------
-CREATE TABLE  IF NOT EXISTS `t_bic_scenic_tags` (
+CREATE TABLE IF NOT EXISTS `t_bic_scenic_tags` (
   `id` varchar(32) NOT NULL COMMENT '主键',
   `principal_id` varchar(32) NOT NULL COMMENT '景区ID',
   `tag_catagory` varchar(20) NOT NULL COMMENT '标签分类',
@@ -534,7 +560,7 @@ CREATE TABLE  IF NOT EXISTS `t_bic_scenic_tags` (
 -- ----------------------------
 -- Table structure for t_bic_traffic_agent
 -- ----------------------------
-CREATE TABLE  IF NOT EXISTS `t_bic_traffic_agent` (
+CREATE TABLE IF NOT EXISTS `t_bic_traffic_agent` (
   `id` varchar(32) CHARACTER SET utf32 NOT NULL COMMENT '主键',
   `title` varchar(200) NOT NULL COMMENT '标题',
   `code` varchar(50) DEFAULT NULL COMMENT '编码',
@@ -565,7 +591,7 @@ CREATE TABLE  IF NOT EXISTS `t_bic_traffic_agent` (
 -- ----------------------------
 -- Table structure for t_bic_travel_agent
 -- ----------------------------
-CREATE TABLE  IF NOT EXISTS `t_bic_travel_agent` (
+CREATE TABLE IF NOT EXISTS `t_bic_travel_agent` (
   `id` varchar(32) NOT NULL COMMENT '主键',
   `title` varchar(200) NOT NULL COMMENT '标题',
   `sub_title` varchar(200) DEFAULT NULL COMMENT '子标题',
