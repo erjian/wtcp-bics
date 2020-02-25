@@ -77,6 +77,10 @@
           "type": "keyword",
           "ignore_above": 256
         },
+        "type": {
+          "type": "keyword",
+          "ignore_above": 256
+        },
         "weight": {
           "type": "long"
         },
