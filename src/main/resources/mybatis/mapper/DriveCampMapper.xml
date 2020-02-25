@@ -23,18 +23,19 @@
     <result column="simple_spell" jdbcType="VARCHAR" property="simpleSpell" />
     <result column="full_spell" jdbcType="VARCHAR" property="fullSpell" />
     <result column="keyword" jdbcType="VARCHAR" property="keyword" />
-    <result column="open_time" jdbcType="VARCHAR" property="openTime" />
     <result column="start_time" jdbcType="TIMESTAMP" property="startTime" />
     <result column="dept_code" jdbcType="VARCHAR" property="deptCode" />
     <result column="status" jdbcType="INTEGER" property="status" />
     <result column="traffic" jdbcType="VARCHAR" property="traffic" />
     <result column="content" jdbcType="LONGVARCHAR" property="content" />
+    <result column="summer_time" jdbcType="VARCHAR" property="summerTime"/>
+    <result column="winter_time" jdbcType="VARCHAR" property="winterTime"/>
   </resultMap>
   <sql id="Base_Column_List">
     id, title, sub_title, code, slogan, summary, description, weight, longitude, latitude, 
     region_full_name, region_full_code, region, address, created_date, created_user, 
-    updated_date, updated_user, simple_spell, full_spell, keyword, open_time, start_time, 
-    dept_code, status, traffic,content
+    updated_date, updated_user, simple_spell, full_spell, keyword, start_time,
+    dept_code, status, traffic,content,summer_time,winter_time
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
     select 
@@ -53,18 +54,20 @@
       region_full_name, region_full_code, region, 
       address, created_date, created_user, 
       updated_date, updated_user, simple_spell, 
-      full_spell, keyword, open_time, 
+      full_spell, keyword,
       start_time, dept_code, status, 
-      traffic, content)
+      traffic, content,
+      summer_time,winter_time)
     values (#{id,jdbcType=VARCHAR},#{title,jdbcType=VARCHAR}, #{subTitle,jdbcType=VARCHAR}, #{code,jdbcType=VARCHAR},
       #{slogan,jdbcType=VARCHAR}, #{summary,jdbcType=VARCHAR}, #{description,jdbcType=VARCHAR}, 
       #{weight,jdbcType=INTEGER}, #{longitude,jdbcType=DOUBLE}, #{latitude,jdbcType=DOUBLE}, 
       #{regionFullName,jdbcType=VARCHAR}, #{regionFullCode,jdbcType=VARCHAR}, #{region,jdbcType=VARCHAR}, 
       #{address,jdbcType=VARCHAR}, #{createdDate,jdbcType=TIMESTAMP}, #{createdUser,jdbcType=VARCHAR}, 
       #{updatedDate,jdbcType=TIMESTAMP}, #{updatedUser,jdbcType=VARCHAR}, #{simpleSpell,jdbcType=VARCHAR}, 
-      #{fullSpell,jdbcType=VARCHAR}, #{keyword,jdbcType=VARCHAR}, #{openTime,jdbcType=VARCHAR},
+      #{fullSpell,jdbcType=VARCHAR}, #{keyword,jdbcType=VARCHAR},
       #{startTime,jdbcType=TIMESTAMP}, #{deptCode,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER}, 
-      #{traffic,jdbcType=VARCHAR}, #{content,jdbcType=LONGVARCHAR})
+      #{traffic,jdbcType=VARCHAR}, #{content,jdbcType=LONGVARCHAR},
+      #{summerTime,jdbcType=VARCHAR}, #{winterTime,jdbcType=VARCHAR})
   </insert>
   <update id="updateByPrimaryKey" parameterType="cn.com.wanwei.bic.entity.DriveCampEntity">
     update t_bic_drive_camp
@@ -88,12 +91,13 @@
       simple_spell = #{simpleSpell,jdbcType=VARCHAR},
       full_spell = #{fullSpell,jdbcType=VARCHAR},
       keyword = #{keyword,jdbcType=VARCHAR},
-      open_time = #{openTime,jdbcType=VARCHAR},
       start_time = #{startTime,jdbcType=TIMESTAMP},
       dept_code = #{deptCode,jdbcType=VARCHAR},
       status = #{status,jdbcType=INTEGER},
       traffic = #{traffic,jdbcType=VARCHAR},
-      content = #{content,jdbcType=LONGVARCHAR}
+      content = #{content,jdbcType=LONGVARCHAR},
+      summer_time = #{summerTime,jdbcType=VARCHAR},
+      winter_time = #{winterTime,jdbcType=VARCHAR}
     where id = #{id,jdbcType=VARCHAR}
   </update>
   <select id="findByPage" parameterType="java.util.Map" resultMap="BaseResultMap">

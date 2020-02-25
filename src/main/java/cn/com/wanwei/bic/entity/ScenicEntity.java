@@ -101,6 +101,18 @@ public class ScenicEntity extends BaseEntity{
     @ApiModelProperty(value = "内容")
     private String content;
 
+    @ApiModelProperty(value = "开业时间")
+    private String start_time;
+
+    @ApiModelProperty(value = "夏季营业时间")
+    private String summer_time;
+
+    @ApiModelProperty(value = "冬季营业时间")
+    private String winter_time;
+
+    @ApiModelProperty(value = "排名")
+    private Integer rank;
+
     @ApiModelProperty(value = "在线状态")
     private Integer onlineStatus;
 

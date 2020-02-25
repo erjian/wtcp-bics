@@ -47,6 +47,15 @@ public class DriveCampEntity extends CommonEntity {
     @ApiModelProperty(value = "交通信息")
     private String traffic;
 
+    @ApiModelProperty(value = "开业时间")
+    private String start_time;
+
+    @ApiModelProperty(value = "夏季营业时间")
+    private String summer_time;
+
+    @ApiModelProperty(value = "冬季营业时间")
+    private String winter_time;
+
     @ApiModelProperty(value = "在线状态")
     private Integer onlineStatus;
 

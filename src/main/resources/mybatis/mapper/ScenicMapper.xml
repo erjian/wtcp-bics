@@ -30,6 +30,10 @@
         <result column="created_date" jdbcType="TIMESTAMP" property="createdDate"/>
         <result column="updated_user" jdbcType="VARCHAR" property="updatedUser"/>
         <result column="updated_date" jdbcType="TIMESTAMP" property="updatedDate"/>
+        <result column="start_time" jdbcType="VARCHAR" property="startTime"/>
+        <result column="summer_time" jdbcType="VARCHAR" property="summerTime"/>
+        <result column="winter_time" jdbcType="VARCHAR" property="winterTime"/>
+        <result column="rank" jdbcType="INTEGER" property="rank"/>
     </resultMap>
     <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="cn.com.wanwei.bic.entity.ScenicEntity">
         <result column="content" jdbcType="LONGVARCHAR" property="content"/>
@@ -37,7 +41,7 @@
     <sql id="Base_Column_List">
     id, code, title, title_qp, title_jp, sub_title, slogan, summary, description, weight, longitude, latitude,
     region_full_name, region_full_code, region, address, level, area, category, panoramic_url, 
-    status, playtime, score, dept_code, created_user, created_date, updated_user, updated_date
+    status, playtime, score, dept_code, created_user, created_date, updated_user, updated_date,start_time,summer_time,winter_time,rank
   </sql>
     <sql id="Blob_Column_List">
     content
@@ -84,7 +88,8 @@
       category, panoramic_url, status, 
       playtime, score, dept_code, 
       created_user, created_date, updated_user, 
-      updated_date, content)
+      updated_date, content,
+      start_time,summer_time,winter_time,rank)
     values (#{id,jdbcType=VARCHAR}, #{code,jdbcType=VARCHAR}, #{title,jdbcType=VARCHAR}, #{titleQp,jdbcType=VARCHAR}, #{titleJp,jdbcType=VARCHAR}, #{subTitle,jdbcType=VARCHAR},
       #{slogan,jdbcType=VARCHAR}, #{summary,jdbcType=VARCHAR}, #{description,jdbcType=VARCHAR}, 
       #{weight,jdbcType=REAL}, #{longitude,jdbcType=DOUBLE}, #{latitude,jdbcType=DOUBLE}, 
@@ -93,7 +98,8 @@
       #{category,jdbcType=VARCHAR}, #{panoramicUrl,jdbcType=VARCHAR}, #{status,jdbcType=BIT},
       #{playtime,jdbcType=REAL}, #{score,jdbcType=REAL}, #{deptCode,jdbcType=VARCHAR}, 
       #{createdUser,jdbcType=VARCHAR}, #{createdDate,jdbcType=TIMESTAMP}, #{updatedUser,jdbcType=VARCHAR}, 
-      #{updatedDate,jdbcType=TIMESTAMP}, #{content,jdbcType=LONGVARCHAR})
+      #{updatedDate,jdbcType=TIMESTAMP}, #{content,jdbcType=LONGVARCHAR},
+      #{startTime,jdbcType=VARCHAR}, #{summerTime,jdbcType=VARCHAR}, #{winterTime,jdbcType=VARCHAR},#{rank,jdbcType=INTEGER})
   </insert>
     <update id="updateByPrimaryKeyWithBLOBs" parameterType="cn.com.wanwei.bic.entity.ScenicEntity">
     update t_bic_scenic
@@ -124,7 +130,11 @@
       created_date = #{createdDate,jdbcType=TIMESTAMP},
       updated_user = #{updatedUser,jdbcType=VARCHAR},
       updated_date = #{updatedDate,jdbcType=TIMESTAMP},
-      content = #{content,jdbcType=LONGVARCHAR}
+      content = #{content,jdbcType=LONGVARCHAR},
+      start_time = #{startTime,jdbcType=VARCHAR},
+      summer_time = #{summerTime,jdbcType=VARCHAR},
+      winter_time = #{winterTime,jdbcType=VARCHAR},
+      rank = #{rank,jdbcType=INTEGER}
     where id = #{id,jdbcType=VARCHAR}
   </update>
     <update id="updateByPrimaryKey" parameterType="cn.com.wanwei.bic.entity.ScenicEntity">
@@ -155,7 +165,11 @@
       created_user = #{createdUser,jdbcType=VARCHAR},
       created_date = #{createdDate,jdbcType=TIMESTAMP},
       updated_user = #{updatedUser,jdbcType=VARCHAR},
-      updated_date = #{updatedDate,jdbcType=TIMESTAMP}
+      updated_date = #{updatedDate,jdbcType=TIMESTAMP},
+      start_time = #{startTime,jdbcType=VARCHAR},
+      summer_time = #{summerTime,jdbcType=VARCHAR},
+      winter_time = #{winterTime,jdbcType=VARCHAR},
+      rank = #{rank,jdbcType=INTEGER}
     where id = #{id,jdbcType=VARCHAR}
   </update>
     <select id="findByPage" parameterType="java.util.Map" resultMap="BaseResultMap">

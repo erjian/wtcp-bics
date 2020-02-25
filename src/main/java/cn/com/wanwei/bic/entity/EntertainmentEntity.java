@@ -60,6 +60,15 @@ public class EntertainmentEntity extends CommonEntity {
     @ApiModelProperty(value = "农家乐类型", notes = "农家乐类型")
     private String type;
 
+    @ApiModelProperty(value = "开业时间")
+    private String start_time;
+
+    @ApiModelProperty(value = "夏季营业时间")
+    private String summer_time;
+
+    @ApiModelProperty(value = "冬季营业时间")
+    private String winter_time;
+
     public Integer getOnlineStatus() {
         return this.status == 9 ? this.status : 1;
     }
