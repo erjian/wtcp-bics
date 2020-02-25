@@ -108,6 +108,10 @@
         "score": {
           "type": "float"
         },
+        "phone": {
+          "type": "keyword",
+          "ignore_above": 256
+        },
         "weight": {
           "type": "integer"
         },

@@ -93,6 +93,18 @@
           "type": "keyword",
           "ignore_above": 256
         },
+        "startTime": {
+          "type": "keyword",
+          "ignore_above": 256
+        },
+        "summerTime": {
+          "type": "keyword",
+          "ignore_above": 256
+        },
+        "winterTime": {
+          "type": "keyword",
+          "ignore_above": 256
+        },
         "level": {
           "type": "keyword",
           "ignore_above": 256
@@ -119,7 +131,14 @@
           "type": "keyword",
           "ignore_above": 256
         },
+        "phone": {
+          "type": "keyword",
+          "ignore_above": 256
+        },
         "weight": {
+          "type": "integer"
+        },
+        "rank": {
           "type": "integer"
         },
         "longitude": {

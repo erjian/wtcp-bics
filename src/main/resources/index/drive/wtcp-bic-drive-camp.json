@@ -93,6 +93,22 @@
           "type": "keyword",
           "ignore_above": 256
         },
+        "startTime": {
+          "type": "keyword",
+          "ignore_above": 256
+        },
+        "summerTime": {
+          "type": "keyword",
+          "ignore_above": 256
+        },
+        "winterTime": {
+          "type": "keyword",
+          "ignore_above": 256
+        },
+        "phone": {
+          "type": "keyword",
+          "ignore_above": 256
+        },
         "weight": {
           "type": "integer"
         },

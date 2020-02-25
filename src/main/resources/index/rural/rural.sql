@@ -3,10 +3,12 @@
  */
 
 select t.id relateId,t.id,t.`code`, t.title,t.sub_title subTitle,t.slogan,t.summary, t.description,
+t.start_time startTime,t.summer_time summerTime, t.winter_time winterTime,
 t.address,t.scenic_id scenicId, t.within_scenic withinScenic, t.within_park withinPark,t.num,t.weight,t.type,
 t.latitude, t.longitude,CONCAT(t.latitude,",",t.longitude) geoPoint,t.region,t.region_full_code regionFullCode,t.region_full_name regionFullName,
 t.dept_code deptCode,'' images,'' videos,'' audios, '' tags,'' relateTags, '' allTags, if(t.status=9, 1,0) publishStatus,
-(select b.service_facility from t_bic_business b where b.principal_id = t.id) as serviceFacility
+(select b.service_facility from t_bic_business b where b.principal_id = t.id) as serviceFacility,
+(select b.phone from t_bic_business b where b.principal_id = t.id) as phone
 from t_bic_entertainment t ;
 
 

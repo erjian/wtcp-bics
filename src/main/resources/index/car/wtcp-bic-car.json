@@ -105,6 +105,10 @@
           },
           "analyzer": "ik_max_word"
         },
+        "phone": {
+          "type": "keyword",
+          "ignore_above": 256
+        },
         "weight": {
           "type": "integer"
         },

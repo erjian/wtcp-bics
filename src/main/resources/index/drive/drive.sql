@@ -2,10 +2,12 @@
  * 自驾营地
  */
 
-select t.id relateId,t.id,t.`code`, t.title,t.sub_title subTitle,t.full_spell fullSpell, t.simple_spell simpleSpell,t.slogan,
+select t.id relateId,t.id,t.`code`, t.title,t.sub_title subTitle,t.full_spell fullSpell, t.simple_spell simpleSpell,
+t.slogan,t.start_time startTime,t.summer_time summerTime, t.winter_time winterTime,
 t.summary, t.description, t.address,t.open_time,t.start_time,t.traffic,CONCAT(t.latitude,",",t.longitude) geoPoint,
 t.latitude, t.longitude,t.region,t.region_full_code regionFullCode,t.region_full_name regionFullName,t.weight,
-t.dept_code deptCode,'' images,'' videos,'' audios, '' tags,'' relateTags, '' allTags, if(t.status=9, 1,0) publishStatus
+t.dept_code deptCode,'' images,'' videos,'' audios, '' tags,'' relateTags, '' allTags, if(t.status=9, 1,0) publishStatus,
+(select b.phone from t_bic_business b where b.principal_id = t.id) as phone
 from t_bic_drive_camp t ;
 
 
