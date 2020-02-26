@@ -3,7 +3,7 @@
  */
 
 select t.id relateId,t.id,t.`code`, t.title,t.sub_title subTitle,t.title_qp fullSpell, t.title_jp simpleSpell,t.slogan,
-t.rank,t.start_time startTime,t.summer_time summerTime, t.winter_time winterTime,
+t.rank,t.start_time startTime,t.summer_time summerTime, t.winter_time winterTime,t.light_title lightTitle,
 t.summary, t.description, t.address,t.`level`,t.category,t.area,t.panoramic_url panoramicUrl,t.playtime,t.score,t.weight,
 t.latitude, t.longitude,CONCAT(t.latitude,",",t.longitude) geoPoint,t.region,t.region_full_code regionFullCode,t.region_full_name regionFullName,
 t.dept_code deptCode,'' images,'' videos,'' audios, '' tags,'' relateTags, '' allTags, if(t.status=9, 1,0) publishStatus,
