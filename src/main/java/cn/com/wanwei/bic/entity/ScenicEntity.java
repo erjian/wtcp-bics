@@ -20,6 +20,7 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 @Data
 @EqualsAndHashCode(callSuper=false)
@@ -135,5 +136,7 @@ public class ScenicEntity extends BaseEntity{
     //冗余字段，关联素材的id
     @Transient
     private String timeId;
+
+    private Map<String,Object> fileList;
 
 }

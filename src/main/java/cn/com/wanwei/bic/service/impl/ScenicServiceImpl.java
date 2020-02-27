@@ -355,6 +355,7 @@ public class ScenicServiceImpl implements ScenicService {
             ResponseMessage responseMessage = tagsService.findByPrincipalId(scenicEntity.getId(), EntertainmentTagsEntity.class);
             List<ScenicTagsEntity> tagsEntityList = (List<ScenicTagsEntity>) responseMessage.getData();
             scenicEntity.setTagsEntities(tagsEntityList);
+            scenicEntity.setFileList(materialService.handleMaterialNew(scenicEntity.getId()));
         }
         return ResponseMessage.defaultResponse().setData(entitiesList);
     }
