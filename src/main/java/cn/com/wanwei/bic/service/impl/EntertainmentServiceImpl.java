@@ -317,6 +317,7 @@ public class EntertainmentServiceImpl implements EntertainmentService {
             ResponseMessage responseMessage = tagsService.findByPrincipalId(entertainmentEntity.getId(), EntertainmentTagsEntity.class);
             List<EntertainmentTagsEntity> tagsEntityList = (List<EntertainmentTagsEntity>) responseMessage.getData();
             entertainmentEntity.setTagsEntities(tagsEntityList);
+            entertainmentEntity.setFileList(materialService.handleMaterialNew(entertainmentEntity.getId()));
         }
         return ResponseMessage.defaultResponse().setData(entitiesList);
     }
