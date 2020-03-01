@@ -17,6 +17,8 @@ import lombok.ToString;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 import javax.persistence.Transient;
+import java.util.List;
+import java.util.Map;
 
 @Data
 @EqualsAndHashCode(callSuper=false)
@@ -65,7 +67,16 @@ public class DestinationEntity extends BaseEntity{
     @ApiModelProperty(value = "组织机构编码")
     private String deptCode;
 
+    /**
+     * 用于存储景区-标签
+     */
+    @Transient
+    @ApiModelProperty(value = "标签")
+    public List<ScenicTagsEntity> tagsEntities;
+
     //冗余字段，关联素材的id
     @Transient
     private String timeId;
+
+    private Map<String,Object> fileList;
 }

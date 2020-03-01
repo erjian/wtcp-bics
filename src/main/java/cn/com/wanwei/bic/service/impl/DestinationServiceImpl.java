@@ -1,11 +1,7 @@
 package cn.com.wanwei.bic.service.impl;
 
-import cn.com.wanwei.bic.entity.AuditLogEntity;
-import cn.com.wanwei.bic.entity.BaseTagsEntity;
-import cn.com.wanwei.bic.entity.DestinationEntity;
-import cn.com.wanwei.bic.entity.DestinationTagsEntity;
+import cn.com.wanwei.bic.entity.*;
 import cn.com.wanwei.bic.mapper.DestinationMapper;
-import cn.com.wanwei.bic.mapper.MaterialMapper;
 import cn.com.wanwei.bic.model.DataBindModel;
 import cn.com.wanwei.bic.model.EntityTagsModel;
 import cn.com.wanwei.bic.model.WeightModel;
@@ -328,17 +324,22 @@ public class DestinationServiceImpl implements DestinationService {
         if (StringUtils.isBlank(areaCodes) && StringUtils.isBlank(areaName) && StringUtils.isBlank(ids)) {
             return responseMessage.validFailResponse().setMsg("查询失败,参数不能都为空，且区域编码、目的地名称、目的地ids串只能传其中一个");
         }
+        List<DestinationEntity> appEntities = Lists.newArrayList();
         if (StringUtils.isNotBlank(areaCodes)) {
-            List<DestinationEntity> appEntities = destinationMapper.getDestinationByAreaCode(areaCodes.split(","));
-            responseMessage.setData(appEntities);
+            appEntities = destinationMapper.getDestinationByAreaCode(areaCodes.split(","));
         } else if (StringUtils.isNotBlank(areaName)) {
-            List<DestinationEntity> appEntities = destinationMapper.getDestinationByAreaName(areaName);
-            responseMessage.setData(appEntities);
+            appEntities = destinationMapper.getDestinationByAreaName(areaName);
         } else if (StringUtils.isNotBlank(ids)) {
-            List<DestinationEntity> appEntities = destinationMapper.getDestinationByIds(ids.split(","));
-            responseMessage.setData(appEntities);
+            appEntities = destinationMapper.getDestinationByIds(ids.split(","));
         }
-        return responseMessage;
+        if(CollectionUtils.isNotEmpty(appEntities)){
+            for(DestinationEntity entity:appEntities){
+                List<ScenicTagsEntity> tagsEntityList = (List<ScenicTagsEntity>) responseMessage.getData();
+                entity.setTagsEntities(tagsEntityList);
+                entity.setFileList(materialService.handleMaterialNew(entity.getId()));
+            }
+        }
+        return responseMessage.setData(appEntities);
     }
 
 }
