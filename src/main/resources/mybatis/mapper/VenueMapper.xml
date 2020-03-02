@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.com.wanwei.bic.mapper.VenueMapper">
+  <resultMap id="BaseResultMap" type="cn.com.wanwei.bic.entity.VenueEntity">
+    <id column="id" jdbcType="VARCHAR" property="id" />
+    <result column="created_user" jdbcType="VARCHAR" property="createdUser" />
+    <result column="created_date" jdbcType="TIMESTAMP" property="createdDate" />
+    <result column="updated_user" jdbcType="VARCHAR" property="updatedUser" />
+    <result column="updated_date" jdbcType="TIMESTAMP" property="updatedDate" />
+    <result column="category" jdbcType="VARCHAR" property="category" />
+    <result column="title" jdbcType="VARCHAR" property="title" />
+    <result column="sub_title" jdbcType="VARCHAR" property="subTitle" />
+    <result column="simple_spell" jdbcType="VARCHAR" property="simpleSpell" />
+    <result column="full_spell" jdbcType="VARCHAR" property="fullSpell" />
+    <result column="code" jdbcType="VARCHAR" property="code" />
+    <result column="summary" jdbcType="VARCHAR" property="summary" />
+    <result column="description" jdbcType="VARCHAR" property="description" />
+    <result column="slogan" jdbcType="VARCHAR" property="slogan" />
+    <result column="level" jdbcType="VARCHAR" property="level" />
+    <result column="address" jdbcType="VARCHAR" property="address" />
+    <result column="region" jdbcType="VARCHAR" property="region" />
+    <result column="region_full_name" jdbcType="VARCHAR" property="regionFullName" />
+    <result column="region_full_code" jdbcType="VARCHAR" property="regionFullCode" />
+    <result column="longitude" jdbcType="DOUBLE" property="longitude" />
+    <result column="latitude" jdbcType="DOUBLE" property="latitude" />
+    <result column="score" jdbcType="FLOAT" property="score" />
+    <result column="vr_url" jdbcType="VARCHAR" property="vrUrl" />
+    <result column="title_image" jdbcType="VARCHAR" property="titleImage" />
+    <result column="area" jdbcType="DOUBLE" property="area" />
+    <result column="max_reception_num" jdbcType="INTEGER" property="maxReceptionNum" />
+    <result column="opening_time" jdbcType="TIMESTAMP" property="openingTime" />
+    <result column="closing_time" jdbcType="TIMESTAMP" property="closingTime" />
+    <result column="status" jdbcType="INTEGER" property="status" />
+    <result column="weight" jdbcType="INTEGER" property="weight" />
+    <result column="dept_code" jdbcType="VARCHAR" property="deptCode" />
+  </resultMap>
+  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="cn.com.wanwei.bic.entity.Venue">
+    <result column="content" jdbcType="LONGVARCHAR" property="content" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, created_user, created_date, updated_user, updated_date, category, title, sub_title, 
+    simple_spell, full_spell, code, summary, description, slogan, level, address, region, 
+    region_full_name, region_full_code, longitude, latitude, score, vr_url, title_image, 
+    area, max_reception_num, opening_time, closing_time, status, weight, dept_code
+  </sql>
+  <sql id="Blob_Column_List">
+    content
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="ResultMapWithBLOBs">
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from t_bic_venue
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from t_bic_venue
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="cn.com.wanwei.bic.entity.Venue">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.String">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into t_bic_venue (created_user, created_date, updated_user, 
+      updated_date, category, title, 
+      sub_title, simple_spell, full_spell, 
+      code, summary, description, 
+      slogan, level, address, 
+      region, region_full_name, region_full_code, 
+      longitude, latitude, score, 
+      vr_url, title_image, area, 
+      max_reception_num, opening_time, closing_time, 
+      status, weight, dept_code, 
+      content)
+    values (#{createdUser,jdbcType=VARCHAR}, #{createdDate,jdbcType=TIMESTAMP}, #{updatedUser,jdbcType=VARCHAR}, 
+      #{updatedDate,jdbcType=TIMESTAMP}, #{category,jdbcType=VARCHAR}, #{title,jdbcType=VARCHAR}, 
+      #{subTitle,jdbcType=VARCHAR}, #{simpleSpell,jdbcType=VARCHAR}, #{fullSpell,jdbcType=VARCHAR}, 
+      #{code,jdbcType=VARCHAR}, #{summary,jdbcType=VARCHAR}, #{description,jdbcType=VARCHAR}, 
+      #{slogan,jdbcType=VARCHAR}, #{level,jdbcType=VARCHAR}, #{address,jdbcType=VARCHAR}, 
+      #{region,jdbcType=VARCHAR}, #{regionFullName,jdbcType=VARCHAR}, #{regionFullCode,jdbcType=VARCHAR}, 
+      #{longitude,jdbcType=DECIMAL}, #{latitude,jdbcType=DECIMAL}, #{score,jdbcType=REAL}, 
+      #{vrUrl,jdbcType=VARCHAR}, #{titleImage,jdbcType=VARCHAR}, #{area,jdbcType=INTEGER}, 
+      #{maxReceptionNum,jdbcType=INTEGER}, #{openingTime,jdbcType=TIMESTAMP}, #{closingTime,jdbcType=TIMESTAMP}, 
+      #{status,jdbcType=INTEGER}, #{weight,jdbcType=INTEGER}, #{deptCode,jdbcType=VARCHAR}, 
+      #{content,jdbcType=LONGVARCHAR})
+  </insert>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="cn.com.wanwei.bic.entity.Venue">
+    update t_bic_venue
+    set created_user = #{createdUser,jdbcType=VARCHAR},
+      created_date = #{createdDate,jdbcType=TIMESTAMP},
+      updated_user = #{updatedUser,jdbcType=VARCHAR},
+      updated_date = #{updatedDate,jdbcType=TIMESTAMP},
+      category = #{category,jdbcType=VARCHAR},
+      title = #{title,jdbcType=VARCHAR},
+      sub_title = #{subTitle,jdbcType=VARCHAR},
+      simple_spell = #{simpleSpell,jdbcType=VARCHAR},
+      full_spell = #{fullSpell,jdbcType=VARCHAR},
+      code = #{code,jdbcType=VARCHAR},
+      summary = #{summary,jdbcType=VARCHAR},
+      description = #{description,jdbcType=VARCHAR},
+      slogan = #{slogan,jdbcType=VARCHAR},
+      level = #{level,jdbcType=VARCHAR},
+      address = #{address,jdbcType=VARCHAR},
+      region = #{region,jdbcType=VARCHAR},
+      region_full_name = #{regionFullName,jdbcType=VARCHAR},
+      region_full_code = #{regionFullCode,jdbcType=VARCHAR},
+      longitude = #{longitude,jdbcType=DECIMAL},
+      latitude = #{latitude,jdbcType=DECIMAL},
+      score = #{score,jdbcType=REAL},
+      vr_url = #{vrUrl,jdbcType=VARCHAR},
+      title_image = #{titleImage,jdbcType=VARCHAR},
+      area = #{area,jdbcType=INTEGER},
+      max_reception_num = #{maxReceptionNum,jdbcType=INTEGER},
+      opening_time = #{openingTime,jdbcType=TIMESTAMP},
+      closing_time = #{closingTime,jdbcType=TIMESTAMP},
+      status = #{status,jdbcType=INTEGER},
+      weight = #{weight,jdbcType=INTEGER},
+      dept_code = #{deptCode,jdbcType=VARCHAR},
+      content = #{content,jdbcType=LONGVARCHAR}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="cn.com.wanwei.bic.entity.Venue">
+    update t_bic_venue
+    set created_user = #{createdUser,jdbcType=VARCHAR},
+      created_date = #{createdDate,jdbcType=TIMESTAMP},
+      updated_user = #{updatedUser,jdbcType=VARCHAR},
+      updated_date = #{updatedDate,jdbcType=TIMESTAMP},
+      category = #{category,jdbcType=VARCHAR},
+      title = #{title,jdbcType=VARCHAR},
+      sub_title = #{subTitle,jdbcType=VARCHAR},
+      simple_spell = #{simpleSpell,jdbcType=VARCHAR},
+      full_spell = #{fullSpell,jdbcType=VARCHAR},
+      code = #{code,jdbcType=VARCHAR},
+      summary = #{summary,jdbcType=VARCHAR},
+      description = #{description,jdbcType=VARCHAR},
+      slogan = #{slogan,jdbcType=VARCHAR},
+      level = #{level,jdbcType=VARCHAR},
+      address = #{address,jdbcType=VARCHAR},
+      region = #{region,jdbcType=VARCHAR},
+      region_full_name = #{regionFullName,jdbcType=VARCHAR},
+      region_full_code = #{regionFullCode,jdbcType=VARCHAR},
+      longitude = #{longitude,jdbcType=DECIMAL},
+      latitude = #{latitude,jdbcType=DECIMAL},
+      score = #{score,jdbcType=REAL},
+      vr_url = #{vrUrl,jdbcType=VARCHAR},
+      title_image = #{titleImage,jdbcType=VARCHAR},
+      area = #{area,jdbcType=INTEGER},
+      max_reception_num = #{maxReceptionNum,jdbcType=INTEGER},
+      opening_time = #{openingTime,jdbcType=TIMESTAMP},
+      closing_time = #{closingTime,jdbcType=TIMESTAMP},
+      status = #{status,jdbcType=INTEGER},
+      weight = #{weight,jdbcType=INTEGER},
+      dept_code = #{deptCode,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>
