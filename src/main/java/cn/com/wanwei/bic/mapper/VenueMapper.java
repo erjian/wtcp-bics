@@ -11,7 +11,5 @@ public interface VenueMapper {
 
     VenueEntity selectByPrimaryKey(String id);
 
-    int updateByPrimaryKeyWithBLOBs(VenueEntity record);
-
     int updateByPrimaryKey(VenueEntity record);
 }
