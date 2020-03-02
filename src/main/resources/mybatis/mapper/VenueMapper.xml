@@ -34,7 +34,7 @@
     <result column="weight" jdbcType="INTEGER" property="weight" />
     <result column="dept_code" jdbcType="VARCHAR" property="deptCode" />
   </resultMap>
-  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="cn.com.wanwei.bic.entity.Venue">
+  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="cn.com.wanwei.bic.entity.VenueEntity">
     <result column="content" jdbcType="LONGVARCHAR" property="content" />
   </resultMap>
   <sql id="Base_Column_List">
