@@ -5,7 +5,6 @@ import cn.com.wanwei.bic.entity.AuditLogEntity;
 import cn.com.wanwei.bic.feign.CoderServiceFeign;
 import cn.com.wanwei.bic.mapper.AuditLogMapper;
 import cn.com.wanwei.bic.mapper.CommonMapper;
-import cn.com.wanwei.bic.mapper.ScenicMapper;
 import cn.com.wanwei.bic.model.BatchAuditModel;
 import cn.com.wanwei.bic.model.DataType;
 import cn.com.wanwei.bic.model.FindStatusModel;
@@ -26,9 +25,6 @@ import java.util.*;
 
 @Service
 public class CommonServiceImpl<T> implements CommonService<T> {
-
-    @Autowired
-    private ScenicMapper scenicMapper;
 
     @Autowired
     private CommonMapper commonMapper;
@@ -66,19 +62,19 @@ public class CommonServiceImpl<T> implements CommonService<T> {
         String tableName = getTableName(clazz);
 
         //2、根据表名查询对应的最大权重值
-        Integer maxNum = scenicMapper.commonMaxWeight(tableName);
+        Integer maxNum = commonMapper.commonMaxWeight(tableName);
         List<String> ids = weightModel.getIds();
         if (ids != null && !ids.isEmpty()) {
             //判断为重新排序或者最大权重与排序大于999时所有数据权重清0
             if (weightModel.isFlag() || (maxNum + ids.size()) > Integer.MAX_VALUE) {
 
                 //3、根据表名重置权重值
-                scenicMapper.commonClearWeight(tableName);
+                commonMapper.commonClearWeight(tableName);
                 maxNum = 0;
             }
             for (int i = 0; i < ids.size(); i++) {
                 //4、根据表名修改权重值
-                scenicMapper.commonUpdateWeight(ids.get(i), maxNum + ids.size() - i, user.getUsername(), new Date(), tableName);
+                commonMapper.commonUpdateWeight(ids.get(i), maxNum + ids.size() - i, user.getUsername(), new Date(), tableName);
             }
         }
         return ResponseMessage.defaultResponse().setMsg("权重修改成功！");
