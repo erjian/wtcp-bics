@@ -1,5 +1,5 @@
 /**
- * 该源代码文件 Venue 是工程“wtcp-bics”的一部分
+ * 该源代码文件 VenueEntity 是工程“wtcp-bics”的一部分
  *
  * @project wtcp-bics
  * @author 蔺健武
@@ -26,7 +26,7 @@ import java.util.Date;
 @Table(name = "t_bic_venue")
 @ApiModel(description = "场馆管理")
 @ToString(callSuper = true)
-public class Venue extends CommonEntity {
+public class VenueEntity extends CommonEntity {
 
     @ApiModelProperty(value = "场馆类别 例如：博物馆、科技馆、文化馆、美术馆、图书馆、剧场等")
     private String category;

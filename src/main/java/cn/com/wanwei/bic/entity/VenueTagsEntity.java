@@ -16,5 +16,5 @@ import javax.persistence.Table;
 @Table(name = "t_bic_venue_tags")
 @ApiModel(description = "场馆标签管理")
 @ToString(callSuper = true)
-public class VenueTags extends BaseTagsEntity {
+public class VenueTagsEntity extends BaseTagsEntity {
 }
