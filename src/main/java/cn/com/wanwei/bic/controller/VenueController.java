@@ -164,7 +164,7 @@ public class VenueController extends BaseController {
     @ApiOperation(value = "场馆名称是否重复", notes = "场馆名称是否重复(status:1 表示不重复，0表示重复)")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "title", value = "场馆名称", required = true, dataType = "String"),
-            @ApiImplicitParam(name = "id", value = "景区id")
+            @ApiImplicitParam(name = "id", value = "场馆id")
     })
     @RequestMapping(value = "/existByTitle", method = RequestMethod.GET)
     @OperationLog(value = "wtcp-bics/检查场馆名称是否重复", operate = "", module = "场馆基础信息管理", frontCode = "", resource = "")
