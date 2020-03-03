@@ -40,7 +40,7 @@ public class AuditLogController extends BaseController {
     @OperationLog(value = "wtcp-bics/审核记录管理分页列表", operate = "r", module = "审核记录管理")
     public ResponseMessage findByPage(@RequestParam(value = "principalId") String principalId,
                                       @RequestParam(value = "type",defaultValue = "0") Integer type,
-                                      @RequestParam(value = "page", defaultValue = "1") Integer page,
+                                      @RequestParam(value = "page", defaultValue = "0") Integer page,
                                       @RequestParam(value = "size", defaultValue = "10") Integer size,
                                       HttpServletRequest request){
         Map<String, Object> filter = RequestUtil.getParameters(request);
