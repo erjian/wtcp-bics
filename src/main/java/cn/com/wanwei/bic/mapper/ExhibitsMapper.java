@@ -3,12 +3,14 @@ package cn.com.wanwei.bic.mapper;
 import cn.com.wanwei.bic.entity.ExhibitsEntity;
 import cn.com.wanwei.common.annotation.DataScope;
 import com.github.pagehelper.Page;
+import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+@Mapper
 public interface ExhibitsMapper {
     int deleteByPrimaryKey(String id);
 
