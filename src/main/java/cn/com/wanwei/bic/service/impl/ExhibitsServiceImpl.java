@@ -55,18 +55,6 @@ public class ExhibitsServiceImpl implements ExhibitsService {
     @Autowired
     private MaterialService materialService;
 
-    @Autowired
-    private ExtendMapper extendMapper;
-
-    @Autowired
-    private EnterpriseMapper enterpriseMapper;
-
-    @Autowired
-    private ContactMapper contactMapper;
-
-    @Autowired
-    private BusinessMapper businessMapper;
-
     @Override
     public ResponseMessage findByPage(Integer page, Integer size, Map<String, Object> filter) {
         EscapeCharUtils.escape(filter, "title", "subTitle");
@@ -81,7 +69,7 @@ public class ExhibitsServiceImpl implements ExhibitsService {
     public ResponseMessage find(String id) {
         ExhibitsEntity exhibitsEntity = exhibitsMapper.selectByPrimaryKey(id);
         if (exhibitsEntity == null) {
-            return ResponseMessage.validFailResponse().setMsg("暂无该休闲娱乐信息！");
+            return ResponseMessage.validFailResponse().setMsg("暂无该展品信息！");
         }
         return ResponseMessage.defaultResponse().setData(exhibitsEntity);
     }
@@ -140,7 +128,7 @@ public class ExhibitsServiceImpl implements ExhibitsService {
             }
             return ResponseMessage.defaultResponse().setMsg("更新成功！");
         }
-        return ResponseMessage.validFailResponse().setMsg("暂无该休闲娱乐信息！");
+        return ResponseMessage.validFailResponse().setMsg("暂无该展品信息！");
     }
 
     @Override
@@ -183,7 +171,7 @@ public class ExhibitsServiceImpl implements ExhibitsService {
     public ResponseMessage auditOrIssue(AuditLogEntity auditLogEntity, User user, int type) {
         ExhibitsEntity eEntity = exhibitsMapper.selectByPrimaryKey(auditLogEntity.getPrincipalId());
         if (eEntity == null) {
-            return ResponseMessage.validFailResponse().setMsg("暂无该休闲娱乐信息！");
+            return ResponseMessage.validFailResponse().setMsg("暂无该展品信息！");
         }
         String msg = "审核成功！";
         if (type == 1) {
@@ -219,11 +207,10 @@ public class ExhibitsServiceImpl implements ExhibitsService {
     }
 
     @Override
-    public void dataBind(String updatedUser, String updatedDate, DataBindModel model) {
+    public void dataBind(String updatedUser, DataBindModel model) {
         String deptCode = model.getDeptCode();
         List<String> ids = model.getIds();
-        exhibitsMapper.dataBind(updatedUser, updatedDate, deptCode, ids);
-        extendMapper.dataBindExtend(updatedUser, updatedDate, deptCode, ids);
+        exhibitsMapper.dataBind(updatedUser, new Date(), deptCode, ids);
     }
 
     @Override
@@ -232,5 +219,10 @@ public class ExhibitsServiceImpl implements ExhibitsService {
             tagsService.batchInsert(id, list, user, ExhibitsTagsEntity.class);
         }
         return ResponseMessage.defaultResponse().setMsg("关联成功！");
+    }
+
+    @Override
+    public ResponseMessage getExhibitsList() {
+        return ResponseMessage.defaultResponse().setData(exhibitsMapper.getExhibitsList());
     }
 }
