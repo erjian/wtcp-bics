@@ -84,10 +84,9 @@ public interface ExhibitsService {
     /**
      * 数据绑定
      * @param updatedUser
-     * @param updatedDate
      * @param model
      */
-    void dataBind(String updatedUser, String updatedDate, DataBindModel model);
+    void dataBind(String updatedUser, DataBindModel model);
 
     /**
      * 展品信息标签关联

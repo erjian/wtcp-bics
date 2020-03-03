@@ -158,8 +158,7 @@ public class ExhibitsController extends BaseController{
             return ResponseMessage.validFailResponse().setMsg(bindingResult.getAllErrors());
         }
         String updatedUser = getCurrentUser().getUsername();
-        String updatedDate = DateFormatUtils.format(new Date(), "yyyy-MM-dd HH:mm:ss");
-        exhibitsService.dataBind(updatedUser, updatedDate, model);
+        exhibitsService.dataBind(updatedUser, model);
 
         return ResponseMessage.defaultResponse().setMsg("数据绑定成功");
     }

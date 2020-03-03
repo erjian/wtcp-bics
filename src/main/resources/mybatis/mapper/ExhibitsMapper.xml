@@ -35,24 +35,17 @@
     <result column="status" jdbcType="INTEGER" property="status" />
     <result column="weight" jdbcType="INTEGER" property="weight" />
     <result column="dept_code" jdbcType="VARCHAR" property="deptCode" />
-  </resultMap>
-  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="cn.com.wanwei.bic.entity.ExhibitsEntity">
     <result column="content" jdbcType="LONGVARCHAR" property="content" />
   </resultMap>
   <sql id="Base_Column_List">
     id, created_user, created_date, updated_user, updated_date, title, sub_title, simple_spell, 
     full_spell, code, venue_id, hall_id, summary, description, slogan, category, level, 
     type, longitude, latitude, exhibition_area, register_number, years_kind, years, appearance_size, 
-    quality, author, excavation_address, vr_url, ar_url, status, weight, dept_code
+    quality, author, excavation_address, vr_url, ar_url, status, weight, dept_code,content
   </sql>
-  <sql id="Blob_Column_List">
-    content
-  </sql>
-  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="ResultMapWithBLOBs">
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
-    ,
-    <include refid="Blob_Column_List" />
     from t_bic_exhibits
     where id = #{id,jdbcType=VARCHAR}
   </select>
@@ -61,10 +54,7 @@
     where id = #{id,jdbcType=VARCHAR}
   </delete>
   <insert id="insert" parameterType="cn.com.wanwei.bic.entity.ExhibitsEntity">
-    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.String">
-      SELECT LAST_INSERT_ID()
-    </selectKey>
-    insert into t_bic_exhibits (created_user, created_date, updated_user, 
+    insert into t_bic_exhibits (id,created_user, created_date, updated_user,
       updated_date, title, sub_title, 
       simple_spell, full_spell, code, 
       venue_id, hall_id, summary, 
@@ -76,7 +66,7 @@
       vr_url, ar_url, status, 
       weight, dept_code, content
       )
-    values (#{createdUser,jdbcType=VARCHAR}, #{createdDate,jdbcType=TIMESTAMP}, #{updatedUser,jdbcType=VARCHAR}, 
+    values (#{id,jdbcType=VARCHAR},#{createdUser,jdbcType=VARCHAR}, #{createdDate,jdbcType=TIMESTAMP}, #{updatedUser,jdbcType=VARCHAR},
       #{updatedDate,jdbcType=TIMESTAMP}, #{title,jdbcType=VARCHAR}, #{subTitle,jdbcType=VARCHAR}, 
       #{simpleSpell,jdbcType=VARCHAR}, #{fullSpell,jdbcType=VARCHAR}, #{code,jdbcType=VARCHAR}, 
       #{venueId,jdbcType=VARCHAR}, #{hallId,jdbcType=VARCHAR}, #{summary,jdbcType=VARCHAR}, 
@@ -89,320 +79,7 @@
       #{weight,jdbcType=INTEGER}, #{deptCode,jdbcType=VARCHAR}, #{content,jdbcType=LONGVARCHAR}
       )
   </insert>
-  <insert id="insertSelective" parameterType="cn.com.wanwei.bic.entity.ExhibitsEntity">
-    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.String">
-      SELECT LAST_INSERT_ID()
-    </selectKey>
-    insert into t_bic_exhibits
-    <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="createdUser != null">
-        created_user,
-      </if>
-      <if test="createdDate != null">
-        created_date,
-      </if>
-      <if test="updatedUser != null">
-        updated_user,
-      </if>
-      <if test="updatedDate != null">
-        updated_date,
-      </if>
-      <if test="title != null">
-        title,
-      </if>
-      <if test="subTitle != null">
-        sub_title,
-      </if>
-      <if test="simpleSpell != null">
-        simple_spell,
-      </if>
-      <if test="fullSpell != null">
-        full_spell,
-      </if>
-      <if test="code != null">
-        code,
-      </if>
-      <if test="venueId != null">
-        venue_id,
-      </if>
-      <if test="hallId != null">
-        hall_id,
-      </if>
-      <if test="summary != null">
-        summary,
-      </if>
-      <if test="description != null">
-        description,
-      </if>
-      <if test="slogan != null">
-        slogan,
-      </if>
-      <if test="category != null">
-        category,
-      </if>
-      <if test="level != null">
-        level,
-      </if>
-      <if test="type != null">
-        type,
-      </if>
-      <if test="longitude != null">
-        longitude,
-      </if>
-      <if test="latitude != null">
-        latitude,
-      </if>
-      <if test="exhibitionArea != null">
-        exhibition_area,
-      </if>
-      <if test="registerNumber != null">
-        register_number,
-      </if>
-      <if test="yearsKind != null">
-        years_kind,
-      </if>
-      <if test="years != null">
-        years,
-      </if>
-      <if test="appearanceSize != null">
-        appearance_size,
-      </if>
-      <if test="quality != null">
-        quality,
-      </if>
-      <if test="author != null">
-        author,
-      </if>
-      <if test="excavationAddress != null">
-        excavation_address,
-      </if>
-      <if test="vrUrl != null">
-        vr_url,
-      </if>
-      <if test="arUrl != null">
-        ar_url,
-      </if>
-      <if test="status != null">
-        status,
-      </if>
-      <if test="weight != null">
-        weight,
-      </if>
-      <if test="deptCode != null">
-        dept_code,
-      </if>
-      <if test="content != null">
-        content,
-      </if>
-    </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="createdUser != null">
-        #{createdUser,jdbcType=VARCHAR},
-      </if>
-      <if test="createdDate != null">
-        #{createdDate,jdbcType=TIMESTAMP},
-      </if>
-      <if test="updatedUser != null">
-        #{updatedUser,jdbcType=VARCHAR},
-      </if>
-      <if test="updatedDate != null">
-        #{updatedDate,jdbcType=TIMESTAMP},
-      </if>
-      <if test="title != null">
-        #{title,jdbcType=VARCHAR},
-      </if>
-      <if test="subTitle != null">
-        #{subTitle,jdbcType=VARCHAR},
-      </if>
-      <if test="simpleSpell != null">
-        #{simpleSpell,jdbcType=VARCHAR},
-      </if>
-      <if test="fullSpell != null">
-        #{fullSpell,jdbcType=VARCHAR},
-      </if>
-      <if test="code != null">
-        #{code,jdbcType=VARCHAR},
-      </if>
-      <if test="venueId != null">
-        #{venueId,jdbcType=VARCHAR},
-      </if>
-      <if test="hallId != null">
-        #{hallId,jdbcType=VARCHAR},
-      </if>
-      <if test="summary != null">
-        #{summary,jdbcType=VARCHAR},
-      </if>
-      <if test="description != null">
-        #{description,jdbcType=VARCHAR},
-      </if>
-      <if test="slogan != null">
-        #{slogan,jdbcType=VARCHAR},
-      </if>
-      <if test="category != null">
-        #{category,jdbcType=VARCHAR},
-      </if>
-      <if test="level != null">
-        #{level,jdbcType=VARCHAR},
-      </if>
-      <if test="type != null">
-        #{type,jdbcType=VARCHAR},
-      </if>
-      <if test="longitude != null">
-        #{longitude,jdbcType=DECIMAL},
-      </if>
-      <if test="latitude != null">
-        #{latitude,jdbcType=DECIMAL},
-      </if>
-      <if test="exhibitionArea != null">
-        #{exhibitionArea,jdbcType=VARCHAR},
-      </if>
-      <if test="registerNumber != null">
-        #{registerNumber,jdbcType=VARCHAR},
-      </if>
-      <if test="yearsKind != null">
-        #{yearsKind,jdbcType=VARCHAR},
-      </if>
-      <if test="years != null">
-        #{years,jdbcType=VARCHAR},
-      </if>
-      <if test="appearanceSize != null">
-        #{appearanceSize,jdbcType=VARCHAR},
-      </if>
-      <if test="quality != null">
-        #{quality,jdbcType=INTEGER},
-      </if>
-      <if test="author != null">
-        #{author,jdbcType=VARCHAR},
-      </if>
-      <if test="excavationAddress != null">
-        #{excavationAddress,jdbcType=VARCHAR},
-      </if>
-      <if test="vrUrl != null">
-        #{vrUrl,jdbcType=VARCHAR},
-      </if>
-      <if test="arUrl != null">
-        #{arUrl,jdbcType=VARCHAR},
-      </if>
-      <if test="status != null">
-        #{status,jdbcType=INTEGER},
-      </if>
-      <if test="weight != null">
-        #{weight,jdbcType=INTEGER},
-      </if>
-      <if test="deptCode != null">
-        #{deptCode,jdbcType=VARCHAR},
-      </if>
-      <if test="content != null">
-        #{content,jdbcType=LONGVARCHAR},
-      </if>
-    </trim>
-  </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="cn.com.wanwei.bic.entity.ExhibitsEntity">
-    update t_bic_exhibits
-    <set>
-      <if test="createdUser != null">
-        created_user = #{createdUser,jdbcType=VARCHAR},
-      </if>
-      <if test="createdDate != null">
-        created_date = #{createdDate,jdbcType=TIMESTAMP},
-      </if>
-      <if test="updatedUser != null">
-        updated_user = #{updatedUser,jdbcType=VARCHAR},
-      </if>
-      <if test="updatedDate != null">
-        updated_date = #{updatedDate,jdbcType=TIMESTAMP},
-      </if>
-      <if test="title != null">
-        title = #{title,jdbcType=VARCHAR},
-      </if>
-      <if test="subTitle != null">
-        sub_title = #{subTitle,jdbcType=VARCHAR},
-      </if>
-      <if test="simpleSpell != null">
-        simple_spell = #{simpleSpell,jdbcType=VARCHAR},
-      </if>
-      <if test="fullSpell != null">
-        full_spell = #{fullSpell,jdbcType=VARCHAR},
-      </if>
-      <if test="code != null">
-        code = #{code,jdbcType=VARCHAR},
-      </if>
-      <if test="venueId != null">
-        venue_id = #{venueId,jdbcType=VARCHAR},
-      </if>
-      <if test="hallId != null">
-        hall_id = #{hallId,jdbcType=VARCHAR},
-      </if>
-      <if test="summary != null">
-        summary = #{summary,jdbcType=VARCHAR},
-      </if>
-      <if test="description != null">
-        description = #{description,jdbcType=VARCHAR},
-      </if>
-      <if test="slogan != null">
-        slogan = #{slogan,jdbcType=VARCHAR},
-      </if>
-      <if test="category != null">
-        category = #{category,jdbcType=VARCHAR},
-      </if>
-      <if test="level != null">
-        level = #{level,jdbcType=VARCHAR},
-      </if>
-      <if test="type != null">
-        type = #{type,jdbcType=VARCHAR},
-      </if>
-      <if test="longitude != null">
-        longitude = #{longitude,jdbcType=DECIMAL},
-      </if>
-      <if test="latitude != null">
-        latitude = #{latitude,jdbcType=DECIMAL},
-      </if>
-      <if test="exhibitionArea != null">
-        exhibition_area = #{exhibitionArea,jdbcType=VARCHAR},
-      </if>
-      <if test="registerNumber != null">
-        register_number = #{registerNumber,jdbcType=VARCHAR},
-      </if>
-      <if test="yearsKind != null">
-        years_kind = #{yearsKind,jdbcType=VARCHAR},
-      </if>
-      <if test="years != null">
-        years = #{years,jdbcType=VARCHAR},
-      </if>
-      <if test="appearanceSize != null">
-        appearance_size = #{appearanceSize,jdbcType=VARCHAR},
-      </if>
-      <if test="quality != null">
-        quality = #{quality,jdbcType=INTEGER},
-      </if>
-      <if test="author != null">
-        author = #{author,jdbcType=VARCHAR},
-      </if>
-      <if test="excavationAddress != null">
-        excavation_address = #{excavationAddress,jdbcType=VARCHAR},
-      </if>
-      <if test="vrUrl != null">
-        vr_url = #{vrUrl,jdbcType=VARCHAR},
-      </if>
-      <if test="arUrl != null">
-        ar_url = #{arUrl,jdbcType=VARCHAR},
-      </if>
-      <if test="status != null">
-        status = #{status,jdbcType=INTEGER},
-      </if>
-      <if test="weight != null">
-        weight = #{weight,jdbcType=INTEGER},
-      </if>
-      <if test="deptCode != null">
-        dept_code = #{deptCode,jdbcType=VARCHAR},
-      </if>
-      <if test="content != null">
-        content = #{content,jdbcType=LONGVARCHAR},
-      </if>
-    </set>
-    where id = #{id,jdbcType=VARCHAR}
-  </update>
-  <update id="updateByPrimaryKeyWithBLOBs" parameterType="cn.com.wanwei.bic.entity.ExhibitsEntity">
+  <update id="updateByPrimaryKey" parameterType="cn.com.wanwei.bic.entity.ExhibitsEntity">
     update t_bic_exhibits
     set created_user = #{createdUser,jdbcType=VARCHAR},
       created_date = #{createdDate,jdbcType=TIMESTAMP},
@@ -439,40 +116,79 @@
       content = #{content,jdbcType=LONGVARCHAR}
     where id = #{id,jdbcType=VARCHAR}
   </update>
-  <update id="updateByPrimaryKey" parameterType="cn.com.wanwei.bic.entity.ExhibitsEntity">
+  <select id="findByPage" parameterType="java.util.Map" resultMap="BaseResultMap">
+    <include refid="Get_Page_Info"/>
+  </select>
+  <select id="checkTitle" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"/>
+    from t_bic_exhibits
+    where title = #{title,jdbcType=VARCHAR}
+  </select>
+  <update id="dataBind">
     update t_bic_exhibits
-    set created_user = #{createdUser,jdbcType=VARCHAR},
-      created_date = #{createdDate,jdbcType=TIMESTAMP},
-      updated_user = #{updatedUser,jdbcType=VARCHAR},
-      updated_date = #{updatedDate,jdbcType=TIMESTAMP},
-      title = #{title,jdbcType=VARCHAR},
-      sub_title = #{subTitle,jdbcType=VARCHAR},
-      simple_spell = #{simpleSpell,jdbcType=VARCHAR},
-      full_spell = #{fullSpell,jdbcType=VARCHAR},
-      code = #{code,jdbcType=VARCHAR},
-      venue_id = #{venueId,jdbcType=VARCHAR},
-      hall_id = #{hallId,jdbcType=VARCHAR},
-      summary = #{summary,jdbcType=VARCHAR},
-      description = #{description,jdbcType=VARCHAR},
-      slogan = #{slogan,jdbcType=VARCHAR},
-      category = #{category,jdbcType=VARCHAR},
-      level = #{level,jdbcType=VARCHAR},
-      type = #{type,jdbcType=VARCHAR},
-      longitude = #{longitude,jdbcType=DECIMAL},
-      latitude = #{latitude,jdbcType=DECIMAL},
-      exhibition_area = #{exhibitionArea,jdbcType=VARCHAR},
-      register_number = #{registerNumber,jdbcType=VARCHAR},
-      years_kind = #{yearsKind,jdbcType=VARCHAR},
-      years = #{years,jdbcType=VARCHAR},
-      appearance_size = #{appearanceSize,jdbcType=VARCHAR},
-      quality = #{quality,jdbcType=INTEGER},
-      author = #{author,jdbcType=VARCHAR},
-      excavation_address = #{excavationAddress,jdbcType=VARCHAR},
-      vr_url = #{vrUrl,jdbcType=VARCHAR},
-      ar_url = #{arUrl,jdbcType=VARCHAR},
-      status = #{status,jdbcType=INTEGER},
-      weight = #{weight,jdbcType=INTEGER},
-      dept_code = #{deptCode,jdbcType=VARCHAR}
-    where id = #{id,jdbcType=VARCHAR}
+    set updated_date = #{updatedDate,jdbcType=TIMESTAMP},
+    updated_user = #{updatedUser,jdbcType=VARCHAR},
+    dept_code = #{deptCode,jdbcType=VARCHAR}
+    where id in
+    <foreach collection="ids" item="item" index="index" open="(" separator="," close=")">
+      #{item}
+    </foreach>
   </update>
+
+  <update id="clearWeight">
+    update t_bic_exhibits set weight=0
+  </update>
+  <select id="maxWeight" resultType="Integer">
+    select weight from t_bic_exhibits order by weight desc limit 1
+  </select>
+  <select id="getEnterList" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"/>
+    from t_bic_exhibits
+  </select>
+
+
+
+  <sql id="Get_Page_Info">
+    select
+    <include refid="Base_Column_List"/>
+    from t_bic_exhibits
+    <where>
+      <if test="title != null and title!='' ">
+        <bind name="title" value="'%'+title + '%'"></bind>
+        and (title like #{title} or simple_spell like #{title} or full_spell like #{title})
+      </if>
+      <if test="subTitle != null and subTitle!='' ">
+        <bind name="subTitle" value="'%'+subTitle + '%'"></bind>
+        and sub_title like #{subTitle}
+      </if>
+      <if test="level != null">
+        and level = #{level,jdbcType=VARCHAR}
+      </if>
+      <if test="type != null">
+        and type = #{type,jdbcType=VARCHAR}
+      </if>
+      <if test="category != null">
+        and category = #{category,jdbcType=VARCHAR}
+      </if>
+      <if test="status != null">
+        <if test="status == 0 or status == 2">
+          and status = #{status,jdbcType=INTEGER}
+        </if>
+        <if test="status == 1">
+          and (status = 1 or status = 9)
+        </if>
+      </if>
+      <if test="onlineStatus != null">
+        <if test="onlineStatus == 9">
+          and status = #{onlineStatus,jdbcType=INTEGER}
+        </if>
+        <if test="onlineStatus == 1">
+          and 9 > status
+        </if>
+      </if>
+    </where>
+  </sql>
+
 </mapper>
