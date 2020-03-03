@@ -179,28 +179,6 @@ public class ScenicServiceImpl implements ScenicService {
     }
 
     @Override
-    public ResponseMessage changeWeight(WeightModel weightModel, User user) {
-        //查出最大权重
-        Integer maxNum = scenicMapper.maxWeight();
-        List<String> ids = weightModel.getIds();
-        if (ids != null && !ids.isEmpty()) {
-            //判断为重新排序或者最大权重与排序大于999时所有数据权重清0
-            if (weightModel.isFlag() || (maxNum + ids.size()) > Integer.MAX_VALUE) {
-                scenicMapper.clearWeight();
-                maxNum = 0;
-            }
-            for (int i = 0; i < ids.size(); i++) {
-                ScenicEntity scenicEntity = scenicMapper.selectByPrimaryKey(ids.get(i));
-                scenicEntity.setWeight(maxNum + ids.size() - i);
-                scenicEntity.setUpdatedUser(user.getUsername());
-                scenicEntity.setUpdatedDate(new Date());
-                scenicMapper.updateByPrimaryKey(scenicEntity);
-            }
-        }
-        return ResponseMessage.defaultResponse().setMsg("权重修改成功！");
-    }
-
-    @Override
     public ResponseMessage changeStatus(String id, Integer status, String username) throws Exception {
         ScenicEntity entity = scenicMapper.selectByPrimaryKey(id);
         if (null == entity) {

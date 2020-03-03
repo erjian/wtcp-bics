@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.com.wanwei.bic.mapper.HallMapper">
+    <resultMap id="BaseResultMap" type="cn.com.wanwei.bic.entity.HallEntity">
+        <id column="id" jdbcType="VARCHAR" property="id"/>
+        <result column="created_user" jdbcType="VARCHAR" property="createdUser"/>
+        <result column="created_date" jdbcType="TIMESTAMP" property="createdDate"/>
+        <result column="updated_user" jdbcType="VARCHAR" property="updatedUser"/>
+        <result column="updated_date" jdbcType="TIMESTAMP" property="updatedDate"/>
+        <result column="venue_id" jdbcType="VARCHAR" property="venueId"/>
+        <result column="code" jdbcType="VARCHAR" property="code"/>
+        <result column="title" jdbcType="VARCHAR" property="title"/>
+        <result column="simple_spell" jdbcType="VARCHAR" property="simpleSpell"/>
+        <result column="full_spell" jdbcType="VARCHAR" property="fullSpell"/>
+        <result column="summary" jdbcType="VARCHAR" property="summary"/>
+        <result column="description" jdbcType="VARCHAR" property="description"/>
+        <result column="category" jdbcType="VARCHAR" property="category"/>
+        <result column="longitude" jdbcType="DECIMAL" property="longitude"/>
+        <result column="latitude" jdbcType="DECIMAL" property="latitude"/>
+        <result column="vr_url" jdbcType="VARCHAR" property="vrUrl"/>
+        <result column="area" jdbcType="INTEGER" property="area"/>
+        <result column="max_reception_num" jdbcType="INTEGER" property="maxReceptionNum"/>
+        <result column="status" jdbcType="INTEGER" property="status"/>
+        <result column="weight" jdbcType="INTEGER" property="weight"/>
+        <result column="dept_code" jdbcType="VARCHAR" property="deptCode"/>
+    </resultMap>
+
+    <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="cn.com.wanwei.bic.entity.HallEntity">
+        <result column="content" jdbcType="LONGVARCHAR" property="content"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id, created_user, created_date, updated_user, updated_date, venue_id, code, title,
+        simple_spell, full_spell, summary, description, category, longitude, latitude, vr_url,
+        area, max_reception_num, status, weight, dept_code
+    </sql>
+
+    <sql id="Blob_Column_List">
+        content
+    </sql>
+
+    <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="ResultMapWithBLOBs">
+        select
+        <include refid="Base_Column_List"/>
+        ,
+        <include refid="Blob_Column_List"/>
+        from t_bic_hall
+        where id = #{id,jdbcType=VARCHAR}
+    </select>
+
+    <select id="countByVenueId" parameterType="java.lang.String" resultType="long">
+        select count(1) from t_bic_hall
+        where venue_id = #{venueId,jdbcType=VARCHAR}
+    </select>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+        delete from t_bic_hall
+        where id = #{id,jdbcType=VARCHAR}
+    </delete>
+
+    <insert id="insert" parameterType="cn.com.wanwei.bic.entity.HallEntity">
+        insert into t_bic_hall (created_user, created_date, updated_user,
+        updated_date, venue_id, code,
+        title, simple_spell, full_spell,
+        summary, description, category,
+        longitude, latitude, vr_url,
+        area, max_reception_num, status,
+        weight, dept_code, content
+        )
+        values (#{createdUser,jdbcType=VARCHAR}, #{createdDate,jdbcType=TIMESTAMP}, #{updatedUser,jdbcType=VARCHAR},
+        #{updatedDate,jdbcType=TIMESTAMP}, #{venueId,jdbcType=VARCHAR}, #{code,jdbcType=VARCHAR},
+        #{title,jdbcType=VARCHAR}, #{simpleSpell,jdbcType=VARCHAR}, #{fullSpell,jdbcType=VARCHAR},
+        #{summary,jdbcType=VARCHAR}, #{description,jdbcType=VARCHAR}, #{category,jdbcType=VARCHAR},
+        #{longitude,jdbcType=DECIMAL}, #{latitude,jdbcType=DECIMAL}, #{vrUrl,jdbcType=VARCHAR},
+        #{area,jdbcType=INTEGER}, #{maxReceptionNum,jdbcType=INTEGER}, #{status,jdbcType=INTEGER},
+        #{weight,jdbcType=INTEGER}, #{deptCode,jdbcType=VARCHAR}, #{content,jdbcType=LONGVARCHAR}
+        )
+    </insert>
+
+    <update id="updateByPrimaryKey" parameterType="cn.com.wanwei.bic.entity.HallEntity">
+        update t_bic_hall
+        set created_user = #{createdUser,jdbcType=VARCHAR},
+            created_date = #{createdDate,jdbcType=TIMESTAMP},
+            updated_user = #{updatedUser,jdbcType=VARCHAR},
+            updated_date = #{updatedDate,jdbcType=TIMESTAMP},
+            venue_id = #{venueId,jdbcType=VARCHAR},
+            code = #{code,jdbcType=VARCHAR},
+            title = #{title,jdbcType=VARCHAR},
+            simple_spell = #{simpleSpell,jdbcType=VARCHAR},
+            full_spell = #{fullSpell,jdbcType=VARCHAR},
+            summary = #{summary,jdbcType=VARCHAR},
+            description = #{description,jdbcType=VARCHAR},
+            category = #{category,jdbcType=VARCHAR},
+            longitude = #{longitude,jdbcType=DECIMAL},
+            latitude = #{latitude,jdbcType=DECIMAL},
+            vr_url = #{vrUrl,jdbcType=VARCHAR},
+            area = #{area,jdbcType=INTEGER},
+            max_reception_num = #{maxReceptionNum,jdbcType=INTEGER},
+            status = #{status,jdbcType=INTEGER},
+            weight = #{weight,jdbcType=INTEGER},
+            dept_code = #{deptCode,jdbcType=VARCHAR},
+            content = #{content,jdbcType=LONGVARCHAR}
+        where id = #{id,jdbcType=VARCHAR}
+    </update>
+
+    <select id="findByPage" parameterType="java.util.Map" resultMap="BaseResultMap">
+        <include refid="Get_Page_Info"/>
+    </select>
+
+    <select id="findByPageForFeign" parameterType="java.util.Map" resultMap="BaseResultMap">
+        <include refid="Get_Page_Info"/>
+    </select>
+
+    <select id="findByList" parameterType="java.util.Map" resultMap="BaseResultMap">
+        <include refid="Get_Page_Info"/>
+    </select>
+
+    <sql id="Get_Page_Info">
+        select
+        <include refid="Base_Column_List"/>
+        from t_bic_hall
+        <where>
+            <if test="title != null and title!='' ">
+                <bind name="title" value="'%'+title + '%'"></bind>
+                and (title like #{title} or simple_spell like #{title} or full_spell like #{title})
+            </if>
+            <if test="category != null">
+                and category = #{category,jdbcType=VARCHAR}
+            </if>
+            <if test="venueId != null">
+                and venue_id = #{venueId,jdbcType=VARCHAR}
+            </if>
+            <if test="onlineStatus != null">
+                <if test="onlineStatus == 9">
+                    and status = #{onlineStatus,jdbcType=INTEGER}
+                </if>
+                <if test="onlineStatus == 1">
+                    and 9 > status
+                </if>
+            </if>
+        </where>
+    </sql>
+
+    <select id="existsByTitleAndIdNot" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from t_bic_hall
+        <where>
+            <if test="title != null">
+                and title = #{title,jdbcType=VARCHAR}
+            </if>
+            <if test="id != null and id != '-1'.toString()">
+                and id != #{id,jdbcType=BIGINT}
+            </if>
+        </where>
+    </select>
+
+    <update id="dataBind">
+        update t_bic_hall
+        set updated_date = #{updatedDate,jdbcType=TIMESTAMP},
+        updated_user = #{updatedUser,jdbcType=VARCHAR},
+        dept_code = #{deptCode,jdbcType=VARCHAR}
+        where id in
+        <foreach collection="ids" item="item" index="index" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </update>
+</mapper>
