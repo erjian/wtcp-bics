@@ -5,7 +5,6 @@ import cn.com.wanwei.bic.entity.AuditLogEntity;
 import cn.com.wanwei.bic.feign.CoderServiceFeign;
 import cn.com.wanwei.bic.mapper.AuditLogMapper;
 import cn.com.wanwei.bic.mapper.CommonMapper;
-import cn.com.wanwei.bic.mapper.ScenicMapper;
 import cn.com.wanwei.bic.model.BatchAuditModel;
 import cn.com.wanwei.bic.model.DataType;
 import cn.com.wanwei.bic.model.FindStatusModel;
@@ -14,21 +13,21 @@ import cn.com.wanwei.bic.service.*;
 import cn.com.wanwei.bic.utils.UUIDUtils;
 import cn.com.wanwei.common.model.ResponseMessage;
 import cn.com.wanwei.common.model.User;
+import cn.com.wanwei.common.utils.ExceptionUtils;
 import com.google.common.collect.Maps;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.Table;
 import java.util.*;
 
+@Slf4j
 @Service
 public class CommonServiceImpl<T> implements CommonService<T> {
-
-    @Autowired
-    private ScenicMapper scenicMapper;
 
     @Autowired
     private CommonMapper commonMapper;
@@ -66,19 +65,19 @@ public class CommonServiceImpl<T> implements CommonService<T> {
         String tableName = getTableName(clazz);
 
         //2、根据表名查询对应的最大权重值
-        Integer maxNum = scenicMapper.commonMaxWeight(tableName);
+        Integer maxNum = commonMapper.commonMaxWeight(tableName);
         List<String> ids = weightModel.getIds();
         if (ids != null && !ids.isEmpty()) {
             //判断为重新排序或者最大权重与排序大于999时所有数据权重清0
             if (weightModel.isFlag() || (maxNum + ids.size()) > Integer.MAX_VALUE) {
 
                 //3、根据表名重置权重值
-                scenicMapper.commonClearWeight(tableName);
+                commonMapper.commonClearWeight(tableName);
                 maxNum = 0;
             }
             for (int i = 0; i < ids.size(); i++) {
                 //4、根据表名修改权重值
-                scenicMapper.commonUpdateWeight(ids.get(i), maxNum + ids.size() - i, user.getUsername(), new Date(), tableName);
+                commonMapper.commonUpdateWeight(ids.get(i), maxNum + ids.size() - i, user.getUsername(), new Date(), tableName);
             }
         }
         return ResponseMessage.defaultResponse().setMsg("权重修改成功！");
@@ -103,7 +102,8 @@ public class CommonServiceImpl<T> implements CommonService<T> {
                 int successNum = commonMapper.updateById(this.makeParams(id, batchAuditModel.getStatus(), user, tableName));
                 // 记录操作流水
                 if (successNum > 0) {
-                    this.saveAuditLog(id, statusModel.getStatus(), batchAuditModel, user);
+                    this.saveAuditLog(statusModel.getStatus(), batchAuditModel.getStatus(), id, user.getUsername(),
+                            batchAuditModel.getMsg(), batchAuditModel.getType());
                 }
             }
         }
@@ -168,6 +168,25 @@ public class CommonServiceImpl<T> implements CommonService<T> {
         return responseMessage;
     }
 
+    @Override
+    public int saveAuditLog(int preStatus, int auditStatus, String principalId, String userName, String msg, int type) {
+        try {
+            AuditLogEntity auditLogEntity = new AuditLogEntity();
+            auditLogEntity.setId(UUIDUtils.getInstance().getId());
+            auditLogEntity.setType(type);
+            auditLogEntity.setPreStatus(preStatus);
+            auditLogEntity.setStatus(auditStatus);
+            auditLogEntity.setPrincipalId(principalId);
+            auditLogEntity.setCreatedDate(new Date());
+            auditLogEntity.setCreatedUser(userName);
+            auditLogEntity.setOpinion(msg);
+            return auditLogMapper.insert(auditLogEntity);
+        } catch (Exception e) {
+            log.error(ExceptionUtils.getStackTrace(e));
+        }
+        return 0;
+    }
+
     private Map<String, Object> makeParams(String id, Integer status, User user, String tableName) {
         Map<String, Object> params = Maps.newHashMap();
         params.put("tableName", tableName);
@@ -176,19 +195,6 @@ public class CommonServiceImpl<T> implements CommonService<T> {
         params.put("updatedDate", new Date());
         params.put("updatedUser", user.getUsername());
         return params;
-    }
-
-    private void saveAuditLog(String id, Integer preStatus, BatchAuditModel batchAuditModel, User user) {
-        AuditLogEntity auditLogEntity = new AuditLogEntity();
-        auditLogEntity.setId(UUIDUtils.getInstance().getId());
-        auditLogEntity.setCreatedDate(new Date());
-        auditLogEntity.setCreatedUser(user.getUsername());
-        auditLogEntity.setPreStatus(preStatus);
-        auditLogEntity.setStatus(batchAuditModel.getStatus());
-        auditLogEntity.setPrincipalId(id);
-        auditLogEntity.setType(batchAuditModel.getType());
-        auditLogEntity.setOpinion(batchAuditModel.getMsg());
-        auditLogMapper.insert(auditLogEntity);
     }
 
     private String getTableName(Class<T> clazz) {

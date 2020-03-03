@@ -1,5 +1,5 @@
 /**
- * 该源代码文件 Venue 是工程“wtcp-bics”的一部分
+ * 该源代码文件 VenueEntity 是工程“wtcp-bics”的一部分
  *
  * @project wtcp-bics
  * @author 蔺健武
@@ -17,7 +17,10 @@ import lombok.ToString;
 
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import java.util.Date;
+import java.util.List;
+import java.util.Map;
 
 @Data
 @EqualsAndHashCode(callSuper = false)
@@ -26,7 +29,7 @@ import java.util.Date;
 @Table(name = "t_bic_venue")
 @ApiModel(description = "场馆管理")
 @ToString(callSuper = true)
-public class Venue extends CommonEntity {
+public class VenueEntity extends CommonEntity {
 
     @ApiModelProperty(value = "场馆类别 例如：博物馆、科技馆、文化馆、美术馆、图书馆、剧场等")
     private String category;
@@ -65,4 +68,17 @@ public class Venue extends CommonEntity {
 
     @ApiModelProperty(value = "状态")
     private Integer status;
+
+    /**
+     * 用于存储景区-标签
+     */
+    @Transient
+    @ApiModelProperty(value = "标签")
+    public List<ScenicTagsEntity> tagsEntities;
+
+    //冗余字段，关联素材的id
+    @Transient
+    private String timeId;
+
+    private Map<String,Object> fileList;
 }

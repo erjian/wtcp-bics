@@ -19,4 +19,6 @@ public interface CommonService<T> {
 
     ResponseMessage getDataByType(String type, String name, String ids);
 
+    int saveAuditLog(int preStatus, int auditStatus, String principalId, String userName, String msg, int type);
+
 }
