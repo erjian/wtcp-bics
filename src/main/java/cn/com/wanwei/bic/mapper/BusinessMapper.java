@@ -8,9 +8,9 @@ public interface BusinessMapper {
 
     int insert(BusinessEntity record);
 
-    BusinessEntity selectByPrimaryKey(String id);
+    BusinessEntity selectById(String id);
 
-    int updateByPrimaryKey(BusinessEntity record);
+    int updateById(BusinessEntity record);
 
-    BusinessEntity selectByPrincipalId(String principalId);
+    BusinessEntity findByPrincipalId(String principalId);
 }
