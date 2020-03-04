@@ -141,7 +141,7 @@
         and sub_title like #{subTitle}
       </if>
       <if test="category != null and category!=''" >
-        and level = #{category,jdbcType=VARCHAR}
+        and category = #{category,jdbcType=VARCHAR}
       </if>
       <if test="level != null">
         and level = #{level,jdbcType=VARCHAR}
@@ -153,6 +153,22 @@
       <if test="areaCode != null and areaCode!='' ">
         <bind name="areaCode" value="areaCode + '%'"></bind>
         and region_full_code like #{areaCode}
+      </if>
+      <if test="examineStatus != null">
+        <if test="examineStatus == 0 or examineStatus == 2">
+          and status = #{examineStatus,jdbcType=INTEGER}
+        </if>
+        <if test="examineStatus == 1">
+          and (status = 1 or status = 9)
+        </if>
+      </if>
+      <if test="onlineStatus != null">
+        <if test="onlineStatus == 9">
+          and status = #{onlineStatus,jdbcType=INTEGER}
+        </if>
+        <if test="onlineStatus == 1">
+          and 9 > status
+        </if>
       </if>
     </where>
   </sql>
