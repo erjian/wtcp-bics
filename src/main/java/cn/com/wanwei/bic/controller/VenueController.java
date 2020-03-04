@@ -41,8 +41,8 @@ public class VenueController extends BaseController {
     @ApiOperation(value = "场馆管理分页列表", notes = "场馆管理分页列表")
     @GetMapping(value = "/page")
     @PreAuthorize("hasAuthority('venue:r')")
-    @OperationLog(value = "wtcp-bics/场馆管理分页列表", operate = "r", module = "景区管理")
-    public ResponseMessage findByPage(@RequestParam(value = "page", defaultValue = "1") Integer page,
+    @OperationLog(value = "wtcp-bics/场馆管理分页列表", operate = "r", module = "场馆管理")
+    public ResponseMessage findByPage(@RequestParam(value = "page", defaultValue = "0") Integer page,
                                       @RequestParam(value = "size", defaultValue = "10") Integer size,
                                       HttpServletRequest request) throws Exception {
         Map<String, Object> filter = RequestUtil.getParameters(request);
@@ -54,8 +54,8 @@ public class VenueController extends BaseController {
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     @PreAuthorize("hasAuthority('venue:v')")
     @OperationLog(value = "wtcp-bics/根据id查询场馆详情", operate = "v", module = "场馆管理")
-    public ResponseMessage detail(@PathVariable("id") String id) throws Exception {
-        VenueEntity venueEntity = venueService.selectByPrimaryKey(id);
+    public ResponseMessage findById(@PathVariable("id") String id) throws Exception {
+        VenueEntity venueEntity = venueService.findById(id);
         if (venueEntity == null) {
             return ResponseMessage.validFailResponse().setMsg("数据不存在");
         }
@@ -67,8 +67,8 @@ public class VenueController extends BaseController {
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
     @PreAuthorize("hasAuthority('venue:d')")
     @OperationLog(value = "wtcp-bics/根据id删除场馆", operate = "d", module = "场馆管理")
-    public ResponseMessage delete(@PathVariable("id") String id) throws Exception {
-        return venueService.deleteByPrimaryKey(id);
+    public ResponseMessage deleteById(@PathVariable("id") String id) throws Exception {
+        return venueService.deleteById(id);
     }
 
     @ApiOperation(value = "场馆新增", notes = "场馆新增")
@@ -76,11 +76,11 @@ public class VenueController extends BaseController {
     @PostMapping(value = "/save")
     @PreAuthorize("hasAuthority('venue:c')")
     @OperationLog(value = "wtcp-bics/场馆新增", operate = "c", module = "场馆管理")
-    public ResponseMessage save(@RequestBody EntityTagsModel<VenueEntity> venueModel, BindingResult bindingResult) throws Exception {
+    public ResponseMessage insert(@RequestBody EntityTagsModel<VenueEntity> venueModel, BindingResult bindingResult) throws Exception {
         if (bindingResult.hasErrors()) {
             return ResponseMessage.validFailResponse().setMsg(bindingResult.getAllErrors());
         }
-        return venueService.save(venueModel,getCurrentUser(), ruleId, appCode);
+        return venueService.insert(venueModel,getCurrentUser(), ruleId, appCode);
     }
 
     @ApiOperation(value = "场馆编辑", notes = "场馆编辑")
@@ -88,11 +88,11 @@ public class VenueController extends BaseController {
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
     @PreAuthorize("hasAuthority('venue:u')")
     @OperationLog(value = "wtcp-bics/场馆编辑", operate = "u", module = "场馆管理")
-    public ResponseMessage edit(@PathVariable("id") String id, @RequestBody EntityTagsModel<VenueEntity> venueModel, BindingResult bindingResult) throws Exception {
+    public ResponseMessage updateById(@PathVariable("id") String id, @RequestBody EntityTagsModel<VenueEntity> venueModel, BindingResult bindingResult) throws Exception {
         if (bindingResult.hasErrors()) {
             return ResponseMessage.validFailResponse().setMsg(bindingResult.getAllErrors());
         }
-        return venueService.edit(id,venueModel,getCurrentUser());
+        return venueService.updateById(id,venueModel,getCurrentUser());
     }
 
     @ApiOperation(value = "场馆基础信息关联标签", notes = "场馆基础信息关联标签")
@@ -100,11 +100,11 @@ public class VenueController extends BaseController {
     @RequestMapping(value = "/relateTags", method = RequestMethod.PUT)
     @PreAuthorize("hasAuthority('venue:rt')")
     @OperationLog(value = "wtcp-bics/场馆基础信息关联标签", operate = "u", module = "场馆管理")
-    public ResponseMessage relateTags(@RequestBody Map<String, Object> tags, BindingResult bindingResult) throws Exception {
+    public ResponseMessage updateRelateTags(@RequestBody Map<String, Object> tags, BindingResult bindingResult) throws Exception {
         if (bindingResult.hasErrors()) {
             return ResponseMessage.validFailResponse().setMsg(bindingResult.getAllErrors());
         }
-        return venueService.relateTags(tags,getCurrentUser());
+        return venueService.updateRelateTags(tags,getCurrentUser());
     }
 
     @PreAuthorize("hasAuthority('venue:w')")
@@ -113,7 +113,7 @@ public class VenueController extends BaseController {
     })
     @PutMapping(value = "/weight")
     @OperationLog(value = "wtcp-bics/权重更改", operate = "u", module = "场馆基础信息管理")
-    public ResponseMessage changeWeight(@RequestBody @Valid WeightModel weightModel, BindingResult bindingResult) throws Exception {
+    public ResponseMessage updateChangeWeight(@RequestBody @Valid WeightModel weightModel, BindingResult bindingResult) throws Exception {
         if(bindingResult.hasErrors()){
             return ResponseMessage.validFailResponse().setMsg(bindingResult.getAllErrors());
         }
@@ -127,8 +127,8 @@ public class VenueController extends BaseController {
             @ApiImplicitParam(name = "status", value = "上下线状态", required = true, dataType = "String")
     })
     @RequestMapping(value = "/changeStatus/{id}/{status}", method = RequestMethod.GET)
-    public ResponseMessage changeStatus(@PathVariable("id") String id, @PathVariable("status") Integer status) throws Exception {
-        return venueService.changeStatus(id,status,getCurrentUser().getUsername());
+    public ResponseMessage updateChangeStatus(@PathVariable("id") String id, @PathVariable("status") Integer status) throws Exception {
+        return venueService.updateChangeStatus(id,status,getCurrentUser().getUsername());
     }
 
     @PreAuthorize("hasAuthority('venue:e')")
@@ -139,26 +139,26 @@ public class VenueController extends BaseController {
             @ApiImplicitParam(name = "msg", value = "审核意见")
     })
     @RequestMapping(value = "/audit", method = RequestMethod.GET)
-    public ResponseMessage audit(@RequestParam String id, @RequestParam int auditStatus, String msg) throws Exception {
-        return venueService.examineVenue(id, auditStatus, msg, getCurrentUser());
+    public ResponseMessage updateExamineVenue(@RequestParam String id, @RequestParam int auditStatus, String msg) throws Exception {
+        return venueService.updateExamineVenue(id, auditStatus, msg, getCurrentUser());
     }
 
     @PreAuthorize("hasAuthority('venue:b')")
     @ApiOperation(value = "数据绑定", notes = "数据绑定")
     @ApiImplicitParams({@ApiImplicitParam(name = "model", value = "数据绑定model", required = true, dataType = "DataBindModel")})
     @RequestMapping(value = "/dataBind", method = {RequestMethod.PUT, RequestMethod.PATCH})
-    public ResponseMessage dataBind(@RequestBody @Valid DataBindModel model, BindingResult bindingResult) throws Exception {
+    public ResponseMessage updateDataBind(@RequestBody @Valid DataBindModel model, BindingResult bindingResult) throws Exception {
         if (bindingResult.hasErrors()) {
             return ResponseMessage.validFailResponse().setMsg(bindingResult.getAllErrors());
         }
-        return venueService.dataBind(getCurrentUser().getUsername(),model);
+        return venueService.updateDataBind(getCurrentUser().getUsername(),model);
     }
 
     @ApiOperation(value = "获取场馆列表", notes = "获取场馆列表")
     @RequestMapping(value = "/getVenueList", method = RequestMethod.GET)
     @OperationLog(value = "wtcp-bics/获取场馆列表", operate = "r", module = "场馆管理")
-    public ResponseMessage getVenueList(String title) throws Exception {
-        return venueService.getVenueInfo(StringUtils.isEmpty(title)?"":title.trim().toLowerCase(), null);
+    public ResponseMessage findVenueInfo(String title) throws Exception {
+        return venueService.findVenueInfo(StringUtils.isEmpty(title)?"":title.trim().toLowerCase(), null);
     }
 
     @ApiOperation(value = "场馆名称是否重复", notes = "场馆名称是否重复(status:1 表示不重复，0表示重复)")
@@ -168,7 +168,7 @@ public class VenueController extends BaseController {
     })
     @RequestMapping(value = "/existByTitle", method = RequestMethod.GET)
     @OperationLog(value = "wtcp-bics/检查场馆名称是否重复", operate = "", module = "场馆基础信息管理", frontCode = "", resource = "")
-    public ResponseMessage existByTitle(@RequestParam String title, String id) {
+    public ResponseMessage findByTitleAndIdNot(@RequestParam String title, String id) {
         return venueService.findByTitleAndIdNot(title, id != null ? id : "-1");
     }
 

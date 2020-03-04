@@ -46,7 +46,7 @@
   <sql id="Blob_Column_List">
     content
   </sql>
-  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="ResultMapWithBLOBs">
+  <select id="findById" parameterType="java.lang.String" resultMap="ResultMapWithBLOBs">
     select 
     <include refid="Base_Column_List" />
     ,
@@ -54,7 +54,7 @@
     from t_bic_venue
     where id = #{id,jdbcType=VARCHAR}
   </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+  <delete id="deleteById" parameterType="java.lang.String">
     delete from t_bic_venue
     where id = #{id,jdbcType=VARCHAR}
   </delete>
@@ -82,7 +82,7 @@
       #{status,jdbcType=INTEGER}, #{weight,jdbcType=INTEGER}, #{deptCode,jdbcType=VARCHAR}, 
       #{content,jdbcType=LONGVARCHAR})
   </insert>
-  <update id="updateByPrimaryKey" parameterType="cn.com.wanwei.bic.entity.VenueEntity">
+  <update id="updateById" parameterType="cn.com.wanwei.bic.entity.VenueEntity">
     update t_bic_venue
     set created_user = #{createdUser,jdbcType=VARCHAR},
       created_date = #{createdDate,jdbcType=TIMESTAMP},

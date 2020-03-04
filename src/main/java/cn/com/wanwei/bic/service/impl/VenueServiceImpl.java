@@ -67,7 +67,7 @@ public class VenueServiceImpl implements VenueService {
 
 
     @Override
-    public ResponseMessage save(EntityTagsModel<VenueEntity> venueModel, User user, Long ruleId, Integer appCode) {
+    public ResponseMessage insert(EntityTagsModel<VenueEntity> venueModel, User user, Long ruleId, Integer appCode) {
         VenueEntity record = venueModel.getEntity();
         String type = venueModel.getType();
         String id = UUIDUtils.getInstance().getId();
@@ -97,19 +97,19 @@ public class VenueServiceImpl implements VenueService {
     }
 
     @Override
-    public ResponseMessage deleteByPrimaryKey(String id) {
-        venueMapper.deleteByPrimaryKey(id);
+    public ResponseMessage deleteById(String id) {
+        venueMapper.deleteById(id);
         return ResponseMessage.defaultResponse().setMsg("删除成功");
     }
 
     @Override
-    public VenueEntity selectByPrimaryKey(String id) {
-        return venueMapper.selectByPrimaryKey(id);
+    public VenueEntity findById(String id) {
+        return venueMapper.findById(id);
     }
 
     @Override
-    public ResponseMessage edit(String id, EntityTagsModel<VenueEntity> venueModel, User user) {
-        VenueEntity entity = venueMapper.selectByPrimaryKey(id);
+    public ResponseMessage updateById(String id, EntityTagsModel<VenueEntity> venueModel, User user) {
+        VenueEntity entity = venueMapper.findById(id);
         VenueEntity record = venueModel.getEntity();
         if (null == entity) {
             return ResponseMessage.validFailResponse().setMsg("不存在该场馆");
@@ -124,7 +124,7 @@ public class VenueServiceImpl implements VenueService {
         record.setStatus(0);
         record.setUpdatedDate(new Date());
         record.setUpdatedUser(user.getUsername());
-        venueMapper.updateByPrimaryKey(record);
+        venueMapper.updateById(record);
 
         //处理标签
         if (CollectionUtils.isNotEmpty(venueModel.getTagsList())) {
@@ -156,16 +156,16 @@ public class VenueServiceImpl implements VenueService {
     }
 
     @Override
-    public ResponseMessage dataBind(String updatedUser, DataBindModel model) {
+    public ResponseMessage updateDataBind(String updatedUser, DataBindModel model) {
         String deptCode = model.getDeptCode();
         List<String> ids = model.getIds();
-        venueMapper.dataBind(updatedUser, new Date(), deptCode, ids);
+        venueMapper.updateDataBind(updatedUser, new Date(), deptCode, ids);
         return ResponseMessage.defaultResponse().setMsg("关联机构成功");
     }
 
     @Override
-    public ResponseMessage changeStatus(String id, Integer status, String username) throws Exception {
-        VenueEntity entity = venueMapper.selectByPrimaryKey(id);
+    public ResponseMessage updateChangeStatus(String id, Integer status, String username) throws Exception {
+        VenueEntity entity = venueMapper.findById(id);
         if (null == entity) {
             return ResponseMessage.validFailResponse().setMsg("无场馆信息");
         }
@@ -174,23 +174,23 @@ public class VenueServiceImpl implements VenueService {
         }
         // 添加上下线记录
         String msg = status == 9 ? "上线成功" : "下线成功";
-        saveAuditLog(entity.getStatus(), status, id, username, msg, 1);
+        insertAuditLog(entity.getStatus(), status, id, username, msg, 1);
         entity.setUpdatedUser(username);
         entity.setUpdatedDate(new Date());
         entity.setStatus(status);
-        venueMapper.updateByPrimaryKey(entity);
+        venueMapper.updateById(entity);
         return ResponseMessage.defaultResponse().setMsg("状态变更成功");
     }
 
     @Override
-    public ResponseMessage examineVenue(String id, int auditStatus, String msg, User currentUser) throws Exception {
-        VenueEntity venueEntity = venueMapper.selectByPrimaryKey(id);
+    public ResponseMessage updateExamineVenue(String id, int auditStatus, String msg, User currentUser) throws Exception {
+        VenueEntity venueEntity = venueMapper.findById(id);
         if (venueEntity != null) {
             // 添加审核记录
-            saveAuditLog(venueEntity.getStatus(), auditStatus, id, currentUser.getUsername(), msg, 0);
+            insertAuditLog(venueEntity.getStatus(), auditStatus, id, currentUser.getUsername(), msg, 0);
             venueEntity.setStatus(auditStatus);
             venueEntity.setUpdatedDate(new Date());
-            venueMapper.updateByPrimaryKey(venueEntity);
+            venueMapper.updateById(venueEntity);
         } else {
             return ResponseMessage.validFailResponse().setMsg("场馆信息不存在");
         }
@@ -198,13 +198,13 @@ public class VenueServiceImpl implements VenueService {
     }
 
     @Override
-    public ResponseMessage getVenueInfo(String title, Integer status) {
-        List<VenueEntity> entities = venueMapper.getVenueInfo(title, status);
+    public ResponseMessage findVenueInfo(String title, Integer status) {
+        List<VenueEntity> entities = venueMapper.findVenueInfo(title, status);
         return ResponseMessage.defaultResponse().setData(entities);
     }
 
     @Override
-    public ResponseMessage relateTags(Map<String, Object> tags, User user) {
+    public ResponseMessage updateRelateTags(Map<String, Object> tags, User user) {
         List<Map<String, Object>> tagsList = (List<Map<String, Object>>) tags.get("tagsArr");
         List<BaseTagsEntity> bList = Lists.newArrayList();
         if (CollectionUtils.isNotEmpty(tagsList)) {
@@ -235,7 +235,7 @@ public class VenueServiceImpl implements VenueService {
         return responseMessage;
     }
 
-    private int saveAuditLog(int preStatus, int auditStatus, String principalId, String userName, String msg, int type) {
+    private int insertAuditLog(int preStatus, int auditStatus, String principalId, String userName, String msg, int type) {
         AuditLogEntity auditLogEntity = new AuditLogEntity();
         auditLogEntity.setId(UUIDUtils.getInstance().getId());
         auditLogEntity.setType(type);
