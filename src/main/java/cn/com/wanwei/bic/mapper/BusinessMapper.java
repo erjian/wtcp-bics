@@ -8,7 +8,7 @@ public interface BusinessMapper {
 
     int insert(BusinessEntity record);
 
-    BusinessEntity selectById(String id);
+    BusinessEntity findById(String id);
 
     int updateById(BusinessEntity record);
 

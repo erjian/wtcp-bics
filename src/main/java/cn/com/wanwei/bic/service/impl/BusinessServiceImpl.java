@@ -41,7 +41,7 @@ public class BusinessServiceImpl implements BusinessService {
 
 	@Override
 	public ResponseMessage updateById(String id, BusinessEntity record, String userName) {
-		BusinessEntity entity = businessMapper.selectById(id);
+		BusinessEntity entity = businessMapper.findById(id);
 		if(null == entity){
 			return ResponseMessage.validFailResponse().setMsg("不存在该营业信息");
 		}
