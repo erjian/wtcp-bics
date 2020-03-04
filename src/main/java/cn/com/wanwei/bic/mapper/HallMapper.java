@@ -30,7 +30,7 @@ public interface HallMapper {
 
     List<HallEntity> existsByTitleAndIdNot(@Param("title") String title, @Param("id") String id);
 
-    ResponseMessage findByList(Map<String, Object> filter);
+    List<HallEntity> findByList(Map<String, Object> filter);
 
     int dataBind(@Param(value="updatedUser") String updatedUser, @Param(value="updatedDate") Date updatedDate,
                  @Param(value="deptCode") String deptCode, @Param(value="ids") List<String> ids);
