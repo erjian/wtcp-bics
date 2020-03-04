@@ -161,7 +161,7 @@ public class HallServiceImpl implements HallService {
     @Override
     public ResponseMessage findByList(Map<String, Object> filter) {
         EscapeCharUtils.escape(filter, "title");
-        return hallMapper.findByList(filter);
+        return ResponseMessage.defaultResponse().setData(hallMapper.findByList(filter));
     }
 
     @Override
