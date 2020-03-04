@@ -24,14 +24,14 @@ public interface CelebrityService {
      * @param id
      * @return
      */
-    ResponseMessage selectByPrimaryKey(String id);
+    ResponseMessage findById(String id);
 
     /**
      * 删除名人数据
      * @param id
      * @return
      */
-    ResponseMessage deleteByPrimaryKey(String id);
+    ResponseMessage deleteById(String id);
 
     /**
      * 名人新增
@@ -39,7 +39,7 @@ public interface CelebrityService {
      * @param currentUser
      * @return
      */
-    ResponseMessage save(EntityTagsModel<CelebrityEntity> celebrityModel, User currentUser);
+    ResponseMessage insert(EntityTagsModel<CelebrityEntity> celebrityModel, User currentUser);
 
     /**
      * 名人编辑
@@ -48,7 +48,7 @@ public interface CelebrityService {
      * @param user
      * @return
      */
-    ResponseMessage edit(String id, EntityTagsModel<CelebrityEntity> celebrityModel, User user);
+    ResponseMessage updateById(String id, EntityTagsModel<CelebrityEntity> celebrityModel, User user);
 
     /**
      * 关联标签
@@ -56,7 +56,7 @@ public interface CelebrityService {
      * @param user
      * @return
      */
-    ResponseMessage relateTags(Map<String,Object> tags, User user);
+    ResponseMessage insertTagsBatch(Map<String,Object> tags, User user);
 
     /**
      * 上下线
@@ -65,7 +65,7 @@ public interface CelebrityService {
      * @param user
      * @return
      */
-    ResponseMessage changeStatus(String id, Integer status, String user);
+    ResponseMessage updateStatus(String id, Integer status, String user);
 
     /**
      * 审核
@@ -75,7 +75,7 @@ public interface CelebrityService {
      * @param user
      * @return
      */
-    ResponseMessage examineCelebrity(String id, int auditStatus, String msg, User user);
+    ResponseMessage updateAuditStatus(String id, int auditStatus, String msg, User user);
 
     /**
      * 关联组织结构
@@ -83,5 +83,5 @@ public interface CelebrityService {
      * @param model
      * @return
      */
-    ResponseMessage dataBind(String user, DataBindModel model);
+    ResponseMessage updateDeptCode(String user, DataBindModel model);
 }
