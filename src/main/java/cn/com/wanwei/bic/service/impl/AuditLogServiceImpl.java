@@ -1,7 +1,6 @@
 package cn.com.wanwei.bic.service.impl;
 
 import cn.com.wanwei.bic.entity.AuditLogEntity;
-import cn.com.wanwei.bic.entity.PoiEntity;
 import cn.com.wanwei.bic.mapper.AuditLogMapper;
 import cn.com.wanwei.bic.service.AuditLogService;
 import cn.com.wanwei.bic.utils.UUIDUtils;
@@ -46,7 +45,7 @@ public class AuditLogServiceImpl implements AuditLogService {
     }
 
     @Override
-    public ResponseMessage create(AuditLogEntity auditLogEntity,String userName) {
+    public ResponseMessage insert(AuditLogEntity auditLogEntity,String userName) {
         try {
             auditLogEntity.setId(UUIDUtils.getInstance().getId());
             auditLogEntity.setCreatedUser(userName);
