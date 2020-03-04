@@ -208,7 +208,7 @@ public class DriveCampServiceImpl implements DriveCampService {
         dCampEntity.setUpdatedDate(new Date());
         driveCampMapper.updateByPrimaryKey(dCampEntity);
         auditLogEntity.setType(type);
-        auditLogService.insert(auditLogEntity,user.getUsername());
+        auditLogService.create(auditLogEntity,user.getUsername());
         return ResponseMessage.defaultResponse().setMsg(msg);
     }
 

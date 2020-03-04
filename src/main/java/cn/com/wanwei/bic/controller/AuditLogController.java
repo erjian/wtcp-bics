@@ -58,6 +58,6 @@ public class AuditLogController extends BaseController {
        if(bindingResult.hasErrors()){
            return ResponseMessage.validFailResponse().setMsg(bindingResult.getAllErrors());
        }
-        return auditLogService.insert(auditLogEntity,getCurrentUser().getUsername());
+        return auditLogService.create(auditLogEntity,getCurrentUser().getUsername());
     }
 }

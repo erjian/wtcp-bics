@@ -218,7 +218,7 @@ public class PeripheryServiceImpl implements PeripheryService {
         entity.setUpdatedDate(new Date());
         peripheryMapper.updateByPrimaryKey(entity);
         auditLogEntity.setType(audit);
-        auditLogService.insert(auditLogEntity, user.getUsername());
+        auditLogService.create(auditLogEntity, user.getUsername());
         return ResponseMessage.defaultResponse().setMsg(msg);
     }
 
