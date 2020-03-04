@@ -60,8 +60,8 @@ public class CelebrityServiceImpl implements CelebrityService {
     }
 
     @Override
-    public ResponseMessage selectByPrimaryKey(String id) {
-        CelebrityEntity celebrityEntity = celebrityMapper.selectByPrimaryKey(id);
+    public ResponseMessage findById(String id) {
+        CelebrityEntity celebrityEntity = celebrityMapper.findById(id);
         if(celebrityEntity == null){
             return ResponseMessage.validFailResponse().setMsg("数据不存在");
         }
@@ -69,13 +69,13 @@ public class CelebrityServiceImpl implements CelebrityService {
     }
 
     @Override
-    public ResponseMessage deleteByPrimaryKey(String id) {
-        celebrityMapper.deleteByPrimaryKey(id);
+    public ResponseMessage deleteById(String id) {
+        celebrityMapper.deleteById(id);
         return ResponseMessage.defaultResponse().setMsg("删除成功");
     }
 
     @Override
-    public ResponseMessage save(EntityTagsModel<CelebrityEntity> celebrityModel, User currentUser) {
+    public ResponseMessage insert(EntityTagsModel<CelebrityEntity> celebrityModel, User currentUser) {
         CelebrityEntity celebrityEntity = celebrityModel.getEntity();
         String id = UUIDUtils.getInstance().getId();
         celebrityEntity.setId(id);
@@ -101,8 +101,8 @@ public class CelebrityServiceImpl implements CelebrityService {
     }
 
     @Override
-    public ResponseMessage edit(String id, EntityTagsModel<CelebrityEntity> celebrityModel, User user) {
-        CelebrityEntity celebrityEntity = celebrityMapper.selectByPrimaryKey(id);
+    public ResponseMessage updateById(String id, EntityTagsModel<CelebrityEntity> celebrityModel, User user) {
+        CelebrityEntity celebrityEntity = celebrityMapper.findById(id);
         if (celebrityEntity == null){
             return ResponseMessage.validFailResponse().setMsg("数据不存在");
         }
@@ -113,7 +113,7 @@ public class CelebrityServiceImpl implements CelebrityService {
         entity.setFullSpell(PinyinUtils.getPingYin(entity.getName()).toLowerCase());
         entity.setStatus(0);
 
-        celebrityMapper.updateByPrimaryKey(entity);
+        celebrityMapper.updateById(entity);
 
         //处理标签
         if (CollectionUtils.isNotEmpty(celebrityModel.getTagsList())) {
@@ -128,7 +128,7 @@ public class CelebrityServiceImpl implements CelebrityService {
     }
 
     @Override
-    public ResponseMessage relateTags(Map<String, Object> tags, User user) {
+    public ResponseMessage insertTagsBatch(Map<String, Object> tags, User user) {
         List<Map<String, Object>> tagsList = (List<Map<String, Object>>) tags.get("tagsArr");
         List<BaseTagsEntity> bList = Lists.newArrayList();
         if (CollectionUtils.isNotEmpty(tagsList)) {
@@ -145,8 +145,8 @@ public class CelebrityServiceImpl implements CelebrityService {
     }
 
     @Override
-    public ResponseMessage changeStatus(String id, Integer status, String user) {
-        CelebrityEntity entity = celebrityMapper.selectByPrimaryKey(id);
+    public ResponseMessage updateStatus(String id, Integer status, String user) {
+        CelebrityEntity entity = celebrityMapper.findById(id);
         if (null == entity) {
             return ResponseMessage.validFailResponse().setMsg("无名人信息");
         }
@@ -155,23 +155,23 @@ public class CelebrityServiceImpl implements CelebrityService {
         }
         // 添加上下线记录
         String msg = status == 9 ? "上线成功" : "下线成功";
-        saveAuditLog(entity.getStatus(), status, id, user, msg, 1);
+        insertAuditLog(entity.getStatus(), status, id, user, msg, 1);
         entity.setUpdatedUser(user);
         entity.setUpdatedDate(new Date());
         entity.setStatus(status);
-        celebrityMapper.updateByPrimaryKeyWithBLOBs(entity);
+        celebrityMapper.updateById(entity);
         return ResponseMessage.defaultResponse().setMsg("状态变更成功");
     }
 
     @Override
-    public ResponseMessage examineCelebrity(String id, int auditStatus, String msg, User user) {
-        CelebrityEntity entity = celebrityMapper.selectByPrimaryKey(id);
+    public ResponseMessage updateAuditStatus(String id, int auditStatus, String msg, User user) {
+        CelebrityEntity entity = celebrityMapper.findById(id);
         if (entity != null) {
             // 添加审核记录
-            saveAuditLog(entity.getStatus(), auditStatus, id, user.getUsername(), msg, 0);
+            insertAuditLog(entity.getStatus(), auditStatus, id, user.getUsername(), msg, 0);
             entity.setStatus(auditStatus);
             entity.setUpdatedDate(new Date());
-            celebrityMapper.updateByPrimaryKeyWithBLOBs(entity);
+            celebrityMapper.updateById(entity);
         } else {
             return ResponseMessage.validFailResponse().setMsg("名人信息不存在");
         }
@@ -179,14 +179,14 @@ public class CelebrityServiceImpl implements CelebrityService {
     }
 
     @Override
-    public ResponseMessage dataBind(String updatedUser, DataBindModel model) {
+    public ResponseMessage updateDeptCode(String updatedUser, DataBindModel model) {
         String deptCode = model.getDeptCode();
         List<String> ids = model.getIds();
-        celebrityMapper.dataBind(updatedUser, new Date(), deptCode, ids);
+        celebrityMapper.updateDeptCode(updatedUser, new Date(), deptCode, ids);
         return ResponseMessage.defaultResponse().setMsg("关联机构成功");
     }
 
-    private int saveAuditLog(int preStatus, int auditStatus, String principalId, String userName, String msg, int type) {
+    private int insertAuditLog(int preStatus, int auditStatus, String principalId, String userName, String msg, int type) {
         AuditLogEntity auditLogEntity = new AuditLogEntity();
         auditLogEntity.setId(UUIDUtils.getInstance().getId());
         auditLogEntity.setType(type);

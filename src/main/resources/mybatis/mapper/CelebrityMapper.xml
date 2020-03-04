@@ -38,7 +38,7 @@
   <sql id="Blob_Column_List">
     chief_behalf, story
   </sql>
-  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="ResultMapWithBLOBs">
+  <select id="findById" parameterType="java.lang.String" resultMap="ResultMapWithBLOBs">
     select 
     <include refid="Base_Column_List" />
     ,
@@ -46,7 +46,7 @@
     from t_bic_celebrity
     where id = #{id,jdbcType=VARCHAR}
   </select>
-    <select id="findByPage" parameterType="java.util.Map" resultMap="BaseResultMap">
+  <select id="findByPage" parameterType="java.util.Map" resultMap="BaseResultMap">
       select
       <include refid="Base_Column_List"/>
       from t_bic_celebrity
@@ -90,7 +90,7 @@
         </if>
       </where>
     </select>
-    <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+  <delete id="deleteById" parameterType="java.lang.String">
     delete from t_bic_celebrity
     where id = #{id,jdbcType=VARCHAR}
   </delete>
@@ -114,239 +114,7 @@
       #{deptCode,jdbcType=VARCHAR}, #{chiefBehalf,jdbcType=LONGVARCHAR}, #{story,jdbcType=LONGVARCHAR}
       )
   </insert>
-  <insert id="insertSelective" parameterType="cn.com.wanwei.bic.entity.CelebrityEntity">
-    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.String">
-      SELECT LAST_INSERT_ID()
-    </selectKey>
-    insert into t_bic_celebrity
-    <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="createdUser != null">
-        created_user,
-      </if>
-      <if test="createdDate != null">
-        created_date,
-      </if>
-      <if test="updatedUser != null">
-        updated_user,
-      </if>
-      <if test="updatedDate != null">
-        updated_date,
-      </if>
-      <if test="category != null">
-        category,
-      </if>
-      <if test="name != null">
-        name,
-      </if>
-      <if test="simpleSpell != null">
-        simple_spell,
-      </if>
-      <if test="fullSpell != null">
-        full_spell,
-      </if>
-      <if test="alias != null">
-        alias,
-      </if>
-      <if test="summary != null">
-        summary,
-      </if>
-      <if test="description != null">
-        description,
-      </if>
-      <if test="slogan != null">
-        slogan,
-      </if>
-      <if test="sex != null">
-        sex,
-      </if>
-      <if test="birthDate != null">
-        birth_date,
-      </if>
-      <if test="passAwayDate != null">
-        pass_away_date,
-      </if>
-      <if test="birthplace != null">
-        birthplace,
-      </if>
-      <if test="nation != null">
-        nation,
-      </if>
-      <if test="type != null">
-        type,
-      </if>
-      <if test="behalfAchievement != null">
-        behalf_achievement,
-      </if>
-      <if test="status != null">
-        status,
-      </if>
-      <if test="weight != null">
-        weight,
-      </if>
-      <if test="deptCode != null">
-        dept_code,
-      </if>
-      <if test="chiefBehalf != null">
-        chief_behalf,
-      </if>
-      <if test="story != null">
-        story,
-      </if>
-    </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="createdUser != null">
-        #{createdUser,jdbcType=VARCHAR},
-      </if>
-      <if test="createdDate != null">
-        #{createdDate,jdbcType=TIMESTAMP},
-      </if>
-      <if test="updatedUser != null">
-        #{updatedUser,jdbcType=VARCHAR},
-      </if>
-      <if test="updatedDate != null">
-        #{updatedDate,jdbcType=TIMESTAMP},
-      </if>
-      <if test="category != null">
-        #{category,jdbcType=VARCHAR},
-      </if>
-      <if test="name != null">
-        #{name,jdbcType=VARCHAR},
-      </if>
-      <if test="simpleSpell != null">
-        #{simpleSpell,jdbcType=VARCHAR},
-      </if>
-      <if test="fullSpell != null">
-        #{fullSpell,jdbcType=VARCHAR},
-      </if>
-      <if test="alias != null">
-        #{alias,jdbcType=VARCHAR},
-      </if>
-      <if test="summary != null">
-        #{summary,jdbcType=VARCHAR},
-      </if>
-      <if test="description != null">
-        #{description,jdbcType=VARCHAR},
-      </if>
-      <if test="slogan != null">
-        #{slogan,jdbcType=VARCHAR},
-      </if>
-      <if test="sex != null">
-        #{sex,jdbcType=INTEGER},
-      </if>
-      <if test="birthDate != null">
-        #{birthDate,jdbcType=TIMESTAMP},
-      </if>
-      <if test="passAwayDate != null">
-        #{passAwayDate,jdbcType=TIMESTAMP},
-      </if>
-      <if test="birthplace != null">
-        #{birthplace,jdbcType=INTEGER},
-      </if>
-      <if test="nation != null">
-        #{nation,jdbcType=INTEGER},
-      </if>
-      <if test="type != null">
-        #{type,jdbcType=VARCHAR},
-      </if>
-      <if test="behalfAchievement != null">
-        #{behalfAchievement,jdbcType=INTEGER},
-      </if>
-      <if test="status != null">
-        #{status,jdbcType=INTEGER},
-      </if>
-      <if test="weight != null">
-        #{weight,jdbcType=INTEGER},
-      </if>
-      <if test="deptCode != null">
-        #{deptCode,jdbcType=VARCHAR},
-      </if>
-      <if test="chiefBehalf != null">
-        #{chiefBehalf,jdbcType=LONGVARCHAR},
-      </if>
-      <if test="story != null">
-        #{story,jdbcType=LONGVARCHAR},
-      </if>
-    </trim>
-  </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="cn.com.wanwei.bic.entity.CelebrityEntity">
-    update t_bic_celebrity
-    <set>
-      <if test="createdUser != null">
-        created_user = #{createdUser,jdbcType=VARCHAR},
-      </if>
-      <if test="createdDate != null">
-        created_date = #{createdDate,jdbcType=TIMESTAMP},
-      </if>
-      <if test="updatedUser != null">
-        updated_user = #{updatedUser,jdbcType=VARCHAR},
-      </if>
-      <if test="updatedDate != null">
-        updated_date = #{updatedDate,jdbcType=TIMESTAMP},
-      </if>
-      <if test="category != null">
-        category = #{category,jdbcType=VARCHAR},
-      </if>
-      <if test="name != null">
-        name = #{name,jdbcType=VARCHAR},
-      </if>
-      <if test="simpleSpell != null">
-        simple_spell = #{simpleSpell,jdbcType=VARCHAR},
-      </if>
-      <if test="fullSpell != null">
-        full_spell = #{fullSpell,jdbcType=VARCHAR},
-      </if>
-      <if test="alias != null">
-        alias = #{alias,jdbcType=VARCHAR},
-      </if>
-      <if test="summary != null">
-        summary = #{summary,jdbcType=VARCHAR},
-      </if>
-      <if test="description != null">
-        description = #{description,jdbcType=VARCHAR},
-      </if>
-      <if test="slogan != null">
-        slogan = #{slogan,jdbcType=VARCHAR},
-      </if>
-      <if test="sex != null">
-        sex = #{sex,jdbcType=INTEGER},
-      </if>
-      <if test="birthDate != null">
-        birth_date = #{birthDate,jdbcType=TIMESTAMP},
-      </if>
-      <if test="passAwayDate != null">
-        pass_away_date = #{passAwayDate,jdbcType=TIMESTAMP},
-      </if>
-      <if test="birthplace != null">
-        birthplace = #{birthplace,jdbcType=INTEGER},
-      </if>
-      <if test="nation != null">
-        nation = #{nation,jdbcType=INTEGER},
-      </if>
-      <if test="type != null">
-        type = #{type,jdbcType=VARCHAR},
-      </if>
-      <if test="behalfAchievement != null">
-        behalf_achievement = #{behalfAchievement,jdbcType=INTEGER},
-      </if>
-      <if test="status != null">
-        status = #{status,jdbcType=INTEGER},
-      </if>
-      <if test="weight != null">
-        weight = #{weight,jdbcType=INTEGER},
-      </if>
-      <if test="deptCode != null">
-        dept_code = #{deptCode,jdbcType=VARCHAR},
-      </if>
-      <if test="chiefBehalf != null">
-        chief_behalf = #{chiefBehalf,jdbcType=LONGVARCHAR},
-      </if>
-      <if test="story != null">
-        story = #{story,jdbcType=LONGVARCHAR},
-      </if>
-    </set>
-    where id = #{id,jdbcType=VARCHAR}
-  </update>
-  <update id="updateByPrimaryKeyWithBLOBs" parameterType="cn.com.wanwei.bic.entity.CelebrityEntity">
+  <update id="updateById" parameterType="cn.com.wanwei.bic.entity.CelebrityEntity">
     update t_bic_celebrity
     set created_user = #{createdUser,jdbcType=VARCHAR},
       created_date = #{createdDate,jdbcType=TIMESTAMP},
@@ -374,33 +142,7 @@
       story = #{story,jdbcType=LONGVARCHAR}
     where id = #{id,jdbcType=VARCHAR}
   </update>
-  <update id="updateByPrimaryKey" parameterType="cn.com.wanwei.bic.entity.CelebrityEntity">
-    update t_bic_celebrity
-    set created_user = #{createdUser,jdbcType=VARCHAR},
-      created_date = #{createdDate,jdbcType=TIMESTAMP},
-      updated_user = #{updatedUser,jdbcType=VARCHAR},
-      updated_date = #{updatedDate,jdbcType=TIMESTAMP},
-      category = #{category,jdbcType=VARCHAR},
-      name = #{name,jdbcType=VARCHAR},
-      simple_spell = #{simpleSpell,jdbcType=VARCHAR},
-      full_spell = #{fullSpell,jdbcType=VARCHAR},
-      alias = #{alias,jdbcType=VARCHAR},
-      summary = #{summary,jdbcType=VARCHAR},
-      description = #{description,jdbcType=VARCHAR},
-      slogan = #{slogan,jdbcType=VARCHAR},
-      sex = #{sex,jdbcType=INTEGER},
-      birth_date = #{birthDate,jdbcType=TIMESTAMP},
-      pass_away_date = #{passAwayDate,jdbcType=TIMESTAMP},
-      birthplace = #{birthplace,jdbcType=INTEGER},
-      nation = #{nation,jdbcType=INTEGER},
-      type = #{type,jdbcType=VARCHAR},
-      behalf_achievement = #{behalfAchievement,jdbcType=INTEGER},
-      status = #{status,jdbcType=INTEGER},
-      weight = #{weight,jdbcType=INTEGER},
-      dept_code = #{deptCode,jdbcType=VARCHAR}
-    where id = #{id,jdbcType=VARCHAR}
-  </update>
-  <update id="dataBind">
+  <update id="updateDeptCode">
     update t_bic_celebrity
     set updated_date = #{updatedDate,jdbcType=TIMESTAMP},
     updated_user = #{updatedUser,jdbcType=VARCHAR},

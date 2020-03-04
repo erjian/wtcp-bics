@@ -204,7 +204,7 @@ public class ExtendServiceImpl implements ExtendService {
         extendEntity.setUpdatedDate(new Date());
         extendMapper.updateByPrimaryKey(extendEntity);
         auditLogEntity.setType(type);
-        auditLogService.create(auditLogEntity, user.getUsername());
+        auditLogService.insert(auditLogEntity, user.getUsername());
         return ResponseMessage.defaultResponse().setMsg(msg);
     }
 
