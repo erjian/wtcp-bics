@@ -209,7 +209,7 @@ public class EntertainmentServiceImpl implements EntertainmentService {
         eEntity.setUpdatedDate(new Date());
         entertainmentMapper.updateByPrimaryKey(eEntity);
         auditLogEntity.setType(type);
-        auditLogService.insert(auditLogEntity, user.getUsername());
+        auditLogService.create(auditLogEntity, user.getUsername());
         return ResponseMessage.defaultResponse().setMsg(msg);
     }
 

@@ -210,7 +210,7 @@ public class TravelAgentServiceImpl implements TravelAgentService {
         tEntity.setUpdatedDate(new Date());
         tarvaAgentMapper.updateByPrimaryKey(tEntity);
         auditLogEntity.setType(type);
-        auditLogService.insert(auditLogEntity,user.getUsername());
+        auditLogService.create(auditLogEntity,user.getUsername());
         return ResponseMessage.defaultResponse().setMsg(msg);
     }
 

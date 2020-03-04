@@ -259,7 +259,7 @@ public class PoiServiceImpl implements PoiService {
             pntity.setUpdatedDate(new Date());
             poiMapper.updateByPrimaryKey(pntity);
             auditLogEntity.setType(type);
-            auditLogService.insert(auditLogEntity, user.getUsername());
+            auditLogService.create(auditLogEntity, user.getUsername());
             return ResponseMessage.defaultResponse().setMsg(msg);
         } catch (Exception e) {
             log.error(e.getMessage());

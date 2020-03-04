@@ -215,7 +215,7 @@ public class DestinationServiceImpl implements DestinationService {
         }
         destinationMapper.updateByPrimaryKey(destinationEntity);
         // 记录审核/上线流水操作
-        auditLogService.insert(auditLogEntity, username);
+        auditLogService.create(auditLogEntity, username);
         return responseMessage;
     }
 
