@@ -30,7 +30,7 @@ public class BusinessServiceImpl implements BusinessService {
 	private BusinessMapper businessMapper;
 
 	@Override
-	public ResponseMessage save(BusinessEntity record, String userName) {
+	public ResponseMessage insert(BusinessEntity record, String userName) {
 		record.setId(UUIDUtils.getInstance().getId());
 		record.setCreatedUser(userName);
 		record.setCreatedDate(new Date());
@@ -40,8 +40,8 @@ public class BusinessServiceImpl implements BusinessService {
 	}
 
 	@Override
-	public ResponseMessage edit(String id, BusinessEntity record, String userName) {
-		BusinessEntity entity = businessMapper.selectByPrimaryKey(id);
+	public ResponseMessage updateById(String id, BusinessEntity record, String userName) {
+		BusinessEntity entity = businessMapper.findById(id);
 		if(null == entity){
 			return ResponseMessage.validFailResponse().setMsg("不存在该营业信息");
 		}
@@ -51,12 +51,12 @@ public class BusinessServiceImpl implements BusinessService {
 		record.setPrincipalId(entity.getPrincipalId());
 		record.setUpdatedDate(new Date());
 		record.setUpdatedUser(userName);
-		businessMapper.updateByPrimaryKey(record);
+		businessMapper.updateById(record);
 		return ResponseMessage.defaultResponse().setMsg("更新成功");
 	}
 
 	@Override
-	public BusinessEntity selectByPrincipalId(String principalId) throws Exception {
-		return businessMapper.selectByPrincipalId(principalId);
+	public BusinessEntity findByPrincipalId(String principalId) throws Exception {
+		return businessMapper.findByPrincipalId(principalId);
 	}
 }

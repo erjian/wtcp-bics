@@ -20,7 +20,7 @@ public interface BusinessService {
 	 * @param record
 	 * @return
 	 */
-	ResponseMessage save(BusinessEntity record, String userName) throws Exception;
+	ResponseMessage insert(BusinessEntity record, String userName) throws Exception;
 
 	/**
 	 * 编辑一条记录
@@ -29,7 +29,14 @@ public interface BusinessService {
 	 * @param record
 	 * @return
 	 */
-	ResponseMessage edit(String id, BusinessEntity record, String userName) throws Exception;
+	ResponseMessage updateById(String id, BusinessEntity record, String userName) throws Exception;
 
-    BusinessEntity selectByPrincipalId(String principalId) throws Exception;
+	/**
+	 * 根据关联主键查询一条记录
+	 * @auth linjw
+	 * @param principalId
+	 * @return
+	 * @throws Exception
+	 */
+    BusinessEntity findByPrincipalId(String principalId) throws Exception;
 }

@@ -69,6 +69,13 @@ public class VenueEntity extends CommonEntity {
     @ApiModelProperty(value = "状态")
     private Integer status;
 
+    @ApiModelProperty(value = "在线状态")
+    private Integer onlineStatus;
+
+    public Integer getOnlineStatus() {
+        return this.status == 9 ? this.status : 1;
+    }
+
     /**
      * 用于存储景区-标签
      */

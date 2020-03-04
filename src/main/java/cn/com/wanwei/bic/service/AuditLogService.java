@@ -23,5 +23,5 @@ public interface AuditLogService {
      * @param userName
      * @return
      */
-    ResponseMessage create(AuditLogEntity auditLogEntity ,String userName);
+    ResponseMessage insert(AuditLogEntity auditLogEntity ,String userName);
 }
