@@ -25,7 +25,7 @@ public interface VenueService {
 	 * @param venueModel
 	 * @return
 	 */
-	ResponseMessage insert(EntityTagsModel<VenueEntity> venueModel, User user, Long ruleId, Integer appCode) throws Exception;
+	ResponseMessage save(EntityTagsModel<VenueEntity> venueModel, User user, Long ruleId, Integer appCode) throws Exception;
 
 	/**
 	 * 根据Id删除一条记录
@@ -33,7 +33,7 @@ public interface VenueService {
 	 * @param id
 	 * @return
 	 */
-	ResponseMessage deleteById(String id) throws Exception;
+	ResponseMessage deleteByPrimaryKey(String id) throws Exception;
 
 	/**
 	 * 查询一条记录
@@ -41,7 +41,7 @@ public interface VenueService {
 	 * @param id
 	 * @return
 	 */
-	VenueEntity findById(String id) throws Exception;
+	VenueEntity selectByPrimaryKey(String id) throws Exception;
 
 	/**
 	 * 编辑一条记录
@@ -50,7 +50,7 @@ public interface VenueService {
 	 * @param venueModel
 	 * @return
 	 */
-	ResponseMessage updateById(String id, EntityTagsModel<VenueEntity> venueModel, User user) throws Exception;
+	ResponseMessage edit(String id, EntityTagsModel<VenueEntity> venueModel, User user) throws Exception;
 
 	/**
 	 * 获取分页列表
@@ -70,7 +70,7 @@ public interface VenueService {
 	 * @param model
 	 * @return
 	 */
-    ResponseMessage updateDataBind(String updatedUser, DataBindModel model) throws Exception;
+	ResponseMessage dataBind(String updatedUser, DataBindModel model) throws Exception;
 
 	/**
 	 * 修改审核状态
@@ -81,10 +81,10 @@ public interface VenueService {
 	 * @return
 	 * @throws Exception
 	 */
-    ResponseMessage updateChangeStatus(String id, Integer status, String username) throws Exception;
+	ResponseMessage changeStatus(String id, Integer status, String username) throws Exception;
 
 	/**
-	 * 场馆审核
+	 * 景区审核
 	 * @author linjw 2019年10月21日11:32:41
 	 * @param id
 	 * @param auditStatus
@@ -93,7 +93,7 @@ public interface VenueService {
 	 * @return
 	 * @throws Exception
 	 */
-    ResponseMessage updateExamineVenue(String id, int auditStatus, String msg, User currentUser) throws Exception;
+	ResponseMessage examineVenue(String id, int auditStatus, String msg, User currentUser) throws Exception;
 
 	/**
 	 * 获取场馆信息，title可以为空
@@ -101,7 +101,7 @@ public interface VenueService {
 	 * @param status
 	 * @return
 	 */
-	ResponseMessage findVenueInfo(String title, Integer status);
+	ResponseMessage getVenueInfo(String title, Integer status);
 
 	/**
 	 * 关联标签
@@ -109,8 +109,8 @@ public interface VenueService {
 	 * @param user
 	 * @return
 	 */
-    ResponseMessage updateRelateTags(Map<String, Object> tags, User user);
+	ResponseMessage relateTags(Map<String, Object> tags, User user);
 
-    ResponseMessage findByTitleAndIdNot(String title, String s);
+	ResponseMessage findByTitleAndIdNot(String title, String s);
 
 }

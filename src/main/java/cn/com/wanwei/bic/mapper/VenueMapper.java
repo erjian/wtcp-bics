@@ -12,13 +12,13 @@ import java.util.Map;
 
 @Mapper
 public interface VenueMapper {
-    int deleteById(String id);
+    int deleteByPrimaryKey(String id);
 
     int insert(VenueEntity record);
 
-    VenueEntity findById(String id);
+    VenueEntity selectByPrimaryKey(String id);
 
-    int updateById(VenueEntity record);
+    int updateByPrimaryKey(VenueEntity record);
 
     /**
      * 获取分页列表
@@ -38,10 +38,10 @@ public interface VenueMapper {
      * @param ids
      * @return
      */
-    int updateDataBind(@Param(value="updatedUser") String updatedUser, @Param(value="updatedDate") Date updatedDate,
+    int dataBind(@Param(value="updatedUser") String updatedUser, @Param(value="updatedDate") Date updatedDate,
                  @Param(value="deptCode") String deptCode, @Param(value="ids") List<String> ids);
 
-    List<VenueEntity> findVenueInfo(@Param(value="title") String title, @Param(value="status") Integer status);
+    List<VenueEntity> getVenueInfo(@Param(value="title") String title, @Param(value="status") Integer status);
 
     List<VenueEntity> findByTitleAndIdNot(@Param(value="title")String title, @Param(value="id")String id);
 }

@@ -45,7 +45,7 @@ public class AuditLogServiceImpl implements AuditLogService {
     }
 
     @Override
-    public ResponseMessage insert(AuditLogEntity auditLogEntity,String userName) {
+    public ResponseMessage create(AuditLogEntity auditLogEntity,String userName) {
         try {
             auditLogEntity.setId(UUIDUtils.getInstance().getId());
             auditLogEntity.setCreatedUser(userName);
