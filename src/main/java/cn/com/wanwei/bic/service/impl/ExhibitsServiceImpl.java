@@ -196,7 +196,7 @@ public class ExhibitsServiceImpl implements ExhibitsService {
         eEntity.setUpdatedDate(new Date());
         exhibitsMapper.updateByPrimaryKey(eEntity);
         auditLogEntity.setType(type);
-        auditLogService.create(auditLogEntity, user.getUsername());
+        auditLogService.insert(auditLogEntity, user.getUsername());
         return ResponseMessage.defaultResponse().setMsg(msg);
     }
 

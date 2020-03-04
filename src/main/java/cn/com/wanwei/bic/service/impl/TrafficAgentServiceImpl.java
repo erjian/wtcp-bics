@@ -170,7 +170,7 @@ public class TrafficAgentServiceImpl implements TrafficAgentService {
         tEntity.setUpdatedDate(new Date());
         trafficAgentMapper.updateByPrimaryKey(tEntity);
         auditLogEntity.setType(type);
-        auditLogService.create(auditLogEntity, user.getUsername());
+        auditLogService.insert(auditLogEntity, user.getUsername());
         return ResponseMessage.defaultResponse().setMsg(msg);
     }
 
