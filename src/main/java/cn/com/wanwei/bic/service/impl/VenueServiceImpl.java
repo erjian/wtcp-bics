@@ -16,6 +16,7 @@ import cn.com.wanwei.bic.mapper.AuditLogMapper;
 import cn.com.wanwei.bic.mapper.VenueMapper;
 import cn.com.wanwei.bic.model.DataBindModel;
 import cn.com.wanwei.bic.model.EntityTagsModel;
+import cn.com.wanwei.bic.service.HallService;
 import cn.com.wanwei.bic.service.MaterialService;
 import cn.com.wanwei.bic.service.TagsService;
 import cn.com.wanwei.bic.service.VenueService;
@@ -59,6 +60,9 @@ public class VenueServiceImpl implements VenueService {
     private TagsService tagsService;
 
     @Autowired
+    private HallService hallService;
+
+    @Autowired
     private AuditLogMapper auditLogMapper;
 
     @Autowired
@@ -98,6 +102,10 @@ public class VenueServiceImpl implements VenueService {
 
     @Override
     public ResponseMessage deleteByPrimaryKey(String id) {
+        long hallNum = hallService.countByVenueId(id);
+        if(hallNum > 0L){
+            return ResponseMessage.validFailResponse().setMsg("该场馆存在厅室，不能删除");
+        }
         venueMapper.deleteByPrimaryKey(id);
         return ResponseMessage.defaultResponse().setMsg("删除成功");
     }
