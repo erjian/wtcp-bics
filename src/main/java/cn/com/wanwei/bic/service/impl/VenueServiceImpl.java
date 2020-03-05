@@ -81,6 +81,7 @@ public class VenueServiceImpl implements VenueService {
         record.setFullSpell(PinyinUtils.getPingYin(record.getTitle()).toLowerCase());
         record.setSimpleSpell(PinyinUtils.converterToFirstSpell(record.getTitle()).toLowerCase());
         record.setCreatedUser(user.getUsername());
+        record.setUpdatedUser(user.getUsername());
         record.setCreatedDate(new Date());
         record.setUpdatedDate(new Date());
         record.setDeptCode(user.getOrg().getCode());

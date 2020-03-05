@@ -59,7 +59,7 @@
     where id = #{id,jdbcType=VARCHAR}
   </delete>
   <insert id="insert" parameterType="cn.com.wanwei.bic.entity.VenueEntity">
-    insert into t_bic_venue (created_user, created_date, updated_user,
+    insert into t_bic_venue (id, created_user, created_date, updated_user,
       updated_date, category, title,
       sub_title, simple_spell, full_spell,
       code, summary, description,
@@ -70,7 +70,7 @@
       max_reception_num, opening_time, closing_time,
       status, weight, dept_code,
       content)
-    values (#{createdUser,jdbcType=VARCHAR}, #{createdDate,jdbcType=TIMESTAMP}, #{updatedUser,jdbcType=VARCHAR},
+    values (#{id,jdbcType=VARCHAR}, #{createdUser,jdbcType=VARCHAR}, #{createdDate,jdbcType=TIMESTAMP}, #{updatedUser,jdbcType=VARCHAR},
       #{updatedDate,jdbcType=TIMESTAMP}, #{category,jdbcType=VARCHAR}, #{title,jdbcType=VARCHAR},
       #{subTitle,jdbcType=VARCHAR}, #{simpleSpell,jdbcType=VARCHAR}, #{fullSpell,jdbcType=VARCHAR},
       #{code,jdbcType=VARCHAR}, #{summary,jdbcType=VARCHAR}, #{description,jdbcType=VARCHAR},
