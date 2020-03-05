@@ -59,11 +59,11 @@ public class VenueEntity extends CommonEntity {
     private Integer maxReceptionNum;
 
     @ApiModelProperty(value = "开馆时间")
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
+    @JsonFormat(pattern = "HH:mm", timezone = "GMT+8")
     private Date openingTime;
 
     @ApiModelProperty(value = "闭馆时间")
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
+    @JsonFormat(pattern = "HH:mm", timezone = "GMT+8")
     private Date closingTime;
 
     @ApiModelProperty(value = "状态")
