@@ -107,7 +107,7 @@
         <include refid="Get_Page_Info"/>
     </select>
 
-    <select id="findByPageAndDeptCode" parameterType="java.util.Map" resultMap="BaseResultMap">
+    <select id="findByPageWithDeptCode" parameterType="java.util.Map" resultMap="BaseResultMap">
         <include refid="Get_Page_Info"/>
     </select>
 

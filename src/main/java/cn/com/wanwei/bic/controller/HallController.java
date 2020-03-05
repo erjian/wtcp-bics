@@ -54,7 +54,7 @@ public class HallController extends BaseController {
                                       HttpServletRequest request) {
         Map<String, Object> filter = RequestUtil.getParameters(request);
         EscapeCharUtils.escape(filter, "title");
-        return ResponseMessage.defaultResponse().setData(hallService.findByPageAndDeptCode(page, size, filter));
+        return ResponseMessage.defaultResponse().setData(hallService.findByPageWithDeptCode(page, size, filter));
     }
 
     @ApiOperation(value = "获取场馆厅室列表（可根据所属场馆ID：venueId 和厅室名称：title 进行查询）",
