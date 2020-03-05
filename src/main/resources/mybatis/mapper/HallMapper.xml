@@ -39,7 +39,7 @@
         content
     </sql>
 
-    <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="ResultMapWithBLOBs">
+    <select id="findById" parameterType="java.lang.String" resultMap="ResultMapWithBLOBs">
         select
         <include refid="Base_Column_List"/>
         ,
@@ -53,7 +53,7 @@
         where venue_id = #{venueId,jdbcType=VARCHAR}
     </select>
 
-    <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    <delete id="deleteById" parameterType="java.lang.String">
         delete from t_bic_hall
         where id = #{id,jdbcType=VARCHAR}
     </delete>
@@ -77,7 +77,7 @@
         )
     </insert>
 
-    <update id="updateByPrimaryKey" parameterType="cn.com.wanwei.bic.entity.HallEntity">
+    <update id="updateById" parameterType="cn.com.wanwei.bic.entity.HallEntity">
         update t_bic_hall
         set created_user = #{createdUser,jdbcType=VARCHAR},
             created_date = #{createdDate,jdbcType=TIMESTAMP},
@@ -107,7 +107,7 @@
         <include refid="Get_Page_Info"/>
     </select>
 
-    <select id="findByPageForFeign" parameterType="java.util.Map" resultMap="BaseResultMap">
+    <select id="findByPageAndDeptCode" parameterType="java.util.Map" resultMap="BaseResultMap">
         <include refid="Get_Page_Info"/>
     </select>
 
@@ -141,21 +141,21 @@
         </where>
     </sql>
 
-    <select id="existsByTitleAndIdNot" resultMap="BaseResultMap">
+    <select id="existsByValueAndIdNot" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
         from t_bic_hall
         <where>
-            <if test="title != null">
-                and title = #{title,jdbcType=VARCHAR}
+            <if test="existsValue != null">
+                and title = #{existsValue,jdbcType=VARCHAR}
             </if>
-            <if test="id != null and id != '-1'.toString()">
+            <if test="id != null and id != ''">
                 and id != #{id,jdbcType=BIGINT}
             </if>
         </where>
     </select>
 
-    <update id="dataBind">
+    <update id="updateDeptCode">
         update t_bic_hall
         set updated_date = #{updatedDate,jdbcType=TIMESTAMP},
         updated_user = #{updatedUser,jdbcType=VARCHAR},
