@@ -18,8 +18,8 @@
     <result column="sex" jdbcType="INTEGER" property="sex" />
     <result column="birth_date" jdbcType="TIMESTAMP" property="birthDate" />
     <result column="pass_away_date" jdbcType="TIMESTAMP" property="passAwayDate" />
-    <result column="birthplace" jdbcType="INTEGER" property="birthplace" />
-    <result column="nation" jdbcType="INTEGER" property="nation" />
+    <result column="birthplace" jdbcType="VARCHAR" property="birthplace" />
+    <result column="nation" jdbcType="VARCHAR" property="nation" />
     <result column="type" jdbcType="VARCHAR" property="type" />
     <result column="behalf_achievement" jdbcType="INTEGER" property="behalfAchievement" />
     <result column="status" jdbcType="INTEGER" property="status" />
@@ -109,7 +109,7 @@
       #{simpleSpell,jdbcType=VARCHAR}, #{fullSpell,jdbcType=VARCHAR}, #{alias,jdbcType=VARCHAR}, 
       #{summary,jdbcType=VARCHAR}, #{description,jdbcType=VARCHAR}, #{slogan,jdbcType=VARCHAR}, 
       #{sex,jdbcType=INTEGER}, #{birthDate,jdbcType=TIMESTAMP}, #{passAwayDate,jdbcType=TIMESTAMP}, 
-      #{birthplace,jdbcType=INTEGER}, #{nation,jdbcType=INTEGER}, #{type,jdbcType=VARCHAR}, 
+      #{birthplace,jdbcType=VARCHAR}, #{nation,jdbcType=VARCHAR}, #{type,jdbcType=VARCHAR},
       #{behalfAchievement,jdbcType=INTEGER}, #{status,jdbcType=INTEGER}, #{weight,jdbcType=INTEGER}, 
       #{deptCode,jdbcType=VARCHAR}, #{chiefBehalf,jdbcType=LONGVARCHAR}, #{story,jdbcType=LONGVARCHAR}
       )
@@ -131,8 +131,8 @@
       sex = #{sex,jdbcType=INTEGER},
       birth_date = #{birthDate,jdbcType=TIMESTAMP},
       pass_away_date = #{passAwayDate,jdbcType=TIMESTAMP},
-      birthplace = #{birthplace,jdbcType=INTEGER},
-      nation = #{nation,jdbcType=INTEGER},
+      birthplace = #{birthplace,jdbcType=VARCHAR},
+      nation = #{nation,jdbcType=VARCHAR},
       type = #{type,jdbcType=VARCHAR},
       behalf_achievement = #{behalfAchievement,jdbcType=INTEGER},
       status = #{status,jdbcType=INTEGER},

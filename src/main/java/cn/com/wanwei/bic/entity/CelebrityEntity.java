@@ -54,10 +54,10 @@ public class CelebrityEntity extends BaseEntity{
     private Date passAwayDate;
 
     @ApiModelProperty(value = "出生地")
-    private Integer birthplace;
+    private String birthplace;
 
     @ApiModelProperty(value = "民族")
-    private Integer nation;
+    private String nation;
 
     @ApiModelProperty(value = "类型 民族英雄、科学家、专家学者、劳模、非遗传承人、帝王、大臣、政治家、作家、诗人、企业家、宗教领袖、舞蹈家、画家、歌唱家、曲艺家、收藏家、导演、艺人、运动员、军阀、国民党")
     private String type;
