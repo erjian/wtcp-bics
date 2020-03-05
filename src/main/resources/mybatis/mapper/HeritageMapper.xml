@@ -62,7 +62,7 @@
     <selectKey keyProperty="id" order="AFTER" resultType="java.lang.String">
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into t_bic_heritage (created_user, created_date, updated_user, 
+    insert into t_bic_heritage (id,created_user, created_date, updated_user,
       updated_date, title, sub_title, 
       simple_spell, full_spell, code, 
       category, level, type, 
@@ -73,7 +73,7 @@
       inherit_region, celebrity_ids, vr_url, 
       status, weight, dept_code, 
       content)
-    values (#{createdUser,jdbcType=VARCHAR}, #{createdDate,jdbcType=TIMESTAMP}, #{updatedUser,jdbcType=VARCHAR}, 
+    values (#{id,jdbcType=VARCHAR}, #{createdUser,jdbcType=VARCHAR}, #{createdDate,jdbcType=TIMESTAMP}, #{updatedUser,jdbcType=VARCHAR},
       #{updatedDate,jdbcType=TIMESTAMP}, #{title,jdbcType=VARCHAR}, #{subTitle,jdbcType=VARCHAR}, 
       #{simpleSpell,jdbcType=VARCHAR}, #{fullSpell,jdbcType=VARCHAR}, #{code,jdbcType=VARCHAR}, 
       #{category,jdbcType=VARCHAR}, #{level,jdbcType=VARCHAR}, #{type,jdbcType=VARCHAR}, 
