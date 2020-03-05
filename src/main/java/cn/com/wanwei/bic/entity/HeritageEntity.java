@@ -9,6 +9,7 @@ import lombok.ToString;
 
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import java.util.Date;
 
 @Data
@@ -50,10 +51,10 @@ public class HeritageEntity extends BaseEntity{
     @ApiModelProperty(value = "项目编号",required = true)
     private String heritageSerial;
 
-    @ApiModelProperty(value = "简介")
+    @ApiModelProperty(value = "摘要")
     private String summary;
 
-    @ApiModelProperty(value = "摘要")
+    @ApiModelProperty(value = "简介")
     private String description;
 
     @ApiModelProperty(value = "广告语")
@@ -100,5 +101,17 @@ public class HeritageEntity extends BaseEntity{
 
     @ApiModelProperty(value = "内容",required = true)
     private String content;
+
+    @ApiModelProperty(value = "在线状态")
+    private Integer onlineStatus;
+
+    public Integer getOnlineStatus() {
+        return this.status == 9 ? this.status : 1;
+    }
+
+    //冗余字段，关联素材的id
+    @Transient
+    private String timeId;
+
 
 }
