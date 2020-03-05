@@ -149,4 +149,11 @@ public class TagsController extends BaseController {
         return tagsService.findByPrincipalId(principalId, DriveCampTagsEntity.class);
     }
 
+    @ApiOperation(value = "根据关联ID获取名人管理标签信息", notes = "根据关联ID获取名人管理标签信息")
+    @ApiImplicitParam(name = "principalId", value = "关联的名人管理ID", required = true)
+    @OperationLog(value = "wtcp-bic/根据关联ID获取名人管理标签信息", operate = "r", module = "标签管理")
+    @RequestMapping(value = "/名人管理", method = RequestMethod.GET)
+    public ResponseMessage findCelebrityByPid(@RequestParam String principalId) {
+        return tagsService.findByPrincipalId(principalId, CelebrityTagsEntity.class);
+    }
 }
