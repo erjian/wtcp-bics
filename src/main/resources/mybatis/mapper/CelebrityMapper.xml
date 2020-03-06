@@ -77,6 +77,11 @@
         </if>
       </where>
     </select>
+  <select id="findByList" parameterType="java.util.Map" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"/>
+    from t_bic_celebrity
+  </select>
   <delete id="deleteById" parameterType="java.lang.String">
     delete from t_bic_celebrity
     where id = #{id,jdbcType=VARCHAR}

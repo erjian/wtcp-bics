@@ -186,6 +186,12 @@ public class CelebrityServiceImpl implements CelebrityService {
         return ResponseMessage.defaultResponse().setMsg("关联机构成功");
     }
 
+    @Override
+    public ResponseMessage findByList() {
+        List<CelebrityEntity> list = celebrityMapper.findByList();
+        return null;
+    }
+
     private int insertAuditLog(int preStatus, int auditStatus, String principalId, String userName, String msg, int type) {
         AuditLogEntity auditLogEntity = new AuditLogEntity();
         auditLogEntity.setId(UUIDUtils.getInstance().getId());

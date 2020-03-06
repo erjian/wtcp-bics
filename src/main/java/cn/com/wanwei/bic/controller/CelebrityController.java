@@ -152,4 +152,12 @@ public class CelebrityController extends BaseController {
         }
         return celebrityService.updateDeptCode(getCurrentUser().getUsername(), model);
     }
+
+    @ApiOperation(value = "获取名人列表", notes = "获取名人列表")
+    @PreAuthorize("hasAuthority('celebrity:r')")
+    @RequestMapping(value = "/findByList", method = RequestMethod.GET)
+    public ResponseMessage findByList() throws Exception {
+        return celebrityService.findByList();
+    }
+
 }

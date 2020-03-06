@@ -34,4 +34,10 @@ public interface CelebrityMapper {
      */
     int updateDeptCode(@Param(value = "updatedUser") String updatedUser, @Param(value = "updatedDate") Date updatedDate,
                  @Param(value = "deptCode") String deptCode, @Param(value = "ids") List<String> ids);
+
+    /**
+     * 获取名人列表
+     * @return
+     */
+    List<CelebrityEntity> findByList();
 }

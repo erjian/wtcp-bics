@@ -84,4 +84,10 @@ public interface CelebrityService {
      * @return
      */
     ResponseMessage updateDeptCode(String user, DataBindModel model);
+
+    /**
+     * 获取名人列表
+     * @return
+     */
+    ResponseMessage findByList();
 }
