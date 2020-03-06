@@ -1,7 +1,6 @@
 package cn.com.wanwei.bic.controller;
 
 import cn.com.wanwei.bic.entity.HeritageEntity;
-import cn.com.wanwei.bic.model.DataBindModel;
 import cn.com.wanwei.bic.model.EntityTagsModel;
 import cn.com.wanwei.bic.model.WeightModel;
 import cn.com.wanwei.bic.service.CommonService;
@@ -9,6 +8,8 @@ import cn.com.wanwei.bic.service.HeritageService;
 import cn.com.wanwei.common.log.annotation.OperationLog;
 import cn.com.wanwei.common.model.ResponseMessage;
 import cn.com.wanwei.common.utils.RequestUtil;
+import cn.com.wanwei.mybatis.model.DeptCodeBindModel;
+import cn.com.wanwei.persistence.mybatis.utils.EscapeCharUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
@@ -41,11 +42,12 @@ public class HeritageController extends BaseController{
     @GetMapping(value = "/page")
     @PreAuthorize("hasAuthority('heritage:r')")
     @OperationLog(value = "wtcp-bics/非遗管理分页列表", operate = "r", module = "景区管理")
-    public ResponseMessage findByPage(@RequestParam(value = "page", defaultValue = "1") Integer page,
+    public ResponseMessage findByPage(@RequestParam(value = "page", defaultValue = "0") Integer page,
                                       @RequestParam(value = "size", defaultValue = "10") Integer size,
                                       HttpServletRequest request) throws Exception {
         Map<String, Object> filter = RequestUtil.getParameters(request);
-        return heritageService.findByPage(page,size,filter);
+        EscapeCharUtils.escape(filter, "title");
+        return ResponseMessage.defaultResponse().setData(heritageService.findByPageWithDeptCode(page, size, filter));
     }
 
     @ApiOperation(value = "查询非遗详情", notes = "根据ID查询非遗详情")
@@ -54,7 +56,7 @@ public class HeritageController extends BaseController{
     @PreAuthorize("hasAuthority('heritage:v')")
     @OperationLog(value = "wtcp-bics/根据id查询非遗详情", operate = "v", module = "非遗管理")
     public ResponseMessage detail(@PathVariable("id") String id) throws Exception {
-        HeritageEntity heritageEntity = heritageService.selectByPrimaryKey(id);
+        HeritageEntity heritageEntity = heritageService.findById(id);
         if (heritageEntity == null) {
             return ResponseMessage.validFailResponse().setMsg("数据不存在");
         }
@@ -67,7 +69,7 @@ public class HeritageController extends BaseController{
     @PreAuthorize("hasAuthority('heritage:d')")
     @OperationLog(value = "wtcp-bics/根据id删除非遗", operate = "d", module = "非遗管理")
     public ResponseMessage delete(@PathVariable("id") String id) throws Exception {
-        return heritageService.deleteByPrimaryKey(id);
+        return heritageService.deleteById(id);
     }
 
     @ApiOperation(value = "非遗新增", notes = "非遗新增")
@@ -116,7 +118,7 @@ public class HeritageController extends BaseController{
     @OperationLog(value = "wtcp-bics/上下线修改", operate = "w", module = "非遗管理")
 
     public ResponseMessage changeStatus(@RequestParam String id, @RequestParam Integer status) throws Exception {
-        return heritageService.changeStatus(id, status, getCurrentUser().getUsername());
+        return heritageService.updateOnlineStatus(id, status, getCurrentUser().getUsername());
     }
 
     @PreAuthorize("hasAuthority('heritage:e')")
@@ -128,18 +130,19 @@ public class HeritageController extends BaseController{
     })
     @RequestMapping(value = "/audit", method = RequestMethod.GET)
     public ResponseMessage audit(@RequestParam String id, @RequestParam int auditStatus, String msg) throws Exception {
-        return heritageService.examineHeritage(id, auditStatus, msg, getCurrentUser());
+        return heritageService.updateAuditStatus(id, auditStatus, msg, getCurrentUser());
     }
 
     @PreAuthorize("hasAuthority('heritage:b')")
     @ApiOperation(value = "组织机构切换", notes = "组织机构切换")
     @ApiImplicitParams({@ApiImplicitParam(name = "model", value = "组织机构切换model", required = true, dataType = "DataBindModel")})
     @RequestMapping(value = "/dataBind", method = {RequestMethod.PUT, RequestMethod.PATCH})
-    public ResponseMessage dataBind(@RequestBody @Valid DataBindModel model, BindingResult bindingResult) throws Exception {
+    public ResponseMessage dataBind(@RequestBody @Valid DeptCodeBindModel deptCodeBindModel, BindingResult bindingResult) throws Exception {
         if (bindingResult.hasErrors()) {
             return ResponseMessage.validFailResponse().setMsg(bindingResult.getAllErrors());
         }
-        return heritageService.dataBind(getCurrentUser().getUsername(), model);
+        deptCodeBindModel.setCurrentUserName(getCurrentUser().getUsername());
+        return heritageService.updateDeptCode(deptCodeBindModel);
     }
 
     @ApiOperation(value = "非遗名称是否重复", notes = "非遗名称是否重复(status:1 表示不重复，0表示重复)")
@@ -150,6 +153,7 @@ public class HeritageController extends BaseController{
     @RequestMapping(value = "/existByTitle", method = RequestMethod.GET)
     @OperationLog(value = "wtcp-bics/检查非遗名称是否重复", operate = "", module = "非遗", frontCode = "", resource = "")
     public ResponseMessage existByTitle(@RequestParam String title, String id) {
-        return heritageService.existsByTitleAndIdNot(title, id != null ? id : "-1");
+        return heritageService.existsByValueAndIdNot(title, id, "该名称已存在");
+
     }
 }

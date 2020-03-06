@@ -21,7 +21,7 @@ import java.util.Date;
 
 @Slf4j
 @Service
-public class HallServiceImpl extends BaseServiceImpl<HallEntity, String> implements HallService {
+public class HallServiceImpl extends BaseServiceImpl<HallMapper,HallEntity, String> implements HallService {
 
     @Autowired
     private HallMapper hallMapper;

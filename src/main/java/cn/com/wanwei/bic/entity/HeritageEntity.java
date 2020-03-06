@@ -1,5 +1,6 @@
 package cn.com.wanwei.bic.entity;
 
+import cn.com.wanwei.mybatis.entity.BaseEntity;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -10,7 +11,6 @@ import lombok.ToString;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 import javax.persistence.Transient;
-import java.util.Date;
 
 @Data
 @EqualsAndHashCode(callSuper = false)
@@ -19,7 +19,7 @@ import java.util.Date;
 @Table(name = "t_bic_heritage")
 @ApiModel(description = "非遗管理")
 @ToString(callSuper = true)
-public class HeritageEntity extends BaseEntity{
+public class HeritageEntity extends BaseEntity {
 
     @ApiModelProperty(value = "非遗名称" ,required = true)
     private String title;

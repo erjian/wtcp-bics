@@ -5,36 +5,15 @@ import cn.com.wanwei.bic.model.DataBindModel;
 import cn.com.wanwei.bic.model.EntityTagsModel;
 import cn.com.wanwei.common.model.ResponseMessage;
 import cn.com.wanwei.common.model.User;
+import cn.com.wanwei.mybatis.service.BaseService;
 
 import java.util.Map;
 
 /**
  * wtcp-bics - HeritageService 非遗基础信息管理接口
  */
-public interface HeritageService {
+public interface HeritageService extends BaseService<HeritageEntity, String> {
 
-    /**
-     * 分页查询列表
-     * @param page
-     * @param size
-     * @param filter
-     * @return
-     */
-    ResponseMessage findByPage(Integer page, Integer size, Map<String, Object> filter);
-
-    /**
-     * 查询详情
-     * @param id
-     * @return
-     */
-    HeritageEntity selectByPrimaryKey(String id);
-
-    /**
-     * 根据id删除非遗
-     * @param id
-     * @return
-     */
-    ResponseMessage deleteByPrimaryKey(String id);
 
     /**
      * 新增非遗
@@ -62,23 +41,7 @@ public interface HeritageService {
      * @param username
      * @return
      */
-    ResponseMessage changeStatus(String id, Integer status, String username);
-
-    /**
-     * 组织机构切换
-     * @param updatedUser
-     * @param model
-     * @return
-     */
-    ResponseMessage dataBind(String updatedUser, DataBindModel model);
-
-    /**
-     * 校验非遗名称是否重复
-     * @param title
-     * @param s
-     * @return
-     */
-    ResponseMessage existsByTitleAndIdNot(String title, String s);
+    ResponseMessage updateOnlineStatus(String id, Integer status, String username);
 
     /**
      * 审核非遗信息
@@ -88,5 +51,5 @@ public interface HeritageService {
      * @param currentUser
      * @return
      */
-    ResponseMessage examineHeritage(String id, int auditStatus, String msg, User currentUser);
+    ResponseMessage updateAuditStatus(String id, int auditStatus, String msg, User currentUser);
 }
