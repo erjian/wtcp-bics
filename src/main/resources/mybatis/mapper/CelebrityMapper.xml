@@ -55,13 +55,8 @@
           <bind name="name" value="'%'+name + '%'"></bind>
           and (name like #{name} or simple_spell like #{name} or full_spell like #{name})
         </if>
-        <if test="simpleSpell != null and simpleSpell!='' ">
-          <bind name="simpleSpell" value="'%'+simpleSpell + '%'"></bind>
-          and simple_spell like #{simpleSpell}
-        </if>
-        <if test="fullSpell != null and fullSpell!='' ">
-          <bind name="fullSpell" value="'%'+fullSpell + '%'"></bind>
-          and full_spell like #{fullSpell}
+        <if test="alias != null and alias != ''">
+          and alias = #{alias,jdbcType=VARCHAR}
         </if>
         <if test="category != null and category != ''">
           and category = #{category,jdbcType=VARCHAR}
