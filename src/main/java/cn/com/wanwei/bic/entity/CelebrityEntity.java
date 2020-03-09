@@ -9,7 +9,10 @@ import lombok.ToString;
 
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import java.util.Date;
+import java.util.List;
+import java.util.Map;
 
 @Data
 @EqualsAndHashCode(callSuper=false)
@@ -80,4 +83,14 @@ public class CelebrityEntity extends BaseEntity{
 
     @ApiModelProperty(value = "生平事迹")
     private String story;
+
+    //冗余字段，关联素材的id
+    @Transient
+    private String timeId;
+
+    //冗余字段，标签列表
+    private List<BaseTagsEntity> tagList;
+
+    //冗余字段，素材信息
+    private Map<String, Object> fileList;
 }
