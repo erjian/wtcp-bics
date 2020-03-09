@@ -203,6 +203,10 @@ public class ExhibitsServiceImpl implements ExhibitsService {
     @Override
     public ResponseMessage delete(String id) {
         exhibitsMapper.deleteByPrimaryKey(id);
+        //删除关联标签信息
+        tagsService.deleteByPrincipalId(id, ExhibitsTagsEntity.class);
+        //删除素材
+        materialService.deleteByPrincipalId(id);
         return ResponseMessage.defaultResponse().setMsg("删除成功！");
     }
 
