@@ -2,13 +2,13 @@ package cn.com.wanwei.bic.service.impl;
 
 import cn.com.wanwei.bic.entity.AuditLogEntity;
 import cn.com.wanwei.bic.entity.BaseTagsEntity;
-import cn.com.wanwei.bic.entity.CelebrityEntity;
-import cn.com.wanwei.bic.entity.CelebrityTagsEntity;
+import cn.com.wanwei.bic.entity.CateringEntity;
+import cn.com.wanwei.bic.entity.CateringTagsEntity;
 import cn.com.wanwei.bic.mapper.AuditLogMapper;
-import cn.com.wanwei.bic.mapper.CelebrityMapper;
+import cn.com.wanwei.bic.mapper.CateringMapper;
 import cn.com.wanwei.bic.model.DataBindModel;
 import cn.com.wanwei.bic.model.EntityTagsModel;
-import cn.com.wanwei.bic.service.CelebrityService;
+import cn.com.wanwei.bic.service.CateringService;
 import cn.com.wanwei.bic.service.MaterialService;
 import cn.com.wanwei.bic.service.TagsService;
 import cn.com.wanwei.bic.utils.PageUtils;
@@ -36,10 +36,8 @@ import java.util.Map;
  */
 @Slf4j
 @Service
-public class CelebrityServiceImpl implements CelebrityService {
-
-    @Autowired
-    private CelebrityMapper celebrityMapper;
+@SuppressWarnings("all")
+public class CateringServiceImpl implements CateringService {
 
     @Autowired
     private TagsService tagsService;
@@ -50,79 +48,89 @@ public class CelebrityServiceImpl implements CelebrityService {
     @Autowired
     private AuditLogMapper auditLogMapper;
 
+    @Autowired
+    private CateringMapper cateringMapper;
+
     @Override
     public ResponseMessage findByPage(Integer page, Integer size, Map<String, Object> filter) {
-        EscapeCharUtils.escape(filter, "name", "simpleSpell","fullSpell");
+        EscapeCharUtils.escape(filter, "title", "subTilte","simpleSpell","fullSpell");
         MybatisPageRequest pageRequest = PageUtils.getInstance().setPage(page, size, filter, Sort.Direction.DESC, "created_date", "updated_date");
-        Page<CelebrityEntity> scenicEntities = celebrityMapper.findByPage(filter);
-        PageInfo<CelebrityEntity> pageInfo = new PageInfo<>(scenicEntities, pageRequest);
+        Page<CateringEntity> cateringEntities = cateringMapper.findByPage(filter);
+        PageInfo<CateringEntity> pageInfo = new PageInfo<>(cateringEntities, pageRequest);
         return ResponseMessage.defaultResponse().setData(pageInfo);
     }
 
     @Override
+    public ResponseMessage findByList(Map<String, Object> filter) {
+        List<CateringEntity> entityList = cateringMapper.findByList(filter);
+        return ResponseMessage.defaultResponse().setData(entityList);
+    }
+
+    @Override
     public ResponseMessage findById(String id) {
-        CelebrityEntity celebrityEntity = celebrityMapper.findById(id);
-        if(celebrityEntity == null){
+        CateringEntity entity = cateringMapper.findById(id);
+        if(entity == null){
             return ResponseMessage.validFailResponse().setMsg("数据不存在");
         }
-        return ResponseMessage.defaultResponse().setData(celebrityEntity);
+        return ResponseMessage.defaultResponse().setData(entity);
     }
 
     @Override
     public ResponseMessage deleteById(String id) {
-        celebrityMapper.deleteById(id);
+        cateringMapper.deleteById(id);
         return ResponseMessage.defaultResponse().setMsg("删除成功");
     }
 
     @Override
-    public ResponseMessage insert(EntityTagsModel<CelebrityEntity> celebrityModel, User currentUser) {
-        CelebrityEntity celebrityEntity = celebrityModel.getEntity();
+    public ResponseMessage insert(EntityTagsModel<CateringEntity> cateringModel, User user) {
+        CateringEntity entity = cateringModel.getEntity();
         String id = UUIDUtils.getInstance().getId();
-        celebrityEntity.setId(id);
-        celebrityEntity.setCreatedUser(currentUser.getUsername());
-        celebrityEntity.setCreatedDate(new Date());
-        celebrityEntity.setSimpleSpell(PinyinUtils.converterToFirstSpell(celebrityEntity.getName()).toLowerCase());
-        celebrityEntity.setFullSpell(PinyinUtils.getPingYin(celebrityEntity.getName()).toLowerCase());
-        celebrityEntity.setStatus(0);
-        celebrityEntity.setWeight(0);
+        entity.setId(id);
+        entity.setCreatedDate(new Date());
+        entity.setCreatedUser(user.getUsername());
+        entity.setUpdatedDate(new Date());
+        entity.setUpdatedUser(user.getUsername());
+        entity.setSimpleSpell(PinyinUtils.converterToFirstSpell(entity.getTitle()).toLowerCase());
+        entity.setFullSpell(PinyinUtils.getPingYin(entity.getTitle()).toLowerCase());
+        entity.setStatus(0);
+        entity.setWeight(0);
+        cateringMapper.insert(entity);
 
-        celebrityMapper.insert(celebrityEntity);
 
         //处理标签
-        if (CollectionUtils.isNotEmpty(celebrityModel.getTagsList())) {
-            tagsService.batchInsert(id, celebrityModel.getTagsList(), currentUser, CelebrityTagsEntity.class);
+        if (CollectionUtils.isNotEmpty(cateringModel.getTagsList())) {
+            tagsService.batchInsert(id, cateringModel.getTagsList(), user, CateringTagsEntity.class);
         }
 
         //处理素材
-        if(CollectionUtils.isNotEmpty(celebrityModel.getMaterialList())){
-            materialService.batchInsert(id,celebrityModel.getMaterialList(),currentUser);
+        if(CollectionUtils.isNotEmpty(cateringModel.getMaterialList())){
+            materialService.batchInsert(id,cateringModel.getMaterialList(),user);
         }
         return ResponseMessage.defaultResponse().setMsg("保存成功").setData(id);
     }
 
     @Override
-    public ResponseMessage updateById(String id, EntityTagsModel<CelebrityEntity> celebrityModel, User user) {
-        CelebrityEntity celebrityEntity = celebrityMapper.findById(id);
-        if (celebrityEntity == null){
+    public ResponseMessage updateById(String id, EntityTagsModel<CateringEntity> cateringModel, User user) {
+        CateringEntity cateringEntity = cateringMapper.findById(id);
+        if(cateringEntity == null){
             return ResponseMessage.validFailResponse().setMsg("数据不存在");
         }
-        CelebrityEntity entity = celebrityModel.getEntity();
+        CateringEntity entity = cateringModel.getEntity();
         entity.setUpdatedDate(new Date());
         entity.setUpdatedUser(user.getUsername());
-        entity.setSimpleSpell(PinyinUtils.converterToFirstSpell(entity.getName()).toLowerCase());
-        entity.setFullSpell(PinyinUtils.getPingYin(entity.getName()).toLowerCase());
+        entity.setSimpleSpell(PinyinUtils.converterToFirstSpell(entity.getTitle()).toLowerCase());
+        entity.setFullSpell(PinyinUtils.getPingYin(entity.getTitle()).toLowerCase());
         entity.setStatus(0);
 
-        celebrityMapper.updateById(entity);
-
+        cateringMapper.updateById(entity);
         //处理标签
-        if (CollectionUtils.isNotEmpty(celebrityModel.getTagsList())) {
-            tagsService.batchInsert(id, celebrityModel.getTagsList(), user, CelebrityTagsEntity.class);
+        if (CollectionUtils.isNotEmpty(cateringModel.getTagsList())) {
+            tagsService.batchInsert(id, cateringModel.getTagsList(), user, CateringTagsEntity.class);
         }
 
         //处理素材
-        if(CollectionUtils.isNotEmpty(celebrityModel.getMaterialList())){
-            materialService.batchInsert(id,celebrityModel.getMaterialList(),user);
+        if(CollectionUtils.isNotEmpty(cateringModel.getMaterialList())){
+            materialService.batchInsert(id,cateringModel.getMaterialList(),user);
         }
         return ResponseMessage.defaultResponse().setMsg("更新成功").setData(id);
     }
@@ -139,14 +147,14 @@ public class CelebrityServiceImpl implements CelebrityService {
                 entity.setTagCatagory(String.valueOf(m.get("tagCatagory")));
                 bList.add(entity);
             }
-            tagsService.batchInsert(tags.get("id").toString(), bList, user, CelebrityTagsEntity.class);
+            tagsService.batchInsert(tags.get("id").toString(), bList, user, CateringTagsEntity.class);
         }
         return ResponseMessage.defaultResponse().setMsg("标签关联成功");
     }
 
     @Override
     public ResponseMessage updateStatus(String id, Integer status, String user) {
-        CelebrityEntity entity = celebrityMapper.findById(id);
+        CateringEntity entity = cateringMapper.findById(id);
         if (null == entity) {
             return ResponseMessage.validFailResponse().setMsg("无名人信息");
         }
@@ -159,21 +167,21 @@ public class CelebrityServiceImpl implements CelebrityService {
         entity.setUpdatedUser(user);
         entity.setUpdatedDate(new Date());
         entity.setStatus(status);
-        celebrityMapper.updateById(entity);
+        cateringMapper.updateById(entity);
         return ResponseMessage.defaultResponse().setMsg("状态变更成功");
     }
 
     @Override
     public ResponseMessage updateAuditStatus(String id, int auditStatus, String msg, User user) {
-        CelebrityEntity entity = celebrityMapper.findById(id);
+        CateringEntity entity = cateringMapper.findById(id);
         if (entity != null) {
             // 添加审核记录
             insertAuditLog(entity.getStatus(), auditStatus, id, user.getUsername(), msg, 0);
             entity.setStatus(auditStatus);
             entity.setUpdatedDate(new Date());
-            celebrityMapper.updateById(entity);
+            cateringMapper.updateById(entity);
         } else {
-            return ResponseMessage.validFailResponse().setMsg("名人信息不存在");
+            return ResponseMessage.validFailResponse().setMsg("餐饮信息不存在");
         }
         return ResponseMessage.defaultResponse().setMsg("审核成功");
     }
@@ -182,14 +190,18 @@ public class CelebrityServiceImpl implements CelebrityService {
     public ResponseMessage updateDeptCode(String updatedUser, DataBindModel model) {
         String deptCode = model.getDeptCode();
         List<String> ids = model.getIds();
-        celebrityMapper.updateDeptCode(updatedUser, new Date(), deptCode, ids);
+        cateringMapper.updateDeptCode(updatedUser, new Date(), deptCode, ids);
         return ResponseMessage.defaultResponse().setMsg("关联机构成功");
     }
 
     @Override
-    public ResponseMessage findByList() {
-        List<CelebrityEntity> list = celebrityMapper.findByList();
-        return ResponseMessage.defaultResponse().setData(list);
+    public ResponseMessage findByTitleAndIdNot(String title, String id) {
+        ResponseMessage responseMessage = ResponseMessage.defaultResponse();
+        List<CateringEntity> cateringEntities = cateringMapper.findByTitleAndIdNot(title, id);
+        if (CollectionUtils.isNotEmpty(cateringEntities)) {
+            responseMessage.setStatus(ResponseMessage.FAILED).setMsg("该名称已经存在！");
+        }
+        return responseMessage;
     }
 
     private int insertAuditLog(int preStatus, int auditStatus, String principalId, String userName, String msg, int type) {
