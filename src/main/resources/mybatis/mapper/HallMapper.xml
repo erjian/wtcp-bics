@@ -124,13 +124,13 @@
                 <bind name="title" value="'%'+title + '%'"></bind>
                 and (title like #{title} or simple_spell like #{title} or full_spell like #{title})
             </if>
-            <if test="category != null">
+            <if test="category != null and category!=''">
                 and category = #{category,jdbcType=VARCHAR}
             </if>
-            <if test="venueId != null">
+            <if test="venueId != null and venueId!=''">
                 and venue_id = #{venueId,jdbcType=VARCHAR}
             </if>
-            <if test="onlineStatus != null">
+            <if test="onlineStatus != null and onlineStatus!=''">
                 <if test="onlineStatus == 9">
                     and status = #{onlineStatus,jdbcType=INTEGER}
                 </if>
