@@ -1,5 +1,6 @@
 package cn.com.wanwei.bic.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -51,9 +52,11 @@ public class CelebrityEntity extends BaseEntity{
     private Integer sex;
 
     @ApiModelProperty(value = "出生日期")
+    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
     private Date birthDate;
 
     @ApiModelProperty(value = "去世日期")
+    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
     private Date passAwayDate;
 
     @ApiModelProperty(value = "出生地")
