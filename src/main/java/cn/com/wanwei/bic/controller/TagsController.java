@@ -156,4 +156,12 @@ public class TagsController extends BaseController {
     public ResponseMessage findCelebrityByPid(@RequestParam String principalId) {
         return tagsService.findByPrincipalId(principalId, CelebrityTagsEntity.class);
     }
+
+    @ApiOperation(value = "根据关联ID获取展品管理标签信息", notes = "根据关联ID获取展品管理标签信息")
+    @ApiImplicitParam(name = "principalId", value = "关联的展品管理ID", required = true)
+    @OperationLog(value = "wtcp-bic/根据关联ID获取展品管理标签信息", operate = "r", module = "标签管理")
+    @RequestMapping(value = "/findExhibitsByPid", method = RequestMethod.GET)
+    public ResponseMessage findExhibitsByPid(@RequestParam String principalId) {
+        return tagsService.findByPrincipalId(principalId, ExhibitsTagsEntity.class);
+    }
 }
