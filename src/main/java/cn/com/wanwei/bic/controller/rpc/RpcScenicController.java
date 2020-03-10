@@ -30,13 +30,14 @@ public class RpcScenicController extends BaseController {
 
     @ApiOperation(value = "根据景区名称和上线状态查询景区信息的feign接口", notes = "根据景区名称和上线状态查询景区信息的feign接口")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "title", value = "景区名称",required = true),
-            @ApiImplicitParam(name = "status", value = "上下线（9 上线，1 下线）")
+            @ApiImplicitParam(name = "title", value = "景区名称"),
+            @ApiImplicitParam(name = "status", value = "上下线（9 上线，1 下线）"),
+            @ApiImplicitParam(name = "category", value = "类别：景区(125001001) OR 示范村(125001002)")
     })
     @RequestMapping(value = "/getScenicInfo", method = RequestMethod.GET)
     @OperationLog(value = "wtcp-bics/根据景区名称和上线状态查询景区信息的feign接口", operate = "v", module = "景区管理")
-    public ResponseMessage getScenicInfo(String title, Integer status) throws Exception {
-        return scenicService.getScenicInfo(StringUtils.isEmpty(title)?"":title.trim().toLowerCase(), status);
+    public ResponseMessage getScenicInfo(String title, Integer status, String category) throws Exception {
+        return scenicService.getScenicInfo(StringUtils.isEmpty(title) ? "" : title.trim().toLowerCase(), status, category);
     }
 
     // ----------------------------------以下接口为自驾游提供-----------------------------------------
@@ -50,8 +51,8 @@ public class RpcScenicController extends BaseController {
     })
     @OperationLog(value = "wtcp-bics/获取景区列表", operate = "r", module = "景区管理")
     public ResponseMessage findByAreaCode(@RequestParam(value = "page", defaultValue = "0") Integer page,
-                                                @RequestParam(value = "size", defaultValue = "10") Integer size,
-                                                HttpServletRequest request) throws Exception {
+                                          @RequestParam(value = "size", defaultValue = "10") Integer size,
+                                          HttpServletRequest request) throws Exception {
         Map<String, Object> filter = RequestUtil.getParameters(request);
         return scenicService.scenicPageNew(page, size, filter);
     }
@@ -62,7 +63,7 @@ public class RpcScenicController extends BaseController {
             @ApiImplicitParam(name = "status", value = "状态，默认返回上线的，-1为不限制", defaultValue = "9")
     })
     @GetMapping("/findListByIds")
-    public ResponseMessage findListByIds(@RequestParam String ids, @RequestParam(required = false,defaultValue = "9") Integer status) throws Exception {
+    public ResponseMessage findListByIds(@RequestParam String ids, @RequestParam(required = false, defaultValue = "9") Integer status) throws Exception {
         return scenicService.findListByIds(ids, status);
     }
 
@@ -84,7 +85,7 @@ public class RpcScenicController extends BaseController {
         Map<String, Object> filter = RequestUtil.getParameters(request);
         // 只返回上线的数据
         String statusKey = "status";
-        if(!filter.containsKey(statusKey) || null == filter.get(statusKey)){
+        if (!filter.containsKey(statusKey) || null == filter.get(statusKey)) {
             filter.put("status", 9);
         }
         return scenicService.findByPageForFeign(page, size, filter);
