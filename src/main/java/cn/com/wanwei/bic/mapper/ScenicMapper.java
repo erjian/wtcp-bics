@@ -47,11 +47,8 @@ public interface ScenicMapper {
 
     /**
      * 查询景区信息
-     *
-     * @param title
-     * @return
      */
-    List<ScenicEntity> getScenicInfo(@Param(value = "title") String title, @Param(value = "status") Integer status, @Param(value = "category") String category);
+    List<ScenicEntity> getScenicInfo(@Param("title") String title, @Param("status") Integer status, @Param("category") String category);
 
     /**
      * 根据景区名称和主键验重

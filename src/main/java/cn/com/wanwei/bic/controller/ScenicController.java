@@ -159,7 +159,7 @@ public class ScenicController extends BaseController {
     @PreAuthorize("hasAuthority('scenic:r')")
     @OperationLog(value = "wtcp-bics/获取景区列表", operate = "r", module = "景区管理")
     public ResponseMessage getScenicList(String title) throws Exception {
-        return scenicService.getScenicInfo(StringUtils.isEmpty(title)?"":title.trim().toLowerCase(), null);
+        return scenicService.getScenicInfo(StringUtils.isEmpty(title)?"":title.trim().toLowerCase(), null, null);
     }
 
     @ApiOperation(value = "景区名称是否重复", notes = "景区名称是否重复(status:1 表示不重复，0表示重复)")
