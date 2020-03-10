@@ -26,6 +26,9 @@ public class HallEntity extends BaseEntity {
     @ApiModelProperty(value = "所属场馆ID")
     private String venueId;
 
+    @ApiModelProperty(value = "所属场馆名称")
+    private String venueName;
+
     @ApiModelProperty(value = "编码")
     private String code;
 

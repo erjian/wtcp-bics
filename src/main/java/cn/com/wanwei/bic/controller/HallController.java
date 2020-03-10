@@ -1,15 +1,18 @@
 package cn.com.wanwei.bic.controller;
 
 import cn.com.wanwei.bic.entity.HallEntity;
+import cn.com.wanwei.bic.entity.VenueEntity;
 import cn.com.wanwei.bic.model.EntityTagsModel;
 import cn.com.wanwei.bic.model.WeightModel;
 import cn.com.wanwei.bic.service.CommonService;
 import cn.com.wanwei.bic.service.HallService;
+import cn.com.wanwei.bic.service.VenueService;
 import cn.com.wanwei.common.log.annotation.OperationLog;
 import cn.com.wanwei.common.model.ResponseMessage;
 import cn.com.wanwei.common.model.User;
 import cn.com.wanwei.common.utils.RequestUtil;
 import cn.com.wanwei.mybatis.model.DeptCodeBindModel;
+import cn.com.wanwei.persistence.mybatis.PageInfo;
 import cn.com.wanwei.persistence.mybatis.utils.EscapeCharUtils;
 import com.google.common.base.Strings;
 import io.swagger.annotations.Api;
@@ -38,6 +41,9 @@ public class HallController extends BaseController {
     private HallService hallService;
 
     @Autowired
+    private VenueService venueService;
+
+    @Autowired
     private CommonService commonService;
 
 
@@ -51,10 +57,15 @@ public class HallController extends BaseController {
     @OperationLog(value = "wtcp-bics/场馆厅室分页列表", operate = "r", module = "场馆厅室")
     public ResponseMessage findByPage(@RequestParam(value = "page", defaultValue = "0") Integer page,
                                       @RequestParam(value = "size", defaultValue = "10") Integer size,
-                                      HttpServletRequest request) {
+                                      HttpServletRequest request) throws Exception {
         Map<String, Object> filter = RequestUtil.getParameters(request);
         EscapeCharUtils.escape(filter, "title");
-        return ResponseMessage.defaultResponse().setData(hallService.findByPageWithDeptCode(page, size, filter));
+        PageInfo<HallEntity> entities = hallService.findByPageWithDeptCode(page, size, filter);
+        for(HallEntity entity:entities.getContent()){
+            VenueEntity venueEntity = venueService.selectByPrimaryKey(entity.getVenueId());
+            entity.setVenueName(venueEntity.getTitle());
+        }
+        return ResponseMessage.defaultResponse().setData(entities);
     }
 
     @ApiOperation(value = "获取场馆厅室列表（可根据所属场馆ID：venueId 和厅室名称：title 进行查询）",
