@@ -252,7 +252,7 @@ public class ScenicServiceImpl implements ScenicService {
         data.put("enterpriseEntity", enterpriseEntity);
 
         //3、查询营业信息并添加到返回数据中
-        BusinessEntity businessEntity = businessMapper.selectByPrincipalId(id);
+        BusinessEntity businessEntity = businessMapper.findByPrincipalId(id);
         data.put("businessEntity", businessEntity);
 
         //4、查询通讯信息并添加到返回数据中

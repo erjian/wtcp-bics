@@ -62,6 +62,14 @@ public class TagsController extends BaseController {
         return tagsService.findByPrincipalId(principalId, ScenicTagsEntity.class);
     }
 
+    @ApiOperation(value = "根据关联ID获取场馆标签信息", notes = "根据关联ID获取场馆标签信息")
+    @ApiImplicitParam(name = "principalId", value = "关联的场馆ID", required = true)
+    @OperationLog(value = "wtcp-bic/根据关联ID获取场馆标签信息", operate = "r", module = "标签管理")
+    @RequestMapping(value = "/findVenueByPid", method = RequestMethod.GET)
+    public ResponseMessage findVenueByPid(@RequestParam String principalId) {
+        return tagsService.findByPrincipalId(principalId, VenueTagsEntity.class);
+    }
+
     @ApiOperation(value = "根据关联ID获取目的地标签信息", notes = "根据关联ID获取目的地标签信息")
     @ApiImplicitParam(name = "principalId", value = "关联的目的地ID", required = true)
     @OperationLog(value = "wtcp-bic/根据关联ID获取目的地标签信息", operate = "r", module = "标签管理")
@@ -141,4 +149,19 @@ public class TagsController extends BaseController {
         return tagsService.findByPrincipalId(principalId, DriveCampTagsEntity.class);
     }
 
+    @ApiOperation(value = "根据关联ID获取名人管理标签信息", notes = "根据关联ID获取名人管理标签信息")
+    @ApiImplicitParam(name = "principalId", value = "关联的名人管理ID", required = true)
+    @OperationLog(value = "wtcp-bic/根据关联ID获取名人管理标签信息", operate = "r", module = "标签管理")
+    @RequestMapping(value = "/findCelebrityByPid", method = RequestMethod.GET)
+    public ResponseMessage findCelebrityByPid(@RequestParam String principalId) {
+        return tagsService.findByPrincipalId(principalId, CelebrityTagsEntity.class);
+    }
+
+    @ApiOperation(value = "根据关联ID获取展品管理标签信息", notes = "根据关联ID获取展品管理标签信息")
+    @ApiImplicitParam(name = "principalId", value = "关联的展品管理ID", required = true)
+    @OperationLog(value = "wtcp-bic/根据关联ID获取展品管理标签信息", operate = "r", module = "标签管理")
+    @RequestMapping(value = "/findExhibitsByPid", method = RequestMethod.GET)
+    public ResponseMessage findExhibitsByPid(@RequestParam String principalId) {
+        return tagsService.findByPrincipalId(principalId, ExhibitsTagsEntity.class);
+    }
 }

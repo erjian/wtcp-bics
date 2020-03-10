@@ -59,15 +59,22 @@ public class VenueEntity extends CommonEntity {
     private Integer maxReceptionNum;
 
     @ApiModelProperty(value = "开馆时间")
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
+    @JsonFormat(pattern = "HH:mm", timezone = "GMT+8")
     private Date openingTime;
 
     @ApiModelProperty(value = "闭馆时间")
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
+    @JsonFormat(pattern = "HH:mm", timezone = "GMT+8")
     private Date closingTime;
 
     @ApiModelProperty(value = "状态")
     private Integer status;
+
+    @ApiModelProperty(value = "在线状态")
+    private Integer onlineStatus;
+
+    public Integer getOnlineStatus() {
+        return this.status == 9 ? this.status : 1;
+    }
 
     /**
      * 用于存储景区-标签

@@ -1,5 +1,6 @@
 package cn.com.wanwei.bic.entity;
 
+import cn.com.wanwei.mybatis.entity.BaseEntity;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -11,7 +12,6 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 import java.math.BigDecimal;
-import java.util.List;
 import java.util.Map;
 
 @Data
@@ -21,7 +21,7 @@ import java.util.Map;
 @Table(name="t_bic_hall")
 @ApiModel(description="场馆厅室表")
 @ToString(callSuper = true)
-public class HallEntity extends BaseEntity{
+public class HallEntity extends BaseEntity {
 
     @ApiModelProperty(value = "所属场馆ID")
     private String venueId;

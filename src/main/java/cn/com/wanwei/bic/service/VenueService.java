@@ -70,7 +70,7 @@ public interface VenueService {
 	 * @param model
 	 * @return
 	 */
-    ResponseMessage dataBind(String updatedUser, DataBindModel model) throws Exception;
+	ResponseMessage dataBind(String updatedUser, DataBindModel model) throws Exception;
 
 	/**
 	 * 修改审核状态
@@ -81,7 +81,7 @@ public interface VenueService {
 	 * @return
 	 * @throws Exception
 	 */
-    ResponseMessage changeStatus(String id, Integer status, String username) throws Exception;
+	ResponseMessage changeStatus(String id, Integer status, String username) throws Exception;
 
 	/**
 	 * 景区审核
@@ -93,7 +93,7 @@ public interface VenueService {
 	 * @return
 	 * @throws Exception
 	 */
-    ResponseMessage examineVenue(String id, int auditStatus, String msg, User currentUser) throws Exception;
+	ResponseMessage examineVenue(String id, int auditStatus, String msg, User currentUser) throws Exception;
 
 	/**
 	 * 获取场馆信息，title可以为空
@@ -109,8 +109,8 @@ public interface VenueService {
 	 * @param user
 	 * @return
 	 */
-    ResponseMessage relateTags(Map<String, Object> tags, User user);
+	ResponseMessage relateTags(Map<String, Object> tags, User user);
 
-    ResponseMessage findByTitleAndIdNot(String title, String s);
+	ResponseMessage findByTitleAndIdNot(String title, String s);
 
 }

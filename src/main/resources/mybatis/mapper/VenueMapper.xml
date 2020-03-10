@@ -47,7 +47,7 @@
     content
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="ResultMapWithBLOBs">
-    select 
+    select
     <include refid="Base_Column_List" />
     ,
     <include refid="Blob_Column_List" />
@@ -59,27 +59,27 @@
     where id = #{id,jdbcType=VARCHAR}
   </delete>
   <insert id="insert" parameterType="cn.com.wanwei.bic.entity.VenueEntity">
-    insert into t_bic_venue (created_user, created_date, updated_user, 
-      updated_date, category, title, 
-      sub_title, simple_spell, full_spell, 
-      code, summary, description, 
-      slogan, level, address, 
-      region, region_full_name, region_full_code, 
-      longitude, latitude, score, 
-      vr_url, title_image, area, 
-      max_reception_num, opening_time, closing_time, 
-      status, weight, dept_code, 
+    insert into t_bic_venue (id, created_user, created_date, updated_user,
+      updated_date, category, title,
+      sub_title, simple_spell, full_spell,
+      code, summary, description,
+      slogan, level, address,
+      region, region_full_name, region_full_code,
+      longitude, latitude, score,
+      vr_url, title_image, area,
+      max_reception_num, opening_time, closing_time,
+      status, weight, dept_code,
       content)
-    values (#{createdUser,jdbcType=VARCHAR}, #{createdDate,jdbcType=TIMESTAMP}, #{updatedUser,jdbcType=VARCHAR}, 
-      #{updatedDate,jdbcType=TIMESTAMP}, #{category,jdbcType=VARCHAR}, #{title,jdbcType=VARCHAR}, 
-      #{subTitle,jdbcType=VARCHAR}, #{simpleSpell,jdbcType=VARCHAR}, #{fullSpell,jdbcType=VARCHAR}, 
-      #{code,jdbcType=VARCHAR}, #{summary,jdbcType=VARCHAR}, #{description,jdbcType=VARCHAR}, 
-      #{slogan,jdbcType=VARCHAR}, #{level,jdbcType=VARCHAR}, #{address,jdbcType=VARCHAR}, 
-      #{region,jdbcType=VARCHAR}, #{regionFullName,jdbcType=VARCHAR}, #{regionFullCode,jdbcType=VARCHAR}, 
-      #{longitude,jdbcType=DECIMAL}, #{latitude,jdbcType=DECIMAL}, #{score,jdbcType=REAL}, 
-      #{vrUrl,jdbcType=VARCHAR}, #{titleImage,jdbcType=VARCHAR}, #{area,jdbcType=INTEGER}, 
-      #{maxReceptionNum,jdbcType=INTEGER}, #{openingTime,jdbcType=TIMESTAMP}, #{closingTime,jdbcType=TIMESTAMP}, 
-      #{status,jdbcType=INTEGER}, #{weight,jdbcType=INTEGER}, #{deptCode,jdbcType=VARCHAR}, 
+    values (#{id,jdbcType=VARCHAR}, #{createdUser,jdbcType=VARCHAR}, #{createdDate,jdbcType=TIMESTAMP}, #{updatedUser,jdbcType=VARCHAR},
+      #{updatedDate,jdbcType=TIMESTAMP}, #{category,jdbcType=VARCHAR}, #{title,jdbcType=VARCHAR},
+      #{subTitle,jdbcType=VARCHAR}, #{simpleSpell,jdbcType=VARCHAR}, #{fullSpell,jdbcType=VARCHAR},
+      #{code,jdbcType=VARCHAR}, #{summary,jdbcType=VARCHAR}, #{description,jdbcType=VARCHAR},
+      #{slogan,jdbcType=VARCHAR}, #{level,jdbcType=VARCHAR}, #{address,jdbcType=VARCHAR},
+      #{region,jdbcType=VARCHAR}, #{regionFullName,jdbcType=VARCHAR}, #{regionFullCode,jdbcType=VARCHAR},
+      #{longitude,jdbcType=DECIMAL}, #{latitude,jdbcType=DECIMAL}, #{score,jdbcType=REAL},
+      #{vrUrl,jdbcType=VARCHAR}, #{titleImage,jdbcType=VARCHAR}, #{area,jdbcType=INTEGER},
+      #{maxReceptionNum,jdbcType=INTEGER}, #{openingTime,jdbcType=TIMESTAMP}, #{closingTime,jdbcType=TIMESTAMP},
+      #{status,jdbcType=INTEGER}, #{weight,jdbcType=INTEGER}, #{deptCode,jdbcType=VARCHAR},
       #{content,jdbcType=LONGVARCHAR})
   </insert>
   <update id="updateByPrimaryKey" parameterType="cn.com.wanwei.bic.entity.VenueEntity">

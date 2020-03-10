@@ -253,7 +253,7 @@ public class RentalCarServiceImpl implements RentalCarService {
             EnterpriseEntity enterpriseEntity = enterpriseMapper.selectByPrincipalId(id);
             map.put("enterpriseEntity",enterpriseEntity);
             //营业信息
-            BusinessEntity businessEntity = businessMapper.selectByPrincipalId(id);
+            BusinessEntity businessEntity = businessMapper.findByPrincipalId(id);
             map.put("businessEntity", businessEntity);
             //通讯信息
             ContactEntity contactEntity = contactMapper.selectByPrincipalId(id);

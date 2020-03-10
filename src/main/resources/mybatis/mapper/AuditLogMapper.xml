@@ -14,16 +14,7 @@
   <sql id="Base_Column_List">
     id, principal_id, pre_status, status, opinion, created_user, created_date,`type`
   </sql>
-  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
-    select 
-    <include refid="Base_Column_List" />
-    from t_bic_audit_log
-    where id = #{id,jdbcType=VARCHAR}
-  </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
-    delete from t_bic_audit_log
-    where id = #{id,jdbcType=VARCHAR}
-  </delete>
+
   <insert id="insert" parameterType="cn.com.wanwei.bic.entity.AuditLogEntity">
     insert into t_bic_audit_log (id,principal_id, pre_status, status,
       opinion, created_user, created_date,`type`

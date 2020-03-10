@@ -29,8 +29,8 @@ public class BusinessController extends BaseController {
     @RequestMapping(value = "/{principalId}", method = RequestMethod.GET)
     @PreAuthorize("hasAuthority('business:v')")
     @OperationLog(value = "wtcp-bics/根据关联主键查询营业信息详情", operate = "v", module = "营业信息管理")
-    public ResponseMessage detail(@PathVariable("principalId") String principalId) throws Exception {
-        BusinessEntity entity = businessService.selectByPrincipalId(principalId);
+    public ResponseMessage findByPrincipalId(@PathVariable("principalId") String principalId) throws Exception {
+        BusinessEntity entity = businessService.findByPrincipalId(principalId);
         if (entity == null) {
             return ResponseMessage.validFailResponse().setMsg("数据不存在");
         }
@@ -42,14 +42,14 @@ public class BusinessController extends BaseController {
     @PostMapping(value = "/save")
     @PreAuthorize("hasAuthority('business:c')")
     @OperationLog(value = "wtcp-bics/营业信息新增", operate = "c", module = "营业信息管理")
-    public ResponseMessage save(@RequestBody BusinessEntity businessEntity, BindingResult bindingResult) throws Exception {
+    public ResponseMessage insertOrUpdateById(@RequestBody BusinessEntity businessEntity, BindingResult bindingResult) throws Exception {
         if (bindingResult.hasErrors()) {
             return ResponseMessage.validFailResponse().setMsg(bindingResult.getAllErrors());
         }
         if(null == businessEntity.getId() || businessEntity.getId().trim().equals("")){
-            return businessService.save(businessEntity,getCurrentUser().getUsername());
+            return businessService.insert(businessEntity,getCurrentUser().getUsername());
         }else{
-            return businessService.edit(businessEntity.getId().trim(),businessEntity,getCurrentUser().getUsername());
+            return businessService.updateById(businessEntity.getId().trim(),businessEntity,getCurrentUser().getUsername());
         }
     }
 }
