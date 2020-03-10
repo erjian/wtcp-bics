@@ -12,7 +12,7 @@
     <result column="simple_spell" jdbcType="VARCHAR" property="simpleSpell" />
     <result column="full_spell" jdbcType="VARCHAR" property="fullSpell" />
     <result column="code" jdbcType="VARCHAR" property="code" />
-    <result column="level" jdbcType="INTEGER" property="level" />
+    <result column="level" jdbcType="VARCHAR" property="level" />
     <result column="summary" jdbcType="VARCHAR" property="summary" />
     <result column="description" jdbcType="VARCHAR" property="description" />
     <result column="slogan" jdbcType="VARCHAR" property="slogan" />
@@ -86,11 +86,32 @@
         <bind name="title" value="'%'+title + '%'"></bind>
         and (title like #{title} or simple_spell like #{title} or full_spell like #{title})
       </if>
+      <if test="cookStyle != null and cookStyle != ''">
+        and cook_style = #{cookStyle,jdbcType=VARCHAR}
+      </if>
+      <if test="featureTags != null and featureTags != ''">
+        and feature_tags = #{featureTags,jdbcType=VARCHAR}
+      </if>
+      <if test="level != null and level != ''">
+        and level = #{level,jdbcType=VARCHAR}
+      </if>
+      <if test="regionFullCode != null and regionFullCode!='' ">
+        <bind name="regionFullCode" value="regionFullCode + '%'" ></bind>
+        and region_full_code like #{regionFullCode}
+      </if>
       <if test="status != null">
-        <if test="status == 9">
+        <if test="status == 0 or status == 2">
           and status = #{status,jdbcType=INTEGER}
         </if>
         <if test="status == 1">
+          and (status = 1 or status = 9)
+        </if>
+      </if>
+      <if test="onlineStatus != null">
+        <if test="onlineStatus == 9">
+          and status = #{onlineStatus,jdbcType=INTEGER}
+        </if>
+        <if test="onlineStatus == 1">
           and 9 > status
         </if>
       </if>
@@ -129,7 +150,7 @@
     values (#{id,jdbcType=VARCHAR}, #{createdUser,jdbcType=VARCHAR}, #{createdDate,jdbcType=TIMESTAMP}, #{updatedUser,jdbcType=VARCHAR},
       #{updatedDate,jdbcType=TIMESTAMP}, #{title,jdbcType=VARCHAR}, #{subTitle,jdbcType=VARCHAR}, 
       #{simpleSpell,jdbcType=VARCHAR}, #{fullSpell,jdbcType=VARCHAR}, #{code,jdbcType=VARCHAR}, 
-      #{level,jdbcType=INTEGER}, #{summary,jdbcType=VARCHAR}, #{description,jdbcType=VARCHAR}, 
+      #{level,jdbcType=VARCHAR}, #{summary,jdbcType=VARCHAR}, #{description,jdbcType=VARCHAR},
       #{slogan,jdbcType=VARCHAR}, #{feature,jdbcType=VARCHAR}, #{lightspot,jdbcType=VARCHAR}, 
       #{region,jdbcType=VARCHAR}, #{regionFullName,jdbcType=VARCHAR}, #{regionFullCode,jdbcType=VARCHAR}, 
       #{address,jdbcType=VARCHAR}, #{longitude,jdbcType=DECIMAL}, #{latitude,jdbcType=DECIMAL}, 
@@ -139,152 +160,6 @@
       #{status,jdbcType=INTEGER}, #{weight,jdbcType=INTEGER}, #{deptCode,jdbcType=VARCHAR}, 
       #{content,jdbcType=LONGVARCHAR})
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="cn.com.wanwei.bic.entity.CateringEntity">
-    update t_bic_catering
-    <set>
-      <if test="createdUser != null">
-        created_user = #{createdUser,jdbcType=VARCHAR},
-      </if>
-      <if test="createdDate != null">
-        created_date = #{createdDate,jdbcType=TIMESTAMP},
-      </if>
-      <if test="updatedUser != null">
-        updated_user = #{updatedUser,jdbcType=VARCHAR},
-      </if>
-      <if test="updatedDate != null">
-        updated_date = #{updatedDate,jdbcType=TIMESTAMP},
-      </if>
-      <if test="title != null">
-        title = #{title,jdbcType=VARCHAR},
-      </if>
-      <if test="subTitle != null">
-        sub_title = #{subTitle,jdbcType=VARCHAR},
-      </if>
-      <if test="simpleSpell != null">
-        simple_spell = #{simpleSpell,jdbcType=VARCHAR},
-      </if>
-      <if test="fullSpell != null">
-        full_spell = #{fullSpell,jdbcType=VARCHAR},
-      </if>
-      <if test="code != null">
-        code = #{code,jdbcType=VARCHAR},
-      </if>
-      <if test="level != null">
-        level = #{level,jdbcType=INTEGER},
-      </if>
-      <if test="summary != null">
-        summary = #{summary,jdbcType=VARCHAR},
-      </if>
-      <if test="description != null">
-        description = #{description,jdbcType=VARCHAR},
-      </if>
-      <if test="slogan != null">
-        slogan = #{slogan,jdbcType=VARCHAR},
-      </if>
-      <if test="feature != null">
-        feature = #{feature,jdbcType=VARCHAR},
-      </if>
-      <if test="lightspot != null">
-        lightspot = #{lightspot,jdbcType=VARCHAR},
-      </if>
-      <if test="region != null">
-        region = #{region,jdbcType=VARCHAR},
-      </if>
-      <if test="regionFullName != null">
-        region_full_name = #{regionFullName,jdbcType=VARCHAR},
-      </if>
-      <if test="regionFullCode != null">
-        region_full_code = #{regionFullCode,jdbcType=VARCHAR},
-      </if>
-      <if test="address != null">
-        address = #{address,jdbcType=VARCHAR},
-      </if>
-      <if test="longitude != null">
-        longitude = #{longitude,jdbcType=DECIMAL},
-      </if>
-      <if test="latitude != null">
-        latitude = #{latitude,jdbcType=DECIMAL},
-      </if>
-      <if test="score != null">
-        score = #{score,jdbcType=REAL},
-      </if>
-      <if test="cookStyle != null">
-        cook_style = #{cookStyle,jdbcType=VARCHAR},
-      </if>
-      <if test="featureTags != null">
-        feature_tags = #{featureTags,jdbcType=VARCHAR},
-      </if>
-      <if test="webComment != null">
-        web_comment = #{webComment,jdbcType=VARCHAR},
-      </if>
-      <if test="avgConsumption != null">
-        avg_consumption = #{avgConsumption,jdbcType=INTEGER},
-      </if>
-      <if test="openTime != null">
-        open_time = #{openTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="trafficNotice != null">
-        traffic_notice = #{trafficNotice,jdbcType=VARCHAR},
-      </if>
-      <if test="repastNotice != null">
-        repast_notice = #{repastNotice,jdbcType=VARCHAR},
-      </if>
-      <if test="vrUrl != null">
-        vr_url = #{vrUrl,jdbcType=VARCHAR},
-      </if>
-      <if test="status != null">
-        status = #{status,jdbcType=INTEGER},
-      </if>
-      <if test="weight != null">
-        weight = #{weight,jdbcType=INTEGER},
-      </if>
-      <if test="deptCode != null">
-        dept_code = #{deptCode,jdbcType=VARCHAR},
-      </if>
-      <if test="content != null">
-        content = #{content,jdbcType=LONGVARCHAR},
-      </if>
-    </set>
-    where id = #{id,jdbcType=VARCHAR}
-  </update>
-  <update id="updateByPrimaryKeyWithBLOBs" parameterType="cn.com.wanwei.bic.entity.CateringEntity">
-    update t_bic_catering
-    set created_user = #{createdUser,jdbcType=VARCHAR},
-      created_date = #{createdDate,jdbcType=TIMESTAMP},
-      updated_user = #{updatedUser,jdbcType=VARCHAR},
-      updated_date = #{updatedDate,jdbcType=TIMESTAMP},
-      title = #{title,jdbcType=VARCHAR},
-      sub_title = #{subTitle,jdbcType=VARCHAR},
-      simple_spell = #{simpleSpell,jdbcType=VARCHAR},
-      full_spell = #{fullSpell,jdbcType=VARCHAR},
-      code = #{code,jdbcType=VARCHAR},
-      level = #{level,jdbcType=INTEGER},
-      summary = #{summary,jdbcType=VARCHAR},
-      description = #{description,jdbcType=VARCHAR},
-      slogan = #{slogan,jdbcType=VARCHAR},
-      feature = #{feature,jdbcType=VARCHAR},
-      lightspot = #{lightspot,jdbcType=VARCHAR},
-      region = #{region,jdbcType=VARCHAR},
-      region_full_name = #{regionFullName,jdbcType=VARCHAR},
-      region_full_code = #{regionFullCode,jdbcType=VARCHAR},
-      address = #{address,jdbcType=VARCHAR},
-      longitude = #{longitude,jdbcType=DECIMAL},
-      latitude = #{latitude,jdbcType=DECIMAL},
-      score = #{score,jdbcType=REAL},
-      cook_style = #{cookStyle,jdbcType=VARCHAR},
-      feature_tags = #{featureTags,jdbcType=VARCHAR},
-      web_comment = #{webComment,jdbcType=VARCHAR},
-      avg_consumption = #{avgConsumption,jdbcType=INTEGER},
-      open_time = #{openTime,jdbcType=TIMESTAMP},
-      traffic_notice = #{trafficNotice,jdbcType=VARCHAR},
-      repast_notice = #{repastNotice,jdbcType=VARCHAR},
-      vr_url = #{vrUrl,jdbcType=VARCHAR},
-      status = #{status,jdbcType=INTEGER},
-      weight = #{weight,jdbcType=INTEGER},
-      dept_code = #{deptCode,jdbcType=VARCHAR},
-      content = #{content,jdbcType=LONGVARCHAR}
-    where id = #{id,jdbcType=VARCHAR}
-  </update>
   <update id="updateById" parameterType="cn.com.wanwei.bic.entity.CateringEntity">
     update t_bic_catering
     set created_user = #{createdUser,jdbcType=VARCHAR},
@@ -296,7 +171,7 @@
       simple_spell = #{simpleSpell,jdbcType=VARCHAR},
       full_spell = #{fullSpell,jdbcType=VARCHAR},
       code = #{code,jdbcType=VARCHAR},
-      level = #{level,jdbcType=INTEGER},
+      level = #{level,jdbcType=VARCHAR},
       summary = #{summary,jdbcType=VARCHAR},
       description = #{description,jdbcType=VARCHAR},
       slogan = #{slogan,jdbcType=VARCHAR},

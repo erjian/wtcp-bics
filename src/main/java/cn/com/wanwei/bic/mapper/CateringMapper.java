@@ -18,10 +18,6 @@ public interface CateringMapper {
 
     CateringEntity findById(String id);
 
-    int updateByPrimaryKeySelective(CateringEntity record);
-
-    int updateByPrimaryKeyWithBLOBs(CateringEntity record);
-
     int updateById(CateringEntity record);
 
     /**

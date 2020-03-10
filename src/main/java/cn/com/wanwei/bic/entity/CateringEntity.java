@@ -27,7 +27,7 @@ public class CateringEntity extends CommonEntity{
     private String fullSpell;
 
     @ApiModelProperty(value = "餐厅级别 包含：一级店、二级店、三级店、不分级")
-    private Integer level;
+    private String level;
 
     @ApiModelProperty(value = "一句话特色")
     private String feature;
@@ -64,4 +64,8 @@ public class CateringEntity extends CommonEntity{
 
     @ApiModelProperty(value = "状态")
     private Integer status;
+
+    public Integer getOnlineStatus() {
+        return this.status == 9 ? this.status : 1;
+    }
 }
