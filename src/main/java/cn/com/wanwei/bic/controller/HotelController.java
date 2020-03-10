@@ -169,6 +169,17 @@ public class HotelController extends BaseController{
     @OperationLog(value = "wtcp-bics/检查酒店名称是否重复", operate = "", module = "酒店", frontCode = "", resource = "")
     public ResponseMessage existByTitle(@RequestParam String title, String id) {
         return hotelService.existsByValueAndIdNot(title, id, "该名称已存在");
+    }
 
+    @ApiOperation(value = "酒店基础信息关联标签", notes = "酒店基础信息关联标签")
+    @ApiImplicitParam(name = "tags", value = "关联标签", required = true, dataType = "Map")
+    @RequestMapping(value = "/relateTags", method = RequestMethod.PUT)
+    @PreAuthorize("hasAuthority('hotel:rt')")
+    @OperationLog(value = "wtcp-bics/酒店基础信息关联标签", operate = "u", module = "酒店管理")
+    public ResponseMessage relateTags(@RequestBody Map<String, Object> tags, BindingResult bindingResult) throws Exception {
+        if (bindingResult.hasErrors()) {
+            return ResponseMessage.validFailResponse().setMsg(bindingResult.getAllErrors());
+        }
+        return hotelService.insertTags(tags,getCurrentUser());
     }
 }

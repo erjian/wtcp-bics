@@ -1,6 +1,8 @@
 package cn.com.wanwei.bic.service.impl;
 
+import cn.com.wanwei.bic.entity.BaseTagsEntity;
 import cn.com.wanwei.bic.entity.HotelEntity;
+import cn.com.wanwei.bic.entity.ScenicTagsEntity;
 import cn.com.wanwei.bic.feign.CoderServiceFeign;
 import cn.com.wanwei.bic.mapper.HotelMapper;
 import cn.com.wanwei.bic.model.EntityTagsModel;
@@ -10,6 +12,7 @@ import cn.com.wanwei.common.model.ResponseMessage;
 import cn.com.wanwei.common.model.User;
 import cn.com.wanwei.common.utils.PinyinUtils;
 import cn.com.wanwei.mybatis.service.impl.BaseServiceImpl;
+import com.google.common.collect.Lists;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +20,8 @@ import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
+import java.util.List;
+import java.util.Map;
 
 /**
  * wtcp-bics - HotelServiceImpl 酒店基础信息管理接口实现类
@@ -134,6 +139,23 @@ public class HotelServiceImpl extends BaseServiceImpl<HotelMapper,HotelEntity,St
             return responseMessage.validFailResponse().setMsg("该酒店信息不存在");
         }
         return responseMessage;
+    }
+
+    @Override
+    public ResponseMessage insertTags(Map<String, Object> tags, User currentUser) {
+        List<Map<String, Object>> tagsList = (List<Map<String, Object>>) tags.get("tagsArr");
+        List<BaseTagsEntity> bList = Lists.newArrayList();
+        if (CollectionUtils.isNotEmpty(tagsList)) {
+            for (Map<String, Object> m : tagsList) {
+                BaseTagsEntity entity = new BaseTagsEntity();
+                entity.setPrincipalId(String.valueOf(m.get("principalId")));
+                entity.setTagName(String.valueOf(m.get("tagName")));
+                entity.setTagCatagory(String.valueOf(m.get("tagCatagory")));
+                bList.add(entity);
+            }
+            tagsService.batchInsert(tags.get("id").toString(), bList, currentUser, HotelEntity.class);
+        }
+        return ResponseMessage.defaultResponse().setMsg("标签关联成功");
     }
 
 

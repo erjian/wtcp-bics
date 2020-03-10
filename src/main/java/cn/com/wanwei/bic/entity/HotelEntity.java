@@ -9,6 +9,7 @@ import lombok.ToString;
 
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import java.math.BigDecimal;
 import java.util.Date;
 
@@ -68,5 +69,16 @@ public class HotelEntity extends CommonEntity{
 
     @ApiModelProperty(value = "状态",required = true)
     private Integer status;
+
+    @ApiModelProperty(value = "在线状态")
+    private Integer onlineStatus;
+
+    public Integer getOnlineStatus() {
+        return this.status == 9 ? this.status : 1;
+    }
+
+    //冗余字段，关联素材的id
+    @Transient
+    private String timeId;
 
 }

@@ -6,6 +6,8 @@ import cn.com.wanwei.common.model.ResponseMessage;
 import cn.com.wanwei.common.model.User;
 import cn.com.wanwei.mybatis.service.BaseService;
 
+import java.util.Map;
+
 /**
  * wtcp-bics - HotelService 酒店基础信息管理接口
  */
@@ -49,4 +51,12 @@ public interface HotelService extends BaseService<HotelEntity, String> {
      * @return
      */
     ResponseMessage updateAuditStatus(String id, int auditStatus, String msg, User currentUser);
+
+    /**
+     * 批量插入酒店标签
+     * @param tags
+     * @param currentUser
+     * @return
+     */
+    ResponseMessage insertTags(Map<String, Object> tags, User currentUser);
 }
