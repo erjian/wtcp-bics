@@ -85,6 +85,7 @@ public class CelebrityServiceImpl implements CelebrityService {
         celebrityEntity.setFullSpell(PinyinUtils.getPingYin(celebrityEntity.getName()).toLowerCase());
         celebrityEntity.setStatus(0);
         celebrityEntity.setWeight(0);
+        celebrityEntity.setDeptCode(currentUser.getOrg().getCode());
 
         celebrityMapper.insert(celebrityEntity);
 

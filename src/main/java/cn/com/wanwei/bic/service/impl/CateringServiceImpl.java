@@ -100,6 +100,7 @@ public class CateringServiceImpl implements CateringService {
         entity.setSimpleSpell(PinyinUtils.converterToFirstSpell(entity.getTitle()).toLowerCase());
         entity.setFullSpell(PinyinUtils.getPingYin(entity.getTitle()).toLowerCase());
         entity.setStatus(0);
+        entity.setDeptCode(user.getOrg().getCode());
         entity.setWeight(0);
         cateringMapper.insert(entity);
 
@@ -128,7 +129,6 @@ public class CateringServiceImpl implements CateringService {
         entity.setSimpleSpell(PinyinUtils.converterToFirstSpell(entity.getTitle()).toLowerCase());
         entity.setFullSpell(PinyinUtils.getPingYin(entity.getTitle()).toLowerCase());
         entity.setStatus(0);
-
         cateringMapper.updateById(entity);
         //处理标签
         if (CollectionUtils.isNotEmpty(cateringModel.getTagsList())) {
