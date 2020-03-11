@@ -103,7 +103,7 @@
         <if test="status == 0 or status == 2">
           and status = #{status,jdbcType=INTEGER}
         </if>
-        <if test="status == 1">
+        <if test="status == 1" >
           and (status = 1 or status = 9)
         </if>
       </if>
