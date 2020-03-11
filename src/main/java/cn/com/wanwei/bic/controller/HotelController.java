@@ -18,7 +18,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
@@ -176,10 +175,11 @@ public class HotelController extends BaseController{
     @RequestMapping(value = "/relateTags", method = RequestMethod.PUT)
     @PreAuthorize("hasAuthority('hotel:rt')")
     @OperationLog(value = "wtcp-bics/酒店基础信息关联标签", operate = "u", module = "酒店管理")
-    public ResponseMessage relateTags(@RequestBody Map<String, Object> tags, BindingResult bindingResult) throws Exception {
+    public ResponseMessage insertTags(@RequestBody Map<String, Object> tags, BindingResult bindingResult) throws Exception {
         if (bindingResult.hasErrors()) {
             return ResponseMessage.validFailResponse().setMsg(bindingResult.getAllErrors());
         }
         return hotelService.insertTags(tags,getCurrentUser());
     }
+
 }

@@ -172,4 +172,12 @@ public class TagsController extends BaseController {
     public ResponseMessage findCateringByPid(@RequestParam String principalId) {
         return tagsService.findByPrincipalId(principalId, CateringTagsEntity.class);
     }
+
+    @ApiOperation(value = "根据关联ID获取酒店管理标签信息", notes = "根据关联ID获取酒店管理标签信息")
+    @ApiImplicitParam(name = "principalId", value = "关联的酒店管理ID", required = true)
+    @OperationLog(value = "wtcp-bic/根据关联ID获取酒店管理标签信息", operate = "r", module = "标签管理")
+    @RequestMapping(value = "/findHotelByPid", method = RequestMethod.GET)
+    public ResponseMessage findHotelByPid(@RequestParam String principalId) {
+        return tagsService.findByPrincipalId(principalId, HotelEntity.class);
+    }
 }
