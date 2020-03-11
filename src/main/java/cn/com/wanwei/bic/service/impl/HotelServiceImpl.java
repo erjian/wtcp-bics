@@ -2,6 +2,7 @@ package cn.com.wanwei.bic.service.impl;
 
 import cn.com.wanwei.bic.entity.BaseTagsEntity;
 import cn.com.wanwei.bic.entity.HotelEntity;
+import cn.com.wanwei.bic.entity.HotelTagsEntity;
 import cn.com.wanwei.bic.entity.ScenicTagsEntity;
 import cn.com.wanwei.bic.feign.CoderServiceFeign;
 import cn.com.wanwei.bic.mapper.HotelMapper;
@@ -19,6 +20,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.GenerationType;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -148,12 +150,16 @@ public class HotelServiceImpl extends BaseServiceImpl<HotelMapper,HotelEntity,St
         if (CollectionUtils.isNotEmpty(tagsList)) {
             for (Map<String, Object> m : tagsList) {
                 BaseTagsEntity entity = new BaseTagsEntity();
+                entity.setCreatedUser(currentUser.getUsername());
+                entity.setUpdatedUser(currentUser.getUsername());
+                entity.setCreatedDate(new Date());
+                entity.setUpdatedDate(new Date());
                 entity.setPrincipalId(String.valueOf(m.get("principalId")));
                 entity.setTagName(String.valueOf(m.get("tagName")));
                 entity.setTagCatagory(String.valueOf(m.get("tagCatagory")));
                 bList.add(entity);
             }
-            tagsService.batchInsert(tags.get("id").toString(), bList, currentUser, HotelEntity.class);
+            tagsService.batchInsert(tags.get("id").toString(), bList, currentUser, HotelTagsEntity.class);
         }
         return ResponseMessage.defaultResponse().setMsg("标签关联成功");
     }
