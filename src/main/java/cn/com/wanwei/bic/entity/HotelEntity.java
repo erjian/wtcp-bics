@@ -17,7 +17,7 @@ import java.util.Date;
 @EqualsAndHashCode(callSuper = false)
 @NoArgsConstructor
 @Entity
-@Table(name = "t_bic_heritage")
+@Table(name = "t_bic_hotel")
 @ApiModel(description = "酒店管理")
 @ToString(callSuper = true)
 public class HotelEntity extends CommonEntity{
