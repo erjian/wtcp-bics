@@ -151,8 +151,6 @@ public class CelebrityServiceImpl implements CelebrityService {
             return ResponseMessage.validFailResponse().setMsg("无名人信息");
         }
         // 添加上下线记录
-        String msg = status == 9 ? "上线成功" : "下线成功";
-        insertAuditLog(entity.getStatus(), status, id, user, msg, 1);
         entity.setUpdatedUser(user);
         entity.setUpdatedDate(new Date());
         entity.setStatus(status);

@@ -51,7 +51,7 @@ public class CateringEntity extends CommonEntity{
     private Integer avgConsumption;
 
     @ApiModelProperty(value = "营业时间")
-    private Date openTime;
+    private String openTime;
 
     @ApiModelProperty(value = "交通信息")
     private String trafficNotice;

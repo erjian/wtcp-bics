@@ -29,7 +29,7 @@
     <result column="feature_tags" jdbcType="VARCHAR" property="featureTags" />
     <result column="web_comment" jdbcType="VARCHAR" property="webComment" />
     <result column="avg_consumption" jdbcType="INTEGER" property="avgConsumption" />
-    <result column="open_time" jdbcType="TIMESTAMP" property="openTime" />
+    <result column="open_time" jdbcType="VARCHAR" property="openTime" />
     <result column="traffic_notice" jdbcType="VARCHAR" property="trafficNotice" />
     <result column="repast_notice" jdbcType="VARCHAR" property="repastNotice" />
     <result column="vr_url" jdbcType="VARCHAR" property="vrUrl" />
@@ -155,7 +155,7 @@
       #{region,jdbcType=VARCHAR}, #{regionFullName,jdbcType=VARCHAR}, #{regionFullCode,jdbcType=VARCHAR}, 
       #{address,jdbcType=VARCHAR}, #{longitude,jdbcType=DECIMAL}, #{latitude,jdbcType=DECIMAL}, 
       #{score,jdbcType=REAL}, #{cookStyle,jdbcType=VARCHAR}, #{featureTags,jdbcType=VARCHAR}, 
-      #{webComment,jdbcType=VARCHAR}, #{avgConsumption,jdbcType=INTEGER}, #{openTime,jdbcType=TIMESTAMP}, 
+      #{webComment,jdbcType=VARCHAR}, #{avgConsumption,jdbcType=INTEGER}, #{openTime,jdbcType=VARCHAR},
       #{trafficNotice,jdbcType=VARCHAR}, #{repastNotice,jdbcType=VARCHAR}, #{vrUrl,jdbcType=VARCHAR}, 
       #{status,jdbcType=INTEGER}, #{weight,jdbcType=INTEGER}, #{deptCode,jdbcType=VARCHAR}, 
       #{content,jdbcType=LONGVARCHAR})
@@ -188,7 +188,7 @@
       feature_tags = #{featureTags,jdbcType=VARCHAR},
       web_comment = #{webComment,jdbcType=VARCHAR},
       avg_consumption = #{avgConsumption,jdbcType=INTEGER},
-      open_time = #{openTime,jdbcType=TIMESTAMP},
+      open_time = #{openTime,jdbcType=VARCHAR},
       traffic_notice = #{trafficNotice,jdbcType=VARCHAR},
       repast_notice = #{repastNotice,jdbcType=VARCHAR},
       vr_url = #{vrUrl,jdbcType=VARCHAR},
