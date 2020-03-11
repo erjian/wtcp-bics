@@ -59,7 +59,7 @@
     </delete>
 
     <insert id="insert" parameterType="cn.com.wanwei.bic.entity.HallEntity">
-        insert into t_bic_hall (created_user, created_date, updated_user,
+        insert into t_bic_hall (id, created_user, created_date, updated_user,
         updated_date, venue_id, code,
         title, simple_spell, full_spell,
         summary, description, category,
@@ -67,7 +67,7 @@
         area, max_reception_num, status,
         weight, dept_code, content
         )
-        values (#{createdUser,jdbcType=VARCHAR}, #{createdDate,jdbcType=TIMESTAMP}, #{updatedUser,jdbcType=VARCHAR},
+        values (#{id,jdbcType=VARCHAR}, #{createdUser,jdbcType=VARCHAR}, #{createdDate,jdbcType=TIMESTAMP}, #{updatedUser,jdbcType=VARCHAR},
         #{updatedDate,jdbcType=TIMESTAMP}, #{venueId,jdbcType=VARCHAR}, #{code,jdbcType=VARCHAR},
         #{title,jdbcType=VARCHAR}, #{simpleSpell,jdbcType=VARCHAR}, #{fullSpell,jdbcType=VARCHAR},
         #{summary,jdbcType=VARCHAR}, #{description,jdbcType=VARCHAR}, #{category,jdbcType=VARCHAR},
