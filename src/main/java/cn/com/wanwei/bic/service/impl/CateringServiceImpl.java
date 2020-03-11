@@ -4,6 +4,7 @@ import cn.com.wanwei.bic.entity.AuditLogEntity;
 import cn.com.wanwei.bic.entity.BaseTagsEntity;
 import cn.com.wanwei.bic.entity.CateringEntity;
 import cn.com.wanwei.bic.entity.CateringTagsEntity;
+import cn.com.wanwei.bic.feign.CoderServiceFeign;
 import cn.com.wanwei.bic.mapper.AuditLogMapper;
 import cn.com.wanwei.bic.mapper.CateringMapper;
 import cn.com.wanwei.bic.model.DataBindModel;
@@ -51,6 +52,9 @@ public class CateringServiceImpl implements CateringService {
     @Autowired
     private CateringMapper cateringMapper;
 
+    @Autowired
+    private CoderServiceFeign coderServiceFeign;
+
     @Override
     public ResponseMessage findByPage(Integer page, Integer size, Map<String, Object> filter) {
         EscapeCharUtils.escape(filter, "title", "subTilte","simpleSpell","fullSpell");
@@ -82,9 +86,11 @@ public class CateringServiceImpl implements CateringService {
     }
 
     @Override
-    public ResponseMessage insert(EntityTagsModel<CateringEntity> cateringModel, User user) {
+    public ResponseMessage insert(EntityTagsModel<CateringEntity> cateringModel, User user, Long ruleId, Integer appCode) {
         CateringEntity entity = cateringModel.getEntity();
         String id = UUIDUtils.getInstance().getId();
+        String type = cateringModel.getType();
+        ResponseMessage result = coderServiceFeign.buildSerialByCode(ruleId, appCode, type);
         entity.setId(id);
         entity.setCreatedDate(new Date());
         entity.setCreatedUser(user.getUsername());
