@@ -102,9 +102,10 @@ public interface ScenicService {
 	 * 获取景区信息，title可以为空
 	 * @param title
 	 * @param status
+	 * @param category
 	 * @return
 	 */
-	ResponseMessage getScenicInfo(String title, Integer status);
+	ResponseMessage getScenicInfo(String title, Integer status, String category);
 
 	/**
 	 * 关联标签

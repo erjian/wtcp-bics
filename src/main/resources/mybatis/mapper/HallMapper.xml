@@ -165,4 +165,14 @@
             #{item}
         </foreach>
     </update>
+    <update id="updateDeptCodeByVenueId">
+        update t_bic_hall
+        set updated_date = #{updatedDate,jdbcType=TIMESTAMP},
+        updated_user = #{updatedUser,jdbcType=VARCHAR},
+        dept_code = #{deptCode,jdbcType=VARCHAR}
+        where venue_id in
+        <foreach collection="ids" item="item" index="index" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </update>
 </mapper>

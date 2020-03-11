@@ -150,12 +150,7 @@ public class CelebrityServiceImpl implements CelebrityService {
         if (null == entity) {
             return ResponseMessage.validFailResponse().setMsg("无名人信息");
         }
-        if (status == 9 && entity.getStatus() != 1) {
-            return ResponseMessage.validFailResponse().setMsg("名人信息未审核通过，不能上线，请先审核名人信息信息");
-        }
         // 添加上下线记录
-        String msg = status == 9 ? "上线成功" : "下线成功";
-        insertAuditLog(entity.getStatus(), status, id, user, msg, 1);
         entity.setUpdatedUser(user);
         entity.setUpdatedDate(new Date());
         entity.setStatus(status);

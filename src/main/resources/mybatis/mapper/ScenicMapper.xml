@@ -73,6 +73,9 @@
                     and 9 > status
                 </if>
             </if>
+            <if test="category != null">
+                and category = #{category,jdbcType=VARCHAR}
+            </if>
         </where>
     </select>
 

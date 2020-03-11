@@ -156,10 +156,10 @@ public class CateringServiceImpl implements CateringService {
     public ResponseMessage updateStatus(String id, Integer status, String user) {
         CateringEntity entity = cateringMapper.findById(id);
         if (null == entity) {
-            return ResponseMessage.validFailResponse().setMsg("无名人信息");
+            return ResponseMessage.validFailResponse().setMsg("无餐饮信息");
         }
         if (status == 9 && entity.getStatus() != 1) {
-            return ResponseMessage.validFailResponse().setMsg("名人信息未审核通过，不能上线，请先审核名人信息信息");
+            return ResponseMessage.validFailResponse().setMsg("餐饮信息未审核通过，不能上线，请先审核餐饮信息信息");
         }
         // 添加上下线记录
         String msg = status == 9 ? "上线成功" : "下线成功";
@@ -179,6 +179,7 @@ public class CateringServiceImpl implements CateringService {
             insertAuditLog(entity.getStatus(), auditStatus, id, user.getUsername(), msg, 0);
             entity.setStatus(auditStatus);
             entity.setUpdatedDate(new Date());
+            entity.setUpdatedUser(user.getUsername());
             cateringMapper.updateById(entity);
         } else {
             return ResponseMessage.validFailResponse().setMsg("餐饮信息不存在");

@@ -41,7 +41,7 @@ public class HeritageController extends BaseController{
     @ApiOperation(value = "非遗管理分页列表", notes = "非遗管理分页列表")
     @GetMapping(value = "/page")
     @PreAuthorize("hasAuthority('heritage:r')")
-    @OperationLog(value = "wtcp-bics/非遗管理分页列表", operate = "r", module = "景区管理")
+    @OperationLog(value = "wtcp-bics/非遗管理分页列表", operate = "r", module = "非遗管理")
     public ResponseMessage findByPage(@RequestParam(value = "page", defaultValue = "0") Integer page,
                                       @RequestParam(value = "size", defaultValue = "10") Integer size,
                                       HttpServletRequest request) throws Exception {

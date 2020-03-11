@@ -13,10 +13,10 @@ import cn.com.wanwei.bic.entity.VenueEntity;
 import cn.com.wanwei.bic.entity.VenueTagsEntity;
 import cn.com.wanwei.bic.feign.CoderServiceFeign;
 import cn.com.wanwei.bic.mapper.AuditLogMapper;
+import cn.com.wanwei.bic.mapper.HallMapper;
 import cn.com.wanwei.bic.mapper.VenueMapper;
 import cn.com.wanwei.bic.model.DataBindModel;
 import cn.com.wanwei.bic.model.EntityTagsModel;
-import cn.com.wanwei.bic.service.HallService;
 import cn.com.wanwei.bic.service.MaterialService;
 import cn.com.wanwei.bic.service.TagsService;
 import cn.com.wanwei.bic.service.VenueService;
@@ -54,13 +54,13 @@ public class VenueServiceImpl implements VenueService {
     private VenueMapper venueMapper;
 
     @Autowired
+    private HallMapper hallMapper;
+
+    @Autowired
     private CoderServiceFeign coderServiceFeign;
 
     @Autowired
     private TagsService tagsService;
-
-    @Autowired
-    private HallService hallService;
 
     @Autowired
     private AuditLogMapper auditLogMapper;
@@ -103,7 +103,7 @@ public class VenueServiceImpl implements VenueService {
 
     @Override
     public ResponseMessage deleteByPrimaryKey(String id) {
-        long hallNum = hallService.countByVenueId(id);
+        long hallNum = hallMapper.countByVenueId(id);
         if(hallNum > 0L){
             return ResponseMessage.validFailResponse().setMsg("该场馆存在厅室，不能删除");
         }
@@ -169,6 +169,7 @@ public class VenueServiceImpl implements VenueService {
         String deptCode = model.getDeptCode();
         List<String> ids = model.getIds();
         venueMapper.dataBind(updatedUser, new Date(), deptCode, ids);
+        hallMapper.updateDeptCodeByVenueId(updatedUser, new Date(), deptCode, ids);
         return ResponseMessage.defaultResponse().setMsg("关联机构成功");
     }
 

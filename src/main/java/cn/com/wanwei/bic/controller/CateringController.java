@@ -1,7 +1,6 @@
 package cn.com.wanwei.bic.controller;
 
 import cn.com.wanwei.bic.entity.CateringEntity;
-import cn.com.wanwei.bic.entity.CelebrityEntity;
 import cn.com.wanwei.bic.model.DataBindModel;
 import cn.com.wanwei.bic.model.EntityTagsModel;
 import cn.com.wanwei.bic.model.WeightModel;
