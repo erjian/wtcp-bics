@@ -96,6 +96,7 @@ public class CateringServiceImpl implements CateringService {
         entity.setCreatedUser(user.getUsername());
         entity.setUpdatedDate(new Date());
         entity.setUpdatedUser(user.getUsername());
+        entity.setCode(result.getData().toString());
         entity.setSimpleSpell(PinyinUtils.converterToFirstSpell(entity.getTitle()).toLowerCase());
         entity.setFullSpell(PinyinUtils.getPingYin(entity.getTitle()).toLowerCase());
         entity.setStatus(0);
