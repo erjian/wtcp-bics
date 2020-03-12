@@ -55,21 +55,21 @@ public class HotelServiceImpl extends BaseServiceImpl<HotelMapper,HotelEntity,St
 
     @Override
     public ResponseMessage insert(EntityTagsModel<HotelEntity> model, User currentUser, Long ruleId, Integer appCode) {
-        HotelEntity HotelEntity = model.getEntity();
+        HotelEntity hotelEntity = model.getEntity();
         String id = UUIDUtils.getInstance().getId();
-        HotelEntity.setId(id);
+        hotelEntity.setId(id);
         ResponseMessage response = coderServiceFeign.buildSerialByCode(ruleId, appCode, model.getType());
-        HotelEntity.setCode(response.getData().toString());
-        HotelEntity.setFullSpell(PinyinUtils.getPingYin(HotelEntity.getTitle()).toLowerCase());
-        HotelEntity.setSimpleSpell(PinyinUtils.converterToFirstSpell(HotelEntity.getTitle()).toLowerCase());
-        HotelEntity.setCreatedUser(currentUser.getUsername());
-        HotelEntity.setUpdatedUser(currentUser.getUsername());
-        HotelEntity.setCreatedDate(new Date());
-        HotelEntity.setUpdatedDate(new Date());
-        HotelEntity.setDeptCode(currentUser.getOrg().getCode());
-        HotelEntity.setStatus(0);
-        HotelEntity.setWeight(0);
-        hotelMapper.insert(HotelEntity);
+        hotelEntity.setCode(response.getData().toString());
+        hotelEntity.setFullSpell(PinyinUtils.getPingYin(hotelEntity.getTitle()).toLowerCase());
+        hotelEntity.setSimpleSpell(PinyinUtils.converterToFirstSpell(hotelEntity.getTitle()).toLowerCase());
+        hotelEntity.setCreatedUser(currentUser.getUsername());
+        hotelEntity.setUpdatedUser(currentUser.getUsername());
+        hotelEntity.setCreatedDate(new Date());
+        hotelEntity.setUpdatedDate(new Date());
+        hotelEntity.setDeptCode(currentUser.getOrg().getCode());
+        hotelEntity.setStatus(0);
+        hotelEntity.setWeight(0);
+        hotelMapper.insert(hotelEntity);
         //保存素材
         if (CollectionUtils.isNotEmpty(model.getMaterialList())) {
             materialService.batchInsert(id, model.getMaterialList(), currentUser);
@@ -77,7 +77,7 @@ public class HotelServiceImpl extends BaseServiceImpl<HotelMapper,HotelEntity,St
 
         //处理标签
         if (CollectionUtils.isNotEmpty(model.getTagsList())) {
-            tagsService.batchInsert(id, model.getTagsList(), currentUser, HotelEntity.class);
+            tagsService.batchInsert(id, model.getTagsList(), currentUser, HotelTagsEntity.class);
         }
         return ResponseMessage.defaultResponse().setMsg("保存成功").setData(id);
     }
@@ -103,7 +103,7 @@ public class HotelServiceImpl extends BaseServiceImpl<HotelMapper,HotelEntity,St
 
         //处理标签
         if (CollectionUtils.isNotEmpty(hotelModel.getTagsList())) {
-            tagsService.batchInsert(hotelEntity.getId(), hotelModel.getTagsList(), currentUser, HotelEntity.class);
+            tagsService.batchInsert(hotelEntity.getId(), hotelModel.getTagsList(), currentUser, HotelTagsEntity.class);
         }
 
         return ResponseMessage.defaultResponse().setMsg("更新成功");
