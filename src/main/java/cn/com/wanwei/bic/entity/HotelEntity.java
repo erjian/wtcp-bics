@@ -59,12 +59,12 @@ public class HotelEntity extends CommonEntity{
     private String vrUrl;
 
     @ApiModelProperty(value = "营业时间",required = true)
-    private Date openTime;
+    private String openTime;
 
     @ApiModelProperty(value = "交通信息",required = true)
     private String trafficNotice;
 
-    @ApiModelProperty(value = "交通信息",required = true)
+    @ApiModelProperty(value = "入职须知",required = true)
     private String stayNotice;
 
     @ApiModelProperty(value = "状态",required = true)
