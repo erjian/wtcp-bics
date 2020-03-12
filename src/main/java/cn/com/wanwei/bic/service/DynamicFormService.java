@@ -1,23 +1,19 @@
 package cn.com.wanwei.bic.service;
 
 
-import cn.com.wanwei.bic.entity.DynamicFormEntity;
+import cn.com.wanwei.bic.model.CustomFormModel;
 
-import java.util.List;
+import java.util.Map;
 
 public interface DynamicFormService {
 
-    int insert(DynamicFormEntity dynamicFormEntity, String username);
-
-    int batchInsert(List<DynamicFormEntity> dynamicFormList, String username);
+    int batchInsert(CustomFormModel customFormModel, String username);
 
     int deleteById(String id);
 
     int deleteByPrincipalId(String principalId);
 
-    DynamicFormEntity findById(String id);
+    String findByPidAndField(String principalId, String field);
 
-    List<DynamicFormEntity> findByPrincipalId(String principalId);
-
-
+    Map<String, Object> findByPrincipalId(String principalId);
 }

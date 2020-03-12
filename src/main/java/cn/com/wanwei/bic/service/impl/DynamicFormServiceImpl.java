@@ -1,6 +1,7 @@
 package cn.com.wanwei.bic.service.impl;
 
 import cn.com.wanwei.bic.entity.DynamicFormEntity;
+import cn.com.wanwei.bic.model.CustomFormModel;
 import cn.com.wanwei.bic.service.DynamicFormService;
 import cn.com.wanwei.bic.utils.UUIDUtils;
 import com.google.common.collect.Lists;
@@ -14,6 +15,8 @@ import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 @Service
 public class DynamicFormServiceImpl implements DynamicFormService {
@@ -22,15 +25,19 @@ public class DynamicFormServiceImpl implements DynamicFormService {
     private JdbcTemplate jdbcTemplate;
 
     @Override
-    public int insert(DynamicFormEntity dynamicFormEntity, String username) {
-        List<DynamicFormEntity> dynamicFormList = Lists.newArrayList();
-        dynamicFormList.add(dynamicFormEntity);
-        return this.batchSave(dynamicFormList, username);
-    }
-
-    @Override
-    public int batchInsert(List<DynamicFormEntity> dynamicFormList, String username) {
-        return this.batchSave(dynamicFormList, username);
+    public int batchInsert(CustomFormModel customFormModel, String username) {
+        List<DynamicFormEntity> dynamicFormEntities = Lists.newArrayList();
+        String principalId = customFormModel.getPrincipalId();
+        Map<String, String> map = customFormModel.getForm();
+        Set<String> keys = map.keySet();
+        for(String s:keys){
+            DynamicFormEntity entity = new DynamicFormEntity();
+            entity.setPrincipalId(principalId);
+            entity.setExtendField(s);
+            entity.setExtendValue(map.get(s));
+            dynamicFormEntities.add(entity);
+        }
+        return this.batchSave(dynamicFormEntities, username);
     }
 
     @Override
@@ -46,15 +53,15 @@ public class DynamicFormServiceImpl implements DynamicFormService {
     }
 
     @Override
-    public DynamicFormEntity findById(String id) {
-        StringBuilder sb = new StringBuilder("select * from ").append(getTableName()).append(" where id = ?");
-        return jdbcTemplate.queryForObject(sb.toString(), DynamicFormEntity.class, id);
+    public String findByPidAndField(String principalId, String field) {
+        StringBuilder sb = new StringBuilder("select * from ").append(getTableName()).append(" where principal_id = ? and extend_field = ?");
+        return jdbcTemplate.queryForObject(sb.toString(), new String[]{principalId,field}, String.class);
     }
 
     @Override
-    public List<DynamicFormEntity> findByPrincipalId(String principalId) {
+    public Map<String, Object> findByPrincipalId(String principalId) {
         StringBuilder sb = new StringBuilder("select * from ").append(getTableName()).append(" where principal_id = ?");
-        return jdbcTemplate.queryForList(sb.toString(), DynamicFormEntity.class, principalId);
+        return jdbcTemplate.queryForMap(sb.toString(), principalId);
     }
 
     private int batchSave(List<DynamicFormEntity> dynamicFormList, String username) {
