@@ -41,7 +41,7 @@ public class DynamicFormServiceImpl implements DynamicFormService {
 
     @Override
     public int deleteByPrincipalId(String principalId) {
-        StringBuilder sb = new StringBuilder("delete from ").append(getTableName()).append(" where id = ?");
+        StringBuilder sb = new StringBuilder("delete from ").append(getTableName()).append(" where principal_id = ?");
         return jdbcTemplate.update(sb.toString(), principalId);
     }
 
