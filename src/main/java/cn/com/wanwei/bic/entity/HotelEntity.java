@@ -12,6 +12,8 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
+import java.util.Map;
 
 @Data
 @EqualsAndHashCode(callSuper = false)
@@ -80,5 +82,14 @@ public class HotelEntity extends CommonEntity{
     //冗余字段，关联素材的id
     @Transient
     private String timeId;
+
+    /**
+     * 用于存储景区-标签
+     */
+    @Transient
+    @ApiModelProperty(value = "标签")
+    public List<HotelTagsEntity> tagsEntities;
+
+    private Map<String,Object> fileList;
 
 }
