@@ -1,7 +1,6 @@
 package cn.com.wanwei.bic.controller.internal;
 
 import cn.com.wanwei.bic.service.CelebrityService;
-import cn.com.wanwei.common.log.annotation.OperationLog;
 import cn.com.wanwei.common.model.ResponseMessage;
 import cn.com.wanwei.common.utils.RequestUtil;
 import io.swagger.annotations.Api;
