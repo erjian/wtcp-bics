@@ -1,6 +1,6 @@
 package cn.com.wanwei.bic.service.impl;
 
-import cn.com.wanwei.bic.entity.HeritageEntity;
+import cn.com.wanwei.bic.entity.*;
 import cn.com.wanwei.bic.feign.CoderServiceFeign;
 import cn.com.wanwei.bic.mapper.HeritageMapper;
 import cn.com.wanwei.bic.model.EntityTagsModel;
@@ -12,6 +12,7 @@ import cn.com.wanwei.common.model.ResponseMessage;
 import cn.com.wanwei.common.model.User;
 import cn.com.wanwei.common.utils.PinyinUtils;
 import cn.com.wanwei.mybatis.service.impl.BaseServiceImpl;
+import com.google.common.collect.Maps;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +20,7 @@ import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
+import java.util.Map;
 
 /**
  * wtcp-bics - HeritageServiceImpl 非遗基础信息管理接口实现类
@@ -122,6 +124,18 @@ public class HeritageServiceImpl extends BaseServiceImpl<HeritageMapper,Heritage
             return responseMessage.validFailResponse().setMsg("该非遗信息不存在");
         }
         return responseMessage;
+    }
+
+    @Override
+    public ResponseMessage findHeritageInfoById(String id) {
+        HeritageEntity heritageEntity = heritageMapper.findById(id).orElse(null);
+        if (heritageEntity == null) {
+            return ResponseMessage.validFailResponse().setMsg("该非遗信息不存在");
+        }
+        Map<String, Object> data = Maps.newHashMap();
+        data.put("heritageEntity", heritageEntity);
+        data.put("fileList", materialService.handleMaterialNew(id));
+        return ResponseMessage.defaultResponse().setData(data);
     }
 
 
