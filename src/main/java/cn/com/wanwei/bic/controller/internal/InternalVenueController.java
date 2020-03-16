@@ -37,11 +37,7 @@ public class InternalVenueController {
     @ApiOperation(value = "C端查询场馆详情", notes = "C端根据ID查询场馆详情")
     @RequestMapping(value = "/findById/{id}", method = RequestMethod.GET)
     public ResponseMessage findById(@PathVariable("id") String id) throws Exception {
-        VenueEntity venueEntity = venueService.selectByPrimaryKey(id);
-        if (venueEntity == null) {
-            return ResponseMessage.validFailResponse().setMsg("数据不存在");
-        }
-        return ResponseMessage.defaultResponse().setData(venueEntity);
+        return venueService.findById(id);
     }
 
 }

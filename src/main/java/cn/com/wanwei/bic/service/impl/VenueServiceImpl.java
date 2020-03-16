@@ -7,19 +7,14 @@
  */
 package cn.com.wanwei.bic.service.impl;
 
-import cn.com.wanwei.bic.entity.AuditLogEntity;
-import cn.com.wanwei.bic.entity.BaseTagsEntity;
-import cn.com.wanwei.bic.entity.VenueEntity;
-import cn.com.wanwei.bic.entity.VenueTagsEntity;
+import cn.com.wanwei.bic.entity.*;
 import cn.com.wanwei.bic.feign.CoderServiceFeign;
 import cn.com.wanwei.bic.mapper.AuditLogMapper;
 import cn.com.wanwei.bic.mapper.HallMapper;
 import cn.com.wanwei.bic.mapper.VenueMapper;
 import cn.com.wanwei.bic.model.DataBindModel;
 import cn.com.wanwei.bic.model.EntityTagsModel;
-import cn.com.wanwei.bic.service.MaterialService;
-import cn.com.wanwei.bic.service.TagsService;
-import cn.com.wanwei.bic.service.VenueService;
+import cn.com.wanwei.bic.service.*;
 import cn.com.wanwei.bic.utils.PageUtils;
 import cn.com.wanwei.bic.utils.UUIDUtils;
 import cn.com.wanwei.common.model.ResponseMessage;
@@ -39,6 +34,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -68,6 +64,11 @@ public class VenueServiceImpl implements VenueService {
     @Autowired
     private MaterialService materialService;
 
+    @Autowired
+    private BusinessService businessService;
+
+    @Autowired
+    private ContactService ContactService;
 
 
     @Override
@@ -95,8 +96,8 @@ public class VenueServiceImpl implements VenueService {
         }
 
         //处理素材
-        if(CollectionUtils.isNotEmpty(venueModel.getMaterialList())){
-            materialService.batchInsert(id,venueModel.getMaterialList(),user);
+        if (CollectionUtils.isNotEmpty(venueModel.getMaterialList())) {
+            materialService.batchInsert(id, venueModel.getMaterialList(), user);
         }
         return ResponseMessage.defaultResponse().setMsg("保存成功").setData(id);
     }
@@ -104,7 +105,7 @@ public class VenueServiceImpl implements VenueService {
     @Override
     public ResponseMessage deleteByPrimaryKey(String id) {
         long hallNum = hallMapper.countByVenueId(id);
-        if(hallNum > 0L){
+        if (hallNum > 0L) {
             return ResponseMessage.validFailResponse().setMsg("该场馆存在厅室，不能删除");
         }
         venueMapper.deleteByPrimaryKey(id);
@@ -144,20 +145,20 @@ public class VenueServiceImpl implements VenueService {
     }
 
     @Override
-    public ResponseMessage findByPage(Integer page, Integer size,Map<String, Object> filter) {
-        return getPageInfo(page, size, filter,null);
+    public ResponseMessage findByPage(Integer page, Integer size, Map<String, Object> filter) {
+        return getPageInfo(page, size, filter, null);
     }
 
-    private ResponseMessage getPageInfo(Integer page, Integer size, Map<String, Object> filter, String type){
+    private ResponseMessage getPageInfo(Integer page, Integer size, Map<String, Object> filter, String type) {
         EscapeCharUtils.escape(filter, "title", "subTitle", "areaName");
         MybatisPageRequest pageRequest = PageUtils.getInstance().setPage(page, size, filter, Sort.Direction.DESC, "created_date", "updated_date");
         Page<VenueEntity> venueEntities = null;
-        if(StringUtils.isNotEmpty(type) && "feign".equalsIgnoreCase(type)){
+        if (StringUtils.isNotEmpty(type) && "feign".equalsIgnoreCase(type)) {
             venueEntities = venueMapper.findByPageForFeign(filter);
-            for(VenueEntity item : venueEntities){
+            for (VenueEntity item : venueEntities) {
                 item.setTagsEntities(tagsService.findListByPriId(item.getId(), VenueTagsEntity.class));
             }
-        }else{
+        } else {
             venueEntities = venueMapper.findByPage(filter);
         }
         PageInfo<VenueEntity> pageInfo = new PageInfo<>(venueEntities, pageRequest);
@@ -240,6 +241,29 @@ public class VenueServiceImpl implements VenueService {
             }
         } catch (Exception e) {
             log.error(e.getMessage());
+            responseMessage.setStatus(ResponseMessage.FAILED).setMsg(e.getMessage());
+        }
+        return responseMessage;
+    }
+
+    @Override
+    public ResponseMessage findById(String id) {
+        ResponseMessage responseMessage = ResponseMessage.defaultResponse();
+        try {
+            Map<String, Object> map = new HashMap<>();
+            VenueEntity entity = venueMapper.selectByPrimaryKey(id);
+            if (entity == null) {
+                responseMessage.setStatus(ResponseMessage.FAILED).setMsg("该信息不存在");
+            } else {
+                BusinessEntity businessEntity = businessService.findByPrincipalId(id);
+                ContactEntity contactEntity = ContactService.selectByPrincipalId(id);
+                map.put("venueEntity", entity);
+                map.put("businessEntity", businessEntity);
+                map.put("contactEntity", contactEntity);
+                responseMessage.setStatus(ResponseMessage.SUCCESS).setData(map);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
             responseMessage.setStatus(ResponseMessage.FAILED).setMsg(e.getMessage());
         }
         return responseMessage;
