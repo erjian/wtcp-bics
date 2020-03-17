@@ -82,7 +82,20 @@
     <include refid="Base_Column_List"/>
     from t_bic_celebrity
   </select>
-  <delete id="deleteById" parameterType="java.lang.String">
+    <select id="findByTitleAndIdNot"  resultMap="BaseResultMap">
+      select
+      <include refid="Base_Column_List"/>
+      from t_bic_celebrity
+      <where>
+        <if test="name != null">
+          and name = #{name,jdbcType=VARCHAR}
+        </if>
+        <if test="id != null and id != '-1'.toString()">
+          and id != #{id,jdbcType=BIGINT}
+        </if>
+      </where>
+    </select>
+    <delete id="deleteById" parameterType="java.lang.String">
     delete from t_bic_celebrity
     where id = #{id,jdbcType=VARCHAR}
   </delete>

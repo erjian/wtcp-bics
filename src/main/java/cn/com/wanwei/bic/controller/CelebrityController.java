@@ -160,4 +160,15 @@ public class CelebrityController extends BaseController {
         return celebrityService.findByList();
     }
 
+    @ApiOperation(value = "姓名重名校验", notes = "姓名重名校验")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "id", value = "名人信息ID"),
+            @ApiImplicitParam(name = "name", value = "姓名")
+    })
+    @GetMapping(value = "/checkTitle")
+    public ResponseMessage checkTitle(@RequestParam(value = "id", required = false) String id,
+                                      @RequestParam(value = "name", required = false) String name) {
+        return celebrityService.findByTitleAndIdNot(name, id != null ? id : "-1");
+    }
+
 }

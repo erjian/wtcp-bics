@@ -69,11 +69,11 @@
       </if>
       <if test="cookStyle != null and cookStyle != ''">
         <bind name="cookStyle" value="'%'+cookStyle + '%'"></bind>
-        and cook_style = #{cookStyle,jdbcType=VARCHAR}
+        and cook_style like #{cookStyle,jdbcType=VARCHAR}
       </if>
       <if test="featureTags != null and featureTags != ''">
         <bind name="featureTags" value="'%'+featureTags + '%'"></bind>
-        and feature_tags = #{featureTags,jdbcType=VARCHAR}
+        and feature_tags like #{featureTags,jdbcType=VARCHAR}
       </if>
       <if test="level != null and level != ''">
         and level = #{level,jdbcType=VARCHAR}
@@ -111,11 +111,11 @@
       </if>
       <if test="cookStyle != null and cookStyle != ''">
         <bind name="cookStyle" value="'%'+cookStyle + '%'"></bind>
-        and cook_style = #{cookStyle,jdbcType=VARCHAR}
+        and cook_style like #{cookStyle,jdbcType=VARCHAR}
       </if>
       <if test="featureTags != null and featureTags != ''">
         <bind name="featureTags" value="'%'+featureTags + '%'"></bind>
-        and feature_tags = #{featureTags,jdbcType=VARCHAR}
+        and feature_tags like #{featureTags,jdbcType=VARCHAR}
       </if>
       <if test="level != null and level != ''">
         and level = #{level,jdbcType=VARCHAR}
