@@ -40,4 +40,12 @@ public interface CelebrityMapper {
      * @return
      */
     List<CelebrityEntity> findByList();
+
+    /**
+     * 名人重名校验
+     * @param name
+     * @param id
+     * @return
+     */
+    List<CelebrityEntity> findByTitleAndIdNot(@Param(value="name")String name, @Param(value="id")String id);
 }

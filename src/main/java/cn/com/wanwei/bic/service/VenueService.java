@@ -113,4 +113,10 @@ public interface VenueService {
 
 	ResponseMessage findByTitleAndIdNot(String title, String s);
 
+	/**
+	 * 场馆管理详情（基本信息、企业信息、通讯信息）
+	 * @param id
+	 * @return
+	 */
+	ResponseMessage findById(String id);
 }

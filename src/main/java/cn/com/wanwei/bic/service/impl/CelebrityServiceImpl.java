@@ -188,6 +188,16 @@ public class CelebrityServiceImpl implements CelebrityService {
         return ResponseMessage.defaultResponse().setData(list);
     }
 
+    @Override
+    public ResponseMessage findByTitleAndIdNot(String name, String id) {
+        ResponseMessage responseMessage = ResponseMessage.defaultResponse();
+        List<CelebrityEntity> celebrityEntities = celebrityMapper.findByTitleAndIdNot(name,id);
+        if (CollectionUtils.isNotEmpty(celebrityEntities)) {
+            responseMessage.setStatus(ResponseMessage.FAILED).setMsg("该名人已经存在！");
+        }
+        return responseMessage;
+    }
+
     private int insertAuditLog(int preStatus, int auditStatus, String principalId, String userName, String msg, int type) {
         AuditLogEntity auditLogEntity = new AuditLogEntity();
         auditLogEntity.setId(UUIDUtils.getInstance().getId());

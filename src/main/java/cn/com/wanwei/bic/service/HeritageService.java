@@ -52,4 +52,11 @@ public interface HeritageService extends BaseService<HeritageEntity, String> {
      * @return
      */
     ResponseMessage updateAuditStatus(String id, int auditStatus, String msg, User currentUser);
+
+    /**
+     * 查询非遗详细信息
+     * @param id
+     * @return
+     */
+    ResponseMessage findHeritageInfoById(String id);
 }

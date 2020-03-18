@@ -59,4 +59,11 @@ public interface HotelService extends BaseService<HotelEntity, String> {
      * @return
      */
     ResponseMessage insertTags(Map<String, Object> tags, User currentUser);
+
+    /**
+     * 查询酒店详细信息
+     * @param id
+     * @return
+     */
+    ResponseMessage findHotelInfoById(String id);
 }
