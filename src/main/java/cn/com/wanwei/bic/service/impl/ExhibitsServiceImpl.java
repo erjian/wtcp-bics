@@ -20,6 +20,7 @@ import cn.com.wanwei.persistence.mybatis.PageInfo;
 import cn.com.wanwei.persistence.mybatis.utils.EscapeCharUtils;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
+import com.google.common.collect.Maps;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -228,5 +229,19 @@ public class ExhibitsServiceImpl implements ExhibitsService {
     @Override
     public ResponseMessage getExhibitsList() {
         return ResponseMessage.defaultResponse().setData(exhibitsMapper.getExhibitsList());
+    }
+
+    @Override
+    public ResponseMessage findInfoById(String id) {
+        Map<String, Object> map = Maps.newHashMap();
+        ExhibitsEntity exhibitsEntity = exhibitsMapper.selectByPrimaryKey(id);
+        if (exhibitsEntity != null) {
+            map.put("exhibitsEntity", exhibitsEntity);
+            //素材信息
+            map.put("fileList", materialService.handleMaterialNew(id));
+            return ResponseMessage.defaultResponse().setData(map);
+        } else {
+            return ResponseMessage.validFailResponse().setMsg("暂无该展品信息！");
+        }
     }
 }
