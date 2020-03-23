@@ -2,7 +2,7 @@
  * 非遗
  */
 
-select t.id relateId,t.id,t.`code`, t.title,t.sub_title subTitle,t.title_qp fullSpell, t.title_jp simpleSpell,t.slogan,
+select t.id relateId,t.id,t.`code`, t.title,t.sub_title subTitle,t.full_spell fullSpell, t.simple_spell simpleSpell,t.slogan,
 t.type,t.relate_project relateProject,t.heritage_serial heritageSerial,t.publish_time publishTime,t.declare_group declareGroup,t.guard_group guardGroup,
 t.summary, t.description, t.nation,t.`level`,t.category,t.inherit_region inheritRegion,t.celebrity_ids celebrityIds,t.vr_url vrUrl,t.weight,
 t.region,t.region_full_code regionFullCode,t.region_full_name regionFullName,
