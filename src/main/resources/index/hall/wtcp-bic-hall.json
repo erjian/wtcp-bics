@@ -69,6 +69,10 @@
           },
           "analyzer": "ik_max_word"
         },
+        "venueId": {
+          "type": "keyword",
+          "ignore_above": 256
+        },
         "category": {
           "type": "keyword",
           "ignore_above": 256
