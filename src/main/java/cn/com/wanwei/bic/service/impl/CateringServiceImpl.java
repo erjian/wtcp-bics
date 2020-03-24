@@ -4,6 +4,7 @@ import cn.com.wanwei.bic.entity.AuditLogEntity;
 import cn.com.wanwei.bic.entity.BaseTagsEntity;
 import cn.com.wanwei.bic.entity.CateringEntity;
 import cn.com.wanwei.bic.entity.CateringTagsEntity;
+import cn.com.wanwei.bic.feign.CoderServiceFeign;
 import cn.com.wanwei.bic.mapper.AuditLogMapper;
 import cn.com.wanwei.bic.mapper.CateringMapper;
 import cn.com.wanwei.bic.model.DataBindModel;
@@ -51,6 +52,9 @@ public class CateringServiceImpl implements CateringService {
     @Autowired
     private CateringMapper cateringMapper;
 
+    @Autowired
+    private CoderServiceFeign coderServiceFeign;
+
     @Override
     public ResponseMessage findByPage(Integer page, Integer size, Map<String, Object> filter) {
         EscapeCharUtils.escape(filter, "title", "subTilte","simpleSpell","fullSpell");
@@ -82,17 +86,21 @@ public class CateringServiceImpl implements CateringService {
     }
 
     @Override
-    public ResponseMessage insert(EntityTagsModel<CateringEntity> cateringModel, User user) {
+    public ResponseMessage insert(EntityTagsModel<CateringEntity> cateringModel, User user, Long ruleId, Integer appCode) {
         CateringEntity entity = cateringModel.getEntity();
         String id = UUIDUtils.getInstance().getId();
+        String type = cateringModel.getType();
+        ResponseMessage result = coderServiceFeign.buildSerialByCode(ruleId, appCode, type);
         entity.setId(id);
         entity.setCreatedDate(new Date());
         entity.setCreatedUser(user.getUsername());
         entity.setUpdatedDate(new Date());
         entity.setUpdatedUser(user.getUsername());
+        entity.setCode(result.getData().toString());
         entity.setSimpleSpell(PinyinUtils.converterToFirstSpell(entity.getTitle()).toLowerCase());
         entity.setFullSpell(PinyinUtils.getPingYin(entity.getTitle()).toLowerCase());
         entity.setStatus(0);
+        entity.setDeptCode(user.getOrg().getCode());
         entity.setWeight(0);
         cateringMapper.insert(entity);
 
@@ -121,7 +129,6 @@ public class CateringServiceImpl implements CateringService {
         entity.setSimpleSpell(PinyinUtils.converterToFirstSpell(entity.getTitle()).toLowerCase());
         entity.setFullSpell(PinyinUtils.getPingYin(entity.getTitle()).toLowerCase());
         entity.setStatus(0);
-
         cateringMapper.updateById(entity);
         //处理标签
         if (CollectionUtils.isNotEmpty(cateringModel.getTagsList())) {

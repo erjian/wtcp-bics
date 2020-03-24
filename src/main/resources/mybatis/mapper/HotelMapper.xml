@@ -31,7 +31,7 @@
     <result column="facility" jdbcType="VARCHAR" property="facility" />
     <result column="services" jdbcType="VARCHAR" property="services" />
     <result column="vr_url" jdbcType="VARCHAR" property="vrUrl" />
-    <result column="open_time" jdbcType="TIMESTAMP" property="openTime" />
+    <result column="open_time" jdbcType="VARCHAR" property="openTime" />
     <result column="traffic_notice" jdbcType="VARCHAR" property="trafficNotice" />
     <result column="stay_notice" jdbcType="VARCHAR" property="stayNotice" />
     <result column="status" jdbcType="INTEGER" property="status" />
@@ -85,7 +85,7 @@
       #{regionFullName,jdbcType=VARCHAR}, #{regionFullCode,jdbcType=VARCHAR}, #{address,jdbcType=VARCHAR}, 
       #{longitude,jdbcType=DECIMAL}, #{latitude,jdbcType=DECIMAL}, #{minPrice,jdbcType=DECIMAL}, 
       #{score,jdbcType=REAL}, #{facility,jdbcType=VARCHAR}, #{services,jdbcType=VARCHAR}, 
-      #{vrUrl,jdbcType=VARCHAR}, #{openTime,jdbcType=TIMESTAMP}, #{trafficNotice,jdbcType=VARCHAR}, 
+      #{vrUrl,jdbcType=VARCHAR}, #{openTime,jdbcType=VARCHAR}, #{trafficNotice,jdbcType=VARCHAR},
       #{stayNotice,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER}, #{weight,jdbcType=INTEGER}, 
       #{deptCode,jdbcType=VARCHAR}, #{content,jdbcType=LONGVARCHAR})
   </insert>
@@ -119,7 +119,7 @@
       facility = #{facility,jdbcType=VARCHAR},
       services = #{services,jdbcType=VARCHAR},
       vr_url = #{vrUrl,jdbcType=VARCHAR},
-      open_time = #{openTime,jdbcType=TIMESTAMP},
+      open_time = #{openTime,jdbcType=VARCHAR},
       traffic_notice = #{trafficNotice,jdbcType=VARCHAR},
       stay_notice = #{stayNotice,jdbcType=VARCHAR},
       status = #{status,jdbcType=INTEGER},

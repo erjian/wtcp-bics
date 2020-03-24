@@ -85,6 +85,7 @@ public class CelebrityServiceImpl implements CelebrityService {
         celebrityEntity.setFullSpell(PinyinUtils.getPingYin(celebrityEntity.getName()).toLowerCase());
         celebrityEntity.setStatus(0);
         celebrityEntity.setWeight(0);
+        celebrityEntity.setDeptCode(currentUser.getOrg().getCode());
 
         celebrityMapper.insert(celebrityEntity);
 
@@ -185,6 +186,16 @@ public class CelebrityServiceImpl implements CelebrityService {
     public ResponseMessage findByList() {
         List<CelebrityEntity> list = celebrityMapper.findByList();
         return ResponseMessage.defaultResponse().setData(list);
+    }
+
+    @Override
+    public ResponseMessage findByTitleAndIdNot(String name, String id) {
+        ResponseMessage responseMessage = ResponseMessage.defaultResponse();
+        List<CelebrityEntity> celebrityEntities = celebrityMapper.findByTitleAndIdNot(name,id);
+        if (CollectionUtils.isNotEmpty(celebrityEntities)) {
+            responseMessage.setStatus(ResponseMessage.FAILED).setMsg("该名人已经存在！");
+        }
+        return responseMessage;
     }
 
     private int insertAuditLog(int preStatus, int auditStatus, String principalId, String userName, String msg, int type) {

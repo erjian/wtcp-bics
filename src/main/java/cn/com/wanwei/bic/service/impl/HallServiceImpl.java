@@ -46,6 +46,8 @@ public class HallServiceImpl extends BaseServiceImpl<HallMapper,HallEntity, Stri
         hallEntity.setFullSpell(PinyinUtils.getPingYin(hallEntity.getTitle()).toLowerCase());
         hallEntity.setSimpleSpell(PinyinUtils.converterToFirstSpell(hallEntity.getTitle()).toLowerCase());
         hallEntity.setCreatedUser(user.getUsername());
+        hallEntity.setCreatedDate(new Date());
+        hallEntity.setUpdatedDate(new Date());
         hallEntity.setDeptCode(user.getOrg().getCode());
         hallEntity.setStatus(1);
         hallEntity.setWeight(0);

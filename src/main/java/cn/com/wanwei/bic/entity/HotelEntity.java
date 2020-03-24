@@ -12,6 +12,8 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
+import java.util.Map;
 
 @Data
 @EqualsAndHashCode(callSuper = false)
@@ -59,12 +61,12 @@ public class HotelEntity extends CommonEntity{
     private String vrUrl;
 
     @ApiModelProperty(value = "营业时间",required = true)
-    private Date openTime;
+    private String openTime;
 
     @ApiModelProperty(value = "交通信息",required = true)
     private String trafficNotice;
 
-    @ApiModelProperty(value = "交通信息",required = true)
+    @ApiModelProperty(value = "入职须知",required = true)
     private String stayNotice;
 
     @ApiModelProperty(value = "状态",required = true)
@@ -80,5 +82,14 @@ public class HotelEntity extends CommonEntity{
     //冗余字段，关联素材的id
     @Transient
     private String timeId;
+
+    /**
+     * 用于存储景区-标签
+     */
+    @Transient
+    @ApiModelProperty(value = "标签")
+    public List<HotelTagsEntity> tagsEntities;
+
+    private Map<String,Object> fileList;
 
 }

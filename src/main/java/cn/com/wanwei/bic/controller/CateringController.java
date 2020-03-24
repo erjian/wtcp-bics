@@ -86,7 +86,7 @@ public class CateringController extends BaseController {
         if (bindingResult.hasErrors()) {
             return ResponseMessage.validFailResponse().setMsg(bindingResult.getAllErrors());
         }
-        return cateringService.insert(cateringModel, getCurrentUser());
+        return cateringService.insert(cateringModel, getCurrentUser(),ruleId,appCode);
     }
 
     @ApiOperation(value = "餐饮编辑", notes = "餐饮编辑")

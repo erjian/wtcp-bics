@@ -90,4 +90,12 @@ public interface CelebrityService {
      * @return
      */
     ResponseMessage findByList();
+
+    /**
+     * 姓名重名校验
+     * @param name
+     * @param id
+     * @return
+     */
+    ResponseMessage findByTitleAndIdNot(String name, String id);
 }

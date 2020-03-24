@@ -178,6 +178,6 @@ public class TagsController extends BaseController {
     @OperationLog(value = "wtcp-bic/根据关联ID获取酒店管理标签信息", operate = "r", module = "标签管理")
     @RequestMapping(value = "/findHotelByPid", method = RequestMethod.GET)
     public ResponseMessage findHotelByPid(@RequestParam String principalId) {
-        return tagsService.findByPrincipalId(principalId, HotelEntity.class);
+        return tagsService.findByPrincipalId(principalId, HotelTagsEntity.class);
     }
 }

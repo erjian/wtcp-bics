@@ -102,4 +102,11 @@ public interface ExhibitsService {
      * @return
      */
     ResponseMessage getExhibitsList();
+
+    /**
+     * 查询展品相关信息（基础信息，素材信息）
+     * @param id
+     * @return
+     */
+    ResponseMessage findInfoById(String id);
 }

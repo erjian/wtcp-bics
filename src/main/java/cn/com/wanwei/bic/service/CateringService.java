@@ -42,13 +42,7 @@ public interface CateringService {
      */
     ResponseMessage deleteById(String id);
 
-    /**
-     * 餐饮新增
-     * @param cateringModel
-     * @param user
-     * @return
-     */
-    ResponseMessage insert(EntityTagsModel<CateringEntity> cateringModel, User user);
+
 
     /**
      * 餐饮编辑
@@ -101,4 +95,14 @@ public interface CateringService {
      * @return
      */
     ResponseMessage findByTitleAndIdNot(String title, String id);
+
+    /**
+     * 新增
+     * @param cateringModel
+     * @param user
+     * @param ruleId
+     * @param appCode
+     * @return
+     */
+    ResponseMessage insert(EntityTagsModel<CateringEntity> cateringModel, User user, Long ruleId, Integer appCode);
 }
