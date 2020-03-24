@@ -6,7 +6,7 @@ select t.id relateId,t.id,t.`code`, t.title,t.sub_title subTitle,t.full_spell fu
 t.venue_id venueId,t.hall_id hallId,t.type, t.exhibition_area exhibitionArea,t.register_number registerNumber,t.years_kind yearsKind,
 t.summary, t.description, t.years,t.`level`,t.category,t.appearance_size appearanceSize,t.quality,t.excavation_address excavationAddress,t.weight,
 t.latitude, t.longitude,CONCAT(t.latitude,",",t.longitude) geoPoint,t.vr_url vrUrl,t.ar_url arUrl,t.author,
-t.dept_code deptCode,'' images,'' videos,'' audios, '' tags,'' relateTags, '' allTags, if(t.status=9, 1,0) publishStatus,
+t.dept_code deptCode,'' images,'' videos,'' audios, '' tags,'' relateTags, '' allTags, if(t.status=9, 1,0) publishStatus
 from t_bic_exhibits t;
 
 

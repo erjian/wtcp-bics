@@ -2,9 +2,9 @@
  * 酒店
  */
 
-select t.id relateId,t.id,t.`code`, t.title,t.sub_title subTitle,t.full_spell fullSpell, t.simple_spellv simpleSpell,t.slogan,
-t.feature, t.lightspot,t.room_num roomNum,t.min_price minPrice,t.facility,t.services,t.vrUrl,t.open_time openTime,
-t.summary, t.description, t.address,t.`level`,t.category,t.area,t.traffic_notice trafficNotice,t.stay_notice stayNotice,t.score,t.weight,
+select t.id relateId,t.id,t.`code`, t.title,t.sub_title subTitle,t.full_spell fullSpell, t.simple_spell simpleSpell,t.slogan,
+t.feature, t.lightspot,t.room_num roomNum,t.min_price minPrice,t.facility,t.services,t.vr_url vrUrl,t.open_time openTime,
+t.summary, t.description, t.address,t.`level`,t.category,t.traffic_notice trafficNotice,t.stay_notice stayNotice,t.score,t.weight,
 t.latitude, t.longitude,CONCAT(t.latitude,",",t.longitude) geoPoint,t.region,t.region_full_code regionFullCode,t.region_full_name regionFullName,
 t.dept_code deptCode,'' images,'' videos,'' audios, '' tags,'' relateTags, '' allTags, if(t.status=9, 1,0) publishStatus,
 (select b.service_facility from t_bic_business b where b.principal_id = t.id) as serviceFacility,
