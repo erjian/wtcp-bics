@@ -35,7 +35,7 @@ public interface PoiMapper {
      * @param title
      * @return
      */
-    PoiEntity checkTitle( String title);
+    List<PoiEntity> checkTitle( String title);
 
     /**
      * 查询一级景点

@@ -158,9 +158,11 @@ public class ExhibitsServiceImpl implements ExhibitsService {
     public ResponseMessage checkTitle(String id, String title) {
         ResponseMessage responseMessage = ResponseMessage.defaultResponse();
         if (StringUtils.isNotBlank(title)) {
-            ExhibitsEntity exhibitsEntity = exhibitsMapper.checkTitle(title);
-            if (exhibitsEntity != null) {
-                if (!exhibitsEntity.getId().equals(id)) {
+            List<ExhibitsEntity> exhibitsEntities = exhibitsMapper.checkTitle(title);
+            if(exhibitsEntities.size() > 1){
+                return responseMessage.setStatus(ResponseMessage.FAILED).setMsg("标题名称重复！");
+            }else if(exhibitsEntities.size() == 1){
+                if (!exhibitsEntities.get(0).getId().equals(id)) {
                     return responseMessage.setStatus(ResponseMessage.FAILED).setMsg("标题名称重复！");
                 }
             }

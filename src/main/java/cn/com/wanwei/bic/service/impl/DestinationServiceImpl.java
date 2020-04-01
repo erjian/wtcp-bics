@@ -230,9 +230,11 @@ public class DestinationServiceImpl implements DestinationService {
     public ResponseMessage checkRegionFullName(String id, String regionFullCode) {
         ResponseMessage responseMessage = ResponseMessage.defaultResponse();
         if (StringUtils.isNotBlank(regionFullCode)) {
-            DestinationEntity destinationEntity = destinationMapper.checkRegionFullCode(regionFullCode);
-            if (destinationEntity != null) {
-                if (!destinationEntity.getId().equals(id)) {
+            List<DestinationEntity> destinationEntities = destinationMapper.checkRegionFullCode(regionFullCode);
+            if(destinationEntities.size() > 1){
+                return responseMessage.setStatus(ResponseMessage.FAILED).setMsg("该目的地已经存在！");
+            }else if(destinationEntities.size() == 1){
+                if (!destinationEntities.get(0).getId().equals(id)) {
                     return responseMessage.setStatus(ResponseMessage.FAILED).setMsg("该目的地已经存在！");
                 }
             }

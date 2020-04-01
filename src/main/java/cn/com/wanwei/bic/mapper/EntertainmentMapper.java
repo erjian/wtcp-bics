@@ -25,7 +25,7 @@ public interface EntertainmentMapper {
      * @param title
      * @return
      */
-    EntertainmentEntity checkTitle(String title);
+    List<EntertainmentEntity> checkTitle(String title);
 
     /**
      * 休闲娱乐管理分页列表

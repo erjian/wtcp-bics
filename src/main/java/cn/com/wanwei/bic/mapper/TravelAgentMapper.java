@@ -44,7 +44,7 @@ public interface TravelAgentMapper {
      * @param title
      * @return
      */
-    TravelAgentEntity checkTitle(String title);
+    List<TravelAgentEntity> checkTitle(String title);
 
     /**
      * 数据绑定

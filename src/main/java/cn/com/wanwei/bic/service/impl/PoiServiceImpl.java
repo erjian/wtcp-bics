@@ -218,9 +218,11 @@ public class PoiServiceImpl implements PoiService {
     public ResponseMessage checkTitle(String id, String title) {
         ResponseMessage responseMessage = ResponseMessage.defaultResponse();
         if (StringUtils.isNotBlank(title)) {
-            PoiEntity pEntity = poiMapper.checkTitle(title);
-            if (pEntity != null) {
-                if (!pEntity.getId().equals(id)) {
+            List<PoiEntity> poiEntities = poiMapper.checkTitle(title);
+            if(poiEntities.size() > 1){
+                return responseMessage.setStatus(ResponseMessage.FAILED).setMsg("标题名称重复！");
+            } else if (poiEntities.size() == 1){
+                if (!poiEntities.get(0).getId().equals(id)) {
                     return responseMessage.setStatus(ResponseMessage.FAILED).setMsg("标题名称重复！");
                 }
             }

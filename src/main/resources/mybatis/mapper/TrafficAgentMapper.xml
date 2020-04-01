@@ -82,7 +82,8 @@
       content = #{content,jdbcType=LONGVARCHAR},
       type = #{type,jdbcType=VARCHAR},
       simple_spell = #{simpleSpell,jdbcType=VARCHAR},
-      full_spell = #{fullSpell,jdbcType=VARCHAR}
+      full_spell = #{fullSpell,jdbcType=VARCHAR},
+      phone = #{phone,jdbcType=VARCHAR}
     where id = #{id,jdbcType=VARCHAR}
   </update>
 

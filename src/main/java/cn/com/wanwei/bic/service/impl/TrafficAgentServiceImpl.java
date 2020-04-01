@@ -140,12 +140,15 @@ public class TrafficAgentServiceImpl implements TrafficAgentService {
     public ResponseMessage checkTitle(String id, String title) {
         ResponseMessage responseMessage = ResponseMessage.defaultResponse();
         if (StringUtils.isNotBlank(title)) {
-            TrafficAgentEntity tEntity = trafficAgentMapper.checkTitle(title);
-            if (tEntity != null) {
-                if (!tEntity.getId().equals(id)) {
+            List<TrafficAgentEntity> trafficAgentEntities = trafficAgentMapper.checkTitle(title);
+            if(trafficAgentEntities.size() > 1){
+                return responseMessage.setStatus(ResponseMessage.FAILED).setMsg("标题名称重复！");
+            } else if (trafficAgentEntities.size() == 1){
+                if (!trafficAgentEntities.get(0).getId().equals(id)) {
                     return responseMessage.setStatus(ResponseMessage.FAILED).setMsg("标题名称重复！");
                 }
             }
+
         }
         return responseMessage;
     }
