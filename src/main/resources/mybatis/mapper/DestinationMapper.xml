@@ -77,7 +77,7 @@
       updated_user = #{updatedUser,jdbcType=VARCHAR},
       updated_date = #{updatedDate,jdbcType=TIMESTAMP},
       pinyin = #{pinyin,jdbcType=VARCHAR},
-      fullPinyin = #{fullPinyin,jdbcType=VARCHAR}
+      full_pinyin = #{fullPinyin,jdbcType=VARCHAR}
     where id = #{id,jdbcType=VARCHAR}
   </update>
 
