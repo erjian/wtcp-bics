@@ -20,11 +20,14 @@
     <result column="created_date" jdbcType="TIMESTAMP" property="createdDate" />
     <result column="updated_user" jdbcType="VARCHAR" property="updatedUser" />
     <result column="updated_date" jdbcType="TIMESTAMP" property="updatedDate" />
+    <result column="pinyin" jdbcType="VARCHAR" property="pinyin" />
+    <result column="full_pinyin" jdbcType="VARCHAR" property="fullPinyin" />
+
   </resultMap>
   <sql id="Base_Column_List">
     id, status, region_full_name, region_full_code, region, introduce, eat_introduce, 
     drink_introduce, play_introduce, tourism_introduce, shop_introduce, entertainment_introduce, 
-    weight, dept_code, created_user, created_date, updated_user, updated_date
+    weight, dept_code, created_user, created_date, updated_user, updated_date,pinyin,full_pinyin
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
     select 
@@ -42,14 +45,16 @@
       drink_introduce, play_introduce, tourism_introduce, 
       shop_introduce, entertainment_introduce, 
       weight, dept_code, created_user, 
-      created_date, updated_user, updated_date
+      created_date, updated_user, updated_date,
+      pinyin,full_pinyin
       )
     values (#{id,jdbcType=VARCHAR},#{status,jdbcType=BIT}, #{regionFullName,jdbcType=VARCHAR}, #{regionFullCode,jdbcType=VARCHAR},
       #{region,jdbcType=VARCHAR}, #{introduce,jdbcType=VARCHAR}, #{eatIntroduce,jdbcType=VARCHAR}, 
       #{drinkIntroduce,jdbcType=VARCHAR}, #{playIntroduce,jdbcType=VARCHAR}, #{tourismIntroduce,jdbcType=VARCHAR}, 
       #{shopIntroduce,jdbcType=VARCHAR}, #{entertainmentIntroduce,jdbcType=VARCHAR}, 
       #{weight,jdbcType=INTEGER}, #{deptCode,jdbcType=VARCHAR}, #{createdUser,jdbcType=VARCHAR},
-      #{createdDate,jdbcType=TIMESTAMP}, #{updatedUser,jdbcType=VARCHAR}, #{updatedDate,jdbcType=TIMESTAMP}
+      #{createdDate,jdbcType=TIMESTAMP}, #{updatedUser,jdbcType=VARCHAR}, #{updatedDate,jdbcType=TIMESTAMP},
+      #{pinyin,jdbcType=VARCHAR}, #{fullPinyin,jdbcType=VARCHAR}
       )
   </insert>
   <update id="updateByPrimaryKey" parameterType="cn.com.wanwei.bic.entity.DestinationEntity">
@@ -70,7 +75,9 @@
       created_user = #{createdUser,jdbcType=VARCHAR},
       created_date = #{createdDate,jdbcType=TIMESTAMP},
       updated_user = #{updatedUser,jdbcType=VARCHAR},
-      updated_date = #{updatedDate,jdbcType=TIMESTAMP}
+      updated_date = #{updatedDate,jdbcType=TIMESTAMP},
+      pinyin = #{pinyin,jdbcType=VARCHAR},
+      fullPinyin = #{fullPinyin,jdbcType=VARCHAR}
     where id = #{id,jdbcType=VARCHAR}
   </update>
 
