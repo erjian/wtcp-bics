@@ -29,6 +29,9 @@
         <result column="created_date" jdbcType="TIMESTAMP" property="createdDate"/>
         <result column="updated_user" jdbcType="VARCHAR" property="updatedUser"/>
         <result column="updated_date" jdbcType="TIMESTAMP" property="updatedDate"/>
+        <result column="summer_time" jdbcType="VARCHAR" property="summerTime"/>
+        <result column="winter_time" jdbcType="VARCHAR" property="winterTime"/>
+        <result column="traffic_notice" jdbcType="VARCHAR" property="trafficNotice"/>
     </resultMap>
     <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="cn.com.wanwei.bic.entity.PeripheryEntity">
         <result column="content" jdbcType="LONGVARCHAR" property="content"/>
@@ -37,7 +40,7 @@
     id, category, code, title, sub_title, slogan, summary, description, weight, longitude, 
     latitude, region_full_name, region_full_code, region, address, phone, trading_area, 
     type, status, score, park_score, per_consumption, dept_code, created_user, created_date, updated_user,
-    updated_date
+    updated_date, summer_time, winter_time, traffic_notice
   </sql>
     <sql id="Blob_Column_List">
     content
@@ -63,7 +66,7 @@
       trading_area, type, status, 
       score, park_score, per_consumption, dept_code,
       created_user, created_date, updated_user, 
-      updated_date, content)
+      updated_date, content, summer_time, winter_time, traffic_notice)
     values (#{id,jdbcType=VARCHAR},#{category,jdbcType=VARCHAR}, #{code,jdbcType=VARCHAR}, #{title,jdbcType=VARCHAR},
       #{subTitle,jdbcType=VARCHAR}, #{slogan,jdbcType=VARCHAR}, #{summary,jdbcType=VARCHAR}, 
       #{description,jdbcType=VARCHAR}, #{weight,jdbcType=REAL}, #{longitude,jdbcType=DOUBLE}, 
@@ -72,7 +75,7 @@
       #{tradingArea,jdbcType=VARCHAR}, #{type,jdbcType=VARCHAR}, #{status,jdbcType=BIT},
       #{score,jdbcType=REAL}, #{parkScore,jdbcType=REAL}, #{perConsumption,jdbcType=REAL}, #{deptCode,jdbcType=VARCHAR},
       #{createdUser,jdbcType=VARCHAR}, #{createdDate,jdbcType=TIMESTAMP}, #{updatedUser,jdbcType=VARCHAR}, 
-      #{updatedDate,jdbcType=TIMESTAMP}, #{content,jdbcType=LONGVARCHAR})
+      #{updatedDate,jdbcType=TIMESTAMP}, #{content,jdbcType=LONGVARCHAR}, #{summerTime,jdbcType=VARCHAR}, #{winterTime,jdbcType=VARCHAR}, #{trafficNotice,jdbcType=VARCHAR})
   </insert>
     <update id="updateByPrimaryKey" parameterType="cn.com.wanwei.bic.entity.PeripheryEntity">
     update t_bic_periphery
@@ -101,7 +104,10 @@
       created_user = #{createdUser,jdbcType=VARCHAR},
       created_date = #{createdDate,jdbcType=TIMESTAMP},
       updated_user = #{updatedUser,jdbcType=VARCHAR},
-      updated_date = #{updatedDate,jdbcType=TIMESTAMP}
+      updated_date = #{updatedDate,jdbcType=TIMESTAMP},
+      summer_time = #{summerTime,jdbcType=VARCHAR},
+      winter_time = #{winterTime,jdbcType=VARCHAR},
+      traffic_notice = #{trafficNotice,jdbcType=VARCHAR}
     where id = #{id,jdbcType=VARCHAR}
   </update>
     <select id="findByPage" parameterType="java.util.Map" resultMap="BaseResultMap">

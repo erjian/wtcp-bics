@@ -43,7 +43,7 @@ public interface DriveCampMapper {
      * @param title
      * @return
      */
-    DriveCampEntity checkTitle(String title);
+    List<DriveCampEntity> checkTitle(String title);
 
     /**
      *数据绑定

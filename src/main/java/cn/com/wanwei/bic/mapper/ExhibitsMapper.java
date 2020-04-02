@@ -25,7 +25,7 @@ public interface ExhibitsMapper {
      * @param title
      * @return
      */
-    ExhibitsEntity checkTitle(String title);
+    List<ExhibitsEntity> checkTitle(String title);
 
     /**
      * 关联机构

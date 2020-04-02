@@ -169,9 +169,11 @@ public class DriveCampServiceImpl implements DriveCampService {
     public ResponseMessage checkTitle(String id, String title) {
         ResponseMessage responseMessage = ResponseMessage.defaultResponse();
         if (StringUtils.isNotBlank(title)) {
-            DriveCampEntity driveCampEntity = driveCampMapper.checkTitle(title);
-            if (driveCampEntity != null) {
-                if (!driveCampEntity.getId().equals(id)) {
+            List<DriveCampEntity> driveCampEntities = driveCampMapper.checkTitle(title);
+            if(driveCampEntities.size() > 1){
+                return responseMessage.setStatus(ResponseMessage.FAILED).setMsg("标题名称重复！");
+            } else if(driveCampEntities.size() == 1){
+                if (!driveCampEntities.get(0).getId().equals(id)) {
                     return responseMessage.setStatus(ResponseMessage.FAILED).setMsg("标题名称重复！");
                 }
             }

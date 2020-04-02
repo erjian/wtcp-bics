@@ -32,7 +32,7 @@ public interface ExtendMapper {
      * @param title
      * @return
      */
-    ExtendEntity checkTitle(String title);
+    List<ExtendEntity> checkTitle(String title);
 
     /**
      * 扩展信息组织关联

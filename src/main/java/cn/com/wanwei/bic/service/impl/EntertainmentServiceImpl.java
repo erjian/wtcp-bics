@@ -170,12 +170,15 @@ public class EntertainmentServiceImpl implements EntertainmentService {
     public ResponseMessage checkTitle(String id, String title) {
         ResponseMessage responseMessage = ResponseMessage.defaultResponse();
         if (StringUtils.isNotBlank(title)) {
-            EntertainmentEntity entertainmentEntity = entertainmentMapper.checkTitle(title);
-            if (entertainmentEntity != null) {
-                if (!entertainmentEntity.getId().equals(id)) {
+            List<EntertainmentEntity> entertainmentEntities = entertainmentMapper.checkTitle(title);
+            if(entertainmentEntities.size() > 1){
+                return responseMessage.setStatus(ResponseMessage.FAILED).setMsg("标题名称重复！");
+            } else if(entertainmentEntities.size() == 1) {
+                if (!entertainmentEntities.get(0).getId().equals(id)) {
                     return responseMessage.setStatus(ResponseMessage.FAILED).setMsg("标题名称重复！");
                 }
             }
+
         }
         return responseMessage;
     }

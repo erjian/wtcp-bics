@@ -42,7 +42,7 @@ public interface PeripheryMapper {
      * @param title
      * @return
      */
-    PeripheryEntity checkTitle(String title);
+    List<PeripheryEntity> checkTitle(String title);
 
     /**
      * 批量删除
