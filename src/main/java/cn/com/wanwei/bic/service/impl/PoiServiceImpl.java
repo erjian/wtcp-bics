@@ -5,6 +5,7 @@ import cn.com.wanwei.bic.feign.CoderServiceFeign;
 import cn.com.wanwei.bic.mapper.MaterialMapper;
 import cn.com.wanwei.bic.mapper.PoiMapper;
 import cn.com.wanwei.bic.mapper.ScenicMapper;
+import cn.com.wanwei.bic.model.DataBindModel;
 import cn.com.wanwei.bic.model.EntityTagsModel;
 import cn.com.wanwei.bic.service.AuditLogService;
 import cn.com.wanwei.bic.service.MaterialService;
@@ -134,7 +135,7 @@ public class PoiServiceImpl implements PoiService {
                 poiEntity.setCreatedDate(new Date());
                 poiEntity.setUpdatedDate(new Date());
                 ScenicEntity entity = scenicMapper.selectByPrimaryKey(poiEntity.getPrincipalId());
-                poiEntity.setDeptCode(entity.getDeptCode());
+                poiEntity.setDeptCode(entity != null ? entity.getDeptCode() : user.getOrg().getCode());
                 poiMapper.insert(poiEntity);
                 //处理标签
                 if(CollectionUtils.isNotEmpty(poiModel.getTagsList())){
@@ -332,5 +333,10 @@ public class PoiServiceImpl implements PoiService {
         return ResponseMessage.defaultResponse().setData(data);
     }
 
-
+    @Override
+    public void dataBindById(String updatedUser, DataBindModel model) {
+        String deptCode = model.getDeptCode();
+        List<String> ids = model.getIds();
+        poiMapper.dataBindById(updatedUser, new Date(), deptCode, ids);
+    }
 }
