@@ -6,7 +6,7 @@ select t.id relateId,t.id,t.`code`, t.title,t.sub_title subTitle,t.full_spell fu
 t.type,t.relate_project relateProject,t.heritage_serial heritageSerial,t.publish_time publishTime,t.declare_group declareGroup,t.guard_group guardGroup,
 t.summary, t.description, t.nation,t.`level`,t.category,t.inherit_region inheritRegion,t.celebrity_ids celebrityIds,t.vr_url vrUrl,t.weight,
 t.region,t.region_full_code regionFullCode,t.region_full_name regionFullName,
-t.dept_code deptCode,(SELECT REPLACE(s.file_url,'\\','/') vrImage FROM t_bic_material s WHERE TRIM(s.file_identify)='vr' AND s.principal_id = t.id) vrImageUrl,	null videoResources,'' images,'' videos,'' audios, '' tags,'' relateTags, '' allTags, if(t.status=9, 1,0) publishStatus
+t.dept_code deptCode,(SELECT REPLACE(s.file_url,'\\','/') vrImage FROM t_bic_material s WHERE TRIM(s.file_identify)='vr' AND s.principal_id = t.id ORDER BY s.created_date DESC LIMIT 1) vrImageUrl,	null videoResources,'' images,'' videos,'' audios, '' tags,'' relateTags, '' allTags, if(t.status=9, 1,0) publishStatus
 from t_bic_heritage t;
 
 

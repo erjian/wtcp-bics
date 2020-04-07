@@ -6,7 +6,7 @@ select t.id relateId,t.id,t.`code`, t.title,t.sub_title subTitle,t.full_spell fu
 t.venue_id venueId,t.hall_id hallId,t.type, t.exhibition_area exhibitionArea,t.register_number registerNumber,t.years_kind yearsKind,
 t.summary, t.description, t.years,t.`level`,t.category,t.appearance_size appearanceSize,t.quality,t.excavation_address excavationAddress,t.weight,
 t.latitude, t.longitude,CONCAT(t.latitude,",",t.longitude) geoPoint,t.vr_url vrUrl,t.ar_url arUrl,t.author,
-t.dept_code deptCode,(SELECT REPLACE(s.file_url,'\\','/') vrImage FROM t_bic_material s WHERE TRIM(s.file_identify)='vr' AND s.principal_id = t.id) vrImageUrl,	null videoResources,'' images,'' videos,'' audios, '' tags,'' relateTags, '' allTags, if(t.status=9, 1,0) publishStatus
+t.dept_code deptCode,(SELECT REPLACE(s.file_url,'\\','/') vrImage FROM t_bic_material s WHERE TRIM(s.file_identify)='vr' AND s.principal_id = t.id ORDER BY s.created_date DESC LIMIT 1) vrImageUrl,	null videoResources,'' images,'' videos,'' audios, '' tags,'' relateTags, '' allTags, if(t.status=9, 1,0) publishStatus
 from t_bic_exhibits t;
 
 

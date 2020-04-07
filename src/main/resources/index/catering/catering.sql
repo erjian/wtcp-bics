@@ -6,7 +6,7 @@ select t.id relateId,t.id,t.`code`, t.title,t.sub_title subTitle,t.full_spell fu
 t.summary, t.description, t.address,t.`level`,t.score,t.weight,t.cook_style cookStyle,t.feature_tags featureTags,t.web_comment webComment, t.avg_consumption avgConsumption,
 t.open_time openTime,t.traffic_notice trafficNotice,t.repast_notice repastNotice,t.vr_url vrUrl,
 t.latitude, t.longitude,CONCAT(t.latitude,",",t.longitude) geoPoint,t.region,t.region_full_code regionFullCode,t.region_full_name regionFullName,
-t.dept_code deptCode,(SELECT REPLACE(s.file_url,'\\','/') vrImage FROM t_bic_material s WHERE TRIM(s.file_identify)='vr' AND s.principal_id = t.id) vrImageUrl,	null videoResources,'' images,'' videos,'' audios, '' tags,'' relateTags, '' allTags, if(t.status=9, 1,0) publishStatus
+t.dept_code deptCode,(SELECT REPLACE(s.file_url,'\\','/') vrImage FROM t_bic_material s WHERE TRIM(s.file_identify)='vr' AND s.principal_id = t.id ORDER BY s.created_date DESC LIMIT 1) vrImageUrl,	null videoResources,'' images,'' videos,'' audios, '' tags,'' relateTags, '' allTags, if(t.status=9, 1,0) publishStatus
 from t_bic_catering t;
 
 

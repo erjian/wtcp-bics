@@ -4,7 +4,7 @@
 
 select t.id relateId,t.id,t.`code`,t.principal_id principalId,t.title,t.sub_title subTitle,
 t.weight,t.slogan,t.summary,t.description,t.content,t.type,t.price,t.dept_code deptCode,
-(SELECT REPLACE(s.file_url,'\\','/') vrImage FROM t_bic_material s WHERE TRIM(s.file_identify)='vr' AND s.principal_id = t.id) vrImageUrl,	null videoResources,
+(SELECT REPLACE(s.file_url,'\\','/') vrImage FROM t_bic_material s WHERE TRIM(s.file_identify)='vr' AND s.principal_id = t.id ORDER BY s.created_date DESC LIMIT 1) vrImageUrl,	null videoResources,
 '' images,'' videos,'' audios, '' tags,'' relateTags, '' allTags, if(t.status=9, 1,0) publishStatus
 from t_bic_extend t ;
 
