@@ -5,7 +5,7 @@
 select t.id relateId,t.id,t.weight,t.introduce,t.eat_introduce eatIntroduce,t.drink_introduce drinkIntroduce,
 t.play_introduce playIntroduce,t.tourism_introduce tourismIntroduce,t.shop_introduce shopIntroduce,
 t.entertainment_introduce entertainmentIntroduce,t.region,t.region_full_code regionFullCode,t.region_full_name regionFullName,
-t.dept_code deptCode,(SELECT REPLACE(s.file_url,'\\','/') vrImage FROM t_bic_material s WHERE TRIM(s.file_identify)='vr' AND s.principal_id = t.id) vrImageUrl,	'' videoResources,'' images,'' videos,'' audios, '' tags,'' relateTags, '' allTags, if(t.status=9, 1,0) publishStatus
+t.dept_code deptCode,(SELECT REPLACE(s.file_url,'\\','/') vrImage FROM t_bic_material s WHERE TRIM(s.file_identify)='vr' AND s.principal_id = t.id) vrImageUrl,	null videoResources,'' images,'' videos,'' audios, '' tags,'' relateTags, '' allTags, if(t.status=9, 1,0) publishStatus
 from t_bic_destination t ;
 
 
