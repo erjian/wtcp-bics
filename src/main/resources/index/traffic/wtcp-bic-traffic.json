@@ -133,8 +133,7 @@
           "ignore_above": 256
         },
         "videoResources": {
-          "type": "keyword",
-          "ignore_above": 256
+          "type": "object"
         },
         "videos": {
           "type": "keyword",
