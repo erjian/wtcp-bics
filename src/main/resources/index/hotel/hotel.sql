@@ -6,7 +6,7 @@ select t.id relateId,t.id,t.`code`, t.title,t.sub_title subTitle,t.full_spell fu
 t.feature, t.lightspot,t.room_num roomNum,t.min_price minPrice,t.facility,t.services,t.vr_url vrUrl,t.open_time openTime,
 t.summary, t.description, t.address,t.`level`,t.category,t.traffic_notice trafficNotice,t.stay_notice stayNotice,t.score,t.weight,
 t.latitude, t.longitude,CONCAT(t.latitude,",",t.longitude) geoPoint,t.region,t.region_full_code regionFullCode,t.region_full_name regionFullName,
-t.dept_code deptCode,(SELECT REPLACE(s.file_url,'\\','/') vrImage FROM t_bic_material s WHERE TRIM(s.file_identify)='vr' AND s.principal_id = t.id) vrImageUrl,	'' videoResources,'' images,'' videos,'' audios, '' tags,'' relateTags, '' allTags, if(t.status=9, 1,0) publishStatus,
+t.dept_code deptCode,(SELECT REPLACE(s.file_url,'\\','/') vrImage FROM t_bic_material s WHERE TRIM(s.file_identify)='vr' AND s.principal_id = t.id) vrImageUrl,	null videoResources,'' images,'' videos,'' audios, '' tags,'' relateTags, '' allTags, if(t.status=9, 1,0) publishStatus,
 (select b.service_facility from t_bic_business b where b.principal_id = t.id) as serviceFacility,
 (select b.phone from t_bic_business b where b.principal_id = t.id) as phone
 from t_bic_hotel t;
