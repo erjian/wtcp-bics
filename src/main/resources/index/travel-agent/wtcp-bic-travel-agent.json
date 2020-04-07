@@ -216,6 +216,14 @@
           "type": "keyword",
           "ignore_above": 256
         },
+        "vrImageUrl": {
+          "type": "keyword",
+          "ignore_above": 256
+        },
+        "videoResources": {
+          "type": "keyword",
+          "ignore_above": 256
+        },
         "videos": {
           "type": "keyword",
           "ignore_above": 256
