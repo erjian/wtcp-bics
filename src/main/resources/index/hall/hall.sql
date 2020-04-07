@@ -5,7 +5,7 @@
 select t.id relateId,t.id,t.`code`, t.title,t.full_spell fullSpell, t.simple_spell simpleSpell,
 t.summary, t.description,t.category,t.area,t.weight,t.vr_url vrUrl,t.max_reception_num maxReceptionNum,
 t.latitude, t.longitude,CONCAT(t.latitude,",",t.longitude) geoPoint,t.venue_id venueId,
-t.dept_code deptCode,(SELECT REPLACE(s.file_url,'\\','/') vrImage FROM t_bic_material s WHERE TRIM(s.file_identify)='vr' AND s.principal_id = t.id) vrImageUrl,	'' videoResources,'' images,'' videos,'' audios, '' tags,'' relateTags, '' allTags, if(t.status=9, 1,0) publishStatus
+t.dept_code deptCode,(SELECT REPLACE(s.file_url,'\\','/') vrImage FROM t_bic_material s WHERE TRIM(s.file_identify)='vr' AND s.principal_id = t.id) vrImageUrl,	null videoResources,'' images,'' videos,'' audios, '' tags,'' relateTags, '' allTags, if(t.status=9, 1,0) publishStatus
 from t_bic_hall t;
 
 
