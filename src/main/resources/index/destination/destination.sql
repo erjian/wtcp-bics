@@ -5,7 +5,7 @@
 select t.id relateId,t.id,t.weight,t.introduce,t.eat_introduce eatIntroduce,t.drink_introduce drinkIntroduce,
 t.play_introduce playIntroduce,t.tourism_introduce tourismIntroduce,t.shop_introduce shopIntroduce,
 t.entertainment_introduce entertainmentIntroduce,t.region,t.region_full_code regionFullCode,t.region_full_name regionFullName,
-t.dept_code deptCode,'' vrCoverImage,'' videoCoverImage,'' images,'' videos,'' audios, '' tags,'' relateTags, '' allTags, if(t.status=9, 1,0) publishStatus
+t.dept_code deptCode,(SELECT REPLACE(s.file_url,'\\','/') vrImage FROM t_bic_material s WHERE TRIM(s.file_identify)='vr' AND s.principal_id = t.id) vrImageUrl,	'' videoResources,'' images,'' videos,'' audios, '' tags,'' relateTags, '' allTags, if(t.status=9, 1,0) publishStatus
 from t_bic_destination t ;
 
 
@@ -28,14 +28,8 @@ from t_bic_material t
 where t.file_type = 'audio' and t.principal_id is not null
 GROUP BY t.principal_id;
 
-SELECT t.principal_id relateId,	CONCAT('[', GROUP_CONCAT(CONCAT('{"fileUrl":"', t.file_url, '","fileIdentify":"',IFNULL( t.file_identify, '' ),
-				'","coverImageUrl":"', IFNULL( t.cover_image_url, '' ),	'","fileName":"', IFNULL( t.file_name, '' ), '"}')), ']') vrCoverImage
-FROM t_bic_material t
-WHERE t.file_type = 'image'	AND t.principal_id IS NOT NULL AND t.principal_id != ''
-GROUP BY t.principal_id;
-
 SELECT t.principal_id relateId,	CONCAT('[',	GROUP_CONCAT(CONCAT('{"fileUrl":"',	t.file_url,	'","fileIdentify":"', IFNULL( t.file_identify, '' ), '","coverImageUrl":"',
-				IFNULL( t.cover_image_url, '' ), '","fileName":"', IFNULL( t.file_name, '' ), '"}')), ']') videoCoverImage
+				IFNULL( t.cover_image_url, '' ), '","fileName":"', IFNULL( t.file_name, '' ), '"}')), ']') videoResources
 FROM t_bic_material t
 WHERE t.file_type = 'video'	AND t.principal_id IS NOT NULL AND t.principal_id != ''
 GROUP BY t.principal_id;
