@@ -215,7 +215,7 @@
         <bind name="title" value="title + '%'"></bind>
         and title like #{title}
       </if>
-      and ( status = 1 or  status = 9 )
+      and status = 9
     </where>
     order by simple_spell asc ,created_date desc
   </select>
