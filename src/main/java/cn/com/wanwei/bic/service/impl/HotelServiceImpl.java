@@ -197,5 +197,11 @@ public class HotelServiceImpl extends BaseServiceImpl<HotelMapper,HotelEntity,St
         return ResponseMessage.defaultResponse().setData(data);
     }
 
+    @Override
+    public ResponseMessage getHotelInfo(String title) {
+        List<HotelEntity> hotelList= hotelMapper.getHotelInfo(title);
+        return ResponseMessage.defaultResponse().setData(hotelList);
+    }
+
 
 }

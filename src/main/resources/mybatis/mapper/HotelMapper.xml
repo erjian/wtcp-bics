@@ -205,4 +205,18 @@
       </if>
     </where>
   </select>
+
+  <select id="getHotelInfo"  resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"/>
+    from t_bic_hotel
+    <where>
+      <if test="title != null and title != ''">
+        <bind name="title" value="title + '%'"></bind>
+        and title like #{title}
+      </if>
+      and ( status = 1 or  status = 9 )
+    </where>
+    order by simple_spell asc ,created_date desc
+  </select>
 </mapper>
