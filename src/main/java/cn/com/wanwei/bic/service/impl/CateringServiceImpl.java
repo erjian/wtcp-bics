@@ -21,6 +21,7 @@ import cn.com.wanwei.persistence.mybatis.MybatisPageRequest;
 import cn.com.wanwei.persistence.mybatis.PageInfo;
 import cn.com.wanwei.persistence.mybatis.utils.EscapeCharUtils;
 import com.github.pagehelper.Page;
+import com.github.pagehelper.util.StringUtil;
 import com.google.common.collect.Lists;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections.CollectionUtils;
@@ -28,9 +29,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @author
@@ -116,6 +115,7 @@ public class CateringServiceImpl implements CateringService {
         }
         return ResponseMessage.defaultResponse().setMsg("保存成功").setData(id);
     }
+
 
     @Override
     public ResponseMessage updateById(String id, EntityTagsModel<CateringEntity> cateringModel, User user) {
@@ -208,6 +208,38 @@ public class CateringServiceImpl implements CateringService {
         List<CateringEntity> cateringEntities = cateringMapper.findByTitleAndIdNot(title, id);
         if (CollectionUtils.isNotEmpty(cateringEntities)) {
             responseMessage.setStatus(ResponseMessage.FAILED).setMsg("该名称已经存在！");
+        }
+        return responseMessage;
+    }
+
+    @Override
+    public ResponseMessage findBySearchValue(String name, String ids) {
+        ResponseMessage responseMessage = ResponseMessage.defaultResponse();
+        List<Map<String, Object>> data = new ArrayList<>();
+        List<String> idList = null;
+        if(StringUtil.isNotEmpty(ids)){
+            idList = Arrays.asList(ids.split(","));
+        }
+        List<CateringEntity> list = cateringMapper.findBySearchValue(name, idList);
+        if (!list.isEmpty()) {
+            for (CateringEntity entity : list) {
+                Map<String, Object> map = new HashMap<>();
+                map.put("id", entity.getId());
+                map.put("unicode", entity.getCode());
+                map.put("name", entity.getTitle());
+                map.put("level", entity.getLevel());
+                map.put("longitude", entity.getLongitude());
+                map.put("latitude", entity.getLatitude());
+                map.put("areaCode", entity.getRegion());
+                map.put("areaName", entity.getRegionFullName());
+                map.put("address", entity.getAddress());
+                map.put("pinyin", entity.getSimpleSpell());
+                map.put("pinyinqp", entity.getFullSpell());
+                data.add(map);
+            }
+            responseMessage.setData(data);
+        }else {
+            responseMessage.setData("暂无数据");
         }
         return responseMessage;
     }

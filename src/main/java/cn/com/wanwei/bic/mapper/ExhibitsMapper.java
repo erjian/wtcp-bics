@@ -62,4 +62,6 @@ public interface ExhibitsMapper {
      * @return
      */
     List<ExhibitsEntity> getExhibitsList();
+
+    List<ExhibitsEntity> findBySearchValue(@Param("searchValue") String searchValue, @Param("ids") List<String> ids);
 }

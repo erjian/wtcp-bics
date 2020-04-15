@@ -73,4 +73,6 @@ public interface HotelService extends BaseService<HotelEntity, String> {
      * @return
      */
     ResponseMessage getHotelInfo(String title);
+
+    ResponseMessage findBySearchValue(String name, String ids);
 }

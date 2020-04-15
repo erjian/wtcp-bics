@@ -109,4 +109,6 @@ public interface ExhibitsService {
      * @return
      */
     ResponseMessage findInfoById(String id);
+
+    ResponseMessage findBySearchValue(String name, String ids);
 }

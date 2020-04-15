@@ -59,4 +59,6 @@ public interface HeritageService extends BaseService<HeritageEntity, String> {
      * @return
      */
     ResponseMessage findHeritageInfoById(String id);
+
+    ResponseMessage findBySearchValue(String name, String ids);
 }

@@ -59,6 +59,27 @@ public class CommonServiceImpl<T> implements CommonService<T> {
     @Autowired
     private TrafficAgentService trafficAgentService;
 
+    @Autowired
+    private HallService hallService;
+
+    @Autowired
+    private VenueService venueService;
+
+    @Autowired
+    private ExhibitsService exhibitsService;
+
+    @Autowired
+    private HeritageService heritageService;
+
+    @Autowired
+    private CelebrityService celebrityService;
+
+    @Autowired
+    private HotelService hotelService;
+
+    @Autowired
+    private CateringService cateringService;
+
     @Override
     public ResponseMessage changeWeight(WeightModel weightModel, User user, Class<T> clazz) throws Exception {
         //1、根据class获取表名
@@ -148,7 +169,7 @@ public class CommonServiceImpl<T> implements CommonService<T> {
             responseMessage = scenicService.findBySearchValue(type, name, ids);
         } else if (type.equals(DataType.TRAVEL_TYPE.getKey())) {
             responseMessage = travelAgentService.findBySearchValue(name, ids);
-        } else if (type.equals(DataType.FOOD_TYPE.getKey())
+        } else if (type.equals(DataType.PERIPHERY_FOOD_TYPE.getKey())
                 || type.equals(DataType.SHOPPING_TYPE.getKey())
                 || type.equals(DataType.FOOD_STREET.getKey())
                 || type.equals(DataType.SPECIAL_SNACKS.getKey())
@@ -162,7 +183,21 @@ public class CommonServiceImpl<T> implements CommonService<T> {
             responseMessage = trafficAgentService.findBySearchValue(name, ids);
         } else if (type.equals(DataType.DRIVE_CAMP_TYPE.getKey())) {
             responseMessage = driveCampService.findBySearchValue(name, ids);
-        } else {
+        }else if(type.equals(DataType.HALL_TYPE.getKey())){
+            responseMessage = hallService.findBySearchValue(name, ids);
+        }else if(type.equals(DataType.VENUE_TYPE.getKey())){
+            responseMessage = venueService.findBySearchValue(name, ids);
+        }else if(type.equals(DataType.EXHIBITS_TYPE.getKey())){
+            responseMessage = exhibitsService.findBySearchValue(name, ids);
+        }else if(type.equals(DataType.HERITAGE_TYPE.getKey())){
+            responseMessage = heritageService.findBySearchValue(name, ids);
+        }else if(type.equals(DataType.CELEBRITY_TYPE.getKey())){
+            responseMessage = celebrityService.findBySearchValue(name, ids);
+        }else if(type.equals(DataType.HOTEL_TYPE.getKey())){
+            responseMessage = hotelService.findBySearchValue(name, ids);
+        }else if(type.equals(DataType.CATERING_TYPE.getKey())){
+            responseMessage = cateringService.findBySearchValue(name, ids);
+        }else {
             responseMessage = ResponseMessage.validFailResponse().setMsg("获取失败");
         }
         return responseMessage;

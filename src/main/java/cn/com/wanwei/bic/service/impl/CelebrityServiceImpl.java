@@ -20,6 +20,7 @@ import cn.com.wanwei.persistence.mybatis.MybatisPageRequest;
 import cn.com.wanwei.persistence.mybatis.PageInfo;
 import cn.com.wanwei.persistence.mybatis.utils.EscapeCharUtils;
 import com.github.pagehelper.Page;
+import com.github.pagehelper.util.StringUtil;
 import com.google.common.collect.Lists;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections.CollectionUtils;
@@ -27,9 +28,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @author
@@ -194,6 +193,38 @@ public class CelebrityServiceImpl implements CelebrityService {
         List<CelebrityEntity> celebrityEntities = celebrityMapper.findByTitleAndIdNot(name,id);
         if (CollectionUtils.isNotEmpty(celebrityEntities)) {
             responseMessage.setStatus(ResponseMessage.FAILED).setMsg("该名人已经存在！");
+        }
+        return responseMessage;
+    }
+
+    @Override
+    public ResponseMessage findBySearchValue(String name, String ids) {
+        ResponseMessage responseMessage = ResponseMessage.defaultResponse();
+        List<Map<String, Object>> data = new ArrayList<>();
+        List<String> idList = null;
+        if(StringUtil.isNotEmpty(ids)){
+            idList = Arrays.asList(ids.split(","));
+        }
+        List<CelebrityEntity> list = celebrityMapper.findBySearchValue(name, idList);
+        if (!list.isEmpty()) {
+            for (CelebrityEntity entity : list) {
+                Map<String, Object> map = new HashMap<>();
+                map.put("id", entity.getId());
+                map.put("unicode", null);
+                map.put("name", entity.getName());
+                map.put("level", null);
+                map.put("longitude", null);
+                map.put("latitude", null);
+                map.put("areaCode", null);
+                map.put("areaName", null);
+                map.put("address", null);
+                map.put("pinyin", entity.getSimpleSpell());
+                map.put("pinyinqp", entity.getFullSpell());
+                data.add(map);
+            }
+            responseMessage.setData(data);
+        }else {
+            responseMessage.setData("暂无数据");
         }
         return responseMessage;
     }

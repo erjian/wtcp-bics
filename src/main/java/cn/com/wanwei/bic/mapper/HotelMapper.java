@@ -11,4 +11,6 @@ import java.util.List;
 public interface HotelMapper extends BaseMapper<HotelEntity, String> {
 
     List<HotelEntity> getHotelInfo(@Param("title")String title);
+
+    List<HotelEntity> findBySearchValue(@Param("searchValue") String searchValue, @Param("ids") List<String> ids);
 }

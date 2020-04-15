@@ -98,4 +98,6 @@ public interface CelebrityService {
      * @return
      */
     ResponseMessage findByTitleAndIdNot(String name, String id);
+
+    ResponseMessage findBySearchValue(String name, String ids);
 }

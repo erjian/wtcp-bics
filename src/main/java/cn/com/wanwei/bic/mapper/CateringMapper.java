@@ -53,4 +53,6 @@ public interface CateringMapper {
      * @return
      */
     List<CateringEntity> findByTitleAndIdNot(@Param(value="title")String title, @Param(value="id")String id);
+
+    List<CateringEntity> findBySearchValue(@Param("searchValue") String searchValue, @Param("ids") List<String> ids);
 }

@@ -119,4 +119,6 @@ public interface VenueService {
 	 * @return
 	 */
 	ResponseMessage findById(String id);
+
+    ResponseMessage findBySearchValue(String name, String ids);
 }

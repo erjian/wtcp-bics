@@ -15,4 +15,6 @@ public interface HallService extends BaseService<HallEntity, String> {
     ResponseMessage updateOnlineStatus(String id, Integer status, String username);
 
     long countByVenueId(String venueId);
+
+    ResponseMessage findBySearchValue(String name, String ids);
 }

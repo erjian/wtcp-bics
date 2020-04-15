@@ -1,6 +1,7 @@
 package cn.com.wanwei.bic.service.impl;
 
 import cn.com.wanwei.bic.entity.HallEntity;
+import cn.com.wanwei.bic.entity.TravelAgentEntity;
 import cn.com.wanwei.bic.feign.CoderServiceFeign;
 import cn.com.wanwei.bic.mapper.HallMapper;
 import cn.com.wanwei.bic.model.EntityTagsModel;
@@ -12,12 +13,13 @@ import cn.com.wanwei.common.model.ResponseMessage;
 import cn.com.wanwei.common.model.User;
 import cn.com.wanwei.common.utils.PinyinUtils;
 import cn.com.wanwei.mybatis.service.impl.BaseServiceImpl;
+import com.github.pagehelper.util.StringUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
+import java.util.*;
 
 @Slf4j
 @Service
@@ -100,5 +102,37 @@ public class HallServiceImpl extends BaseServiceImpl<HallMapper,HallEntity, Stri
     @Override
     public long countByVenueId(String venueId) {
         return hallMapper.countByVenueId(venueId);
+    }
+
+    @Override
+    public ResponseMessage findBySearchValue(String name, String ids) {
+        ResponseMessage responseMessage = ResponseMessage.defaultResponse();
+        List<Map<String, Object>> data = new ArrayList<>();
+        List<String> idList = null;
+        if(StringUtil.isNotEmpty(ids)){
+            idList = Arrays.asList(ids.split(","));
+        }
+        List<HallEntity> list = hallMapper.findBySearchValue(name, idList);
+        if (!list.isEmpty()) {
+            for (HallEntity entity : list) {
+                Map<String, Object> map = new HashMap<>();
+                map.put("id", entity.getId());
+                map.put("unicode", entity.getCode());
+                map.put("name", entity.getTitle());
+                map.put("level", null);
+                map.put("longitude", entity.getLongitude());
+                map.put("latitude", entity.getLatitude());
+                map.put("areaCode", null);
+                map.put("areaName", null);
+                map.put("address", null);
+                map.put("pinyin", entity.getSimpleSpell());
+                map.put("pinyinqp", entity.getFullSpell());
+                data.add(map);
+            }
+            responseMessage.setData(data);
+        }else {
+            responseMessage.setData("暂无数据");
+        }
+        return responseMessage;
     }
 }
