@@ -212,7 +212,7 @@
     from t_bic_hotel
     <where>
       <if test="title != null and title != ''">
-        <bind name="title" value="title + '%'"></bind>
+        <bind name="title" value="'%'+title + '%'"></bind>
         and title like #{title}
       </if>
       and status = 9
