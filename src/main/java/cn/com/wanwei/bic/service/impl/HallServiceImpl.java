@@ -64,23 +64,28 @@ public class HallServiceImpl extends BaseServiceImpl<HallMapper,HallEntity, Stri
 
     @Override
     public ResponseMessage updateByPrimaryKey(String id, EntityTagsModel<HallEntity> hallModel, User user) {
-        HallEntity entity = hallMapper.findById(id).orElse(null);
-        HallEntity record = hallModel.getEntity();
-        if (null == entity) {
+        try {
+            HallEntity entity = hallMapper.findById(id).get();
+            HallEntity record = hallModel.getEntity();
+            if (null == entity) {
+                return ResponseMessage.validFailResponse().setMsg("厅室信息不存在");
+            }
+            record.setId(id);
+            record.setCode(entity.getCode());
+            record.setCreatedDate(entity.getCreatedDate());
+            record.setCreatedUser(entity.getCreatedUser());
+            record.setDeptCode(entity.getDeptCode());
+            record.setFullSpell(PinyinUtils.getPingYin(record.getTitle()).toLowerCase());
+            record.setSimpleSpell(PinyinUtils.converterToFirstSpell(record.getTitle()).toLowerCase());
+            record.setStatus(1);
+            record.setUpdatedDate(new Date());
+            record.setUpdatedUser(user.getUsername());
+            hallMapper.updateById(record);
+            return ResponseMessage.defaultResponse().setMsg("更新成功");
+        } catch (Exception e) {
+            log.info(e.getMessage());
             return ResponseMessage.validFailResponse().setMsg("厅室信息不存在");
         }
-        record.setId(id);
-        record.setCode(entity.getCode());
-        record.setCreatedDate(entity.getCreatedDate());
-        record.setCreatedUser(entity.getCreatedUser());
-        record.setDeptCode(entity.getDeptCode());
-        record.setFullSpell(PinyinUtils.getPingYin(record.getTitle()).toLowerCase());
-        record.setSimpleSpell(PinyinUtils.converterToFirstSpell(record.getTitle()).toLowerCase());
-        record.setStatus(1);
-        record.setUpdatedDate(new Date());
-        record.setUpdatedUser(user.getUsername());
-        hallMapper.updateById(record);
-        return ResponseMessage.defaultResponse().setMsg("更新成功");
     }
 
     @Override
