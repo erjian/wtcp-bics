@@ -152,6 +152,13 @@
           "type": "keyword",
           "ignore_above": 256
         },
+        "vrImageUrl": {
+          "type": "keyword",
+          "ignore_above": 256
+        },
+        "videoResources": {
+          "type": "object"
+        },
         "videos": {
           "type": "keyword",
           "ignore_above": 256

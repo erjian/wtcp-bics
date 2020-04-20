@@ -25,7 +25,7 @@ public interface ExhibitsMapper {
      * @param title
      * @return
      */
-    ExhibitsEntity checkTitle(String title);
+    List<ExhibitsEntity> checkTitle(String title);
 
     /**
      * 关联机构
@@ -62,4 +62,6 @@ public interface ExhibitsMapper {
      * @return
      */
     List<ExhibitsEntity> getExhibitsList();
+
+    List<ExhibitsEntity> findBySearchValue(@Param("searchValue") String searchValue, @Param("ids") List<String> ids);
 }

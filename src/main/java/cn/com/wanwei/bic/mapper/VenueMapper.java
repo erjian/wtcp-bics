@@ -44,4 +44,6 @@ public interface VenueMapper {
     List<VenueEntity> getVenueInfo(@Param(value="title") String title, @Param(value="status") Integer status);
 
     List<VenueEntity> findByTitleAndIdNot(@Param(value="title")String title, @Param(value="id")String id);
+
+    List<VenueEntity> findBySearchValue(@Param("searchValue") String searchValue, @Param("ids") List<String> ids);
 }

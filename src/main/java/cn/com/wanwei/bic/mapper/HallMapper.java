@@ -23,4 +23,6 @@ public interface HallMapper extends BaseMapper<HallEntity, String> {
      * @return
      */
     int updateDeptCodeByVenueId(@Param("updatedUser") String updatedUser, @Param("updatedDate") Date updatedDate, @Param("deptCode") String deptCode, @Param("ids") List<String> ids);
+
+    List<HallEntity> findBySearchValue(@Param("searchValue") String searchValue, @Param("ids") List<String> ids);
 }

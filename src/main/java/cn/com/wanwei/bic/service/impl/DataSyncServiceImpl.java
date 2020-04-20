@@ -46,7 +46,7 @@ public class DataSyncServiceImpl implements DataSyncService {
             } else if (category.equals(DataType.TRAVEL_TYPE.getKey())) {
                 dataSyncModels = dataSyncMapper.findTravelByPage(filter);
                 clazz = TravelAgentTagsEntity.class;
-            } else if (category.equals(DataType.FOOD_TYPE.getKey())
+            } else if (category.equals(DataType.PERIPHERY_FOOD_TYPE.getKey())
                     || category.equals(DataType.SHOPPING_TYPE.getKey())
                     || category.equals(DataType.FOOD_STREET.getKey())
                     || category.equals(DataType.SPECIAL_SNACKS.getKey())

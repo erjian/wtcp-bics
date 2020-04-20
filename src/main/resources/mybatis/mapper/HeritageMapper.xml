@@ -196,4 +196,22 @@
       </if>
     </where>
   </select>
+
+  <select id="findBySearchValue" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from t_bic_heritage
+    <where>
+      <if test="searchValue != null and searchValue !='' ">
+        <bind name="searchValue" value="'%' + searchValue + '%'" ></bind>
+        and (title like #{searchValue} or full_spell like #{searchValue} or simple_spell like #{searchValue})
+      </if>
+      <if test="ids != null">
+        and id in
+        <foreach collection="ids" item="item" index="index" open="(" separator="," close=")">
+          #{item}
+        </foreach>
+      </if>
+    </where>
+  </select>
 </mapper>

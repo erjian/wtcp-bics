@@ -205,4 +205,36 @@
       </if>
     </where>
   </select>
+
+  <select id="getHotelInfo"  resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"/>
+    from t_bic_hotel
+    <where>
+      <if test="title != null and title != ''">
+        <bind name="title" value="'%'+title + '%'"></bind>
+        and title like #{title}
+      </if>
+      and status = 9
+    </where>
+    order by simple_spell asc ,created_date desc
+  </select>
+
+  <select id="findBySearchValue" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from t_bic_hotel
+    <where>
+      <if test="searchValue != null and searchValue !='' ">
+        <bind name="searchValue" value="'%' + searchValue + '%'" ></bind>
+        and (title like #{searchValue} or full_spell like #{searchValue} or simple_spell like #{searchValue})
+      </if>
+      <if test="ids != null">
+        and id in
+        <foreach collection="ids" item="item" index="index" open="(" separator="," close=")">
+          #{item}
+        </foreach>
+      </if>
+    </where>
+  </select>
 </mapper>

@@ -49,6 +49,15 @@ public class PeripheryEntity extends CommonEntity {
     @ApiModelProperty(value = "组织机构编码")
     private String deptCode;
 
+    @ApiModelProperty(value = "夏季营业时间")
+    private String summerTime;
+
+    @ApiModelProperty(value = "冬季营业时间")
+    private String winterTime;
+
+    @ApiModelProperty(value = "交通说明")
+    private String trafficNotice;
+
     /**
      * 冗余字段
      */

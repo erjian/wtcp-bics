@@ -20,6 +20,7 @@ import cn.com.wanwei.persistence.mybatis.PageInfo;
 import cn.com.wanwei.persistence.mybatis.utils.EscapeCharUtils;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.util.StringUtil;
 import com.google.common.collect.Maps;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections.CollectionUtils;
@@ -30,9 +31,7 @@ import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 @Slf4j
@@ -158,9 +157,11 @@ public class ExhibitsServiceImpl implements ExhibitsService {
     public ResponseMessage checkTitle(String id, String title) {
         ResponseMessage responseMessage = ResponseMessage.defaultResponse();
         if (StringUtils.isNotBlank(title)) {
-            ExhibitsEntity exhibitsEntity = exhibitsMapper.checkTitle(title);
-            if (exhibitsEntity != null) {
-                if (!exhibitsEntity.getId().equals(id)) {
+            List<ExhibitsEntity> exhibitsEntities = exhibitsMapper.checkTitle(title);
+            if(exhibitsEntities.size() > 1){
+                return responseMessage.setStatus(ResponseMessage.FAILED).setMsg("标题名称重复！");
+            }else if(exhibitsEntities.size() == 1){
+                if (!exhibitsEntities.get(0).getId().equals(id)) {
                     return responseMessage.setStatus(ResponseMessage.FAILED).setMsg("标题名称重复！");
                 }
             }
@@ -243,5 +244,37 @@ public class ExhibitsServiceImpl implements ExhibitsService {
         } else {
             return ResponseMessage.validFailResponse().setMsg("暂无该展品信息！");
         }
+    }
+
+    @Override
+    public ResponseMessage findBySearchValue(String name, String ids) {
+        ResponseMessage responseMessage = ResponseMessage.defaultResponse();
+        List<Map<String, Object>> data = new ArrayList<>();
+        List<String> idList = null;
+        if(StringUtil.isNotEmpty(ids)){
+            idList = Arrays.asList(ids.split(","));
+        }
+        List<ExhibitsEntity> list = exhibitsMapper.findBySearchValue(name, idList);
+        if (!list.isEmpty()) {
+            for (ExhibitsEntity entity : list) {
+                Map<String, Object> map = new HashMap<>();
+                map.put("id", entity.getId());
+                map.put("unicode", entity.getCode());
+                map.put("name", entity.getTitle());
+                map.put("level", entity.getLevel());
+                map.put("longitude", entity.getLongitude());
+                map.put("latitude", entity.getLatitude());
+                map.put("areaCode", entity.getRegion());
+                map.put("areaName", entity.getRegionFullName());
+                map.put("address", entity.getAddress());
+                map.put("pinyin", entity.getSimpleSpell());
+                map.put("pinyinqp", entity.getFullSpell());
+                data.add(map);
+            }
+            responseMessage.setData(data);
+        }else {
+            responseMessage.setData("暂无数据");
+        }
+        return responseMessage;
     }
 }

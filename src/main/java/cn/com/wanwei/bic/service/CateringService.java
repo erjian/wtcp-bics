@@ -105,4 +105,6 @@ public interface CateringService {
      * @return
      */
     ResponseMessage insert(EntityTagsModel<CateringEntity> cateringModel, User user, Long ruleId, Integer appCode);
+
+    ResponseMessage findBySearchValue(String name, String ids);
 }

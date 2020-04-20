@@ -48,4 +48,6 @@ public interface CelebrityMapper {
      * @return
      */
     List<CelebrityEntity> findByTitleAndIdNot(@Param(value="name")String name, @Param(value="id")String id);
+
+    List<CelebrityEntity> findBySearchValue(@Param("searchValue") String searchValue, @Param("ids") List<String> ids);
 }
