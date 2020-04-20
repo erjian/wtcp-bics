@@ -73,54 +73,59 @@ public class HeritageServiceImpl extends BaseServiceImpl<HeritageMapper,Heritage
 
     @Override
     public ResponseMessage updateByPrimaryKey(String id, EntityTagsModel<HeritageEntity> heritageModel, User currentUser) {
-        HeritageEntity heritageEntity = heritageMapper.findById(id).orElse(null);;
-        if (null == heritageEntity) {
+        try {
+            HeritageEntity heritageEntity = heritageMapper.findById(id).get();
+            HeritageEntity entity = heritageModel.getEntity();
+            entity.setId(id);
+            entity.setCode(heritageEntity.getCode());
+            entity.setCreatedDate(heritageEntity.getCreatedDate());
+            entity.setCreatedUser(heritageEntity.getCreatedUser());
+            entity.setDeptCode(heritageEntity.getDeptCode());
+            entity.setFullSpell(PinyinUtils.getPingYin(entity.getTitle()).toLowerCase());
+            entity.setSimpleSpell(PinyinUtils.converterToFirstSpell(entity.getTitle()).toLowerCase());
+            entity.setStatus(0);
+            entity.setUpdatedDate(new Date());
+            entity.setUpdatedUser(currentUser.getName());
+            heritageMapper.updateById(entity);
+            return ResponseMessage.defaultResponse().setMsg("更新成功");
+        } catch (Exception e) {
+            log.info(e.getMessage());
             return ResponseMessage.validFailResponse().setMsg("该非遗信息不存在！");
         }
-        HeritageEntity entity = heritageModel.getEntity();
-        entity.setId(id);
-        entity.setCode(heritageEntity.getCode());
-        entity.setCreatedDate(heritageEntity.getCreatedDate());
-        entity.setCreatedUser(heritageEntity.getCreatedUser());
-        entity.setDeptCode(heritageEntity.getDeptCode());
-        entity.setFullSpell(PinyinUtils.getPingYin(entity.getTitle()).toLowerCase());
-        entity.setSimpleSpell(PinyinUtils.converterToFirstSpell(entity.getTitle()).toLowerCase());
-        entity.setStatus(0);
-        entity.setUpdatedDate(new Date());
-        entity.setUpdatedUser(currentUser.getName());
-        heritageMapper.updateById(entity);
-        return ResponseMessage.defaultResponse().setMsg("更新成功");
     }
 
     @Override
     public ResponseMessage updateOnlineStatus(String id, Integer status, String username) {
-        HeritageEntity entity = heritageMapper.findById(id).orElse(null);
-        if (null == entity) {
+        try {
+            HeritageEntity entity = heritageMapper.findById(id).get();
+            if (status == 9 && entity.getStatus() != 1) {
+                return ResponseMessage.validFailResponse().setMsg("该数据未审核通过，不能上线，请先进行审核！");
+            }
+            entity.setUpdatedUser(username);
+            entity.setUpdatedDate(new Date());
+            entity.setStatus(status);
+            heritageMapper.updateById(entity);
+            String msg = status == 9 ? "上线成功" : "下线成功";
+            commonService.saveAuditLog(entity.getStatus(), status, id, username, msg, LINE_TYPE);
+            return ResponseMessage.defaultResponse().setMsg(msg);
+        } catch (Exception e) {
+            log.info(e.getMessage());
             return ResponseMessage.validFailResponse().setMsg("该数据不存在");
         }
-        if (status == 9 && entity.getStatus() != 1) {
-            return ResponseMessage.validFailResponse().setMsg("该数据未审核通过，不能上线，请先进行审核！");
-        }
-        entity.setUpdatedUser(username);
-        entity.setUpdatedDate(new Date());
-        entity.setStatus(status);
-        heritageMapper.updateById(entity);
-        String msg = status == 9 ? "上线成功" : "下线成功";
-        commonService.saveAuditLog(entity.getStatus(), status, id, username, msg, LINE_TYPE);
-        return ResponseMessage.defaultResponse().setMsg(msg);
     }
 
     @Override
     public ResponseMessage updateAuditStatus(String id, int auditStatus, String msg, User currentUser) {
         ResponseMessage responseMessage = ResponseMessage.defaultResponse();
-        HeritageEntity heritageEntity = heritageMapper.findById(id).orElse(null);;
-        if (heritageEntity != null) {
+        HeritageEntity heritageEntity = heritageMapper.findById(id).get();
+        try {
             heritageEntity.setStatus(auditStatus);
             heritageEntity.setUpdatedDate(new Date());
             heritageMapper.updateById(heritageEntity);
             //添加审核记录
             commonService.saveAuditLog(heritageEntity.getStatus(), auditStatus, id, currentUser.getUsername(), msg, AUDIT_TYPE);
-        } else {
+        } catch (Exception e) {
+            log.info(e.getMessage());
             return responseMessage.validFailResponse().setMsg("该非遗信息不存在");
         }
         return responseMessage;
@@ -128,14 +133,17 @@ public class HeritageServiceImpl extends BaseServiceImpl<HeritageMapper,Heritage
 
     @Override
     public ResponseMessage findHeritageInfoById(String id) {
-        HeritageEntity heritageEntity = heritageMapper.findById(id).orElse(null);
-        if (heritageEntity == null) {
+        try {
+            HeritageEntity heritageEntity = heritageMapper.findById(id).get();
+            Map<String, Object> data = Maps.newHashMap();
+            data.put("heritageEntity", heritageEntity);
+            data.put("fileList", materialService.handleMaterialNew(id));
+            return ResponseMessage.defaultResponse().setData(data);
+        } catch (Exception e) {
+            log.info(e.getMessage());
             return ResponseMessage.validFailResponse().setMsg("该非遗信息不存在");
         }
-        Map<String, Object> data = Maps.newHashMap();
-        data.put("heritageEntity", heritageEntity);
-        data.put("fileList", materialService.handleMaterialNew(id));
-        return ResponseMessage.defaultResponse().setData(data);
+
     }
 
     @Override

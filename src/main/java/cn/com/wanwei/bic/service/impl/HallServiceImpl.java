@@ -90,18 +90,21 @@ public class HallServiceImpl extends BaseServiceImpl<HallMapper,HallEntity, Stri
 
     @Override
     public ResponseMessage updateOnlineStatus(String id, Integer status, String username) {
-        HallEntity entity = hallMapper.findById(id).orElse(null);
-        if (null == entity) {
+        try {
+            HallEntity entity = hallMapper.findById(id).get();
+            entity.setUpdatedUser(username);
+            entity.setUpdatedDate(new Date());
+            entity.setStatus(status);
+            hallMapper.updateById(entity);
+            // 添加上下线操作记录
+            String msg = status == 9 ? "上线成功" : "下线成功";
+            commonService.saveAuditLog(entity.getStatus(), status, id, username, msg, 1);
+            return ResponseMessage.defaultResponse().setMsg(msg);
+        } catch (Exception e) {
+            log.info(e.getMessage());
             return ResponseMessage.validFailResponse().setMsg("厅室信息不存在");
         }
-        entity.setUpdatedUser(username);
-        entity.setUpdatedDate(new Date());
-        entity.setStatus(status);
-        hallMapper.updateById(entity);
-        // 添加上下线操作记录
-        String msg = status == 9 ? "上线成功" : "下线成功";
-        commonService.saveAuditLog(entity.getStatus(), status, id, username, msg, 1);
-        return ResponseMessage.defaultResponse().setMsg(msg);
+
     }
 
     @Override
