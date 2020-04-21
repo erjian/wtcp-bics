@@ -27,11 +27,19 @@ public class RpcHotelController {
     @Autowired
     private HotelService hotelService;
 
-    @ApiOperation(value = "获取酒店信息列表", notes = "获取酒店信息列表")
-    @GetMapping(value = "/getHotelInfo")
-    @ApiImplicitParam(name = "title", value = "酒店名称", defaultValue = "")
-    @OperationLog(value = "wtcp-bics/获取酒店信息列表", operate = "r", module = "酒店管理")
-    public ResponseMessage getHotelInfo(@RequestParam(value = "title", defaultValue = "",required = false) String title) {
-        return hotelService.getHotelInfo(title);
+    @ApiOperation(value = "根据areaCode查询酒店下拉列表数据", notes = "根据areaCode查询酒店下拉列表数据")
+    @GetMapping(value = "/findByAreaCode")
+    @ApiImplicitParam(name = "areaCode", value = "区划编码", defaultValue = "")
+    @OperationLog(value = "wtcp-bics/根据areaCode查询酒店下拉列表数据", operate = "r", module = "酒店管理")
+    public ResponseMessage findByAreaCode(@RequestParam(value = "areaCode") String areaCode) {
+        return hotelService.findByAreaCode(areaCode);
+    }
+
+    @ApiOperation(value = "根据id查询酒店详情数据", notes = "根据id查询酒店详情数据")
+    @GetMapping(value = "/detail")
+    @ApiImplicitParam(name = "id", value = "酒店ID", defaultValue = "")
+    @OperationLog(value = "wtcp-bics/根据id查询酒店详情数据", operate = "r", module = "酒店管理")
+    public ResponseMessage findInfoById(@RequestParam(value = "id") String id) {
+        return hotelService.findInfoById(id);
     }
 }

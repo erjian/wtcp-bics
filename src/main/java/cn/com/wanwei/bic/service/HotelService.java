@@ -67,12 +67,19 @@ public interface HotelService extends BaseService<HotelEntity, String> {
      */
     ResponseMessage findHotelInfoById(String id);
 
+    ResponseMessage findBySearchValue(String name, String ids);
+
     /**
-     * 获取酒店信息列表
-     * @param title
+     * 查询酒店下拉列表数据
+     * @param areaCode
      * @return
      */
-    ResponseMessage getHotelInfo(String title);
+    ResponseMessage findByAreaCode(String areaCode);
 
-    ResponseMessage findBySearchValue(String name, String ids);
+    /**
+     * 根据id查询酒店详情数据
+     * @param id
+     * @return
+     */
+    ResponseMessage findInfoById(String id);
 }

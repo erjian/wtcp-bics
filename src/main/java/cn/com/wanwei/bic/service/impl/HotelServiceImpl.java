@@ -7,6 +7,7 @@ import cn.com.wanwei.bic.mapper.ContactMapper;
 import cn.com.wanwei.bic.mapper.EnterpriseMapper;
 import cn.com.wanwei.bic.mapper.HotelMapper;
 import cn.com.wanwei.bic.model.EntityTagsModel;
+import cn.com.wanwei.bic.model.HotelInfoModel;
 import cn.com.wanwei.bic.service.CommonService;
 import cn.com.wanwei.bic.service.HotelService;
 import cn.com.wanwei.bic.service.MaterialService;
@@ -201,12 +202,6 @@ public class HotelServiceImpl extends BaseServiceImpl<HotelMapper, HotelEntity, 
     }
 
     @Override
-    public ResponseMessage getHotelInfo(String title) {
-        List<HotelEntity> hotelList = hotelMapper.getHotelInfo(title);
-        return ResponseMessage.defaultResponse().setData(hotelList);
-    }
-
-    @Override
     public ResponseMessage findBySearchValue(String name, String ids) {
         ResponseMessage responseMessage = ResponseMessage.defaultResponse();
         List<Map<String, Object>> data = new ArrayList<>();
@@ -236,6 +231,30 @@ public class HotelServiceImpl extends BaseServiceImpl<HotelMapper, HotelEntity, 
             responseMessage.setData("暂无数据");
         }
         return responseMessage;
+    }
+
+    @Override
+    public ResponseMessage findByAreaCode(String areaCode) {
+        return ResponseMessage.defaultResponse().setData(hotelMapper.findByAreaCode(areaCode));
+    }
+
+    @Override
+    public ResponseMessage findInfoById(String id) {
+        HotelInfoModel hotelInfoModel=new HotelInfoModel();
+        HotelEntity hotelEntity = hotelMapper.findById(id).get();
+        if(hotelEntity!=null){
+            //标签信息
+            hotelEntity.setTagsEntities(tagsService.findListByPriId(id, HotelTagsEntity.class));
+            hotelInfoModel.setHotelEntity(hotelEntity);
+            //通讯信息
+            ContactEntity contactEntity = contactMapper.selectByPrincipalId(id);
+            hotelInfoModel.setContactEntity(contactEntity);
+            //素材信息
+            hotelInfoModel.setFileList( materialService.handleMaterialNew(id));
+            return ResponseMessage.defaultResponse().setData(hotelInfoModel);
+        }
+        return ResponseMessage.validFailResponse().setMsg("酒店信息不存在");
+
     }
 
 
