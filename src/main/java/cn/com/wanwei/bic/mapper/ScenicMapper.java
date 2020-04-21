@@ -92,4 +92,11 @@ public interface ScenicMapper {
      * @author linjw 2019年12月19日15:15:15
      */
     Long getCount(Map<String, Object> map);
+
+    /**
+     * 景区电商-根据组织机构编码查询景区详情及标签
+     * @param deptCode
+     * @return
+     */
+    List<ScenicEntity> findByDeptCode(@Param(value = "deptCode") String deptCode);
 }

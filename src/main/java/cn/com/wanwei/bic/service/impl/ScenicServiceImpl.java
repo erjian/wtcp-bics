@@ -12,7 +12,6 @@ import cn.com.wanwei.bic.feign.CoderServiceFeign;
 import cn.com.wanwei.bic.mapper.*;
 import cn.com.wanwei.bic.model.DataBindModel;
 import cn.com.wanwei.bic.model.EntityTagsModel;
-import cn.com.wanwei.bic.model.WeightModel;
 import cn.com.wanwei.bic.service.MaterialService;
 import cn.com.wanwei.bic.service.ScenicService;
 import cn.com.wanwei.bic.service.TagsService;
@@ -336,6 +335,22 @@ public class ScenicServiceImpl implements ScenicService {
             scenicEntity.setFileList(materialService.handleMaterialNew(scenicEntity.getId()));
         }
         return ResponseMessage.defaultResponse().setData(entitiesList);
+    }
+
+    @Override
+    public ResponseMessage findByDeptCode(String deptCode) {
+        ResponseMessage responseMessage = ResponseMessage.defaultResponse();
+        List<ScenicEntity> scenicList = scenicMapper.findByDeptCode(deptCode);
+        if (CollectionUtils.isEmpty(scenicList)){
+            return ResponseMessage.validFailResponse().setMsg("当前机构暂未绑定景区数据！");
+        }else if(scenicList.size() > 1){
+            return ResponseMessage.validFailResponse().setMsg("当前机构绑定景区数据错误，请重新绑定！");
+        }else{
+            ScenicEntity scenicEntity = scenicList.get(0);
+            scenicEntity.setTagsEntities(tagsService.findListByPriId(scenicList.get(0).getId(),ScenicTagsEntity.class));
+            responseMessage.setData(scenicEntity);
+        }
+        return responseMessage;
     }
 
     private int saveAuditLog(int preStatus, int auditStatus, String principalId, String userName, String msg, int type) {
