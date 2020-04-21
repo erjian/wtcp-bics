@@ -15,5 +15,5 @@ public interface HotelMapper extends BaseMapper<HotelEntity, String> {
 
     List<HotelEntity> findBySearchValue(@Param("searchValue") String searchValue, @Param("ids") List<String> ids);
 
-    List<HotelListModel> findByAreaCode(String areaCode);
+    List<HotelListModel> findByAreaCode(@Param("areaCode") String areaCode);
 }
