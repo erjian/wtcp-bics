@@ -1,5 +1,7 @@
 package cn.com.wanwei.bic.controller.rpc;
 
+import cn.com.wanwei.bic.model.HotelInfoModel;
+import cn.com.wanwei.bic.model.HotelListModel;
 import cn.com.wanwei.bic.service.HotelService;
 import cn.com.wanwei.common.log.annotation.OperationLog;
 import cn.com.wanwei.common.model.ResponseMessage;
@@ -16,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -31,7 +34,7 @@ public class RpcHotelController {
     @GetMapping(value = "/findByAreaCode")
     @ApiImplicitParam(name = "areaCode", value = "区划编码", defaultValue = "")
     @OperationLog(value = "wtcp-bics/根据areaCode查询酒店下拉列表数据", operate = "r", module = "酒店管理")
-    public ResponseMessage findByAreaCode(@RequestParam(value = "areaCode") String areaCode) {
+    public ResponseMessage<List<HotelListModel>> findByAreaCode(@RequestParam(value = "areaCode") String areaCode) {
         return hotelService.findByAreaCode(areaCode);
     }
 
@@ -39,7 +42,7 @@ public class RpcHotelController {
     @GetMapping(value = "/detail")
     @ApiImplicitParam(name = "id", value = "酒店ID", defaultValue = "")
     @OperationLog(value = "wtcp-bics/根据id查询酒店详情数据", operate = "r", module = "酒店管理")
-    public ResponseMessage findInfoById(@RequestParam(value = "id") String id) {
+    public ResponseMessage<HotelInfoModel> findInfoById(@RequestParam(value = "id") String id) {
         return hotelService.findInfoById(id);
     }
 }
