@@ -346,7 +346,7 @@ public class ScenicServiceImpl implements ScenicService {
         }else if(scenicList.size() > 1){
             return ResponseMessage.validFailResponse().setMsg("当前机构绑定景区数据错误，请重新绑定！");
         }else{
-            ScenicEntity scenicEntity = scenicList.get(0);
+            ScenicEntity scenicEntity = scenicMapper.selectByPrimaryKey(scenicList.get(0).getId());
             scenicEntity.setTagsEntities(tagsService.findListByPriId(scenicList.get(0).getId(),ScenicTagsEntity.class));
             responseMessage.setData(scenicEntity);
         }
