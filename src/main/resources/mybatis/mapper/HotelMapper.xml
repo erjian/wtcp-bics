@@ -206,14 +206,13 @@
     </where>
   </select>
 
-  <select id="getHotelInfo"  resultMap="BaseResultMap">
+  <select id="findByAreaCode"  resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List"/>
     from t_bic_hotel
     <where>
-      <if test="title != null and title != ''">
-        <bind name="title" value="'%'+title + '%'"></bind>
-        and title like #{title}
+      <if test="areaCode != null and areaCode != ''">
+        and region = #{areaCode,jdbcType=VARCHAR}
       </if>
       and status = 9
     </where>

@@ -23,7 +23,7 @@ import java.util.*;
 
 @Slf4j
 @Service
-public class HallServiceImpl extends BaseServiceImpl<HallMapper,HallEntity, String> implements HallService {
+public class HallServiceImpl extends BaseServiceImpl<HallMapper, HallEntity, String> implements HallService {
 
     @Autowired
     private HallMapper hallMapper;
@@ -64,47 +64,41 @@ public class HallServiceImpl extends BaseServiceImpl<HallMapper,HallEntity, Stri
 
     @Override
     public ResponseMessage updateByPrimaryKey(String id, EntityTagsModel<HallEntity> hallModel, User user) {
-        try {
-            HallEntity entity = hallMapper.findById(id).get();
-            HallEntity record = hallModel.getEntity();
-            if (null == entity) {
-                return ResponseMessage.validFailResponse().setMsg("厅室信息不存在");
-            }
-            record.setId(id);
-            record.setCode(entity.getCode());
-            record.setCreatedDate(entity.getCreatedDate());
-            record.setCreatedUser(entity.getCreatedUser());
-            record.setDeptCode(entity.getDeptCode());
-            record.setFullSpell(PinyinUtils.getPingYin(record.getTitle()).toLowerCase());
-            record.setSimpleSpell(PinyinUtils.converterToFirstSpell(record.getTitle()).toLowerCase());
-            record.setStatus(1);
-            record.setUpdatedDate(new Date());
-            record.setUpdatedUser(user.getUsername());
-            hallMapper.updateById(record);
-            return ResponseMessage.defaultResponse().setMsg("更新成功");
-        } catch (Exception e) {
-            log.info(e.getMessage());
+        Optional<HallEntity> optional = hallMapper.findById(id);
+        if (!optional.isPresent()) {
             return ResponseMessage.validFailResponse().setMsg("厅室信息不存在");
         }
+        HallEntity entity = optional.get();
+        HallEntity record = hallModel.getEntity();
+        record.setId(id);
+        record.setCode(entity.getCode());
+        record.setCreatedDate(entity.getCreatedDate());
+        record.setCreatedUser(entity.getCreatedUser());
+        record.setDeptCode(entity.getDeptCode());
+        record.setFullSpell(PinyinUtils.getPingYin(record.getTitle()).toLowerCase());
+        record.setSimpleSpell(PinyinUtils.converterToFirstSpell(record.getTitle()).toLowerCase());
+        record.setStatus(1);
+        record.setUpdatedDate(new Date());
+        record.setUpdatedUser(user.getUsername());
+        hallMapper.updateById(record);
+        return ResponseMessage.defaultResponse().setMsg("更新成功");
     }
 
     @Override
     public ResponseMessage updateOnlineStatus(String id, Integer status, String username) {
-        try {
-            HallEntity entity = hallMapper.findById(id).get();
-            entity.setUpdatedUser(username);
-            entity.setUpdatedDate(new Date());
-            entity.setStatus(status);
-            hallMapper.updateById(entity);
-            // 添加上下线操作记录
-            String msg = status == 9 ? "上线成功" : "下线成功";
-            commonService.saveAuditLog(entity.getStatus(), status, id, username, msg, 1);
-            return ResponseMessage.defaultResponse().setMsg(msg);
-        } catch (Exception e) {
-            log.info(e.getMessage());
+        Optional<HallEntity> optional = hallMapper.findById(id);
+        if (!optional.isPresent()) {
             return ResponseMessage.validFailResponse().setMsg("厅室信息不存在");
         }
-
+        HallEntity entity = optional.get();
+        entity.setUpdatedUser(username);
+        entity.setUpdatedDate(new Date());
+        entity.setStatus(status);
+        hallMapper.updateById(entity);
+        // 添加上下线操作记录
+        String msg = status == 9 ? "上线成功" : "下线成功";
+        commonService.saveAuditLog(entity.getStatus(), status, id, username, msg, 1);
+        return ResponseMessage.defaultResponse().setMsg(msg);
     }
 
     @Override
@@ -117,7 +111,7 @@ public class HallServiceImpl extends BaseServiceImpl<HallMapper,HallEntity, Stri
         ResponseMessage responseMessage = ResponseMessage.defaultResponse();
         List<Map<String, Object>> data = new ArrayList<>();
         List<String> idList = null;
-        if(StringUtil.isNotEmpty(ids)){
+        if (StringUtil.isNotEmpty(ids)) {
             idList = Arrays.asList(ids.split(","));
         }
         List<HallEntity> list = hallMapper.findBySearchValue(name, idList);
@@ -138,7 +132,7 @@ public class HallServiceImpl extends BaseServiceImpl<HallMapper,HallEntity, Stri
                 data.add(map);
             }
             responseMessage.setData(data);
-        }else {
+        } else {
             responseMessage.setData("暂无数据");
         }
         return responseMessage;

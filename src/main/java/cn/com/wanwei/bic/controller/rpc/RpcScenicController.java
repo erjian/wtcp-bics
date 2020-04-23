@@ -99,6 +99,16 @@ public class RpcScenicController extends BaseController {
         return scenicService.getOne(id);
     }
 
+    // ----------------------------------以下接口为景区电商提供-----------------------------------------
+
+    @ApiOperation(value = "根据所属机构获取一条景区详情及其标签", notes = "根据景区所属机构编码获取一条景区详情和关联标签数据feign接口")
+    @GetMapping(value = "/findByDeptCode")
+    @ApiImplicitParam(name = "deptCode", value = "机构编码", required = true, dataType = "String")
+    @OperationLog(value = "wtcp-bics/获取一条景区详情及其标签", operate = "r", module = "景区管理")
+    public ResponseMessage findByDeptCode(@RequestParam String deptCode) throws Exception {
+        return scenicService.findByDeptCode(deptCode);
+    }
+
 
 }
 

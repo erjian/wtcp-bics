@@ -361,4 +361,17 @@
         </where>
     </select>
 
+
+    <!-- 景区电商-根据组织机构编码查询景区详情及标签-->
+    <select id="findByDeptCode" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from t_bic_scenic
+        <where>
+            <if test="deptCode != null and deptCode !='' ">
+                and dept_code = #{deptCode,jdbcType=VARCHAR}
+            </if>
+        </where>
+    </select>
+
 </mapper>

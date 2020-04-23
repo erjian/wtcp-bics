@@ -7,7 +7,11 @@ import cn.com.wanwei.bic.mapper.ContactMapper;
 import cn.com.wanwei.bic.mapper.EnterpriseMapper;
 import cn.com.wanwei.bic.mapper.HotelMapper;
 import cn.com.wanwei.bic.model.EntityTagsModel;
-import cn.com.wanwei.bic.service.*;
+import cn.com.wanwei.bic.model.HotelInfoModel;
+import cn.com.wanwei.bic.service.CommonService;
+import cn.com.wanwei.bic.service.HotelService;
+import cn.com.wanwei.bic.service.MaterialService;
+import cn.com.wanwei.bic.service.TagsService;
 import cn.com.wanwei.bic.utils.UUIDUtils;
 import cn.com.wanwei.common.model.ResponseMessage;
 import cn.com.wanwei.common.model.User;
@@ -92,69 +96,63 @@ public class HotelServiceImpl extends BaseServiceImpl<HotelMapper, HotelEntity, 
 
     @Override
     public ResponseMessage updateByPrimaryKey(String id, EntityTagsModel<HotelEntity> hotelModel, User currentUser) {
-        try {
-            HotelEntity hotelEntity = hotelMapper.findById(id).get();
-            HotelEntity entity = hotelModel.getEntity();
-            entity.setId(id);
-            entity.setCode(hotelEntity.getCode());
-            entity.setCreatedDate(hotelEntity.getCreatedDate());
-            entity.setCreatedUser(hotelEntity.getCreatedUser());
-            entity.setDeptCode(hotelEntity.getDeptCode());
-            entity.setFullSpell(PinyinUtils.getPingYin(entity.getTitle()).toLowerCase());
-            entity.setSimpleSpell(PinyinUtils.converterToFirstSpell(entity.getTitle()).toLowerCase());
-            entity.setStatus(0);
-            entity.setUpdatedDate(new Date());
-            entity.setUpdatedUser(currentUser.getName());
-            hotelMapper.updateById(entity);
-
-            //处理标签
-            if (CollectionUtils.isNotEmpty(hotelModel.getTagsList())) {
-                tagsService.batchInsert(hotelEntity.getId(), hotelModel.getTagsList(), currentUser, HotelTagsEntity.class);
-            }
-            return ResponseMessage.defaultResponse().setMsg("更新成功");
-        } catch (Exception e) {
-            log.info(e.getMessage());
+        Optional<HotelEntity> optional = hotelMapper.findById(id);
+        if (!optional.isPresent()) {
             return ResponseMessage.validFailResponse().setMsg("该酒店信息不存在！");
         }
+        HotelEntity hotelEntity = optional.get();
+        HotelEntity entity = hotelModel.getEntity();
+        entity.setId(id);
+        entity.setCode(hotelEntity.getCode());
+        entity.setCreatedDate(hotelEntity.getCreatedDate());
+        entity.setCreatedUser(hotelEntity.getCreatedUser());
+        entity.setDeptCode(hotelEntity.getDeptCode());
+        entity.setFullSpell(PinyinUtils.getPingYin(entity.getTitle()).toLowerCase());
+        entity.setSimpleSpell(PinyinUtils.converterToFirstSpell(entity.getTitle()).toLowerCase());
+        entity.setStatus(0);
+        entity.setUpdatedDate(new Date());
+        entity.setUpdatedUser(currentUser.getName());
+        hotelMapper.updateById(entity);
 
-
+        //处理标签
+        if (CollectionUtils.isNotEmpty(hotelModel.getTagsList())) {
+            tagsService.batchInsert(hotelEntity.getId(), hotelModel.getTagsList(), currentUser, HotelTagsEntity.class);
+        }
+        return ResponseMessage.defaultResponse().setMsg("更新成功");
     }
 
     @Override
     public ResponseMessage updateOnlineStatus(String id, Integer status, String username) {
-        try {
-            HotelEntity entity = hotelMapper.findById(id).get();
-            if (status == 9 && entity.getStatus() != 1) {
-                return ResponseMessage.validFailResponse().setMsg("该数据未审核通过，不能上线，请先进行审核！");
-            }
-            entity.setUpdatedUser(username);
-            entity.setUpdatedDate(new Date());
-            entity.setStatus(status);
-            hotelMapper.updateById(entity);
-            String msg = status == 9 ? "上线成功" : "下线成功";
-            commonService.saveAuditLog(entity.getStatus(), status, id, username, msg, LINE_TYPE);
-            return ResponseMessage.defaultResponse().setMsg(msg);
-        } catch (Exception e) {
-            log.info(e.getMessage());
+        Optional<HotelEntity> optional = hotelMapper.findById(id);
+        if (!optional.isPresent()) {
             return ResponseMessage.validFailResponse().setMsg("该数据不存在");
         }
-
+        HotelEntity entity = optional.get();
+        if (status == 9 && entity.getStatus() != 1) {
+            return ResponseMessage.validFailResponse().setMsg("该数据未审核通过，不能上线，请先进行审核！");
+        }
+        entity.setUpdatedUser(username);
+        entity.setUpdatedDate(new Date());
+        entity.setStatus(status);
+        hotelMapper.updateById(entity);
+        String msg = status == 9 ? "上线成功" : "下线成功";
+        commonService.saveAuditLog(entity.getStatus(), status, id, username, msg, LINE_TYPE);
+        return ResponseMessage.defaultResponse().setMsg(msg);
     }
 
     @Override
     public ResponseMessage updateAuditStatus(String id, int auditStatus, String msg, User currentUser) {
         ResponseMessage responseMessage = ResponseMessage.defaultResponse();
-        try {
-            HotelEntity HotelEntity = hotelMapper.findById(id).get();
-            HotelEntity.setStatus(auditStatus);
-            HotelEntity.setUpdatedDate(new Date());
-            hotelMapper.updateById(HotelEntity);
-            //添加审核记录
-            commonService.saveAuditLog(HotelEntity.getStatus(), auditStatus, id, currentUser.getUsername(), msg, AUDIT_TYPE);
-        } catch (Exception e) {
-            log.info(e.getMessage());
+        Optional<HotelEntity> optional = hotelMapper.findById(id);
+        if (!optional.isPresent()) {
             return responseMessage.validFailResponse().setMsg("该酒店信息不存在");
         }
+        HotelEntity HotelEntity = optional.get();
+        HotelEntity.setStatus(auditStatus);
+        HotelEntity.setUpdatedDate(new Date());
+        hotelMapper.updateById(HotelEntity);
+        //添加审核记录
+        commonService.saveAuditLog(HotelEntity.getStatus(), auditStatus, id, currentUser.getUsername(), msg, AUDIT_TYPE);
         return responseMessage;
     }
 
@@ -181,34 +179,26 @@ public class HotelServiceImpl extends BaseServiceImpl<HotelMapper, HotelEntity, 
 
     @Override
     public ResponseMessage findHotelInfoById(String id) {
-        try {
-            HotelEntity hotelEntity = hotelMapper.findById(id).get();
-            Map<String, Object> data = Maps.newHashMap();
-            hotelEntity.setTagsEntities(tagsService.findListByPriId(id, HotelTagsEntity.class));
-            data.put("hotelEntity", hotelEntity);
-
-            EnterpriseEntity enterpriseEntity = enterpriseMapper.selectByPrincipalId(id);
-            data.put("enterpriseEntity", enterpriseEntity);
-
-            BusinessEntity businessEntity = businessMapper.findByPrincipalId(id);
-            data.put("businessEntity", businessEntity);
-
-            ContactEntity contactEntity = contactMapper.selectByPrincipalId(id);
-            data.put("contactEntity", contactEntity);
-
-            data.put("fileList", materialService.handleMaterialNew(id));
-            return ResponseMessage.defaultResponse().setData(data);
-        } catch (Exception e) {
-            log.info(e.getMessage());
+        Optional<HotelEntity> optional = hotelMapper.findById(id);
+        if (!optional.isPresent()) {
             return ResponseMessage.validFailResponse().setMsg("该酒店不存在");
         }
+        HotelEntity hotelEntity = optional.get();
+        Map<String, Object> data = Maps.newHashMap();
+        hotelEntity.setTagsEntities(tagsService.findListByPriId(id, HotelTagsEntity.class));
+        data.put("hotelEntity", hotelEntity);
 
-    }
+        EnterpriseEntity enterpriseEntity = enterpriseMapper.selectByPrincipalId(id);
+        data.put("enterpriseEntity", enterpriseEntity);
 
-    @Override
-    public ResponseMessage getHotelInfo(String title) {
-        List<HotelEntity> hotelList = hotelMapper.getHotelInfo(title);
-        return ResponseMessage.defaultResponse().setData(hotelList);
+        BusinessEntity businessEntity = businessMapper.findByPrincipalId(id);
+        data.put("businessEntity", businessEntity);
+
+        ContactEntity contactEntity = contactMapper.selectByPrincipalId(id);
+        data.put("contactEntity", contactEntity);
+
+        data.put("fileList", materialService.handleMaterialNew(id));
+        return ResponseMessage.defaultResponse().setData(data);
     }
 
     @Override
@@ -241,6 +231,30 @@ public class HotelServiceImpl extends BaseServiceImpl<HotelMapper, HotelEntity, 
             responseMessage.setData("暂无数据");
         }
         return responseMessage;
+    }
+
+    @Override
+    public ResponseMessage findByAreaCode(String areaCode) {
+        return ResponseMessage.defaultResponse().setData(hotelMapper.findByAreaCode(areaCode));
+    }
+
+    @Override
+    public ResponseMessage findInfoById(String id) {
+        HotelInfoModel hotelInfoModel=new HotelInfoModel();
+        HotelEntity hotelEntity = hotelMapper.findById(id).get();
+        if(hotelEntity!=null){
+            //标签信息
+            hotelEntity.setTagsEntities(tagsService.findListByPriId(id, HotelTagsEntity.class));
+            hotelInfoModel.setHotelEntity(hotelEntity);
+            //通讯信息
+            ContactEntity contactEntity = contactMapper.selectByPrincipalId(id);
+            hotelInfoModel.setContactEntity(contactEntity);
+            //素材信息
+            hotelInfoModel.setFileList( materialService.handleMaterialNew(id));
+            return ResponseMessage.defaultResponse().setData(hotelInfoModel);
+        }
+        return ResponseMessage.validFailResponse().setMsg("酒店信息不存在");
+
     }
 
 

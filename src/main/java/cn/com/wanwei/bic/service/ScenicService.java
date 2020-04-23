@@ -148,4 +148,11 @@ public interface ScenicService {
 	 * @return 景区列表
 	 */
 	ResponseMessage findListByIds(String ids, Integer status);
+
+	/**
+	 * 景区电商-根据组织机构编码查询景区详情及标签
+	 * @param deptCode
+	 * @return
+	 */
+	ResponseMessage findByDeptCode(String deptCode);
 }
