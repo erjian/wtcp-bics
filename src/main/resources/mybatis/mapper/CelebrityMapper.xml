@@ -21,7 +21,6 @@
     <result column="birthplace" jdbcType="VARCHAR" property="birthplace" />
     <result column="nation" jdbcType="VARCHAR" property="nation" />
     <result column="type" jdbcType="VARCHAR" property="type" />
-    <result column="behalf_achievement" jdbcType="INTEGER" property="behalfAchievement" />
     <result column="status" jdbcType="INTEGER" property="status" />
     <result column="weight" jdbcType="INTEGER" property="weight" />
     <result column="dept_code" jdbcType="VARCHAR" property="deptCode" />
@@ -29,6 +28,7 @@
   <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="cn.com.wanwei.bic.entity.CelebrityEntity">
     <result column="chief_behalf" jdbcType="LONGVARCHAR" property="chiefBehalf" />
     <result column="story" jdbcType="LONGVARCHAR" property="story" />
+    <result column="behalf_achievement" jdbcType="LONGVARCHAR" property="behalfAchievement" />
   </resultMap>
   <sql id="Base_Column_List">
     id, created_user, created_date, updated_user, updated_date, category, name, simple_spell, 
@@ -63,6 +63,9 @@
         </if>
         <if test="type != null">
           and type = #{type,jdbcType=VARCHAR}
+        </if>
+        <if test="sex != null">
+          and sex = #{sex,jdbcType=INTEGER}
         </if>
         <if test="nation != null and nation!='' ">
           and nation like #{nation}
@@ -115,7 +118,7 @@
       #{summary,jdbcType=VARCHAR}, #{description,jdbcType=VARCHAR}, #{slogan,jdbcType=VARCHAR}, 
       #{sex,jdbcType=INTEGER}, #{birthDate,jdbcType=TIMESTAMP}, #{passAwayDate,jdbcType=TIMESTAMP}, 
       #{birthplace,jdbcType=VARCHAR}, #{nation,jdbcType=VARCHAR}, #{type,jdbcType=VARCHAR},
-      #{behalfAchievement,jdbcType=INTEGER}, #{status,jdbcType=INTEGER}, #{weight,jdbcType=INTEGER}, 
+      #{behalfAchievement,jdbcType=LONGVARCHAR}, #{status,jdbcType=INTEGER}, #{weight,jdbcType=INTEGER},
       #{deptCode,jdbcType=VARCHAR}, #{chiefBehalf,jdbcType=LONGVARCHAR}, #{story,jdbcType=LONGVARCHAR}
       )
   </insert>
@@ -139,7 +142,7 @@
       birthplace = #{birthplace,jdbcType=VARCHAR},
       nation = #{nation,jdbcType=VARCHAR},
       type = #{type,jdbcType=VARCHAR},
-      behalf_achievement = #{behalfAchievement,jdbcType=INTEGER},
+      behalf_achievement = #{behalfAchievement,jdbcType=LONGVARCHAR},
       status = #{status,jdbcType=INTEGER},
       weight = #{weight,jdbcType=INTEGER},
       dept_code = #{deptCode,jdbcType=VARCHAR},

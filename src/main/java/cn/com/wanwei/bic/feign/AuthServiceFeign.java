@@ -21,7 +21,7 @@ public interface AuthServiceFeign {
     ResponseMessage findByDeptCode(@RequestParam(value = "deptCode")String deptCode);
 
     @GetMapping(value = "/rpc/dept/findChildByAreaCode")
-    ResponseMessage findChildByAreaCode(@RequestParam String areaCode);
+    ResponseMessage findChildByAreaCode(@RequestParam(value = "areaCode") String areaCode);
 
     @Component
     class AuthServiceFeignHystrix implements AuthServiceFeign{
