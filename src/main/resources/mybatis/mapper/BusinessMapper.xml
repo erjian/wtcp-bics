@@ -24,13 +24,13 @@
     traffic_notice, hint_notice, extend_notice, service_facility, created_user, created_date, 
     updated_user, updated_date
   </sql>
-  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+  <select id="findById" parameterType="java.lang.String" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
     from t_bic_business
     where id = #{id,jdbcType=VARCHAR}
   </select>
-  <select id="selectByPrincipalId" parameterType="java.lang.String" resultMap="BaseResultMap">
+  <select id="findByPrincipalId" parameterType="java.lang.String" resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List" />
     from t_bic_business
@@ -50,7 +50,7 @@
       #{createdDate,jdbcType=TIMESTAMP}, #{updatedUser,jdbcType=VARCHAR}, #{updatedDate,jdbcType=TIMESTAMP}
       )
   </insert>
-  <update id="updateByPrimaryKey" parameterType="cn.com.wanwei.bic.entity.BusinessEntity">
+  <update id="updateById" parameterType="cn.com.wanwei.bic.entity.BusinessEntity">
     update t_bic_business
     set principal_id = #{principalId,jdbcType=VARCHAR},
       ticket = #{ticket,jdbcType=VARCHAR},

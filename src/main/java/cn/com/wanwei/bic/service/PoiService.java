@@ -3,6 +3,7 @@ package cn.com.wanwei.bic.service;
 
 import cn.com.wanwei.bic.entity.AuditLogEntity;
 import cn.com.wanwei.bic.entity.PoiEntity;
+import cn.com.wanwei.bic.model.DataBindModel;
 import cn.com.wanwei.bic.model.EntityTagsModel;
 import cn.com.wanwei.common.model.ResponseMessage;
 import cn.com.wanwei.common.model.User;
@@ -116,6 +117,13 @@ public interface PoiService {
      * @return
      */
     ResponseMessage getList(Map<String, Object> filter);
+
+    /**
+     * 关联机构根据POI的id
+     * @param updatedUser
+     * @param model
+     */
+    void dataBindById(String updatedUser, DataBindModel model);
 
     /**
      * 查询是否在景区的POI数据

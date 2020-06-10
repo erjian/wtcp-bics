@@ -2,6 +2,7 @@ package cn.com.wanwei.bic.controller;
 
 import cn.com.wanwei.bic.entity.AuditLogEntity;
 import cn.com.wanwei.bic.entity.PoiEntity;
+import cn.com.wanwei.bic.model.DataBindModel;
 import cn.com.wanwei.bic.model.EntityTagsModel;
 import cn.com.wanwei.bic.service.PoiService;
 import cn.com.wanwei.common.log.annotation.OperationLog;
@@ -13,6 +14,7 @@ import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.time.DateFormatUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -20,6 +22,8 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -166,5 +170,20 @@ public class PoiController extends BaseController {
         return poiService.relateTags(tags, getCurrentUser());
     }
 
+    @PreAuthorize("hasAuthority('poi:g')")
+    @ApiOperation(value = "数据绑定", notes = "数据绑定")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "model", value = "数据绑定实体", required = true, dataType = "DataBindModel")
+    })
+    @RequestMapping(value = "/dataBind", method = {RequestMethod.PUT, RequestMethod.PATCH})
+    public ResponseMessage dataBind(@RequestBody @Valid DataBindModel model, BindingResult bindingResult) throws Exception {
+        if (bindingResult.hasErrors()) {
+            return ResponseMessage.validFailResponse().setMsg(bindingResult.getAllErrors());
+        }
+        String updatedUser = getCurrentUser().getUsername();
+        poiService.dataBindById(updatedUser, model);
+
+        return ResponseMessage.defaultResponse().setMsg("数据绑定成功");
+    }
 
 }

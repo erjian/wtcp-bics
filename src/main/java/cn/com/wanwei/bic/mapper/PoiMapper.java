@@ -35,7 +35,7 @@ public interface PoiMapper {
      * @param title
      * @return
      */
-    PoiEntity checkTitle( String title);
+    List<PoiEntity> checkTitle( String title);
 
     /**
      * 查询一级景点
@@ -55,7 +55,7 @@ public interface PoiMapper {
     void batchDelete(@Param(value="ids") List<String> ids);
 
     /**
-     * 关联机构
+     * 关联机构根据关联id
      * @param updatedUser
      * @param updatedDate
      * @param deptCode
@@ -66,8 +66,21 @@ public interface PoiMapper {
                  @Param(value="deptCode") String deptCode, @Param(value="ids") List<String> ids);
 
     /**
+     * 关联机构根据POI的id
+     * @param updatedUser
+     * @param updatedDate
+     * @param deptCode
+     * @param ids
+     * @return
+     */
+    int dataBindById(@Param(value="updatedUser") String updatedUser, @Param(value="updatedDate") Date updatedDate,
+                 @Param(value="deptCode") String deptCode, @Param(value="ids") List<String> ids);
+
+    /**
      * 查询POI信息
      * @return
      */
     List<PoiEntity> getList(Map<String, Object> filter);
+
+
 }

@@ -37,7 +37,7 @@ public interface DestinationMapper {
      * @param regionFullCode
      * @return
      */
-    DestinationEntity checkRegionFullCode(String regionFullCode);
+    List<DestinationEntity> checkRegionFullCode(String regionFullCode);
 
     /**
      * 关联机构

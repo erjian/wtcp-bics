@@ -39,7 +39,7 @@ public interface TrafficAgentMapper {
      * @param title
      * @return
      */
-    TrafficAgentEntity checkTitle(String title);
+    List<TrafficAgentEntity> checkTitle(String title);
 
     /**
      * 数据绑定

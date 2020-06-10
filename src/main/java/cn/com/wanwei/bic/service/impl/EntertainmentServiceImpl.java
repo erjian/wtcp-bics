@@ -170,12 +170,15 @@ public class EntertainmentServiceImpl implements EntertainmentService {
     public ResponseMessage checkTitle(String id, String title) {
         ResponseMessage responseMessage = ResponseMessage.defaultResponse();
         if (StringUtils.isNotBlank(title)) {
-            EntertainmentEntity entertainmentEntity = entertainmentMapper.checkTitle(title);
-            if (entertainmentEntity != null) {
-                if (!entertainmentEntity.getId().equals(id)) {
+            List<EntertainmentEntity> entertainmentEntities = entertainmentMapper.checkTitle(title);
+            if(entertainmentEntities.size() > 1){
+                return responseMessage.setStatus(ResponseMessage.FAILED).setMsg("标题名称重复！");
+            } else if(entertainmentEntities.size() == 1) {
+                if (!entertainmentEntities.get(0).getId().equals(id)) {
                     return responseMessage.setStatus(ResponseMessage.FAILED).setMsg("标题名称重复！");
                 }
             }
+
         }
         return responseMessage;
     }
@@ -250,7 +253,7 @@ public class EntertainmentServiceImpl implements EntertainmentService {
             EnterpriseEntity enterpriseEntity = enterpriseMapper.selectByPrincipalId(id);
             map.put("enterpriseEntity", enterpriseEntity);
             //营业信息
-            BusinessEntity businessEntity = businessMapper.selectByPrincipalId(id);
+            BusinessEntity businessEntity = businessMapper.findByPrincipalId(id);
             map.put("businessEntity", businessEntity);
             //通讯信息
             ContactEntity contactEntity = contactMapper.selectByPrincipalId(id);

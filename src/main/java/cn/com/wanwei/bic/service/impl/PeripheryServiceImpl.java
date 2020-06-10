@@ -226,9 +226,11 @@ public class PeripheryServiceImpl implements PeripheryService {
     public ResponseMessage checkTitle(String id, String title) {
         ResponseMessage responseMessage = ResponseMessage.defaultResponse();
         if (StringUtils.isNotBlank(title)) {
-            PeripheryEntity pEntity = peripheryMapper.checkTitle(title);
-            if (pEntity != null) {
-                if (!pEntity.getId().equals(id)) {
+            List<PeripheryEntity> peripheryEntities = peripheryMapper.checkTitle(title);
+            if(peripheryEntities.size() > 1){
+                return responseMessage.setStatus(ResponseMessage.FAILED).setMsg("标题名称重复！");
+            } else if (peripheryEntities.size() == 1){
+                if (!peripheryEntities.get(0).getId().equals(id)) {
                     return responseMessage.setStatus(ResponseMessage.FAILED).setMsg("标题名称重复！");
                 }
             }

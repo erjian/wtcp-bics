@@ -266,9 +266,11 @@ public class ExtendServiceImpl implements ExtendService {
     public ResponseMessage checkTitle(String id, String title) {
         ResponseMessage responseMessage = ResponseMessage.defaultResponse();
         if (StringUtils.isNotBlank(title)) {
-            ExtendEntity extendEntity = extendMapper.checkTitle(title);
-            if (extendEntity != null) {
-                if (!extendEntity.getId().equals(id)) {
+            List<ExtendEntity> extendEntities = extendMapper.checkTitle(title);
+            if(extendEntities.size() > 1){
+                return responseMessage.setStatus(ResponseMessage.FAILED).setMsg("标题名称重复！");
+            }else if(extendEntities.size() == 1){
+                if (!extendEntities.get(0).getId().equals(id)) {
                     return responseMessage.setStatus(ResponseMessage.FAILED).setMsg("标题名称重复！");
                 }
             }

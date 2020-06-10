@@ -1,0 +1,212 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.com.wanwei.bic.mapper.ExhibitsMapper">
+  <resultMap id="BaseResultMap" type="cn.com.wanwei.bic.entity.ExhibitsEntity">
+    <id column="id" jdbcType="VARCHAR" property="id" />
+    <result column="created_user" jdbcType="VARCHAR" property="createdUser" />
+    <result column="created_date" jdbcType="TIMESTAMP" property="createdDate" />
+    <result column="updated_user" jdbcType="VARCHAR" property="updatedUser" />
+    <result column="updated_date" jdbcType="TIMESTAMP" property="updatedDate" />
+    <result column="title" jdbcType="VARCHAR" property="title" />
+    <result column="sub_title" jdbcType="VARCHAR" property="subTitle" />
+    <result column="simple_spell" jdbcType="VARCHAR" property="simpleSpell" />
+    <result column="full_spell" jdbcType="VARCHAR" property="fullSpell" />
+    <result column="code" jdbcType="VARCHAR" property="code" />
+    <result column="venue_id" jdbcType="VARCHAR" property="venueId" />
+    <result column="hall_id" jdbcType="VARCHAR" property="hallId" />
+    <result column="summary" jdbcType="VARCHAR" property="summary" />
+    <result column="description" jdbcType="VARCHAR" property="description" />
+    <result column="slogan" jdbcType="VARCHAR" property="slogan" />
+    <result column="category" jdbcType="VARCHAR" property="category" />
+    <result column="level" jdbcType="VARCHAR" property="level" />
+    <result column="type" jdbcType="VARCHAR" property="type" />
+    <result column="longitude" jdbcType="DECIMAL" property="longitude" />
+    <result column="latitude" jdbcType="DECIMAL" property="latitude" />
+    <result column="exhibition_area" jdbcType="VARCHAR" property="exhibitionArea" />
+    <result column="register_number" jdbcType="VARCHAR" property="registerNumber" />
+    <result column="years_kind" jdbcType="VARCHAR" property="yearsKind" />
+    <result column="years" jdbcType="VARCHAR" property="years" />
+    <result column="appearance_size" jdbcType="VARCHAR" property="appearanceSize" />
+    <result column="quality" jdbcType="INTEGER" property="quality" />
+    <result column="author" jdbcType="VARCHAR" property="author" />
+    <result column="excavation_address" jdbcType="VARCHAR" property="excavationAddress" />
+    <result column="vr_url" jdbcType="VARCHAR" property="vrUrl" />
+    <result column="ar_url" jdbcType="VARCHAR" property="arUrl" />
+    <result column="status" jdbcType="INTEGER" property="status" />
+    <result column="weight" jdbcType="INTEGER" property="weight" />
+    <result column="dept_code" jdbcType="VARCHAR" property="deptCode" />
+    <result column="content" jdbcType="LONGVARCHAR" property="content" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, created_user, created_date, updated_user, updated_date, title, sub_title, simple_spell, 
+    full_spell, code, venue_id, hall_id, summary, description, slogan, category, level, 
+    type, longitude, latitude, exhibition_area, register_number, years_kind, years, appearance_size, 
+    quality, author, excavation_address, vr_url, ar_url, status, weight, dept_code,content
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_bic_exhibits
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from t_bic_exhibits
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="cn.com.wanwei.bic.entity.ExhibitsEntity">
+    insert into t_bic_exhibits (id,created_user, created_date, updated_user,
+      updated_date, title, sub_title, 
+      simple_spell, full_spell, code, 
+      venue_id, hall_id, summary, 
+      description, slogan, category, 
+      level, type, longitude, 
+      latitude, exhibition_area, register_number, 
+      years_kind, years, appearance_size, 
+      quality, author, excavation_address, 
+      vr_url, ar_url, status, 
+      weight, dept_code, content
+      )
+    values (#{id,jdbcType=VARCHAR},#{createdUser,jdbcType=VARCHAR}, #{createdDate,jdbcType=TIMESTAMP}, #{updatedUser,jdbcType=VARCHAR},
+      #{updatedDate,jdbcType=TIMESTAMP}, #{title,jdbcType=VARCHAR}, #{subTitle,jdbcType=VARCHAR}, 
+      #{simpleSpell,jdbcType=VARCHAR}, #{fullSpell,jdbcType=VARCHAR}, #{code,jdbcType=VARCHAR}, 
+      #{venueId,jdbcType=VARCHAR}, #{hallId,jdbcType=VARCHAR}, #{summary,jdbcType=VARCHAR}, 
+      #{description,jdbcType=VARCHAR}, #{slogan,jdbcType=VARCHAR}, #{category,jdbcType=VARCHAR}, 
+      #{level,jdbcType=VARCHAR}, #{type,jdbcType=VARCHAR}, #{longitude,jdbcType=DECIMAL}, 
+      #{latitude,jdbcType=DECIMAL}, #{exhibitionArea,jdbcType=VARCHAR}, #{registerNumber,jdbcType=VARCHAR}, 
+      #{yearsKind,jdbcType=VARCHAR}, #{years,jdbcType=VARCHAR}, #{appearanceSize,jdbcType=VARCHAR}, 
+      #{quality,jdbcType=INTEGER}, #{author,jdbcType=VARCHAR}, #{excavationAddress,jdbcType=VARCHAR}, 
+      #{vrUrl,jdbcType=VARCHAR}, #{arUrl,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER}, 
+      #{weight,jdbcType=INTEGER}, #{deptCode,jdbcType=VARCHAR}, #{content,jdbcType=LONGVARCHAR}
+      )
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="cn.com.wanwei.bic.entity.ExhibitsEntity">
+    update t_bic_exhibits
+    set created_user = #{createdUser,jdbcType=VARCHAR},
+      created_date = #{createdDate,jdbcType=TIMESTAMP},
+      updated_user = #{updatedUser,jdbcType=VARCHAR},
+      updated_date = #{updatedDate,jdbcType=TIMESTAMP},
+      title = #{title,jdbcType=VARCHAR},
+      sub_title = #{subTitle,jdbcType=VARCHAR},
+      simple_spell = #{simpleSpell,jdbcType=VARCHAR},
+      full_spell = #{fullSpell,jdbcType=VARCHAR},
+      code = #{code,jdbcType=VARCHAR},
+      venue_id = #{venueId,jdbcType=VARCHAR},
+      hall_id = #{hallId,jdbcType=VARCHAR},
+      summary = #{summary,jdbcType=VARCHAR},
+      description = #{description,jdbcType=VARCHAR},
+      slogan = #{slogan,jdbcType=VARCHAR},
+      category = #{category,jdbcType=VARCHAR},
+      level = #{level,jdbcType=VARCHAR},
+      type = #{type,jdbcType=VARCHAR},
+      longitude = #{longitude,jdbcType=DECIMAL},
+      latitude = #{latitude,jdbcType=DECIMAL},
+      exhibition_area = #{exhibitionArea,jdbcType=VARCHAR},
+      register_number = #{registerNumber,jdbcType=VARCHAR},
+      years_kind = #{yearsKind,jdbcType=VARCHAR},
+      years = #{years,jdbcType=VARCHAR},
+      appearance_size = #{appearanceSize,jdbcType=VARCHAR},
+      quality = #{quality,jdbcType=INTEGER},
+      author = #{author,jdbcType=VARCHAR},
+      excavation_address = #{excavationAddress,jdbcType=VARCHAR},
+      vr_url = #{vrUrl,jdbcType=VARCHAR},
+      ar_url = #{arUrl,jdbcType=VARCHAR},
+      status = #{status,jdbcType=INTEGER},
+      weight = #{weight,jdbcType=INTEGER},
+      dept_code = #{deptCode,jdbcType=VARCHAR},
+      content = #{content,jdbcType=LONGVARCHAR}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <select id="findByPage" parameterType="java.util.Map" resultMap="BaseResultMap">
+    <include refid="Get_Page_Info"/>
+  </select>
+  <select id="checkTitle" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"/>
+    from t_bic_exhibits
+    where title = #{title,jdbcType=VARCHAR}
+  </select>
+  <update id="dataBind">
+    update t_bic_exhibits
+    set updated_date = #{updatedDate,jdbcType=TIMESTAMP},
+    updated_user = #{updatedUser,jdbcType=VARCHAR},
+    dept_code = #{deptCode,jdbcType=VARCHAR}
+    where id in
+    <foreach collection="ids" item="item" index="index" open="(" separator="," close=")">
+      #{item}
+    </foreach>
+  </update>
+
+  <update id="clearWeight">
+    update t_bic_exhibits set weight=0
+  </update>
+  <select id="maxWeight" resultType="Integer">
+    select weight from t_bic_exhibits order by weight desc limit 1
+  </select>
+  <select id="getEnterList" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"/>
+    from t_bic_exhibits
+  </select>
+
+  <select id="findBySearchValue" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from t_bic_exhibits
+    <where>
+      <if test="searchValue != null and searchValue !='' ">
+        <bind name="searchValue" value="'%' + searchValue + '%'" ></bind>
+        and (title like #{searchValue} or full_spell like #{searchValue} or simple_spell like #{searchValue})
+      </if>
+      <if test="ids != null">
+        and id in
+        <foreach collection="ids" item="item" index="index" open="(" separator="," close=")">
+          #{item}
+        </foreach>
+      </if>
+    </where>
+  </select>
+
+
+
+  <sql id="Get_Page_Info">
+    select
+    <include refid="Base_Column_List"/>
+    from t_bic_exhibits
+    <where>
+      <if test="title != null and title!='' ">
+        <bind name="title" value="'%'+title + '%'"></bind>
+        and (title like #{title} or simple_spell like #{title} or full_spell like #{title})
+      </if>
+      <if test="subTitle != null and subTitle!='' ">
+        <bind name="subTitle" value="'%'+subTitle + '%'"></bind>
+        and sub_title like #{subTitle}
+      </if>
+      <if test="level != null">
+        and level = #{level,jdbcType=VARCHAR}
+      </if>
+      <if test="type != null">
+        and type = #{type,jdbcType=VARCHAR}
+      </if>
+      <if test="category != null">
+        and category = #{category,jdbcType=VARCHAR}
+      </if>
+      <if test="status != null">
+        <if test="status == 0 or status == 2">
+          and status = #{status,jdbcType=INTEGER}
+        </if>
+        <if test="status == 1">
+          and (status = 1 or status = 9)
+        </if>
+      </if>
+      <if test="onlineStatus != null">
+        <if test="onlineStatus == 9">
+          and status = #{onlineStatus,jdbcType=INTEGER}
+        </if>
+        <if test="onlineStatus == 1">
+          and 9 > status
+        </if>
+      </if>
+    </where>
+  </sql>
+
+</mapper>

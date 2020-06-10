@@ -76,15 +76,6 @@ public interface ScenicService {
     ResponseMessage dataBind(String updatedUser, DataBindModel model) throws Exception;
 
 	/**
-	 * 修改权重
-	 * @author linjw 2019年10月9日17:45:27
-	 * @param weightModel
-	 * @param user
-	 * @return
-	 */
-	ResponseMessage changeWeight(WeightModel weightModel, User user) throws Exception;
-
-	/**
 	 * 修改审核状态
 	 * @author linjw 2019年10月16日11:27:27
 	 * @param id
@@ -111,9 +102,10 @@ public interface ScenicService {
 	 * 获取景区信息，title可以为空
 	 * @param title
 	 * @param status
+	 * @param category
 	 * @return
 	 */
-	ResponseMessage getScenicInfo(String title, Integer status);
+	ResponseMessage getScenicInfo(String title, Integer status, String category);
 
 	/**
 	 * 关联标签
@@ -156,4 +148,11 @@ public interface ScenicService {
 	 * @return 景区列表
 	 */
 	ResponseMessage findListByIds(String ids, Integer status);
+
+	/**
+	 * 景区电商-根据组织机构编码查询景区详情及标签
+	 * @param deptCode
+	 * @return
+	 */
+	ResponseMessage findByDeptCode(String deptCode);
 }

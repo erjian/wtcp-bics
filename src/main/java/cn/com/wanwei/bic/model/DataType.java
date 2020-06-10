@@ -25,10 +25,17 @@ public enum DataType {
     DRIVE_CAMP_TYPE("125005001","自驾营地"),
     AGRITAINMENT_TYPE("125005002","农家乐"),
     SPECIAL_SNACKS("125002001","特色小吃"),
-    FOOD_TYPE("125002002","餐饮"),
+    PERIPHERY_FOOD_TYPE("125002002","周边餐饮"),
     FOOD_STREET("125002003","小吃街"),
     SHOPPING_TYPE("125002004","购物"),
-    SPECIALTY("125002005","特产");
+    SPECIALTY("125002005","特产"),
+    HALL_TYPE("125006001","场馆"),
+    VENUE_TYPE("125006002","厅室"),
+    EXHIBITS_TYPE("125006003","展品"),
+    HERITAGE_TYPE("125007001","非遗"),
+    CELEBRITY_TYPE("125007002","名人"),
+    HOTEL_TYPE("125008001","酒店"),
+    CATERING_TYPE("125008002","餐饮");
 
     private String key;
     private String name;

@@ -67,6 +67,13 @@ public class DestinationEntity extends BaseEntity{
     @ApiModelProperty(value = "组织机构编码")
     private String deptCode;
 
+    @ApiModelProperty(value = "简拼")
+    private String pinyin;
+
+    @ApiModelProperty(value = "全拼")
+    private String fullPinyin;
+
+
     /**
      * 用于存储景区-标签
      */

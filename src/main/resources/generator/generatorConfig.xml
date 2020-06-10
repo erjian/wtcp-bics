@@ -8,7 +8,7 @@
     <properties resource="../../bootstrap.yml"/>
     -->
 
-    <context id="Mysql" targetRuntime="MyBatis3">
+    <context id="Mysql" defaultModelType="flat" targetRuntime="MyBatis3">
         <property name="beginningDelimiter" value="`"/>
         <property name="endingDelimiter" value="`"/>
 
@@ -49,11 +49,17 @@
         </table>
         -->
 
-         <table tableName="t_bic_cate_relation" domainObjectName="CateRelation"
+         <table tableName="t_bic_catering" domainObjectName="Catering"
                 enableCountByExample="false" enableUpdateByExample="false"
                 enableDeleteByExample="false" enableSelectByExample="false"
                 selectByExampleQueryId="false">
              <generatedKey column="id" sqlStatement="Mysql" identity="true"/>
          </table>
+        <table tableName="t_bic_catering_tags" domainObjectName="CateringTags"
+               enableCountByExample="false" enableUpdateByExample="false"
+               enableDeleteByExample="false" enableSelectByExample="false"
+               selectByExampleQueryId="false">
+            <generatedKey column="id" sqlStatement="Mysql" identity="true"/>
+        </table>
     </context>
 </generatorConfiguration>

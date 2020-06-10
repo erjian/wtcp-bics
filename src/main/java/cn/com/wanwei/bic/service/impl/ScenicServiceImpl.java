@@ -12,7 +12,6 @@ import cn.com.wanwei.bic.feign.CoderServiceFeign;
 import cn.com.wanwei.bic.mapper.*;
 import cn.com.wanwei.bic.model.DataBindModel;
 import cn.com.wanwei.bic.model.EntityTagsModel;
-import cn.com.wanwei.bic.model.WeightModel;
 import cn.com.wanwei.bic.service.MaterialService;
 import cn.com.wanwei.bic.service.ScenicService;
 import cn.com.wanwei.bic.service.TagsService;
@@ -179,28 +178,6 @@ public class ScenicServiceImpl implements ScenicService {
     }
 
     @Override
-    public ResponseMessage changeWeight(WeightModel weightModel, User user) {
-        //查出最大权重
-        Integer maxNum = scenicMapper.maxWeight();
-        List<String> ids = weightModel.getIds();
-        if (ids != null && !ids.isEmpty()) {
-            //判断为重新排序或者最大权重与排序大于999时所有数据权重清0
-            if (weightModel.isFlag() || (maxNum + ids.size()) > Integer.MAX_VALUE) {
-                scenicMapper.clearWeight();
-                maxNum = 0;
-            }
-            for (int i = 0; i < ids.size(); i++) {
-                ScenicEntity scenicEntity = scenicMapper.selectByPrimaryKey(ids.get(i));
-                scenicEntity.setWeight(maxNum + ids.size() - i);
-                scenicEntity.setUpdatedUser(user.getUsername());
-                scenicEntity.setUpdatedDate(new Date());
-                scenicMapper.updateByPrimaryKey(scenicEntity);
-            }
-        }
-        return ResponseMessage.defaultResponse().setMsg("权重修改成功！");
-    }
-
-    @Override
     public ResponseMessage changeStatus(String id, Integer status, String username) throws Exception {
         ScenicEntity entity = scenicMapper.selectByPrimaryKey(id);
         if (null == entity) {
@@ -235,8 +212,8 @@ public class ScenicServiceImpl implements ScenicService {
     }
 
     @Override
-    public ResponseMessage getScenicInfo(String title, Integer status) {
-        List<ScenicEntity> entities = scenicMapper.getScenicInfo(title, status);
+    public ResponseMessage getScenicInfo(String title, Integer status, String category) {
+        List<ScenicEntity> entities = scenicMapper.getScenicInfo(title, status,category);
         return ResponseMessage.defaultResponse().setData(entities);
     }
 
@@ -274,7 +251,7 @@ public class ScenicServiceImpl implements ScenicService {
         data.put("enterpriseEntity", enterpriseEntity);
 
         //3、查询营业信息并添加到返回数据中
-        BusinessEntity businessEntity = businessMapper.selectByPrincipalId(id);
+        BusinessEntity businessEntity = businessMapper.findByPrincipalId(id);
         data.put("businessEntity", businessEntity);
 
         //4、查询通讯信息并添加到返回数据中
@@ -358,6 +335,22 @@ public class ScenicServiceImpl implements ScenicService {
             scenicEntity.setFileList(materialService.handleMaterialNew(scenicEntity.getId()));
         }
         return ResponseMessage.defaultResponse().setData(entitiesList);
+    }
+
+    @Override
+    public ResponseMessage findByDeptCode(String deptCode) {
+        ResponseMessage responseMessage = ResponseMessage.defaultResponse();
+        List<ScenicEntity> scenicList = scenicMapper.findByDeptCode(deptCode);
+        if (CollectionUtils.isEmpty(scenicList)){
+            return ResponseMessage.validFailResponse().setMsg("当前机构暂未绑定景区数据！");
+        }else if(scenicList.size() > 1){
+            return ResponseMessage.validFailResponse().setMsg("当前机构绑定景区数据错误，请重新绑定！");
+        }else{
+            ScenicEntity scenicEntity = scenicMapper.selectByPrimaryKey(scenicList.get(0).getId());
+            scenicEntity.setTagsEntities(tagsService.findListByPriId(scenicList.get(0).getId(),ScenicTagsEntity.class));
+            responseMessage.setData(scenicEntity);
+        }
+        return responseMessage;
     }
 
     private int saveAuditLog(int preStatus, int auditStatus, String principalId, String userName, String msg, int type) {

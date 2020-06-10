@@ -12,6 +12,7 @@ import cn.com.wanwei.bic.utils.PageUtils;
 import cn.com.wanwei.bic.utils.UUIDUtils;
 import cn.com.wanwei.common.model.ResponseMessage;
 import cn.com.wanwei.common.model.User;
+import cn.com.wanwei.common.utils.PinyinUtils;
 import cn.com.wanwei.persistence.mybatis.MybatisPageRequest;
 import cn.com.wanwei.persistence.mybatis.PageInfo;
 import cn.com.wanwei.persistence.mybatis.utils.EscapeCharUtils;
@@ -106,6 +107,8 @@ public class DestinationServiceImpl implements DestinationService {
         destinationEntity.setStatus(1);
         destinationEntity.setWeight(0);
         destinationEntity.setDeptCode(user.getOrg().getCode());
+        destinationEntity.setPinyin(PinyinUtils.getPingYin(destinationEntity.getRegionFullName().split(",")[destinationEntity.getRegionFullName().split(",").length-1]));
+        destinationEntity.setFullPinyin(PinyinUtils.converterToFirstSpell(destinationEntity.getRegionFullName().split(",")[destinationEntity.getRegionFullName().split(",").length-1]));
         destinationMapper.insert(destinationEntity);
 
         //处理标签
@@ -139,6 +142,8 @@ public class DestinationServiceImpl implements DestinationService {
         destinationEntity.setStatus(1);  //编辑修改状态为--> 1: 下线
         destinationEntity.setUpdatedDate(new Date());
         destinationEntity.setUpdatedUser(user.getUsername());
+        destinationEntity.setPinyin(PinyinUtils.getPingYin(destinationEntity.getRegionFullName().split(",")[destinationEntity.getRegionFullName().split(",").length-1]));
+        destinationEntity.setFullPinyin(PinyinUtils.converterToFirstSpell(destinationEntity.getRegionFullName().split(",")[destinationEntity.getRegionFullName().split(",").length-1]));
         destinationMapper.updateByPrimaryKey(destinationEntity);
 
         //处理标签
@@ -230,9 +235,11 @@ public class DestinationServiceImpl implements DestinationService {
     public ResponseMessage checkRegionFullName(String id, String regionFullCode) {
         ResponseMessage responseMessage = ResponseMessage.defaultResponse();
         if (StringUtils.isNotBlank(regionFullCode)) {
-            DestinationEntity destinationEntity = destinationMapper.checkRegionFullCode(regionFullCode);
-            if (destinationEntity != null) {
-                if (!destinationEntity.getId().equals(id)) {
+            List<DestinationEntity> destinationEntities = destinationMapper.checkRegionFullCode(regionFullCode);
+            if(destinationEntities.size() > 1){
+                return responseMessage.setStatus(ResponseMessage.FAILED).setMsg("该目的地已经存在！");
+            }else if(destinationEntities.size() == 1){
+                if (!destinationEntities.get(0).getId().equals(id)) {
                     return responseMessage.setStatus(ResponseMessage.FAILED).setMsg("该目的地已经存在！");
                 }
             }

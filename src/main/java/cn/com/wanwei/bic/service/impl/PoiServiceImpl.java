@@ -5,6 +5,7 @@ import cn.com.wanwei.bic.feign.CoderServiceFeign;
 import cn.com.wanwei.bic.mapper.MaterialMapper;
 import cn.com.wanwei.bic.mapper.PoiMapper;
 import cn.com.wanwei.bic.mapper.ScenicMapper;
+import cn.com.wanwei.bic.model.DataBindModel;
 import cn.com.wanwei.bic.model.EntityTagsModel;
 import cn.com.wanwei.bic.service.AuditLogService;
 import cn.com.wanwei.bic.service.MaterialService;
@@ -134,7 +135,7 @@ public class PoiServiceImpl implements PoiService {
                 poiEntity.setCreatedDate(new Date());
                 poiEntity.setUpdatedDate(new Date());
                 ScenicEntity entity = scenicMapper.selectByPrimaryKey(poiEntity.getPrincipalId());
-                poiEntity.setDeptCode(entity.getDeptCode());
+                poiEntity.setDeptCode(entity != null ? entity.getDeptCode() : user.getOrg().getCode());
                 poiMapper.insert(poiEntity);
                 //处理标签
                 if(CollectionUtils.isNotEmpty(poiModel.getTagsList())){
@@ -218,9 +219,11 @@ public class PoiServiceImpl implements PoiService {
     public ResponseMessage checkTitle(String id, String title) {
         ResponseMessage responseMessage = ResponseMessage.defaultResponse();
         if (StringUtils.isNotBlank(title)) {
-            PoiEntity pEntity = poiMapper.checkTitle(title);
-            if (pEntity != null) {
-                if (!pEntity.getId().equals(id)) {
+            List<PoiEntity> poiEntities = poiMapper.checkTitle(title);
+            if(poiEntities.size() > 1){
+                return responseMessage.setStatus(ResponseMessage.FAILED).setMsg("标题名称重复！");
+            } else if (poiEntities.size() == 1){
+                if (!poiEntities.get(0).getId().equals(id)) {
                     return responseMessage.setStatus(ResponseMessage.FAILED).setMsg("标题名称重复！");
                 }
             }
@@ -330,5 +333,10 @@ public class PoiServiceImpl implements PoiService {
         return ResponseMessage.defaultResponse().setData(data);
     }
 
-
+    @Override
+    public void dataBindById(String updatedUser, DataBindModel model) {
+        String deptCode = model.getDeptCode();
+        List<String> ids = model.getIds();
+        poiMapper.dataBindById(updatedUser, new Date(), deptCode, ids);
+    }
 }

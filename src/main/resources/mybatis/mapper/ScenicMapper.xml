@@ -73,6 +73,9 @@
                     and 9 > status
                 </if>
             </if>
+            <if test="category != null">
+                and category = #{category,jdbcType=VARCHAR}
+            </if>
         </where>
     </select>
 
@@ -239,14 +242,6 @@
         </foreach>
     </update>
 
-    <update id="clearWeight">
-    update t_bic_scenic set weight=0
-  </update>
-
-    <select id="maxWeight" resultType="Integer">
-    select weight from t_bic_scenic order by weight desc limit 1
-  </select>
-
     <!-- 组织机构名称验重 蔺健武 2019年7月3日16:41:14 -->
     <select id="findByTitleAndIdNot" resultMap="BaseResultMap">
         select
@@ -262,20 +257,6 @@
         </where>
     </select>
 
-    <!-- 以下是统一处理权重所用的方法 -->
-    <select id="commonMaxWeight" resultType="Integer">
-    select weight from ${tableName} order by weight desc limit 1
-  </select>
-    <update id="commonClearWeight">
-    update ${tableName} set weight=0
-  </update>
-    <update id="commonUpdateWeight">
-    update ${tableName}
-    set weight = #{weight,jdbcType=INTEGER},
-      updated_user = #{updatedUser,jdbcType=VARCHAR},
-      updated_date = #{updatedDate,jdbcType=TIMESTAMP}
-    where id = #{id,jdbcType=VARCHAR}
-  </update>
     <!--根据区域获取景区列表-->
     <select id="scenicPageNew" parameterType="java.util.Map" resultMap="BaseResultMap">
         select
@@ -376,6 +357,19 @@
             </if>
             <if test="column != null and column != '' and typeVal != null and typeVal != ''">
                 and ${column} = #{typeVal,jdbcType=VARCHAR}
+            </if>
+        </where>
+    </select>
+
+
+    <!-- 景区电商-根据组织机构编码查询景区详情及标签-->
+    <select id="findByDeptCode" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from t_bic_scenic
+        <where>
+            <if test="deptCode != null and deptCode !='' ">
+                and dept_code = #{deptCode,jdbcType=VARCHAR}
             </if>
         </where>
     </select>

@@ -13,6 +13,7 @@ import cn.com.wanwei.persistence.mybatis.MybatisPageRequest;
 import cn.com.wanwei.persistence.mybatis.PageInfo;
 import com.github.pagehelper.Page;
 import com.google.common.collect.Lists;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
@@ -20,6 +21,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Map;
 
+@Slf4j
 @Service
 public class DataSyncServiceImpl implements DataSyncService {
 
@@ -34,40 +36,45 @@ public class DataSyncServiceImpl implements DataSyncService {
 
     @Override
     public ResponseMessage findByPage(String category, Integer page, Integer size, Map<String, Object> filter) {
-        MybatisPageRequest pageRequest = PageUtils.getInstance().setPage(page, size, filter, Sort.Direction.DESC, "updated_date");
-        Page<DataSyncModel> dataSyncModels = new Page<>();
-        Class clazz = null;
-        if (category.equals(DataType.SCENIC_TYPE.getKey()) || category.equals(DataType.TOUR_VILLAGE_TYPE.getKey())) {
-            dataSyncModels = dataSyncMapper.findScenicByPage(filter);
-            clazz = ScenicTagsEntity.class;
-        } else if (category.equals(DataType.TRAVEL_TYPE.getKey())) {
-            dataSyncModels = dataSyncMapper.findTravelByPage(filter);
-            clazz = TravelAgentTagsEntity.class;
-        } else if (category.equals(DataType.FOOD_TYPE.getKey())
-                || category.equals(DataType.SHOPPING_TYPE.getKey())
-                || category.equals(DataType.FOOD_STREET.getKey())
-                || category.equals(DataType.SPECIAL_SNACKS.getKey())
-                || category.equals(DataType.SPECIALTY.getKey())) {
-            dataSyncModels = dataSyncMapper.findPeripheryByPage(filter);
-            clazz = PeripheryTagsEntity.class;
-        } else if (category.equals(DataType.AGRITAINMENT_TYPE.getKey())) {
-            dataSyncModels = dataSyncMapper.findEntertainmentByPage(filter);
-            clazz = EntertainmentTagsEntity.class;
-        } else if (category.equals(DataType.RENTAL_CAR_TYPE.getKey())) {
-            dataSyncModels = dataSyncMapper.findRentalCarByPage(filter);
-            clazz = RentalCarTagsEntity.class;
-        } else if (category.equals(DataType.TRAFFIC_AGENT_TYPE.getKey())) {
-            dataSyncModels = dataSyncMapper.findTrafficAgentByPage(filter);
-            clazz = null;
-        } else if (category.equals(DataType.DRIVE_CAMP_TYPE.getKey())) {
-            dataSyncModels = dataSyncMapper.findDriveCampByPage(filter);
-            clazz = DriveCampTagsEntity.class;
+        try {
+            MybatisPageRequest pageRequest = PageUtils.getInstance().setPage(page, size, filter, Sort.Direction.DESC, "updated_date");
+            Page<DataSyncModel> dataSyncModels = new Page<>();
+            Class clazz = null;
+            if (category.equals(DataType.SCENIC_TYPE.getKey()) || category.equals(DataType.TOUR_VILLAGE_TYPE.getKey())) {
+                dataSyncModels = dataSyncMapper.findScenicByPage(filter);
+                clazz = ScenicTagsEntity.class;
+            } else if (category.equals(DataType.TRAVEL_TYPE.getKey())) {
+                dataSyncModels = dataSyncMapper.findTravelByPage(filter);
+                clazz = TravelAgentTagsEntity.class;
+            } else if (category.equals(DataType.PERIPHERY_FOOD_TYPE.getKey())
+                    || category.equals(DataType.SHOPPING_TYPE.getKey())
+                    || category.equals(DataType.FOOD_STREET.getKey())
+                    || category.equals(DataType.SPECIAL_SNACKS.getKey())
+                    || category.equals(DataType.SPECIALTY.getKey())) {
+                dataSyncModels = dataSyncMapper.findPeripheryByPage(filter);
+                clazz = PeripheryTagsEntity.class;
+            } else if (category.equals(DataType.AGRITAINMENT_TYPE.getKey())) {
+                dataSyncModels = dataSyncMapper.findEntertainmentByPage(filter);
+                clazz = EntertainmentTagsEntity.class;
+            } else if (category.equals(DataType.RENTAL_CAR_TYPE.getKey())) {
+                dataSyncModels = dataSyncMapper.findRentalCarByPage(filter);
+                clazz = RentalCarTagsEntity.class;
+            } else if (category.equals(DataType.TRAFFIC_AGENT_TYPE.getKey())) {
+                dataSyncModels = dataSyncMapper.findTrafficAgentByPage(filter);
+                clazz = null;
+            } else if (category.equals(DataType.DRIVE_CAMP_TYPE.getKey())) {
+                dataSyncModels = dataSyncMapper.findDriveCampByPage(filter);
+                clazz = DriveCampTagsEntity.class;
+            }
+            return addTagsAndFiles(category, dataSyncModels, pageRequest, clazz);
+        } catch (Exception e){
+            log.info(e.getMessage());
+            return ResponseMessage.validFailResponse();
         }
-        return addTagsAndFiles(category, dataSyncModels, pageRequest, clazz);
     }
 
     private ResponseMessage addTagsAndFiles(String category, Page<DataSyncModel> dataSyncModels,
-                                            MybatisPageRequest pageRequest, Class clazz) {
+                                            MybatisPageRequest pageRequest, Class clazz) throws Exception {
         for (DataSyncModel item : dataSyncModels) {
             item.setCategory(category);
             item.setTagsList(clazz == null ? Lists.newArrayList() : tagsService.findListByPriId(item.getId(), clazz));

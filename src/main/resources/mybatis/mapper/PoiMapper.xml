@@ -30,11 +30,12 @@
         <result column="man_pit" jdbcType="INTEGER" property="manPit"/>
         <result column="woman_pit" jdbcType="INTEGER" property="womanPit"/>
         <result column="inside_scenic" jdbcType="VARCHAR" property="insideScenic"/>
+        <result column="phone" jdbcType="VARCHAR" property="phone"/>
     </resultMap>
     <sql id="Base_Column_List">
     id, parent_id, principal_id, code, title, sub_title, slogan, summary, description, weight,
     longitude, latitude, region_full_name, region_full_code, region, address, status, 
-    dept_code, created_user, created_date, updated_user, updated_date,content,`type`,num ,man_pit ,woman_pit, inside_scenic
+    dept_code, created_user, created_date, updated_user, updated_date,content,`type`,num ,man_pit ,woman_pit, inside_scenic, phone
   </sql>
     <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
         select
@@ -54,7 +55,7 @@
       region_full_code, region, address, 
       status, dept_code, created_user, 
       created_date, updated_user, updated_date, 
-      content,`type`,num ,man_pit ,woman_pit, inside_scenic)
+      content,`type`,num ,man_pit ,woman_pit, inside_scenic, phone)
     values (#{id,jdbcType=VARCHAR},#{parentId,jdbcType=VARCHAR}, #{principalId,jdbcType=VARCHAR}, #{code,jdbcType=VARCHAR},
       #{title,jdbcType=VARCHAR}, #{subTitle,jdbcType=VARCHAR}, #{slogan,jdbcType=VARCHAR}, 
       #{summary,jdbcType=VARCHAR}, #{description,jdbcType=VARCHAR}, #{weight,jdbcType=INTEGER},
@@ -62,7 +63,7 @@
       #{regionFullCode,jdbcType=VARCHAR}, #{region,jdbcType=VARCHAR}, #{address,jdbcType=VARCHAR}, 
       #{status,jdbcType=INTEGER}, #{deptCode,jdbcType=VARCHAR}, #{createdUser,jdbcType=VARCHAR},
       #{createdDate,jdbcType=TIMESTAMP}, #{updatedUser,jdbcType=VARCHAR}, #{updatedDate,jdbcType=TIMESTAMP}, 
-      #{content,jdbcType=LONGVARCHAR},#{type,jdbcType=VARCHAR},#{num,jdbcType=INTEGER},#{manPit,jdbcType=INTEGER},#{womanPit,jdbcType=INTEGER},#{insideScenic,jdbcType=VARCHAR})
+      #{content,jdbcType=LONGVARCHAR},#{type,jdbcType=VARCHAR},#{num,jdbcType=INTEGER},#{manPit,jdbcType=INTEGER},#{womanPit,jdbcType=INTEGER},#{insideScenic,jdbcType=VARCHAR},#{phone,jdbcType=VARCHAR})
   </insert>
     <update id="updateByPrimaryKey" parameterType="cn.com.wanwei.bic.entity.PoiEntity">
     update t_bic_poi
@@ -92,7 +93,8 @@
       num = #{num,jdbcType=INTEGER},
       man_pit = #{manPit,jdbcType=INTEGER},
       woman_pit = #{womanPit,jdbcType=INTEGER},
-      inside_scenic = #{insideScenic,jdbcType=VARCHAR}
+      inside_scenic = #{insideScenic,jdbcType=VARCHAR},
+      phone = #{phone,jdbcType=VARCHAR}
     where id = #{id,jdbcType=VARCHAR}
   </update>
     <update id="dataBind">
@@ -101,6 +103,16 @@
         updated_user = #{updatedUser,jdbcType=VARCHAR},
         dept_code = #{deptCode,jdbcType=VARCHAR}
         where principal_id in
+        <foreach collection="ids" item="item" index="index" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </update>
+    <update id="dataBindById">
+        update t_bic_poi
+        set updated_date = #{updatedDate,jdbcType=TIMESTAMP},
+        updated_user = #{updatedUser,jdbcType=VARCHAR},
+        dept_code = #{deptCode,jdbcType=VARCHAR}
+        where id in
         <foreach collection="ids" item="item" index="index" open="(" separator="," close=")">
             #{item}
         </foreach>
