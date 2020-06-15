@@ -70,7 +70,7 @@ public class CelebrityEntity extends BaseEntity{
 
     @ApiModelProperty(value = "代表成就(待定) 记录名人的一项代表性成就，信息包含：关联信息、名称、摘要 例如：非遗传承人可以记录其传承的非遗项目编号、项目名称、项目摘要。画家可以记录其代表画作图片链接和画作名称、画作摘要;\n" +
             "注意：此处应该结构化处理，可以显示，也可以分解出信息中细节数据，用于关联提取其他表中的详细数据。")
-    private Integer behalfAchievement;
+    private String behalfAchievement;
 
     @ApiModelProperty(value = "状态")
     private Integer status;

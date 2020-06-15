@@ -85,8 +85,17 @@ public class ScenicEntity extends BaseEntity{
     @ApiModelProperty(value = "类别（1：普通景区，2：乡村游）")
     private String category;
 
-    @ApiModelProperty(value = "全景地址")
-    private String panoramicUrl;
+    @ApiModelProperty(value = "全景地址1")
+    private String panoramicUrl1;
+
+    @ApiModelProperty(value = "全景地址2")
+    private String panoramicUrl2;
+
+    @ApiModelProperty(value = "全景地址3")
+    private String panoramicUrl3;
+
+    @ApiModelProperty(value = "全景地址4")
+    private String panoramicUrl4;
 
     @ApiModelProperty(value = "审核状态（0：待审，1：通过，9：上线）")
     private Integer status;

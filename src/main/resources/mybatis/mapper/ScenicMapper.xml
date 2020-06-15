@@ -21,7 +21,10 @@
         <result column="level" jdbcType="INTEGER" property="level"/>
         <result column="area" jdbcType="DOUBLE" property="area"/>
         <result column="category" jdbcType="INTEGER" property="category"/>
-        <result column="panoramic_url" jdbcType="VARCHAR" property="panoramicUrl"/>
+        <result column="panoramic_url1" jdbcType="VARCHAR" property="panoramicUrl1"/>
+        <result column="panoramic_url2" jdbcType="VARCHAR" property="panoramicUrl2"/>
+        <result column="panoramic_url3" jdbcType="VARCHAR" property="panoramicUrl3"/>
+        <result column="panoramic_url4" jdbcType="VARCHAR" property="panoramicUrl4"/>
         <result column="status" jdbcType="BIT" property="status"/>
         <result column="playtime" jdbcType="REAL" property="playtime"/>
         <result column="score" jdbcType="REAL" property="score"/>
@@ -41,7 +44,7 @@
     </resultMap>
     <sql id="Base_Column_List">
     id, code, title, title_qp, title_jp, sub_title, slogan, summary, description, weight, longitude, latitude,
-    region_full_name, region_full_code, region, address, level, area, category, panoramic_url, 
+    region_full_name, region_full_code, region, address, level, area, category, panoramic_url1, panoramic_url2, panoramic_url3, panoramic_url4,
     status, playtime, score, dept_code, created_user, created_date, updated_user, updated_date,start_time,summer_time,winter_time,rank,light_title
   </sql>
     <sql id="Blob_Column_List">
@@ -89,7 +92,7 @@
       weight, longitude, latitude, 
       region_full_name, region_full_code, region, 
       address, level, area, 
-      category, panoramic_url, status, 
+      category, panoramic_url1,panoramic_url2,panoramic_url3,panoramic_url4, status,
       playtime, score, dept_code, 
       created_user, created_date, updated_user, 
       updated_date, content,
@@ -99,7 +102,7 @@
       #{weight,jdbcType=REAL}, #{longitude,jdbcType=DOUBLE}, #{latitude,jdbcType=DOUBLE}, 
       #{regionFullName,jdbcType=VARCHAR}, #{regionFullCode,jdbcType=VARCHAR}, #{region,jdbcType=VARCHAR}, 
       #{address,jdbcType=VARCHAR}, #{level,jdbcType=VARCHAR}, #{area,jdbcType=DOUBLE},
-      #{category,jdbcType=VARCHAR}, #{panoramicUrl,jdbcType=VARCHAR}, #{status,jdbcType=BIT},
+      #{category,jdbcType=VARCHAR}, #{panoramicUrl1,jdbcType=VARCHAR} , #{panoramicUrl2,jdbcType=VARCHAR}, #{panoramicUrl3,jdbcType=VARCHAR}, #{panoramicUrl4,jdbcType=VARCHAR}, #{status,jdbcType=BIT},
       #{playtime,jdbcType=REAL}, #{score,jdbcType=REAL}, #{deptCode,jdbcType=VARCHAR}, 
       #{createdUser,jdbcType=VARCHAR}, #{createdDate,jdbcType=TIMESTAMP}, #{updatedUser,jdbcType=VARCHAR}, 
       #{updatedDate,jdbcType=TIMESTAMP}, #{content,jdbcType=LONGVARCHAR},
@@ -125,7 +128,10 @@
       level = #{level,jdbcType=VARCHAR},
       area = #{area,jdbcType=DOUBLE},
       category = #{category,jdbcType=VARCHAR},
-      panoramic_url = #{panoramicUrl,jdbcType=VARCHAR},
+      panoramic_url1 = #{panoramicUrl1,jdbcType=VARCHAR},
+      panoramic_url2 = #{panoramicUrl2,jdbcType=VARCHAR},
+      panoramic_url3 = #{panoramicUrl3,jdbcType=VARCHAR},
+      panoramic_url4 = #{panoramicUrl4,jdbcType=VARCHAR},
       status = #{status,jdbcType=BIT},
       playtime = #{playtime,jdbcType=REAL},
       score = #{score,jdbcType=REAL},
@@ -162,7 +168,10 @@
       level = #{level,jdbcType=VARCHAR},
       area = #{area,jdbcType=DOUBLE},
       category = #{category,jdbcType=VARCHAR},
-      panoramic_url = #{panoramicUrl,jdbcType=VARCHAR},
+      panoramic_url1 = #{panoramicUrl1,jdbcType=VARCHAR},
+      panoramic_url2 = #{panoramicUrl2,jdbcType=VARCHAR},
+      panoramic_url3 = #{panoramicUrl3,jdbcType=VARCHAR},
+      panoramic_url4 = #{panoramicUrl4,jdbcType=VARCHAR},
       status = #{status,jdbcType=BIT},
       playtime = #{playtime,jdbcType=REAL},
       score = #{score,jdbcType=REAL},
